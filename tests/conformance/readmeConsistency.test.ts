@@ -63,21 +63,4 @@ describe("onboarding documentation product facts", () => {
         path,
       ).toEqual(english);
   });
-
-  it("preserves Persian joiners in links to GitHub-rendered headings", async () => {
-    const persian = await readFile(resolve("docs/readme/README_fa.md"), "utf8");
-    // Confirmed against GitHub's rendered README, which retains U+200C.
-    for (const heading of [
-      "REA چگونه کار می‌کند",
-      "چه چیزهایی را می‌توان تحلیل کرد",
-      "نمونه‌های عملی",
-      "پرسش‌های متداول",
-      "به‌روزرسانی REA",
-    ]) {
-      expect(persian).toContain(`## ${heading}`);
-      expect(persian).toContain(
-        `](#${heading.toLowerCase().replaceAll(" ", "-")})`,
-      );
-    }
-  });
 });

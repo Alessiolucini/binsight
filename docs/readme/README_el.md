@@ -1,320 +1,106 @@
 <div align="center">
 
-[English](../../README.md) · [简体中文](README_zh.md) · [繁體中文](README_zh-TW.md) · [日本語](README_ja.md) · [한국어](README_ko.md) · [Türkçe](README_tr.md) · [Русский](README_ru.md) · [Tiếng Việt](README_vi.md) · [ไทย](README_th.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md) · [Українська](README_uk.md) · [Polski](README_pl.md) · [Português (Brasil)](README_pt-BR.md) · [العربية](README_ar.md) · [فارسی](README_fa.md) · [Bahasa Indonesia](README_id.md) · [Italiano](README_it.md) · **Ελληνικά**
+# BinSight
 
-# REA: Reverse Engineer Anything
+### X-ray any binary. Static reverse-engineering intelligence for your AI agent — offline, cross-platform, with evidence.
 
-### Ένα MCP για αντίστροφη μηχανική δυαδικών αρχείων, εφαρμογών και της συμπεριφοράς τους κατά την εκτέλεση.
+**No Ghidra. No IDA. No internet. It never runs the file.**
 
-**Βρήκες μια λειτουργία που σου αρέσει; Μάθε πώς λειτουργεί, μέχρι το επίπεδο του δυαδικού κώδικα.**
+[![MCP tool catalog](https://img.shields.io/badge/MCP-tool_catalog-5c4ee5?style=flat-square)](../mcp-contracts.md#generated-catalog)
+[![license MIT](https://img.shields.io/badge/license-MIT-f4c430?style=flat-square)](../../LICENSE)
 
-[![Έκδοση npm](https://img.shields.io/npm/v/rea-agents?style=flat-square&color=cb3837)](https://www.npmjs.com/package/rea-agents)
-[![Κατάλογος εργαλείων MCP](https://img.shields.io/badge/MCP-tool_catalog-5c4ee5?style=flat-square)](../mcp-contracts.md#generated-catalog)
-[![Απαιτήσεις Node.js](https://img.shields.io/badge/Node.js-requirements-339933?style=flat-square&logo=nodedotjs&logoColor=white)](#τι-μπορείς-να-αναλύσεις)
-[![skills.sh](https://skills.sh/b/morluto/rea?style=flat-square)](https://skills.sh/morluto/rea/reverse-engineer-anything)
-[![Άδεια MIT](https://img.shields.io/badge/license-MIT-f4c430?style=flat-square)](../../LICENSE)
-[![Discord](https://img.shields.io/discord/1556595354999332884?logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/GkcryMnJDM)
-
-<a href="https://trendshift.io/repositories/82054?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-82054" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/82054" alt="morluto%2Frea | Trendshift" width="250" height="55"/></a>
-
-**[Ιστότοπος](https://rea.tools/) · [Οδηγοί](https://rea.tools/guides/) · [Μελέτες περίπτωσης](https://rea.tools/showcase/)**
-
-[Γρήγορη εκκίνηση](#γρήγορη-εκκίνηση) · [Πώς λειτουργεί το REA](#πώς-λειτουργεί-το-rea) · [Τι μπορείς να αναλύσεις](#τι-μπορείς-να-αναλύσεις) · [Μελέτες περίπτωσης](#μελέτες-περίπτωσης) · [Συχνές ερωτήσεις](#συχνές-ερωτήσεις) · [Τεκμηρίωση](#τεκμηρίωση)
-
-<code>npx rea-agents setup</code>
-
-</div>
-
-> [!IMPORTANT]
-> Κατέβασε το REA από το [morluto/rea](https://github.com/morluto/rea),
-> το [rea.tools](https://rea.tools/) ή το [πακέτο rea-agents στο npm](https://www.npmjs.com/package/rea-agents).
-> Ακολούθησε τους συνδέσμους εγκατάστασης και εκδόσεων από αυτές τις επίσημες πηγές.
-> Ένα παρόμοιο όνομα αποθετηρίου ή ένα αντιγραμμένο README δεν αποδεικνύει ότι
-> ένα αρχείο προς λήψη προέρχεται από επίσημη πηγή.
-
-<div align="center">
-
-<br />
-
-<img src="../assets/rea-hopper-analysis.png" alt="Το REA ξεκινά τη γέφυρα ανάλυσής του μέσα στο Hopper κατά την εξέταση ενός δυαδικού αρχείου με κώδικα μηχανής" width="1200" />
-
-<br /><br />
-
-<table aria-label="Κοινότητα REA">
-<tr>
-<td align="center" width="360">
-  <a href="https://discord.gg/GkcryMnJDM">
-    <img src="../assets/discord.svg" height="42" alt="Discord" /><br />
-    <strong>Έλα στην κοινότητα αντίστροφης μηχανικής</strong>
-  </a><br />
-  <sub>Discord · Ερωτήσεις και απαντήσεις · Παρουσίαση έργων</sub>
-</td>
-</tr>
-</table>
-
-<br />
+Built on [REA (morluto/rea)](https://github.com/morluto/rea) · MIT
 
 </div>
 
 ---
 
-Είδες σε μια εφαρμογή μια λειτουργία που θα ήθελες στο δικό σου προϊόν; Ζήτησε από τον πράκτορά σου (agent) να τη διερευνήσει με το REA. Μπορεί να εξετάσει την εφαρμογή χωρίς τον πηγαίο κώδικά της, να εξηγήσει πώς λειτουργεί η συγκεκριμένη δυνατότητα, να παρουσιάσει τα τεκμήρια και να υλοποιήσει μια αντίστοιχη έκδοση για το έργο σου.
-
-Το REA συνδέει τον πράκτορά σου με εργαλεία εξέτασης δυαδικών αρχείων με κώδικα μηχανής, εφαρμογών JavaScript και Electron, assemblies .NET και ιστοτόπων. Μπορείς να χρησιμοποιήσεις τα ίδια εργαλεία και από το τερματικό. Η ανάλυση εκτελείται τοπικά και τα αποτελέσματα περιλαμβάνουν τα τεκμήρια και τους περιορισμούς στους οποίους βασίζεται κάθε συμπέρασμα.
-
-Η διαδικασία εγκατάστασης καταχωρίζει το REA στον agent σου και εγκαθιστά τις αντίστοιχες οδηγίες εργασίας. Για ανάλυση κώδικα μηχανής μπορείς να χρησιμοποιήσεις μια υπάρχουσα εγκατάσταση του Hopper, του Ghidra ή του IDA. Η διαδικασία εγκατάστασης μπορεί επίσης να εγκαταστήσει το Hopper, εφόσον το εγκρίνεις. Η στατική ανάλυση JavaScript δεν χρειάζεται μηχανή ανάλυσης κώδικα μηχανής.
-
-> **[Επισκέψου τον ιστότοπο του REA](https://rea.tools/)** για οδηγίες εγκατάστασης, εικονογραφημένους οδηγούς και πραγματικές μελέτες περίπτωσης.
-
-## Γρήγορη εκκίνηση
-
-### Ρύθμιση του agent σου
-
-Αφού εγκαταστήσεις το Node.js και το npm, εκτέλεσε:
-
-```bash
-npx rea-agents setup
-```
-
-Επίλεξε τους agents σου, έλεγξε τις προτεινόμενες αλλαγές και ενέκρινέ τες. Η διαδικασία προσθέτει τον MCP server του REA και τις αντίστοιχες οδηγίες εργασίας, κρατώντας αντίγραφα ασφαλείας των υφιστάμενων ρυθμίσεων. Στη συνέχεια, επανεκκίνησε τον agent σου.
-
-Υποστηρίζονται τα Claude Code, Codex, Cursor, Gemini CLI, Grok Build και [άλλοι agents](../installation.md#supported-agents). Για τη ρύθμιση των παρόχων ανάλυσης και τη μη αυτόματη καταχώριση MCP, δες τον οδηγό [εγκατάστασης και ρύθμισης](../installation.md).
-
-### Ζήτησε από τον agent σου
+Point your AI agent (or your terminal) at any ELF, PE/Windows or Mach-O file and
+ask what it is, what it does, and how it was built — and get an answer backed by
+evidence, on **macOS, Windows or Linux**, without installing a disassembler and
+without ever executing the target.
 
 ```text
-Διερεύνησε πώς λειτουργεί η αναζήτηση στην εφαρμογή Notes, δείξε μου τα τεκμήρια και υλοποίησε μια παρόμοια λειτουργία για το έργο μου.
+You: Triage this unknown binary. Is it packed? What crypto does it use?
+     Diff it against the previous version.
+
+BinSight: UPX-packed (entropy 7.9), constants consistent with AES + SHA-256,
+          Authenticode signature present, +3 network imports vs the prior build.
+          — all static, all offline, with file offsets and evidence.
 ```
 
-Αντικατάστησε το Notes με την εφαρμογή που θέλεις να εξετάσεις και προσδιόρισε τη λειτουργία που θέλεις να κατανοήσεις.
+## Why
 
-### Χρήση από το τερματικό
+Great reverse-engineering tooling exists, but it's heavy: you need Ghidra, IDA or
+Hopper to see imports and exports, `pwntools` on Linux for a hardening check,
+macOS for `codesign`. BinSight puts **fast, portable, dependency-free static
+triage** directly in your agent — so you can answer most questions in one call,
+and only reach for the heavy tools when you actually need decompilation.
 
-Εξέτασε τον αποσυμπιεσμένο φάκελο μιας εφαρμογής JavaScript/Electron ή ένα αρχείο ASAR:
+## What it adds (16 tools)
+
+| Tool                               | What it answers                                                                                   |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **`triage_file`**                  | One call: type, hashes, structure, entropy, packing, capabilities, signature, strings, next steps |
+| **`generate_triage_report`**       | A shareable Markdown triage report                                                                |
+| **`inspect_executable`**           | Sections, imports, exports, libraries, symbols, entry point, overlay — ELF/PE/Mach-O              |
+| **`inspect_binary_hardening`**     | checksec for every OS: PIE, canary, NX, RELRO, CFG, ASLR, hardened runtime                        |
+| **`measure_binary_entropy`**       | File / section / block Shannon entropy + chi-square                                               |
+| **`detect_binary_toolchain`**      | Compiler, packer, installer, language (UPX, MSVC, PyInstaller, Go…)                               |
+| **`extract_binary_strings`**       | ASCII/UTF-16 strings classified into IOCs (URL, IP, path, registry…)                              |
+| **`identify_crypto_constants`**    | AES S-box, SHA/MD5, CRC32, ChaCha, curve parameters…                                              |
+| **`classify_import_capabilities`** | Capabilities inferred from imports ("consistent with", never a verdict)                           |
+| **`scan_byte_patterns`**           | Byte / hex-wildcard / text / regex search, no provider needed                                     |
+| **`compute_similarity_hashes`**    | imphash, Rich hash, symhash, telfhash, ssdeep, TLSH                                               |
+| **`inspect_code_signature`**       | Authenticode + Mach-O code signature — on any host                                                |
+| **`scan_embedded_content`**        | binwalk-style embedded-file identification (offsets only)                                         |
+| **`generate_sbom`**                | CycloneDX / SPDX component inventory from embedded metadata                                       |
+| **`recover_go_symbols`**           | Function names from a stripped Go `pclntab`                                                       |
+| **`compare_executables`**          | Diff two builds: imports, exports, sections, hardening, entropy                                   |
+
+Every result separates **observations, inferences and unknowns**, carries file
+offsets, and states its limitations. Detection only — nothing is unpacked,
+decrypted, or executed.
+
+## Quickstart
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx binsight triage-file /path/to/sample --json
+npx binsight generate-triage-report /path/to/sample --json
+npx binsight compare-executables /path/to/old /path/to/new --json
 ```
 
-Το αποτέλεσμα περιλαμβάνει modules, εισαγωγές, τα όρια μεταξύ των μερών της εφαρμογής Electron και τα αντίστοιχα τεκμήρια. Αντικατάστησε τη διαδρομή με τη δική σου, για παράδειγμα `"D:/apps/example"` στα Windows.
-
-Για να εγκαταστήσεις την εντολή `rea` για τακτική χρήση:
+Register BinSight as an MCP server for your agent, then ask it to investigate a
+feature and show the evidence:
 
 ```bash
-npm install --global rea-agents
-rea --help
+npx binsight setup
 ```
 
-Για ανάλυση κώδικα μηχανής, ρύθμισε πρώτα έναν πάροχο ανάλυσης. Ο [οδηγός CLI και Evidence](../cli.md) περιγράφει τις σχετικές εντολές, την επιλογή παρόχου, τα στιγμιότυπα και τη χρήση σε scripts.
+BinSight supports the same agents as REA — see
+[supported agents](../installation.md#supported-agents); other clients can use
+[manual MCP registration](../installation.md#mcp-registry).
 
-### Ενημέρωση του REA
+## Verified against the reference tools
 
-Το REA εξελίσσεται γρήγορα και οι νέες εκδόσεις περιλαμβάνουν συχνές διορθώσεις σφαλμάτων. Διατήρησε την εγκατάστασή σου ενημερωμένη.
+BinSight's parsers and hashes are checked against the tools analysts already
+trust: **imphash matches `pefile` byte-for-byte**, structure matches **LIEF /
+readelf / otool**, and the hardening and packing results match **checksec** and
+**Detect It Easy** on a real corpus of ELF, PE and Mach-O binaries.
 
-Για CLI εγκατεστημένο με `npm install --global` ή `bun add --global`:
+## Documentation
 
-```bash
-rea update
-```
+- [Static intelligence suite](../static-intelligence.md): the 16 tools, with CLI and MCP examples.
+- [Tool catalog](../mcp-contracts.md#generated-catalog): generated inventory of tools, providers and CLI commands.
+- [Installation and setup](../installation.md): providers, agents and manual registration.
 
-Οι ενημερώσεις καθολικής εγκατάστασης με Bun απαιτούν Bun 1.2.17 ή νεότερο. Αν χρησιμοποιείς παλαιότερη έκδοση, αναβάθμισε το Bun χειροκίνητα πριν εκτελέσεις το `rea update`.
+## Built on REA
 
-Για να ανανεώσεις τις καταχωρίσεις των agents και το skill, εκτέλεσε την εντολή ρύθμισης που εμφανίζει η ενημέρωση.
+BinSight builds on [REA](https://github.com/morluto/rea) and adds the static
+intelligence suite above. REA is MIT-licensed; this project keeps that license
+and attribution. **This is not an official REA release** — for REA itself, go to
+[morluto/rea](https://github.com/morluto/rea).
 
-Αν χρησιμοποιείς `npx`, ενημέρωσε τη ρύθμιση του agent με:
+## License
 
-```bash
-npx rea-agents@latest setup
-```
-
-Έλεγξε τις αλλαγές και επανεκκίνησε τον agent σου. Για μεμονωμένες εντολές CLI, χρησιμοποίησε `npx rea-agents@latest` και στη συνέχεια την εντολή που θέλεις. Με Bun, χρησιμοποίησε `bunx rea-agents@latest` αντί για `npx rea-agents@latest`.
-
-## Πώς λειτουργεί το REA
-
-Ο agent σου καλεί το REA μέσω MCP για να εξετάσει τον στόχο και να ακολουθήσει τον σχετικό κώδικα. Το REA επιστρέφει ευρήματα μαζί με τα τεκμήριά τους. Ο agent τα χρησιμοποιεί για να θέσει πρόσθετες ερωτήσεις, να εξηγήσει τη συμπεριφορά ή να γράψει και να δοκιμάσει μια υλοποίηση. Οι εντολές CLI χρησιμοποιούν τις ίδιες ροές εργασίας.
-
-![Ροή διερεύνησης του REA: ο agent σου θέτει ένα ερώτημα για έναν τοπικό στόχο, το REA τον εξετάζει και ακολουθεί τον κώδικά του με εργαλεία ανάλυσης, και ο agent χρησιμοποιεί τον κώδικα, τις αναφορές και τα άγνωστα στοιχεία που επιστρέφονται για να εξηγήσει, να υλοποιήσει και να δοκιμάσει.](../../website/public/assets/figures/rea-investigation-flow.svg)
-
-[Άνοιγμα του διαγράμματος σε πλήρες μέγεθος](../../website/public/assets/figures/rea-investigation-flow.svg).
-
-<a id="current-status"></a>
-
-## Τι μπορείς να αναλύσεις
-
-Το REA απαιτεί Node.js 22.x (>=22.19), 24.x (>=24.11) ή 26+, καθώς και npm. Τα πρόσθετα εργαλεία και τα υποστηριζόμενα συστήματα εξαρτώνται από τον στόχο:
-
-| Στόχος                                 | Τι επιστρέφει το REA                                                                                                        | Απαιτήσεις και οδηγός                                                                                                               |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Δυαδικά αρχεία με κώδικα μηχανής       | Ψευδοκώδικα, κώδικα assembly, συμβολοσειρές, σύμβολα, κλήσεις και αναφορές                                                  | Hopper, Ghidra ή IDA· [ανάλυση κώδικα μηχανής](../native-investigation.md)                                                          |
-| Δομή ELF χωρίς εκτέλεση                | Ενότητες, τμήματα, αρχικά σύμβολα/εγγραφές μετεγκατάστασης και ενδείξεις πιθανών μέτρων προστασίας από στατική ανάλυση      | pwntools που παρέχει ο χρήστης σε Linux x64· [διαγνωστικά δυαδικών αρχείων](../binary-diagnostics.md)                               |
-| Δυαδικά αρχεία Go                      | Ενσωματωμένη έκδοση μεταγλωττιστή, modules, αντικαταστάσεις και ρυθμίσεις μεταγλώττισης                                     | Ενσωματωμένη στατική εξέταση ELF/PE/thin Mach-O· δεν απαιτείται εγκατάσταση του Go                                                  |
-| Δυαδικά αρχεία Rust                    | Ενσωματωμένα ονόματα, εκδόσεις, πηγές και σχέσεις εξάρτησης των crates από το cargo-auditable                               | Ενσωματωμένη στατική εξέταση ELF/PE/thin Mach-O· [δυαδικά αρχεία Rust](../rust-binaries.md)                                         |
-| Αρχείο WASM                            | Έλεγχο εγκυρότητας, ενότητες, ακριβείς μορφές εισαγωγών/εξαγωγών σε WAT και αποκωδικοποιημένο WAT                           | WABT 1.0.42 που παρέχει ο χρήστης· `inspect_wasm_artifact`                                                                          |
-| Bytecode EVM                           | Selectors επιλογής συνάρτησης, μετατοπίσεις σε bytes, εκτιμώμενα ορίσματα και δυνατότητα μεταβολής της κατάστασης           | Τοπική είσοδος σε ακατέργαστα bytes ή δεκαεξαδική μορφή σε Linux x64· [οδηγός EVM χωρίς εκτέλεση](../evm-bytecode.md)               |
-| Βάσεις δεδομένων SQLite                | Πίνακες, στήλες, ευρετήρια, όψεις, triggers και επιλεγμένες γραμμές κανονικών πινάκων                                       | Τοπικό στιγμιότυπο βάσης δεδομένων/WAL· Node.js 24.x >=24.15 ή 26+ με εγγενή όρια SQLite                                            |
-| Καταγεγραμμένες καταρρεύσεις στο Linux | Ακατέργαστες εγγραφές notes, καταχωρητές/σήματα κάθε καταγεγραμμένου νήματος και προαιρετικές πιθανές αντιστοιχίσεις μνήμης | pwntools που παρέχει ο χρήστης σε Linux x64· προαιρετικά GDB/pwndbg· [καταγεγραμμένες καταρρεύσεις](../recorded-crashes.md)         |
-| JavaScript / Electron                  | Modules, εισαγωγές, source maps, διαδρομές, IPC και σχέσεις με πρόσθετα κώδικα μηχανής                                      | Node.js και npm· [ανάλυση εφαρμογών](../javascript-application-workflows.md)                                                        |
-| Ιστότοποι                              | Δομή σελίδων, scripts, παρατηρήσεις δικτύου και ζητούμενα στιγμιότυπα οθόνης                                                | Πρόγραμμα περιήγησης της οικογένειας Chrome· [ανάλυση μέσω προγράμματος περιήγησης](../browser-observation.md)                      |
-| Αποθηκευμένες καταγραφές δικτύου       | Αιτήματα, αποκρίσεις, διαθέσιμα δεδομένα φορτίου και θέσεις στην πηγή                                                       | HAR ή SAZ του Fiddler Everywhere· mitmdump σε Linux για την εγγενή μορφή mitmproxy· [οδηγός καταγραφών](../web-network-captures.md) |
-| Assemblies .NET                        | Μεταδεδομένα, εντολές CIL, δηλωμένες εξαρτήσεις από κώδικα μηχανής και συγκρίσεις builds                                    | Καμία πρόσθετη απαίτηση (μόνο στατική ανάλυση)· [οδηγός διαχειριζόμενου κώδικα](../managed-code-analysis.md)                        |
-| APK Android                            | Δηλώσεις manifest, κλάσεις, απομεταγλωττισμένες μέθοδοι και αναφορές                                                        | JADX χωρίς γραφικό περιβάλλον και πλήρες JDK σε Linux/macOS/Windows x64· [οδηγός Android](../android-analysis.md)                   |
-| Συσκευές Android                       | Συσκευές, πακέτα, διεργασίες, logs, dumps, στιγμιότυπα οθόνης και μεταφορές APK/αρχείων                                     | adb που παρέχει ο χρήστης (εξομοιωτής ή φυσική συσκευή)· [οδηγός ADB](../adb-device-analysis.md)                                    |
-| Έργα JEB                               | Μονάδες έργου από τη μηχανή ανάλυσης, ψηφιακά αποτυπώματα αρχείων και ψευδοκώδικα τύπων/μεθόδων                             | Client JEB που έχει ξεκινήσει ο χρήστης και παρέχει MCP, επιλεγμένος μέσω REA_JEB_MCP_URL· [οδηγός JEB](../jeb-analysis.md)         |
-| Πόροι Android                          | Αποκωδικοποιημένο manifest, πίνακες συμβολοσειρών, τοπικές ρυθμίσεις και στοιχεία έκδοσης                                   | Launcher του Apktool που παρέχει ο χρήστης· [οδηγός πόρων](../apktool-resource-analysis.md)                                         |
-| Εφαρμογές Flutter                      | Hash του στιγμιότυπου Dart, ψηφιακά αποτυπώματα βιβλιοθηκών ανά ABI και στοιχεία προέλευσης του build της μηχανής           | Καμία πρόσθετη απαίτηση (στατική ανάλυση APK)· [οδηγός Flutter](../flutter-analysis.md)                                             |
-| Firmware                               | Περιοχές, αποτελέσματα εξαγωγής και παραπομπές για ανάλυση κώδικα μηχανής                                                   | Binwalk / Unblob σε Linux· [οδηγός firmware](../firmware-analysis.md)                                                               |
-| Καταγεγραμμένα πακέτα                  | Επιλεγμένα πεδία, επαναλαμβανόμενες τιμές, φίλτρα και κανόνες decode-as                                                     | Linux: TShark 4.x + prlimit· [οδηγός καταγραφών](../packet-captures.md)                                                             |
-| Σύνοψη πακέτων                         | Τερματικά σημεία, DNS, TLS SNI, κατανομή πρωτοκόλλων και αιτήματα HTTP                                                      | tshark και capinfos που παρέχει ο χρήστης (επαληθευμένα σε Linux)· [οδηγός pcap](../pcap-analysis.md)                               |
-| Καταγεγραμμένα λογικά σήματα           | Σχολιασμούς αποκωδικοποιητή, εύρη δειγμάτων και διαγνωστικά                                                                 | Linux: sigrok-cli 0.7.2 + prlimit· [καταγραφές σημάτων](../signal-recordings.md)                                                    |
-| Πακέτα και πόροι                       | Καταλόγους αρχείων, ψηφιακά αποτυπώματα, plists, δομή bundles της Apple και εξαγόμενους πόρους                              | [Οδηγός αρχείων και JavaScript](../javascript-artifact-reconstruction.md), [εφαρμογές Apple](../apple-application-analysis.md)      |
-| Συμπεριφορά διεργασιών                 | Έξοδο τερματικού, αλληλεπιδράσεις, παρατηρήσεις τερματισμού και συστήματος αρχείων, καθώς και συγκρίσεις εκτελέσεων         | Linux/macOS με εγγενές PTY· [καταγραφή διεργασιών](../process-capture.md)                                                           |
-
-Για εξέταση δυαδικών αρχείων με κώδικα μηχανής χωρίς εκτέλεση, το REA υποστηρίζει
-επίσης GNU objdump και Rizin που παρέχει ο χρήστης. Δες τον
-[οδηγό εργαλείων αντίστροφης μηχανικής](../reverse-engineering-tools.md)
-για τη ρύθμιση των παρόχων, τις εντολές CLI και τους περιορισμούς των Evidence.
-Το REA δεν εγκαθιστά ούτε ενημερώνει κανέναν από τους δύο παρόχους.
-
-Η στατική εξέταση JavaScript και .NET διαβάζει τα αρχεία που παρέχονται χωρίς να εκτελεί την εφαρμογή. Η καταγραφή κατά την εκτέλεση εκτελεί τον επιλεγμένο στόχο ή αλληλεπιδρά μαζί του με τα δικαιώματα του χρήστη σου. Κάθε σχετικός οδηγός περιγράφει τις επιπτώσεις της.
-
-<a id="choosing-a-deep-analysis-provider"></a>
-
-Οι μορφές κώδικα μηχανής και τα υποστηριζόμενα συστήματα διαφέρουν ανά πάροχο ανάλυσης. Δες τη [ρύθμιση Hopper και Ghidra](../installation.md#hopper), τον [οδηγό IDA](../ida-provider.md) (που περιλαμβάνει προαιρετική γέφυρα MCP για κώδικα μηχανής), [Kuna](../kuna-provider.md) και την [πειραματική υποστήριξη Ghidra στα Windows](../windows-ghidra-p0.md). Το Ghidra υποστηρίζει επίσης [ανάλυση DOS 16 bit](../ghidra-dos.md). Για μεγάλα δυαδικά αρχεία, αύξησε το χρονικό όριο εκκίνησης του παρόχου με `REA_GHIDRA_STARTUP_TIMEOUT_MS` ή `REA_HOPPER_STARTUP_TIMEOUT_MS`. Για την επιλογή παρόχου, δες τον [οδηγό CLI](../cli.md#choose-a-provider). Έλεγξε τη [διαθεσιμότητα ανά έκδοση](../installation.md#released-package-and-main) για λειτουργίες που προστέθηκαν μετά την τελευταία έκδοση στο npm.
-
-## Μελέτες περίπτωσης
-
-[![Εικονογραφήσεις των μελετών περίπτωσης για τη στερεοφωνική τοποθέτηση ήχου στο DX-Ball, τη γέφυρα προχείρου του Notion και τον δακτύλιο βλημάτων του TH04](../assets/rea-showcases.png)](https://rea.tools/showcase/)
-
-### DX-Ball: ανακατασκευή υπολογισμού στερεοφωνικής τοποθέτησης ήχου
-
-Ακολούθησε μια κλήση ήχου μέχρι τη βοηθητική συνάρτηση που μετατρέπει τη θέση σε στερεοφωνική τοποθέτηση, εξέτασε τις εντολές και μετέτρεψε τον ελλιπή ψευδοκώδικα σε C. Η ανακατασκευή περνά 3.205 δοκιμές με τον αρχικό κώδικα x86 και αναπαράγει και τα 63 bytes της μεταγλωττισμένης συνάρτησης.
-
-[Διάβασε τη μελέτη περίπτωσης](https://rea.tools/showcase/dx-ball/) · [Αποθετήριο ανακατασκευής](https://github.com/N0zoM1z0/dx-ball)
-
-### Notion: ιχνηλάτηση της γέφυρας προχείρου στο Electron
-
-Βρες το API προχείρου του renderer, ακολούθησέ το μέσω του preload και του IPC μέχρι την κύρια διεργασία και εξέτασε τη μορφή εμπλουτισμένου περιεχομένου του προχείρου.
-
-[Διάβασε τη μελέτη περίπτωσης](https://rea.tools/showcase/notion/)
-
-### TH04: ανάκτηση υπολογισμού δακτυλίου βλημάτων σε DOS
-
-Εξέτασε τις εντολές 16 bit του αρχικού παιχνιδιού για PC-98, ανέκτησε τους υπολογισμούς σταθερών γωνιών και γωνιών στόχευσης και σύγκρινε τον ανακατασκευασμένο κώδικα C++ με την έξοδο του μεταγλωττιστή της εποχής.
-
-[Διάβασε τη μελέτη περίπτωσης](https://rea.tools/showcase/th04/) · [Αποθετήριο ανακατασκευής](https://github.com/N0zoM1z0/th04)
-
-Αν χρησιμοποίησες το REA για κάτι ενδιαφέρον, θα θέλαμε να το δούμε. Μοιράσου τη μελέτη σου σε ένα [issue](https://github.com/morluto/rea/issues) ή [pull request](https://github.com/morluto/rea/pulls), αναφέροντας τον στόχο, το ερώτημά σου, πώς βοήθησε το REA και τι ανακάλυψες.
-
-## Συχνές ερωτήσεις
-
-<details>
-<summary><strong>Ποιοι agents μπορούν να χρησιμοποιήσουν το REA;</strong></summary>
-
-Κάθε agent που υποστηρίζει τοπικούς MCP servers. Η διαδικασία εγκατάστασης ρυθμίζει τους [υποστηριζόμενους agents](../installation.md#supported-agents). Οι υπόλοιποι clients μπορούν να χρησιμοποιήσουν τη [μη αυτόματη καταχώριση MCP](../installation.md#mcp-registry).
-
-</details>
-
-<details>
-<summary><strong>Χρειάζομαι Hopper, Ghidra ή IDA;</strong></summary>
-
-Η εις βάθος ανάλυση κώδικα μηχανής χρησιμοποιεί ένα από αυτά. Η στατική εξέταση JavaScript και .NET λειτουργεί χωρίς μηχανή ανάλυσης κώδικα μηχανής. Η διαδικασία εγκατάστασης μπορεί να εγκαταστήσει το Hopper μετά την έγκρισή σου· το Ghidra και το IDA χρησιμοποιούν τις υπάρχουσες εγκαταστάσεις σου. Δες τη [ρύθμιση παρόχων ανάλυσης](../installation.md#hopper).
-
-</details>
-
-<details>
-<summary><strong>Πρέπει να ξεκινήσω πρώτα το Hopper;</strong></summary>
-
-Το REA ξεκινά το Hopper όταν το χρειάζεται κάποια λειτουργία. Στο macOS, κατά την πρώτη εκκίνηση μπορεί να εμφανιστεί παράθυρο που ζητά να επιλέξεις τη δοκιμαστική λειτουργία ή να ενεργοποιήσεις την άδειά σου. Ολοκλήρωσε αυτό το βήμα στην ίδια συνεδρία χρήστη πριν από την πρώτη λειτουργία CLI/MCP ή εργασία χωρίς επίβλεψη. Άνοιξε το Hopper χειροκίνητα αν χρειαστεί. Δες την [εκκίνηση και αντιμετώπιση προβλημάτων του Hopper](../installation.md#launcher-paths-and-troubleshooting).
-
-</details>
-
-<details>
-<summary><strong>Τι προσφέρει η εγκατάσταση του skill από το skills.sh;</strong></summary>
-
-Το skill παρέχει οδηγίες διερεύνησης για τον agent σου. Χρησιμοποίησε `npx rea-agents setup` για να καταχωρίσεις τον MCP server του REA και να εγκαταστήσεις τις αντίστοιχες οδηγίες. Στη συνέχεια, επανεκκίνησε τον agent σου. Δες την [εγκατάσταση μόνο του skill](../installation.md#skill-only-installation).
-
-</details>
-
-<details>
-<summary><strong>Τι κώδικα επιστρέφει το REA;</strong></summary>
-
-Η ανάλυση κώδικα μηχανής επιστρέφει ψευδοκώδικα και assembly. Η ανάλυση JavaScript/Electron ανακτά modules και τις σχέσεις τους. Ο agent σου χρησιμοποιεί αυτά τα ευρήματα για να γράψει και να δοκιμάσει μια υλοποίηση. Οι [μελέτες περίπτωσης](#μελέτες-περίπτωσης) παρουσιάζουν ολοκληρωμένα παραδείγματα.
-
-</details>
-
-<details>
-<summary><strong>Το REA ανεβάζει την εφαρμογή μου στο διαδίκτυο;</strong></summary>
-
-Το REA αναλύει τους στόχους τοπικά. Ο agent σου λαμβάνει τα αποτελέσματα των εργαλείων και ο πάροχος του μοντέλου του έχει τη δική του πολιτική δεδομένων.
-
-</details>
-
-<details>
-<summary><strong>Τι να κάνω αν συναντήσω κάποιο σφάλμα;</strong></summary>
-
-Κάνε πρώτα ενημέρωση· μια πρόσφατη έκδοση μπορεί να το έχει ήδη διορθώσει.
-
-Για CLI εγκατεστημένο με `npm install --global` ή `bun add --global`:
-
-```bash
-rea update
-```
-
-Για ρύθμιση agent μέσω `npx`:
-
-```bash
-npx rea-agents@latest setup
-```
-
-Αν χρησιμοποιείς agent, ολοκλήρωσε την [ανανέωση της ρύθμισης](#ενημέρωση-του-rea) και επανεκκίνησέ τον. Δοκίμασε ξανά την ίδια εργασία. Αν το πρόβλημα παραμένει, [άνοιξε ένα issue](https://github.com/morluto/rea/issues) με την έκδοση του REA, τον τύπο του στόχου, τα βήματα αναπαραγωγής και την έξοδο του σφάλματος.
-
-</details>
-
-## Τεκμηρίωση
-
-Ξεκίνα από τους [οδηγούς με ολοκληρωμένα παραδείγματα](https://rea.tools/guides/) στον ιστότοπο. Για τις ακριβείς επιλογές, τις προϋποθέσεις και τις προδιαγραφές των αποτελεσμάτων:
-
-- [Εγκατάσταση και ρύθμιση](../installation.md): καταχώριση agents, ρύθμιση παρόχων ανάλυσης, ενημερώσεις και απεγκατάσταση.
-- [Έλεγχος ετοιμότητας και αντιμετώπιση προβλημάτων](../installation.md#check-readiness-for-your-task): διάγνωση ενός agent ή μιας μηχανής ανάλυσης.
-- [CLI και Evidence](../cli.md): εντολές, επιλογή παρόχου, στιγμιότυπα, εισαγωγή/εξαγωγή και κωδικοί εξόδου.
-- [Προδιαγραφές MCP](../mcp-contracts.md) και [prompts για agents](../mcp-prompts.md): αποτελέσματα εργαλείων, συνεδρίες και καθοδηγούμενες διερευνήσεις.
-- [Κατάλογος εργαλείων](../mcp-contracts.md#generated-catalog): αυτόματα παραγόμενος κατάλογος εργαλείων, παρόχων και εντολών CLI.
-- [Οδικός χάρτης](../roadmap.md): προγραμματισμένες εργασίες και παρακολούθηση της ανάπτυξης δυνατοτήτων.
-
-Ανάφερε ευπάθειες ακολουθώντας το [SECURITY.md](../../SECURITY.md).
-
-## Ιστορικό αστεριών
-
-🎉 **250.000 αστέρια στο GitHub — σας ευχαριστούμε!**
-
-Ευχαριστούμε όλους όσοι χρησιμοποιούν το REA, αναφέρουν σφάλματα, ζητούν νέες λειτουργίες, δοκιμάζουν builds και συνεισφέρουν διορθώσεις.
-
-<a href="https://www.star-history.com/?repos=morluto%2Frea&amp;type=date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date&amp;theme=dark&amp;legend=top-left" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date" />
-    <img alt="Ιστορικό αστεριών του REA στο GitHub" src="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date" />
-  </picture>
-</a>
-
-## Αποποίηση ευθύνης
-
-Δες το [DISCLAIMER.md](../../DISCLAIMER.md) για οδηγίες υπεύθυνης χρήσης.
-
-Η θέση του έργου σχετικά με την παράνομη ή μη εξουσιοδοτημένη χρήση ισχύει για όλες τις εκδόσεις του REA, τα κανάλια διανομής και τις πλατφόρμες. Κάθε αντίγραφο διατηρεί τις άδειες που το διέπουν.
-
-Το REA προορίζεται για νόμιμη έρευνα, εκπαίδευση, διαλειτουργικότητα, διατήρηση λογισμικού και ανάλυση λογισμικού που σου ανήκει ή για το οποίο έχεις άδεια εξέτασης.
-
-## Συνεισφορά
-
-Θα χαρούμε να βοηθήσεις στο REA! [Άνοιξε ένα issue](https://github.com/morluto/rea/issues) για να αναφέρεις ένα σφάλμα ή να προτείνεις μια λειτουργία, ή [στείλε ένα pull request](https://github.com/morluto/rea/pulls) για να βελτιώσεις τον κώδικα ή την τεκμηρίωση.
-
-Δες το [CONTRIBUTING.md](../../CONTRIBUTING.md) για τη ρύθμιση του περιβάλλοντος ανάπτυξης και τους ελέγχους, τον [οδηγό δοκιμών](../testing.md) για τις διαδικασίες επαλήθευσης και τον [χάρτη αρχιτεκτονικής](../architecture.mermaid) για τη δομή του έργου.
-
-## Άδεια χρήσης
-
-[MIT](../../LICENSE)
-
-Ο κώδικας που έχει δημιουργηθεί για το REA διατίθεται με την άδεια MIT. Το υλικό τρίτων διατηρεί τις δικές του άδειες και δηλώσεις πνευματικών δικαιωμάτων. Δες τις [δηλώσεις για υλικό τρίτων](../../THIRD_PARTY_NOTICES.md) για τον κατάλογο εξαρτήσεων, τα διατηρημένα κείμενα αδειών και τους όρους των εξωτερικών εργαλείων.
-
-**Πρέπει να αποκτήσεις νόμιμα τα εμπορικά εργαλεία και να έχεις δικαίωμα χρήσης τους**, συμπεριλαμβανομένων των IDA Pro / Hex-Rays decompilers, Hopper και JEB, σύμφωνα με τις αντίστοιχες άδειές τους. Το REA δεν παρέχει άδεια εργαλείου, κλειδί ή δικαίωμα ενεργοποίησης. Οι δοκιμαστικές εκδόσεις και τα demos εξακολουθούν να υπόκεινται στους όρους του προμηθευτή, συμπεριλαμβανομένων των περιορισμών χρήστη, λειτουργιών, αυτοματοποίησης και κοινοποίησης αποτελεσμάτων. Δεν επιτρέπονται σπασμένες εκδόσεις, κλεμμένα κλειδιά, μη εξουσιοδοτημένη κοινοποίηση κλειδιών ή παράκαμψη περιορισμών αδειοδότησης. Αυτές οι οδηγίες δεν τροποποιούν την άδεια MIT ή τις άδειες τρίτων.
+MIT. See [LICENSE](../../LICENSE). Portions © the REA authors.
