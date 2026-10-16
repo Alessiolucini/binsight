@@ -28,6 +28,7 @@ export default defineConfig({
         text: "Investigation guides",
         items: [
           { text: "Native binaries", link: "/native-investigation" },
+          { text: "Static intelligence suite", link: "/static-intelligence" },
           { text: "Go build metadata", link: "/go-binaries" },
           { text: "Rust dependencies", link: "/rust-binaries" },
           {

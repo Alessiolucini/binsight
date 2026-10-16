@@ -28,6 +28,13 @@ import { registerGoTools } from "./registerGoTools.js";
 import { createRustBinaryService } from "../composition/rust.js";
 import type { RustBinaryService } from "../application/rust/RustBinaryService.js";
 import { registerRustTools } from "./registerRustTools.js";
+import {
+  createCompareExecutablesService,
+  createStaticTriageService,
+} from "../composition/triage.js";
+import type { StaticTriageService } from "../application/triage/StaticTriageService.js";
+import type { CompareExecutablesService } from "../application/triage/CompareExecutablesService.js";
+import { registerTriageTools } from "./registerTriageTools.js";
 import type { RecordedCrashService } from "../application/binaryDiagnostics/RecordedCrashService.js";
 import { registerAnalysisViewTool } from "./registerAnalysisViewTool.js";
 import { registerBinaryDiagnosticsTools } from "./registerBinaryDiagnosticsTools.js";
@@ -159,6 +166,8 @@ export interface CreateServerOptions {
   readonly binaryLayout?: BinaryLayoutService;
   readonly goBinary?: GoBinaryService;
   readonly rustBinary?: RustBinaryService;
+  readonly staticTriage?: StaticTriageService;
+  readonly compareExecutables?: CompareExecutablesService;
   readonly electronFuses?: ElectronFuseService;
   readonly recordedCrash?: RecordedCrashService;
   readonly firmwareAnalysis?: FirmwareAnalysisPort;
@@ -311,6 +320,9 @@ export const createServer = (
     options.webModuleTrace ?? createWebModuleTraceService(environment);
   const goBinary = options.goBinary ?? createGoBinaryService();
   const rustBinary = options.rustBinary ?? createRustBinaryService();
+  const staticTriage = options.staticTriage ?? createStaticTriageService();
+  const compareExecutables =
+    options.compareExecutables ?? createCompareExecutablesService();
   const peResources = createPeResourcesService();
   const webNetworkCapture =
     options.webNetworkCapture ?? createWebNetworkCaptureService(environment);
@@ -393,6 +405,8 @@ export const createServer = (
       webModuleTrace.close(),
       goBinary.close(),
       rustBinary.close(),
+      staticTriage.close(),
+      compareExecutables.close(),
       peResources.close(),
       webNetworkCapture.close(),
       javascriptRecovery.close?.() ?? Promise.resolve(),
@@ -451,6 +465,8 @@ export const createServer = (
     artifactResources,
     goBinary,
     rustBinary,
+    staticTriage,
+    compareExecutables,
     peResources,
     webNetworkCapture,
   };
@@ -650,6 +666,8 @@ const registerConfiguredAnalysisTools = (
     withAdmittedAnalysis,
     goBinary,
     rustBinary,
+    staticTriage,
+    compareExecutables,
     peResources,
     webNetworkCapture,
   }: ServerToolContext,
@@ -707,6 +725,14 @@ const registerConfiguredAnalysisTools = (
   registerRustTools(
     server,
     rustBinary,
+    toolLogger,
+    recordEvidence,
+    withAdmittedAnalysis,
+  );
+  registerTriageTools(
+    server,
+    staticTriage,
+    compareExecutables,
     toolLogger,
     recordEvidence,
     withAdmittedAnalysis,
@@ -818,6 +844,8 @@ const createSessionRecorders = (
 interface ServerToolContext extends ReturnType<typeof createSessionRecorders> {
   readonly goBinary: GoBinaryService;
   readonly rustBinary: RustBinaryService;
+  readonly staticTriage: StaticTriageService;
+  readonly compareExecutables: CompareExecutablesService;
   readonly peResources: PeResourcesService;
   readonly webNetworkCapture: WebNetworkCaptureService;
   readonly artifactResources: ArtifactResourceScope;

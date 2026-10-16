@@ -25,6 +25,12 @@ import type { ProviderAvailability } from "./AnalysisProvider.js";
 import type { JebAnalysisAvailability } from "./jeb/JebAnalysisPort.js";
 import { TOOL_CONTRACTS } from "../contracts/toolContracts.js";
 import { FRIDA_TOOL_CONTRACTS } from "../contracts/fridaToolContracts.js";
+import { TRIAGE_TOOL_CONTRACTS } from "../contracts/triage/triageToolContracts.js";
+
+/** Dependency-free static triage tools are available without acquiring a target. */
+const TRIAGE_TOOL_NAMES: ReadonlySet<string> = new Set(
+  TRIAGE_TOOL_CONTRACTS.map((contract) => contract.name),
+);
 import {
   clientRequirementsFor,
   NO_CLIENT_FEATURES,
@@ -350,7 +356,8 @@ const workflowAvailabilityFor = ({
   if (
     name === "inspect_go_binary" ||
     name === "inspect_rust_binary" ||
-    name === "inspect_electron_fuses"
+    name === "inspect_electron_fuses" ||
+    TRIAGE_TOOL_NAMES.has(name)
   )
     return { reason: "available", remediation: null };
   if (name === "inspect_sqlite_database") {

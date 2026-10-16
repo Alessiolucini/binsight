@@ -29,6 +29,31 @@ const EXECUTION_WORDING_EXCEPTIONS: Readonly<Record<string, string>> = {
   inspect_go_binary: "reads embedded metadata without executing the target",
   inspect_rust_binary:
     "reads an embedded dependency list without executing the target",
+  inspect_executable: "projects the parsed image without executing the target",
+  inspect_binary_hardening:
+    "reads mitigation facts without executing the target",
+  measure_binary_entropy:
+    "high-entropy runs name byte distributions, not program execution",
+  detect_binary_toolchain:
+    "matches static markers without executing the target",
+  extract_binary_strings: "reads string bytes without executing the target",
+  identify_crypto_constants:
+    "matches constant tables without executing the target",
+  classify_import_capabilities:
+    "classifies the import table without executing the target",
+  scan_byte_patterns: "searches bytes without executing the target",
+  compute_similarity_hashes: "hashes file content without executing the target",
+  inspect_code_signature:
+    "parses the embedded signature without executing the target",
+  scan_embedded_content:
+    "identifies embedded regions without executing the target",
+  generate_sbom:
+    "reads embedded component metadata without executing the target",
+  recover_go_symbols: "reads the embedded pclntab without executing the target",
+  triage_file: "composes static readers without executing the target",
+  generate_triage_report:
+    "renders a static summary without executing the target",
+  compare_executables: "diffs two parsed images without executing either",
   inspect_sqlite_database:
     "uses a trusted inspector worker without executing application code or caller SQL",
   inspect_binary_layout:

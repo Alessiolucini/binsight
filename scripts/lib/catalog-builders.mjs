@@ -34,6 +34,7 @@ export const toolFamilyCatalog = (sources) => {
         ...sources.evmContracts.EVM_TOOL_CONTRACTS,
         ...sources.goContracts.GO_TOOL_CONTRACTS,
         ...sources.rustContracts.RUST_TOOL_CONTRACTS,
+        ...sources.triageContracts.TRIAGE_TOOL_CONTRACTS,
         ...sources.wasmContracts.WASM_TOOL_CONTRACTS,
         ...sources.sqliteContracts.SQLITE_TOOL_CONTRACTS,
         ...sources.captureContracts.CAPTURE_TOOL_CONTRACTS,
@@ -268,6 +269,20 @@ export const providerCatalog = (sources) => {
     {
       identity: sources.rustProvider.RUST_BINARY_PROVIDER_IDENTITY,
       contracts: sources.rustContracts.RUST_TOOL_CONTRACTS,
+    },
+    {
+      identity: sources.staticTriageProvider.STATIC_TRIAGE_PROVIDER_IDENTITY,
+      contracts: sources.triageContracts.TRIAGE_TOOL_CONTRACTS.filter(
+        ({ name }) => name !== "compare_executables",
+      ),
+    },
+    {
+      identity:
+        sources.compareExecutablesProvider
+          .COMPARE_EXECUTABLES_PROVIDER_IDENTITY,
+      contracts: sources.triageContracts.TRIAGE_TOOL_CONTRACTS.filter(
+        ({ name }) => name === "compare_executables",
+      ),
     },
     {
       identity: sources.electronFuseProvider.ELECTRON_FUSE_PROVIDER_IDENTITY,
