@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.5.1](https://github.com/Alessiolucini/binsight/compare/binsight-6.5.0...binsight-6.5.1) (2026-10-17)
+
+### Bug Fixes
+
+- Publish to the MCP Registry as `io.github.Alessiolucini/binsight`: the Registry matches the GitHub namespace case-sensitively, so the lowercase name declared in 6.5.0 could not be published. No tool or runtime changes.
+
 ## [6.5.0](https://github.com/morluto/rea/compare/rea-agents-6.4.0...rea-agents-6.5.0) (2026-10-13)
 
 Provider prerequisites and recorded verification scope are listed in [the testing guide](docs/testing.md).

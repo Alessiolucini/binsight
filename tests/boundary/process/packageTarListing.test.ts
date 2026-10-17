@@ -43,7 +43,7 @@ childProcess.execFile[promisify.custom] = async (command, args) => {
   if ((command === "npm" && args[0] === "pack") || (command === process.execPath && args[1] === "pack")) stdout = "fixture.tgz\\n";
   else if (command === "tar" && args[0] === "-tf") stdout = ${JSON.stringify(listing)};
   else if (command === "tar" && args[0] === "-xOf" && args[2] === "package/package.json")
-    stdout = JSON.stringify({ bin: { binsight: "scripts/rea.mjs" }, mcpName: "io.github.alessiolucini/binsight", dependencies: { "@lydell/node-pty": "1.1.0" } });
+    stdout = JSON.stringify({ bin: { binsight: "scripts/rea.mjs" }, mcpName: "io.github.Alessiolucini/binsight", dependencies: { "@lydell/node-pty": "1.1.0" } });
   else if (command === "tar" && args[0] === "-xOf" && args[2] === "package/skills/reverse-engineer-anything/SKILL.md")
     stdout = "  tool_count: " + CATALOG_IDENTITY.counts.mcp_tools + "\\n";
   else if (command === "tar" && args[0] === "-xf") stdout = "";

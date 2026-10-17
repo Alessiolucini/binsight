@@ -16,9 +16,9 @@ const registryPackage = serverJson.packages?.[0];
 if (packageJson.name !== "binsight") fail("unexpected npm package name");
 if (typeof packageJson.version !== "string")
   fail("package.json is missing a string version");
-if (packageJson.mcpName !== "io.github.alessiolucini/binsight")
+if (packageJson.mcpName !== "io.github.Alessiolucini/binsight")
   fail(
-    "package.json mcpName does not identify io.github.alessiolucini/binsight",
+    "package.json mcpName does not identify io.github.Alessiolucini/binsight",
   );
 if (serverJson.name !== packageJson.mcpName)
   fail("server.json name does not match package.json mcpName");

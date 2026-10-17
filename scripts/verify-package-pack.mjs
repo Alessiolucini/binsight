@@ -32,7 +32,7 @@ export async function verifyPackagePack({ root, workspace }) {
     throw new Error("package retained a lifecycle-dependent PTY installation");
   if (packedManifest.bin?.binsight !== "scripts/rea.mjs")
     throw new Error("package did not expose the binsight command entry point");
-  if (packedManifest.mcpName !== "io.github.alessiolucini/binsight")
+  if (packedManifest.mcpName !== "io.github.Alessiolucini/binsight")
     throw new Error("package did not retain its MCP Registry ownership marker");
   if (packedFiles.some((path) => path.startsWith("package/.agents/")))
     throw new Error(

@@ -262,14 +262,14 @@ Register with the variable unset:
 <!-- x-release-please-start-version -->
 
 ```bash
-claude mcp add --scope local binsight -- npx -y binsight@6.5.0 mcp
+claude mcp add --scope local binsight -- npx -y binsight@6.5.1 mcp
 ```
 
 On native Windows, use the same project directory and wrap the package-runner
 shim so the stdio client can launch it:
 
 ```powershell
-claude mcp add --scope local binsight -- cmd.exe /d /c npx -y binsight@6.5.0 mcp
+claude mcp add --scope local binsight -- cmd.exe /d /c npx -y binsight@6.5.1 mcp
 ```
 
 <!-- x-release-please-end -->
@@ -1130,11 +1130,11 @@ Ghidra/JDK installation; neither is inferred from startup alone.
 
 ## MCP Registry
 
-BinSight declares the MCP Registry name `io.github.alessiolucini/binsight` in
+BinSight declares the MCP Registry name `io.github.Alessiolucini/binsight` in
 `server.json`. Registry clients can discover the server and install the existing public `binsight` npm
 package; the Registry entry does not introduce a second distribution artifact.
 
-For a client that supports Registry discovery, search for `io.github.alessiolucini/binsight`
+For a client that supports Registry discovery, search for `io.github.Alessiolucini/binsight`
 and select the npm package. The published metadata launches the existing stdio
 server through `npx` with the `mcp` command.
 
@@ -1147,7 +1147,7 @@ For a client that requires manual configuration, use:
   "mcpServers": {
     "binsight": {
       "command": "npx",
-      "args": ["-y", "binsight@6.5.0", "mcp"]
+      "args": ["-y", "binsight@6.5.1", "mcp"]
     }
   }
 }

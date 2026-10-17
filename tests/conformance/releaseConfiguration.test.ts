@@ -101,7 +101,7 @@ describe("release configuration", () => {
 
     expect(packageJson).toMatchObject({
       name: "binsight",
-      mcpName: "io.github.alessiolucini/binsight",
+      mcpName: "io.github.Alessiolucini/binsight",
     });
     expect(serverJson).toMatchObject({
       name: packageJson.mcpName,
