@@ -2,9 +2,9 @@
 
 # BinSight
 
-### X-ray any binary. Static reverse-engineering intelligence for your AI agent — offline, cross-platform, with evidence.
+### The AI X-ray for any file. Point it at a binary and ask: **what is it, what does it hide, and what changed?**
 
-**No Ghidra. No IDA. No internet. It never runs the file.**
+**Offline · cross-platform · with evidence. It never runs the file.**
 
 [![MCP tool catalog](https://img.shields.io/badge/MCP-tool_catalog-5c4ee5?style=flat-square)](docs/mcp-contracts.md#generated-catalog)
 [![license MIT](https://img.shields.io/badge/license-MIT-f4c430?style=flat-square)](LICENSE)
@@ -15,34 +15,53 @@ Built on [REA (morluto/rea)](https://github.com/morluto/rea) · MIT
 
 ---
 
-Point your AI agent (or your terminal) at any ELF, PE/Windows or Mach-O file and
-ask what it is, what it does, and how it was built — and get an answer backed by
-evidence, on **macOS, Windows or Linux**, without installing a disassembler and
-without ever executing the target.
+Most files are black boxes: an `.exe` you downloaded, a firmware dump, a driver,
+a game, an ECU calibration, an app update. BinSight opens the box — **statically,
+on your own machine, without ever running the file** — and answers the three
+questions that matter, in plain language and with the evidence to back them up.
 
 ```text
-You: Triage this unknown binary. Is it packed? What crypto does it use?
-     Diff it against the previous version.
+You: What is this file? Is it hiding anything? And what changed vs the old version?
 
-BinSight: UPX-packed (entropy 7.9), constants consistent with AES + SHA-256,
-          Authenticode signature present, +3 network imports vs the prior build.
-          — all static, all offline, with file offsets and evidence.
+BinSight: PE/Windows x64, compiled with MSVC, UPX-packed (entropy 7.9),
+          imports consistent with network + process injection, Authenticode
+          signature present, and vs the previous build 3 regions changed —
+          here are the offsets. All static, all offline, with evidence.
 ```
 
-## Why
+## The three questions
 
-Great reverse-engineering tooling exists, but it's heavy: you need Ghidra, IDA or
-Hopper to see imports and exports, `pwntools` on Linux for a hardening check,
-macOS for `codesign`. BinSight puts **fast, portable, dependency-free static
-triage** directly in your agent — so you can answer most questions in one call,
-and only reach for the heavy tools when you actually need decompilation.
+### 🔎 What is it?
 
-## What it adds (16 tools)
+`triage_file` and `inspect_executable` read ELF, PE/Windows and Mach-O (and raw
+blobs) and tell you the type, architecture, entry point, imports/exports,
+sections, hashes, and a compiler/packer fingerprint — **without starting Ghidra
+or IDA**, on macOS, Windows or Linux.
+
+### 🕵️ What does it hide?
+
+`detect_binary_toolchain`, `measure_binary_entropy`, `classify_import_capabilities`,
+`identify_crypto_constants`, `extract_binary_strings`, `inspect_code_signature`
+and `scan_embedded_content` surface packing, high-entropy regions, imported
+capabilities (network, process, crypto…), IOC strings, embedded files, and
+whether a signature is real — reported as evidence and inference, never as a
+verdict.
+
+### 🔁 What changed?
+
+`compare_binaries` diffs **any two files** byte-for-byte and explains the change
+— which regions moved, what was zeroed or maxed out, the before/after values.
+Works on app updates, drivers, firmware and ECU calibration dumps alike.
+`compare_executables` adds import/export/section/hardening deltas for executables.
+
+## All 17 tools
 
 | Tool                               | What it answers                                                                                   |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------- |
 | **`triage_file`**                  | One call: type, hashes, structure, entropy, packing, capabilities, signature, strings, next steps |
 | **`generate_triage_report`**       | A shareable Markdown triage report                                                                |
+| **`compare_binaries`**             | Diff **any** two files and explain what changed (firmware, ECU dumps, updates)                    |
+| **`compare_executables`**          | Diff two executables: imports, exports, sections, hardening, entropy                              |
 | **`inspect_executable`**           | Sections, imports, exports, libraries, symbols, entry point, overlay — ELF/PE/Mach-O              |
 | **`inspect_binary_hardening`**     | checksec for every OS: PIE, canary, NX, RELRO, CFG, ASLR, hardened runtime                        |
 | **`measure_binary_entropy`**       | File / section / block Shannon entropy + chi-square                                               |
@@ -56,22 +75,21 @@ and only reach for the heavy tools when you actually need decompilation.
 | **`scan_embedded_content`**        | binwalk-style embedded-file identification (offsets only)                                         |
 | **`generate_sbom`**                | CycloneDX / SPDX component inventory from embedded metadata                                       |
 | **`recover_go_symbols`**           | Function names from a stripped Go `pclntab`                                                       |
-| **`compare_executables`**          | Diff two builds: imports, exports, sections, hardening, entropy                                   |
 
 Every result separates **observations, inferences and unknowns**, carries file
-offsets, and states its limitations. Detection only — nothing is unpacked,
-decrypted, or executed.
+offsets, and states its limitations. **Detection only** — nothing is unpacked,
+decrypted, cracked or executed.
 
 ## Quickstart
 
 ```bash
-npx binsight triage-file /path/to/sample --json
-npx binsight generate-triage-report /path/to/sample --json
-npx binsight compare-executables /path/to/old /path/to/new --json
+npx binsight triage-file /path/to/file --json
+npx binsight compare-binaries /path/to/old /path/to/new --json
+npx binsight generate-triage-report /path/to/file --json
 ```
 
-Register BinSight as an MCP server for your agent, then ask it to investigate a
-feature and show the evidence:
+Register BinSight as an MCP server for your AI agent, then just ask it in plain
+language ("what is this file, what does it hide, what changed?"):
 
 ```bash
 npx binsight setup
@@ -85,12 +103,12 @@ BinSight supports the same agents as REA — see
 
 BinSight's parsers and hashes are checked against the tools analysts already
 trust: **imphash matches `pefile` byte-for-byte**, structure matches **LIEF /
-readelf / otool**, and the hardening and packing results match **checksec** and
+readelf / otool**, and hardening and packing results match **checksec** and
 **Detect It Easy** on a real corpus of ELF, PE and Mach-O binaries.
 
 ## Documentation
 
-- [Static intelligence suite](docs/static-intelligence.md): the 16 tools, with CLI and MCP examples.
+- [Static intelligence suite](docs/static-intelligence.md): the 17 tools, with CLI and MCP examples.
 - [Tool catalog](docs/mcp-contracts.md#generated-catalog): generated inventory of tools, providers and CLI commands.
 - [Installation and setup](docs/installation.md): providers, agents and manual registration.
 
