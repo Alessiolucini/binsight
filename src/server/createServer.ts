@@ -29,11 +29,13 @@ import { createRustBinaryService } from "../composition/rust.js";
 import type { RustBinaryService } from "../application/rust/RustBinaryService.js";
 import { registerRustTools } from "./registerRustTools.js";
 import {
+  createCompareBinariesService,
   createCompareExecutablesService,
   createStaticTriageService,
 } from "../composition/triage.js";
 import type { StaticTriageService } from "../application/triage/StaticTriageService.js";
 import type { CompareExecutablesService } from "../application/triage/CompareExecutablesService.js";
+import type { CompareBinariesService } from "../application/triage/CompareBinariesService.js";
 import { registerTriageTools } from "./registerTriageTools.js";
 import type { RecordedCrashService } from "../application/binaryDiagnostics/RecordedCrashService.js";
 import { registerAnalysisViewTool } from "./registerAnalysisViewTool.js";
@@ -168,6 +170,7 @@ export interface CreateServerOptions {
   readonly rustBinary?: RustBinaryService;
   readonly staticTriage?: StaticTriageService;
   readonly compareExecutables?: CompareExecutablesService;
+  readonly compareBinaries?: CompareBinariesService;
   readonly electronFuses?: ElectronFuseService;
   readonly recordedCrash?: RecordedCrashService;
   readonly firmwareAnalysis?: FirmwareAnalysisPort;
@@ -323,6 +326,8 @@ export const createServer = (
   const staticTriage = options.staticTriage ?? createStaticTriageService();
   const compareExecutables =
     options.compareExecutables ?? createCompareExecutablesService();
+  const compareBinaries =
+    options.compareBinaries ?? createCompareBinariesService();
   const peResources = createPeResourcesService();
   const webNetworkCapture =
     options.webNetworkCapture ?? createWebNetworkCaptureService(environment);
@@ -407,6 +412,7 @@ export const createServer = (
       rustBinary.close(),
       staticTriage.close(),
       compareExecutables.close(),
+      compareBinaries.close(),
       peResources.close(),
       webNetworkCapture.close(),
       javascriptRecovery.close?.() ?? Promise.resolve(),
@@ -467,6 +473,7 @@ export const createServer = (
     rustBinary,
     staticTriage,
     compareExecutables,
+    compareBinaries,
     peResources,
     webNetworkCapture,
   };
@@ -668,6 +675,7 @@ const registerConfiguredAnalysisTools = (
     rustBinary,
     staticTriage,
     compareExecutables,
+    compareBinaries,
     peResources,
     webNetworkCapture,
   }: ServerToolContext,
@@ -731,8 +739,7 @@ const registerConfiguredAnalysisTools = (
   );
   registerTriageTools(
     server,
-    staticTriage,
-    compareExecutables,
+    { staticTriage, compareExecutables, compareBinaries },
     toolLogger,
     recordEvidence,
     withAdmittedAnalysis,
@@ -846,6 +853,7 @@ interface ServerToolContext extends ReturnType<typeof createSessionRecorders> {
   readonly rustBinary: RustBinaryService;
   readonly staticTriage: StaticTriageService;
   readonly compareExecutables: CompareExecutablesService;
+  readonly compareBinaries: CompareBinariesService;
   readonly peResources: PeResourcesService;
   readonly webNetworkCapture: WebNetworkCaptureService;
   readonly artifactResources: ArtifactResourceScope;

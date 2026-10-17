@@ -10,6 +10,10 @@ import {
   generateTriageReportReportSchema,
 } from "../../domain/triage/generateTriageReport.js";
 import {
+  compareBinariesInputSchema,
+  compareBinariesReportSchema,
+} from "../../domain/triage/compareBinaries.js";
+import {
   inspectExecutableInputSchema,
   inspectExecutableReportSchema,
 } from "../../domain/triage/inspectExecutable.js";
@@ -429,6 +433,32 @@ export const TRIAGE_TOOL_CONTRACTS = [
       {
         title: "Report on one universal-binary slice",
         input: { path: "/artifacts/application", slice: "arm64" },
+      },
+    ],
+  },
+  {
+    name: "compare_binaries",
+    ...toolContractMetadata("compare_binaries"),
+    kind: "artifact-provider",
+    description:
+      "Compare two local files byte-for-byte and explain what changed, for any file type (firmware dumps, ECU calibration files, app or driver updates, data blobs), not only executables. Returns both files' SHA-256 and size, whether they are identical, the size delta, the count and fraction of changed bytes, the overall changed offset range, a summary (how many bytes were zeroed, filled with 0xFF, or otherwise modified), and a bounded list of contiguous changed regions — each with its file offset, length, a kind (zeroed/filled/modified) and before/after value samples read as little-endian words of the chosen width. Regions are coalesced by a caller gap and bounded by max_regions. Reads both files once (up to 256 MiB each) WITHOUT executing them, without network access and without writing files; the report is bounded to 8 MiB. It does no format-aware labeling: it reports where and how bytes differ, not named maps, fields or functions. Only the shorter length is compared; extra trailing bytes are reported as size_delta.",
+    inputSchema: compareBinariesInputSchema,
+    outputSchema: evidenceResultOf(compareBinariesReportSchema),
+    examples: [
+      {
+        title: "Diff two firmware or calibration dumps",
+        input: {
+          base_path: "/artifacts/original.bin",
+          target_path: "/artifacts/modified.bin",
+        },
+      },
+      {
+        title: "Diff two app builds, reporting 32-bit values",
+        input: {
+          base_path: "/artifacts/app-v1",
+          target_path: "/artifacts/app-v2",
+          word_size: 4,
+        },
       },
     ],
   },

@@ -1,5 +1,6 @@
 import { z } from "incur";
 import {
+  createCompareBinariesService,
   createCompareExecutablesService,
   createStaticTriageService,
 } from "../composition/triage.js";
@@ -154,6 +155,37 @@ export const registerTriageCommands = (
             service,
             PROVIDER_ID,
             "compare_executables",
+            undefined,
+            signal,
+          ),
+        );
+      }),
+  });
+  cli.command(CLI_COMMANDS.compareBinaries, {
+    description:
+      "Compare two local files byte-for-byte and explain what changed (firmware, calibration dumps, app updates) without target execution",
+    args: z.object({
+      basePath: z.string().describe("Baseline local file"),
+      targetPath: z
+        .string()
+        .describe("Target local file to compare against the baseline"),
+    }),
+    run: ({ args }) =>
+      withCommandCancellation((signal) => {
+        const service = createCompareBinariesService();
+        return logCliCommand(logger, CLI_COMMANDS.compareBinaries, () =>
+          finishAnalysisCommand(
+            () =>
+              service.compare(
+                {
+                  base_path: absoluteCallerPath(args.basePath),
+                  target_path: absoluteCallerPath(args.targetPath),
+                },
+                { signal },
+              ),
+            service,
+            "rea-compare-binaries",
+            "compare_binaries",
             undefined,
             signal,
           ),

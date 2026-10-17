@@ -74,6 +74,7 @@ const SOURCE_PATHS = {
   triageContracts: "dist/contracts/triage/triageToolContracts.js",
   staticTriageProvider: "dist/triage/StaticTriageProvider.js",
   compareExecutablesProvider: "dist/triage/CompareExecutables.js",
+  compareBinariesProvider: "dist/triage/CompareBinaries.js",
   artifactContracts: "dist/contracts/artifactToolContracts.js",
   managedContracts: "dist/contracts/managed/managedToolContracts.js",
   firmwareContracts: "dist/contracts/firmware/firmwareToolContracts.js",

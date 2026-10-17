@@ -75,6 +75,7 @@ export const CLI_COMMANDS = Object.freeze({
   triageFile: "triage-file",
   generateTriageReport: "generate-triage-report",
   compareExecutables: "compare-executables",
+  compareBinaries: "compare-binaries",
   inspectPeResources: "inspect-pe-resources",
   inspectAnalysisView: "inspect-analysis-view",
   listFridaDevices: "list-frida-devices",

@@ -54,6 +54,7 @@ const EXECUTION_WORDING_EXCEPTIONS: Readonly<Record<string, string>> = {
   generate_triage_report:
     "renders a static summary without executing the target",
   compare_executables: "diffs two parsed images without executing either",
+  compare_binaries: "diffs two files byte-for-byte without executing either",
   inspect_sqlite_database:
     "uses a trusted inspector worker without executing application code or caller SQL",
   inspect_binary_layout:

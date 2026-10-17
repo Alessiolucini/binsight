@@ -1,4 +1,5 @@
 import type { EvidenceMcpServer } from "./EvidenceMcpServer.js";
+import type { CompareBinariesService } from "../application/triage/CompareBinariesService.js";
 import type { CompareExecutablesService } from "../application/triage/CompareExecutablesService.js";
 import type { StaticTriageService } from "../application/triage/StaticTriageService.js";
 import { TRIAGE_DEFINITIONS } from "../application/triage/triageDefinitions.js";
@@ -14,12 +15,16 @@ type ToolContractName = (typeof TOOL_CONTRACTS)[number]["name"];
 /** Bind every static triage contract to its shared workflow and session ledger. */
 export const registerTriageTools = (
   server: EvidenceMcpServer,
-  staticTriage: StaticTriageService,
-  compareExecutables: CompareExecutablesService,
+  services: {
+    readonly staticTriage: StaticTriageService;
+    readonly compareExecutables: CompareExecutablesService;
+    readonly compareBinaries: CompareBinariesService;
+  },
   logger: Logger,
   recordEvidence?: EvidenceWriter["recordEvidence"],
   withAdmittedAnalysis?: WithAdmittedAnalysis,
 ): void => {
+  const { staticTriage, compareExecutables, compareBinaries } = services;
   for (const definition of TRIAGE_DEFINITIONS) {
     const contract = toolContract(definition.operation as ToolContractName);
     const handler = createEvidenceToolHandler(
@@ -47,5 +52,18 @@ export const registerTriageTools = (
     compareContract.name,
     toolRegistrationOptions(compareContract),
     compareHandler(compareContract),
+  );
+  const binariesContract = toolContract("compare_binaries");
+  const binariesHandler = createEvidenceToolHandler(
+    server,
+    (input, options) => compareBinaries.compare(input, options),
+    logger,
+    recordEvidence,
+    withAdmittedAnalysis,
+  );
+  server.registerTool(
+    binariesContract.name,
+    toolRegistrationOptions(binariesContract),
+    binariesHandler(binariesContract),
   );
 };

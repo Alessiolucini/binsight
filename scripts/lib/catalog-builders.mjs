@@ -273,7 +273,8 @@ export const providerCatalog = (sources) => {
     {
       identity: sources.staticTriageProvider.STATIC_TRIAGE_PROVIDER_IDENTITY,
       contracts: sources.triageContracts.TRIAGE_TOOL_CONTRACTS.filter(
-        ({ name }) => name !== "compare_executables",
+        ({ name }) =>
+          name !== "compare_executables" && name !== "compare_binaries",
       ),
     },
     {
@@ -282,6 +283,13 @@ export const providerCatalog = (sources) => {
           .COMPARE_EXECUTABLES_PROVIDER_IDENTITY,
       contracts: sources.triageContracts.TRIAGE_TOOL_CONTRACTS.filter(
         ({ name }) => name === "compare_executables",
+      ),
+    },
+    {
+      identity:
+        sources.compareBinariesProvider.COMPARE_BINARIES_PROVIDER_IDENTITY,
+      contracts: sources.triageContracts.TRIAGE_TOOL_CONTRACTS.filter(
+        ({ name }) => name === "compare_binaries",
       ),
     },
     {

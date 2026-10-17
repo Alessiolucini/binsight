@@ -20,24 +20,25 @@ decompilation and cross-references.
 
 ## Tools
 
-| Tool                           | Purpose                                                                                                                                |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `triage_file`                  | One-call read-only triage: type, hashes, structure, entropy, packing, capabilities, signature, strings and suggested next steps.       |
-| `generate_triage_report`       | Render the triage facets as a shareable GitHub-flavored Markdown report.                                                               |
-| `inspect_executable`           | Unified ELF/PE/Mach-O structure: sections, segments, imports, exports, libraries, symbols, entry point, overlay and per-format detail. |
-| `inspect_binary_hardening`     | Cross-platform exploit-mitigation indicators for ELF, PE and Mach-O.                                                                   |
-| `measure_binary_entropy`       | File, per-section and per-block Shannon entropy with high/low runs and chi-square.                                                     |
-| `detect_binary_toolchain`      | Compiler, packer, protector, installer, language and bundler indicators, with a packed indicator.                                      |
-| `extract_binary_strings`       | ASCII/UTF-16/UTF-8 strings with offsets, sections and inferred IOC tags (URL, IP, path, registry key, GUID, …).                        |
-| `identify_crypto_constants`    | Well-known cryptographic constant tables (AES, SHA, MD5, CRC32, ChaCha, curves, …).                                                    |
-| `classify_import_capabilities` | Coarse capability classes inferred from the import table, stated as "imports consistent with".                                         |
-| `scan_byte_patterns`           | Search a file for caller-supplied byte, hex-wildcard, text and regex patterns.                                                         |
-| `compute_similarity_hashes`    | imphash, Rich-header hash, symhash, telfhash, ssdeep and TLSH similarity hashes.                                                       |
-| `inspect_code_signature`       | Parse Authenticode (PE) and Mach-O code-signature structure, without evaluating trust.                                                 |
-| `scan_embedded_content`        | Identify embedded files and padding by validated magic signatures (offsets only; no extraction).                                       |
-| `generate_sbom`                | Component inventory (CycloneDX / SPDX shapes) from embedded Go, Rust and binary-classifier metadata.                                   |
-| `recover_go_symbols`           | Recover function names from an embedded Go `pclntab`, including stripped binaries.                                                     |
-| `compare_executables`          | Diff two executables: imports, exports, sections, libraries, hardening and section entropy.                                            |
+| Tool                           | Purpose                                                                                                                                                                                     |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `triage_file`                  | One-call read-only triage: type, hashes, structure, entropy, packing, capabilities, signature, strings and suggested next steps.                                                            |
+| `generate_triage_report`       | Render the triage facets as a shareable GitHub-flavored Markdown report.                                                                                                                    |
+| `inspect_executable`           | Unified ELF/PE/Mach-O structure: sections, segments, imports, exports, libraries, symbols, entry point, overlay and per-format detail.                                                      |
+| `inspect_binary_hardening`     | Cross-platform exploit-mitigation indicators for ELF, PE and Mach-O.                                                                                                                        |
+| `measure_binary_entropy`       | File, per-section and per-block Shannon entropy with high/low runs and chi-square.                                                                                                          |
+| `detect_binary_toolchain`      | Compiler, packer, protector, installer, language and bundler indicators, with a packed indicator.                                                                                           |
+| `extract_binary_strings`       | ASCII/UTF-16/UTF-8 strings with offsets, sections and inferred IOC tags (URL, IP, path, registry key, GUID, …).                                                                             |
+| `identify_crypto_constants`    | Well-known cryptographic constant tables (AES, SHA, MD5, CRC32, ChaCha, curves, …).                                                                                                         |
+| `classify_import_capabilities` | Coarse capability classes inferred from the import table, stated as "imports consistent with".                                                                                              |
+| `scan_byte_patterns`           | Search a file for caller-supplied byte, hex-wildcard, text and regex patterns.                                                                                                              |
+| `compute_similarity_hashes`    | imphash, Rich-header hash, symhash, telfhash, ssdeep and TLSH similarity hashes.                                                                                                            |
+| `inspect_code_signature`       | Parse Authenticode (PE) and Mach-O code-signature structure, without evaluating trust.                                                                                                      |
+| `scan_embedded_content`        | Identify embedded files and padding by validated magic signatures (offsets only; no extraction).                                                                                            |
+| `generate_sbom`                | Component inventory (CycloneDX / SPDX shapes) from embedded Go, Rust and binary-classifier metadata.                                                                                        |
+| `recover_go_symbols`           | Recover function names from an embedded Go `pclntab`, including stripped binaries.                                                                                                          |
+| `compare_executables`          | Diff two executables: imports, exports, sections, libraries, hardening and section entropy.                                                                                                 |
+| `compare_binaries`             | Diff any two files byte-for-byte and explain what changed (firmware, calibration dumps, app/driver updates): changed regions, zeroed/0xFF-filled/modified, with before/after value samples. |
 
 ## CLI
 

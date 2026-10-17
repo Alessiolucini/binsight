@@ -143,6 +143,7 @@ export const TOOL_EFFECTS: Readonly<Record<string, ToolEffects>> = {
   triage_file: evidence,
   generate_triage_report: evidence,
   compare_executables: evidence,
+  compare_binaries: evidence,
   inspect_sqlite_database: effects({
     mutatesSession: true,
     writesFilesystem: true,
