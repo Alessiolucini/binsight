@@ -179,6 +179,28 @@ const captureAuthorizedPage = async (
   // arrived while those reads were pending.
   state.events.settleUnexaminedResponseBodies();
   state.events.recordScriptMetadataBudgetExclusions();
+  // Surface the top out-of-scope origins so callers can tell which hosts to
+  // add to `allowed_origins` to recover the missing scripts. The aggregate
+  // `scripts/disallowed_origin` count already lives in `completeness.excluded`;
+  // this limitation names the hosts.
+  const droppedOrigins = [...state.events.droppedScriptOrigins.entries()];
+  if (droppedOrigins.length > 0) {
+    droppedOrigins.sort((left, right) => right[1] - left[1]);
+    const topEntries = droppedOrigins
+      .slice(0, 5)
+      .map(([origin, count]) => `${origin} (${String(count)})`);
+    const totalDropped = droppedOrigins.reduce(
+      (sum, [, count]) => sum + count,
+      0,
+    );
+    const remainder =
+      droppedOrigins.length > 5
+        ? `; +${String(droppedOrigins.length - 5)} further origin(s)`
+        : "";
+    state.limitations.push(
+      `Script metadata was filtered for ${String(totalDropped)} script(s) whose origin is outside allowed_origins. Top origins: ${topEntries.join(", ")}${remainder}. Add them to allowed_origins to retain their scripts.`,
+    );
+  }
   return {
     inspection: normalizedInspection(state, {
       attachedUrl,

@@ -22,6 +22,8 @@ const resolveLocator = (page: Page, locator: ScenarioLocator): Locator => {
       });
     case "css":
       return page.locator(locator.selector);
+    case "text":
+      return page.getByText(locator.value, { exact: locator.exact });
   }
 };
 

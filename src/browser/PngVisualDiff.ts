@@ -101,6 +101,10 @@ const parsePng = (
   artifact: WebScreenshotArtifact,
   field: "before" | "after",
 ): ParsedPng => {
+  if (artifact.data_base64 === undefined)
+    throw new TypeError(
+      `compare_web_screenshots cannot compare "${field}": artifact carries saved_to_path instead of inline data_base64. Re-capture with output_path unset, or decode the on-disk PNG and supply data_base64.`,
+    );
   const bytes = decodeCanonicalBase64(artifact.data_base64);
   if (bytes === undefined || !bytes.subarray(0, 8).equals(PNG_SIGNATURE))
     throw new TypeError("Invalid PNG signature");

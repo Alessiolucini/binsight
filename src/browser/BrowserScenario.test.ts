@@ -275,6 +275,43 @@ describe("browserScenarioSchema", () => {
   });
 });
 
+describe("browserScenarioSchema text locator", () => {
+  it("accepts the text locator kind, defaulting exact to false", () => {
+    const scenario = baseScenario();
+    scenario.actions[1]!.locator = {
+      kind: "text",
+      value: "Air control",
+    } as never;
+    const parsed = browserScenarioSchema.safeParse(scenario);
+    expect(parsed.success).toBe(true);
+    if (!parsed.success) throw new Error("expected parse success");
+    const [, click] = parsed.data.actions;
+    if (!click || !("locator" in click))
+      throw new Error("expected the click action to carry a locator");
+    expect(click.locator).toEqual({
+      kind: "text",
+      value: "Air control",
+      exact: false,
+    });
+  });
+
+  it("accepts the text locator with exact: true", () => {
+    const scenario = baseScenario();
+    scenario.actions[1]!.locator = {
+      kind: "text",
+      value: "Sign in",
+      exact: true,
+    } as never;
+    expect(browserScenarioSchema.safeParse(scenario).success).toBe(true);
+  });
+
+  it("rejects the text locator with empty value", () => {
+    const scenario = baseScenario();
+    scenario.actions[1]!.locator = { kind: "text", value: "" } as never;
+    expect(browserScenarioSchema.safeParse(scenario).success).toBe(false);
+  });
+});
+
 describe("browserScenarioSchema secret declarations", () => {
   it("rejects missing and duplicate secret declarations but accepts redaction-only declarations", () => {
     const missing = baseScenario();

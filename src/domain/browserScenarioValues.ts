@@ -161,6 +161,11 @@ const locatorSchema = z.discriminatedUnion("kind", [
     kind: z.literal("css"),
     selector: z.string().min(1),
   }),
+  z.strictObject({
+    kind: z.literal("text"),
+    value: z.string().min(1),
+    exact: z.boolean().default(false),
+  }),
 ]);
 
 const stepBase = {

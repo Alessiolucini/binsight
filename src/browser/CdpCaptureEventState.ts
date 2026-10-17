@@ -8,6 +8,11 @@ export interface CdpCaptureEventsState {
   readonly allowedOrigins: ReadonlySet<string>;
   readonly scripts: Map<string, CapturedScript>;
   readonly scriptMetadataBudgetOmissionsById: Map<string, true>;
+  /** Count of dropped scripts, keyed by the HTTP(S) origin we filtered them from.
+   * Populated when a `Debugger.scriptParsed` URL has an origin outside
+   * `allowed_origins` so we can surface the top missing origins back to the
+   * caller instead of only an aggregate `disallowed_origin` count. */
+  readonly droppedScriptOrigins: Map<string, number>;
   rejectedScriptMetadataBudgetCount: number;
   rejectedSourceMapMetadataBudgetCount: number;
   readonly scriptMetadataBytesById: Map<string, number>;
