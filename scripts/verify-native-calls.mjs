@@ -262,7 +262,7 @@ const checkHardenedRuntime = async (directory, binary) => {
   assert.equal(traced.process.exit_status, 0);
 };
 
-const directory = await mkdtemp(join(tmpdir(), "rea-native-calls-"));
+const directory = await mkdtemp(join(tmpdir(), "binsight-native-calls-"));
 try {
   const binary = join(directory, "ReaCalls");
   await exec("/usr/bin/xcrun", [

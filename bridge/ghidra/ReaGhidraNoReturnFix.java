@@ -85,7 +85,7 @@ public final class ReaGhidraNoReturnFix extends GhidraScript {
     }
     // No analyzeChanges here: on libpl2.so it adds about 70 s, which pushes startup past the 330 s deadline.
     println(
-        "REA no-return fix: cleared=" + cleared.size() + " sites=" + redone + " refit=" + owners.size());
+        "BinSight no-return fix: cleared=" + cleared.size() + " sites=" + redone + " refit=" + owners.size());
   }
 
   private void enqueueReturning(Function function, Set<Address> cleared, Deque<Address> pending) {

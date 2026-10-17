@@ -446,7 +446,7 @@ it.runIf(!unsupportedHost)(
   },
 );
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-layout-boundary-");
+  const workspace = await createTestWorkspace("binsight-layout-boundary-");
   const root = workspace.root;
   onTestFinished(() => removeTestWorkspace(root));
   const path = join(root, "selected.elf");
@@ -467,7 +467,7 @@ it.runIf(!unsupportedHost)(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-layout-cancel-",
+          prefix: "binsight-layout-cancel-",
         });
         ownedPath = root.path;
         controller.abort();
@@ -661,7 +661,7 @@ it.runIf(!unsupportedHost)(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-layout-late-cancel-",
+          prefix: "binsight-layout-late-cancel-",
         });
         ownedPath = root.path;
         return {
@@ -698,7 +698,7 @@ it.runIf(!unsupportedHost).each(["directory", "missing-interpreter"])(
     if (scenario === "missing-interpreter")
       await writeFile(
         executable,
-        "#!/rea-missing-interpreter-for-boundary-test\n",
+        "#!/binsight-missing-interpreter-for-boundary-test\n",
         { mode: 0o700 },
       );
     const result = await new PwntoolsLayoutProvider({

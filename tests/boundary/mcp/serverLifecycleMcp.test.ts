@@ -43,7 +43,9 @@ const resources: Array<{ close(): Promise<void> }> = [];
 it.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "drains an admitted SQLite inspection before changing the session binding",
   async () => {
-    const workspace = await createTestWorkspace("rea-sqlite-mcp-admission-");
+    const workspace = await createTestWorkspace(
+      "binsight-sqlite-mcp-admission-",
+    );
     const database = createSqliteDatabaseFixture(workspace.root);
     database.close();
     const acquired = createDeferred<void>();
@@ -122,7 +124,9 @@ it.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 it.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "records completed SQLite evidence before delivering a cleanup failure",
   async () => {
-    const workspace = await createTestWorkspace("rea-sqlite-mcp-retention-");
+    const workspace = await createTestWorkspace(
+      "binsight-sqlite-mcp-retention-",
+    );
     const database = createSqliteDatabaseFixture(workspace.root);
     database.close();
     let removalAllowed = false;
@@ -222,7 +226,7 @@ it.each(["handle", "stdin"] as const)(
   "retains failed SQLite cleanup through production stdio shutdown: %s",
   async (shutdown) => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-sqlite-stdio-cleanup-",
+      prefix: "binsight-sqlite-stdio-cleanup-",
     });
     let removalAllowed = false;
     let attempts = 0;
@@ -281,7 +285,7 @@ it.each(["handle", "stdin"] as const)(
       const [reply] = await response;
       expect(JSON.parse(String(reply))).toMatchObject({
         id: 1,
-        result: { serverInfo: { name: "rea" } },
+        result: { serverInfo: { name: "binsight" } },
       });
       if (shutdown === "stdin") {
         stdin.end();

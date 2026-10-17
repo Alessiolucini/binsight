@@ -167,7 +167,7 @@ export class WebRuntimeService {
       );
     return completeProviderEvidence(
       createEvidence(undefined, this.provider.identity(), {
-        predicateType: `rea.${operation.replaceAll("_", "-")}`,
+        predicateType: `binsight.${operation.replaceAll("_", "-")}`,
         operation,
         parameters: jsonObjectSchema.parse(input),
         result,

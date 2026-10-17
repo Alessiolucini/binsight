@@ -16,7 +16,7 @@ describe("MCP doctor help boundary", () => {
           arguments: ["mcp", "doctor", argument],
         });
         expect(result).toMatchObject({ exitCode: 0 });
-        expect(result.stdout).toContain("Usage: rea mcp doctor [options]");
+        expect(result.stdout).toContain("Usage: binsight mcp doctor [options]");
         expect(result.stdout).toContain("--format <toon|json|yaml|md|jsonl>");
         expect(result.stdout).toContain("--full-output");
         // Help returns before the diagnostic session starts, so no report
@@ -38,7 +38,7 @@ describe("MCP doctor help boundary", () => {
       ]) {
         const result = await cli.run({ arguments: arguments_ });
         expect(result).toMatchObject({ exitCode: 0 });
-        expect(result.stdout).toContain("Usage: rea mcp doctor [options]");
+        expect(result.stdout).toContain("Usage: binsight mcp doctor [options]");
         expect(result.stdout).toContain("--help, -h");
         expect(result.stdout).not.toContain("healthy");
       }
@@ -57,7 +57,7 @@ describe("MCP doctor help boundary", () => {
         const result = await cli.run({ arguments: arguments_ });
         expect(result).toMatchObject({ exitCode: 1 });
         expect(result.stdout).toContain("Invalid output format:");
-        expect(result.stdout).not.toContain("Usage: rea mcp doctor");
+        expect(result.stdout).not.toContain("Usage: binsight mcp doctor");
       }
     },
     CLI_INTEGRATION_TIMEOUT_MS,

@@ -42,7 +42,7 @@ afterEach(() => {
 });
 
 it("skips an oversized definition without buffering it beyond the catalog limit", async () => {
-  const root = await createTestTempDirectory("rea-ghidra-ldefs-bound-");
+  const root = await createTestTempDirectory("binsight-ghidra-ldefs-bound-");
   const module = (name: string) =>
     join(root, "Ghidra/Processors", name, "data/languages");
   await mkdir(module("huge"), { recursive: true });
@@ -69,7 +69,7 @@ it("skips an oversized definition without buffering it beyond the catalog limit"
 });
 
 it("keeps a definition at exactly the catalog limit", async () => {
-  const root = await createTestTempDirectory("rea-ghidra-ldefs-limit-");
+  const root = await createTestTempDirectory("binsight-ghidra-ldefs-limit-");
   const languages = join(root, "Ghidra/Processors/edge/data/languages");
   await mkdir(languages, { recursive: true });
   const document = Buffer.from(

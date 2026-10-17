@@ -33,7 +33,7 @@ const createSelectionClient = () => {
 };
 
 it("resolves ESM whitespace specifiers through the public application tool", async () => {
-  const root = await createTestTempDirectory("rea-esm-whitespace-mcp-");
+  const root = await createTestTempDirectory("binsight-esm-whitespace-mcp-");
   const rawSpecifier = "./feature\tname.js";
   const encodedSpecifier = "./feature%09name.js";
   await writeFixtureFiles(root, {
@@ -106,7 +106,7 @@ it("retains missing ASAR native-addon inventory through the public application t
 }, 60_000);
 
 it("advertises exact source selection and retains its scope through summary, Evidence retrieval and invalid-input recovery", async () => {
-  const root = await createTestTempDirectory("rea-js-selected-mcp-");
+  const root = await createTestTempDirectory("binsight-js-selected-mcp-");
   await writeJavaScriptSourceSelectionFixture(root);
   const { client, transport } = createSelectionClient();
   try {
@@ -233,13 +233,15 @@ it("advertises exact source selection and retains its scope through summary, Evi
 }, 60_000);
 
 it("selects nested ASAR paths and distinguishes missing inventoried bytes from invalid paths", async () => {
-  const root = await createTestTempDirectory("rea-js-selected-containers-");
+  const root = await createTestTempDirectory(
+    "binsight-js-selected-containers-",
+  );
   await writeJavaScriptSourceSelectionFixture(root);
   const { client, transport } = createSelectionClient();
   try {
     await client.connect(transport);
     const nestedRoot = await createTestTempDirectory(
-      "rea-js-nested-selection-",
+      "binsight-js-nested-selection-",
     );
     await createPackageWithOptions(root, join(nestedRoot, "nested.asar"), {});
     const nested = await client.callTool({
@@ -271,7 +273,7 @@ it("selects nested ASAR paths and distinguishes missing inventoried bytes from i
       ),
     ).toBe(true);
     const unpacked = join(
-      await createTestTempDirectory("rea-js-unavailable-selection-"),
+      await createTestTempDirectory("binsight-js-unavailable-selection-"),
       "app.asar",
     );
     await createPackageWithOptions(root, unpacked, { unpack: "main.mjs" });

@@ -22,7 +22,9 @@ import { createTestTempDirectory } from "../../../tests/fixtures/temporaryDirect
 it.skipIf(process.platform === "win32")(
   "resolves a literal backslash in a POSIX executable basename through PATH",
   async () => {
-    const root = await createTestTempDirectory("rea-process-posix-basename-");
+    const root = await createTestTempDirectory(
+      "binsight-process-posix-basename-",
+    );
     const bin = join(root, "bin");
     await mkdir(bin);
     const command = "selected\\node";
@@ -41,7 +43,9 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("preserves the caller-selected executable symlink for process invocation", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-process-executable-alias-"));
+  const root = await mkdtemp(
+    join(tmpdir(), "binsight-process-executable-alias-"),
+  );
   try {
     const alias = join(root, "chosen-node");
     await symlink(process.execPath, alias);
@@ -53,7 +57,7 @@ it("preserves the caller-selected executable symlink for process invocation", as
 });
 
 it("resolves a Windows executable through the canonical PATH spelling", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-process-path-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-process-path-"));
   try {
     const selected = join(root, "selected");
     const ambient = join(root, "ambient");
@@ -90,7 +94,7 @@ it("resolves a Windows executable through the canonical PATH spelling", async ()
 });
 
 it("reports a working-directory file as invalid input", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-process-invalid-cwd-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-process-invalid-cwd-"));
   const selectedFile = join(root, "selected-file");
   await writeFile(selectedFile, "not a directory");
   try {
@@ -118,7 +122,7 @@ it("reports a working-directory file as invalid input", async () => {
 
 it("reports an executable directory as invalid input", async () => {
   const root = await mkdtemp(
-    join(tmpdir(), "rea-process-executable-directory-"),
+    join(tmpdir(), "binsight-process-executable-directory-"),
   );
   const directory = join(root, "tool-directory");
   try {
@@ -146,7 +150,9 @@ it("reports an executable directory as invalid input", async () => {
 it.skipIf(process.platform === "win32")(
   "reports a non-executable regular file as invalid input",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-process-non-executable-"));
+    const root = await mkdtemp(
+      join(tmpdir(), "binsight-process-non-executable-"),
+    );
     const selected = join(root, "not-executable");
     try {
       await writeFile(selected, "not executable");

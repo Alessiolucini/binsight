@@ -31,10 +31,10 @@ const results: Readonly<Record<string, unknown>> = {
       version_code: "7",
       min_sdk_version: "24",
       target_sdk_version: "34",
-      package_name: "com.rea.apktool.probe",
+      package_name: "com.binsight.apktool.probe",
     },
     manifest:
-      '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rea.apktool.probe"/>',
+      '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.binsight.apktool.probe"/>',
     strings: [{ name: "app_name", value: "ApktoolProbe" }],
     locale: null,
     locales: ["de"],
@@ -89,7 +89,10 @@ it("advertises exact valid Apktool schemas and records inline evidence through M
   const evidence = parseEvidence(JSON.parse(text));
   expect(evidence.provider.id).toBe("apktool");
   expect(evidence.normalized_result).toMatchObject({
-    metadata: { package_name: "com.rea.apktool.probe", version_name: "1.2.3" },
+    metadata: {
+      package_name: "com.binsight.apktool.probe",
+      version_name: "1.2.3",
+    },
     coverage: "complete",
   });
 });

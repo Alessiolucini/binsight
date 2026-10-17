@@ -23,7 +23,9 @@ if (process.env.REA_VERIFY_GO_COMMAND !== undefined && !isAbsolute(compiler))
   );
 let compilerVersion = null;
 const run = createVerifierRun();
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-go-verifier-" });
+const root = await PrivateRuntimeRoot.create({
+  prefix: "binsight-go-verifier-",
+});
 // Keep Go's directory enumeration below the private root's Windows ownership lease.
 const sourceRoot = join(root.path, "source");
 const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
@@ -83,7 +85,7 @@ try {
     ).stdout.trim();
   } catch (cause) {
     throw new Error(
-      "verify:go:binary requires Go on PATH or absolute REA_VERIFY_GO_COMMAND; Go is only a fixture producer, not a REA runtime dependency.",
+      "verify:go:binary requires Go on PATH or absolute REA_VERIFY_GO_COMMAND; Go is only a fixture producer, not a BinSight runtime dependency.",
       { cause },
     );
   }
@@ -272,7 +274,7 @@ async function prepareFixture() {
   await mkdir(join(sourceRoot, "oracle"));
   await writeFile(
     join(sourceRoot, "go.mod"),
-    "module example.test/rea-go-fixture\n\ngo 1.20\n\nrequire example.test/dependency v1.2.3\nreplace example.test/dependency => ./dependency\n",
+    "module example.test/binsight-go-fixture\n\ngo 1.20\n\nrequire example.test/dependency v1.2.3\nreplace example.test/dependency => ./dependency\n",
   );
   await writeFile(
     join(sourceRoot, "dependency", "go.mod"),
@@ -280,7 +282,7 @@ async function prepareFixture() {
   );
   await writeFile(
     join(sourceRoot, "dependency", "dependency.go"),
-    'package dependency\nfunc Value() string { return "REA fixture" }\n',
+    'package dependency\nfunc Value() string { return "BinSight fixture" }\n',
   );
   await writeFile(
     join(sourceRoot, "main.go"),

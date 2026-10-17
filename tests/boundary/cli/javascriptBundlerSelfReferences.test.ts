@@ -43,7 +43,7 @@ for (const scenario of [
   cliTest(
     `preserves ${scenario.runtime} evidence when a chunk requests its own IDs`,
     async ({ cli }) => {
-      const graph = await analyzeBundle(cli, "rea-bundler-self-", {
+      const graph = await analyzeBundle(cli, "binsight-bundler-self-", {
         "runtime.js": `
           (self.${scenario.runtime} = self.${scenario.runtime} || []).push([
             ${JSON.stringify(scenario.keys)},
@@ -102,7 +102,7 @@ for (const scenario of [
 cliTest(
   "preserves bundle evidence when a module requires its own key",
   async ({ cli }) => {
-    const graph = await analyzeBundle(cli, "rea-bundler-self-require-", {
+    const graph = await analyzeBundle(cli, "binsight-bundler-self-require-", {
       "runtime.js": `
         (self.webpackChunkdemo = self.webpackChunkdemo || []).push([
           [5], {50(e,t,r){r(50); r(51)}, 51(e,t,r){r.r(t)}}

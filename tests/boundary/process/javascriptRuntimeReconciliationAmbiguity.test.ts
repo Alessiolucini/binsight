@@ -41,8 +41,12 @@ afterEach(async () => {
 
 it("keeps byte-identical cross-layer candidates explicitly ambiguous", async () => {
   const application = await applicationFixture();
-  const assets = await createTestTempDirectory("rea-runtime-assets-static-");
-  const runtime = await createTestTempDirectory("rea-runtime-assets-live-");
+  const assets = await createTestTempDirectory(
+    "binsight-runtime-assets-static-",
+  );
+  const runtime = await createTestTempDirectory(
+    "binsight-runtime-assets-live-",
+  );
   temporary.push(application, assets, runtime);
   await Promise.all([
     writeFile(join(assets, "app.js"), SOURCE),
@@ -169,7 +173,9 @@ it("keeps graph omission counts unknown when a runtime section is unavailable", 
 
 it("runs the local verifier from operator-provided paths without emitting source", async () => {
   const fixture = await applicationFixture();
-  const evidenceRoot = await createTestTempDirectory("rea-runtime-evidence-");
+  const evidenceRoot = await createTestTempDirectory(
+    "binsight-runtime-evidence-",
+  );
   const evidencePath = join(evidenceRoot, "runtime-evidence.json");
   temporary.push(fixture, evidenceRoot);
   await writeFile(

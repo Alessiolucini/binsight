@@ -83,7 +83,7 @@ const assertInventorySubjectValidation = async (
 };
 
 it("preserves keyed archive identities and rejects inconsistent inventory carrier subjects", async () => {
-  const directory = await createTestTempDirectory("rea-keyed-mcp-");
+  const directory = await createTestTempDirectory("binsight-keyed-mcp-");
   const path = join(directory, "archive.plist");
   await writeFile(
     path,
@@ -323,7 +323,7 @@ const assertSummaryDelivery = async (
 };
 
 it("keeps complete ZIP output and reads retained inventory views after the source is removed", async () => {
-  const directory = await createTestTempDirectory("rea-artifact-inline-");
+  const directory = await createTestTempDirectory("binsight-artifact-inline-");
   const archive = join(directory, "many.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   const fileCount = 520;
@@ -465,7 +465,7 @@ it("keeps complete ZIP output and reads retained inventory views after the sourc
 });
 
 it("refuses summary delivery without a retained Evidence owner and preserves complete delivery", async () => {
-  const directory = await createTestTempDirectory("rea-inventory-fixed-");
+  const directory = await createTestTempDirectory("binsight-inventory-fixed-");
   const archive = join(directory, "fixture.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("main.js", new TextReader("console.log('fixed');\n"));

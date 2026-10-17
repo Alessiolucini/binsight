@@ -36,7 +36,7 @@ afterEach(async () => {
     await rm(directory, { recursive: true, force: true });
 });
 const workspace = async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-ghidra-seeds-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-ghidra-seeds-"));
   directories.push(directory);
   return directory;
 };
@@ -101,7 +101,7 @@ describe("Ghidra seed commitment", () => {
     const commitment = resolved.value;
     if (commitment === undefined) throw new Error("Expected a commitment");
     expect(commitment).toMatchObject({
-      format: "rea-ghidra-seeds-v1",
+      format: "binsight-ghidra-seeds-v1",
       configured_path: path,
       sha256: createHash("sha256").update(CANONICAL).digest("hex"),
       entries: { function: 2, code: 1, label: 1 },
@@ -166,14 +166,14 @@ describe("Ghidra seed commitment", () => {
 
 describe("Ghidra seed session verification", () => {
   const commitment: GhidraSeedCommitment = {
-    format: "rea-ghidra-seeds-v1",
+    format: "binsight-ghidra-seeds-v1",
     path: "/seeds.tsv",
     configured_path: "/seeds.tsv",
     sha256: "b".repeat(64),
     entries: { function: 2, code: 1, label: 1 },
   };
   const report: GhidraSeedReport = {
-    format: "rea-ghidra-seeds-v1",
+    format: "binsight-ghidra-seeds-v1",
     sha256: "b".repeat(64),
     entries: 4,
     function_created: 1,
@@ -232,7 +232,7 @@ describe("Ghidra seed profile", () => {
     const resolved = await ghidra.resolveAnalysisProfile(pe);
     if (!resolved.ok) throw resolved.error;
     expect(resolved.value.profile?.parameters.analysis_seeds).toMatchObject({
-      format: "rea-ghidra-seeds-v1",
+      format: "binsight-ghidra-seeds-v1",
       entries: { function: 2, code: 1, label: 1 },
     });
   });

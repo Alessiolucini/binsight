@@ -74,7 +74,7 @@ describe("bounded Ghidra PowerPC admission", () => {
   });
 
   it("lets a configured language replace the lane default", async () => {
-    const installDir = await createTestTempDirectory("rea-ghidra-ppc-");
+    const installDir = await createTestTempDirectory("binsight-ghidra-ppc-");
     const languages = join(
       installDir,
       "Ghidra/Processors/PowerPC/data/languages",

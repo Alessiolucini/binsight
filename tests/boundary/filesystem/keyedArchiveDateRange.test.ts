@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "built CLI reports a date the decoder cannot represent as unknown",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-archive-date-");
+    const root = await createTestTempDirectory("binsight-keyed-archive-date-");
     const path = join(root, "archive.plist");
     // plutil writes years past 9999 unsigned, which the decoder rejects.
     const xml = build({

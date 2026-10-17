@@ -16,7 +16,9 @@ export async function verifyGhidraSnapshotLifecycle(
   edited,
   cli,
 ) {
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-snapshot-proof-"));
+  const workspace = await mkdtemp(
+    join(tmpdir(), "binsight-ghidra-snapshot-proof-"),
+  );
   let successfulCalls = 0;
   let rejectedCalls = 0;
   const call = async (name, args = {}) => {

@@ -1,6 +1,6 @@
 # Packet capture summaries
 
-REA summarizes already saved pcap/pcapng files through caller-selected Wireshark
+BinSight summarizes already saved pcap/pcapng files through caller-selected Wireshark
 4.x `tshark` and `capinfos`. Use `inspect_packet_capture` for selected fields,
 filters and decode-as rules; use this family for address, DNS, SNI, protocol-stack
 and URI inventories. It does not acquire traffic or fetch recorded targets.
@@ -12,8 +12,8 @@ export REA_TSHARK_COMMAND=/absolute/path/tshark
 export REA_CAPINFOS_COMMAND=/absolute/path/capinfos
 # Linux only; default /usr/bin/prlimit
 export REA_TSHARK_PRLIMIT_COMMAND=/absolute/path/prlimit
-rea inspect-pcap-client
-rea inspect-pcap-capture /captures/session.pcapng --json
+binsight inspect-pcap-client
+binsight inspect-pcap-capture /captures/session.pcapng --json
 ```
 
 Without explicit tool commands, this family resolves them through PATH and

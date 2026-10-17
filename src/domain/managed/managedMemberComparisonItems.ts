@@ -204,7 +204,7 @@ const methodOnlyItem = (
  * decoded, so no shape round could seek a changed counterpart, or the other
  * inventory has an unpaired (one-sided or ambiguous) same-named member whose
  * signature was not decoded, which may be this member with a changed
- * signature. A decoded signature that names a type REA could not name, while
+ * signature. A decoded signature that names a type BinSight could not name, while
  * the comparison otherwise keys resolved signatures, is compared by raw bytes
  * that name types by build-local row, so it is treated the same way.
  */
@@ -247,14 +247,14 @@ const absenceLimitations = (
     : []),
   ...(unresolved(member, opposite.unpaired.resolved)
     ? [
-        `signature-not-resolved: The member's signature names a type REA could not name, so it was compared by raw bytes, which name types by build-local metadata row; a counterpart whose referenced type moved rows could not be found.`,
+        `signature-not-resolved: The member's signature names a type BinSight could not name, so it was compared by raw bytes, which name types by build-local metadata row; a counterpart whose referenced type moved rows could not be found.`,
       ]
     : []),
   ...(member.signature.parse_status === "decoded" &&
   !unresolved(member, opposite.unpaired.resolved) &&
   opposite.unpaired.unresolved[opposite.opposite].has(identity)
     ? [
-        `counterpart-signature-not-resolved: The ${opposite.opposite} ${opposite.inventory} inventory has an unpaired member with the same declared type and name whose signature names a type REA could not name, so it may be this member.`,
+        `counterpart-signature-not-resolved: The ${opposite.opposite} ${opposite.inventory} inventory has an unpaired member with the same declared type and name whose signature names a type BinSight could not name, so it may be this member.`,
       ]
     : []),
 ];
@@ -273,7 +273,7 @@ const pairedSignatureLimitations = (
 ): string[] =>
   unresolved(left, examined) || unresolved(right, examined)
     ? [
-        "signature-not-resolved: At least one signature names a type REA could not resolve; equal build-local row bytes do not establish equivalent signature types.",
+        "signature-not-resolved: At least one signature names a type BinSight could not resolve; equal build-local row bytes do not establish equivalent signature types.",
       ]
     : [];
 
@@ -403,14 +403,14 @@ const ambiguityLimitation = (
   identityUnavailable: boolean,
 ): string =>
   identityUnavailable
-    ? "declaring-type-name-not-resolved: Declared type identity remains unresolved; REA did not guess a counterpart from display names, signatures or CIL."
+    ? "declaring-type-name-not-resolved: Declared type identity remains unresolved; BinSight did not guess a counterpart from display names, signatures or CIL."
     : basis === "exact-signature"
-      ? `Multiple managed ${members} share the same signature; REA did not guess declared ownership or a token remap.`
+      ? `Multiple managed ${members} share the same signature; BinSight did not guess declared ownership or a token remap.`
       : basis === "exact-il-signature"
-        ? "Multiple managed methods share the same CIL and signature; REA did not guess a token remap."
+        ? "Multiple managed methods share the same CIL and signature; BinSight did not guess a token remap."
         : members === "methods"
-          ? "Multiple managed methods share the same structural shape; REA did not guess a token remap."
-          : "Multiple managed fields share the same signature; REA did not guess a token remap.";
+          ? "Multiple managed methods share the same structural shape; BinSight did not guess a token remap."
+          : "Multiple managed fields share the same signature; BinSight did not guess a token remap.";
 
 export const buildMethodItems = (
   matches: ManagedMethodMatches,

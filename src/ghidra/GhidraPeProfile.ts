@@ -108,6 +108,6 @@ export const ghidraPePdbLimitations = (
     [pdb.file, pdb.guid, pdb.age].some((value) => value !== null)
       ? " Reported and declared PDB observations are retained separately; equivalence is not established."
       : "";
-  const declared = `The PE CodeView record references PDB ${locator} (${identity}); ${state}.${comparison} Original PDB names and types may be missing. Use list_procedures and address-based analysis to inspect recovered functions. REA does not admit a caller-selected PDB companion.`;
+  const declared = `The PE CodeView record references PDB ${locator} (${identity}); ${state}.${comparison} Original PDB names and types may be missing. Use list_procedures and address-based analysis to inspect recovered functions. BinSight does not admit a caller-selected PDB companion.`;
   return pdb === undefined ? [declared] : [...reported, declared];
 };

@@ -56,8 +56,8 @@ export const registerFunctionComparisonTool = (
           if (
             leftEvidence.operation !== "analyze_function" ||
             rightEvidence.operation !== "analyze_function" ||
-            leftEvidence.predicate_type !== "rea.analysis" ||
-            rightEvidence.predicate_type !== "rea.analysis"
+            leftEvidence.predicate_type !== "binsight.analysis" ||
+            rightEvidence.predicate_type !== "binsight.analysis"
           )
             return server.delivery.toCallToolResult(
               err(
@@ -87,7 +87,7 @@ export const registerFunctionComparisonTool = (
             undefined,
             FUNCTION_COMPARISON_PROVIDER,
             {
-              predicateType: "rea.function-comparison",
+              predicateType: "binsight.function-comparison",
               operation: contract.name,
               parameters: {
                 left_evidence_id: leftEvidence.evidence_id,

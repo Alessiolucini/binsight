@@ -10,7 +10,7 @@ it.skipIf(process.platform === "win32")(
   "does not classify a released shared lease directory as a session leak",
   async () => {
     const parent = await createLeaseWorkspace();
-    const directory = join(parent, "rea-hopper-501");
+    const directory = join(parent, "binsight-hopper-501");
     const targetPath = join(parent, "target");
     await writeFile(targetPath, "source-owned lease target");
     const before = await snapshotHopperRuntime(parent, directory);
@@ -33,7 +33,7 @@ it.skipIf(process.platform === "win32")(
   "retains an unreleased real target-lease socket in cleanup observations",
   async () => {
     const parent = await createLeaseWorkspace();
-    const directory = join(parent, "rea-hopper-501");
+    const directory = join(parent, "binsight-hopper-501");
     const targetPath = join(parent, "target");
     await writeFile(targetPath, "source-owned lease target");
     const acquired = await acquireHopperTargetLease({
@@ -57,14 +57,16 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("reports retained sessions belonging to observed MCP processes", async () => {
-  const parent = await createTestTempDirectory("rea-cleanup-retained-session-");
-  const directory = join(parent, "rea-hopper-501");
-  const previous = join(parent, "rea-existing-session");
+  const parent = await createTestTempDirectory(
+    "binsight-cleanup-retained-session-",
+  );
+  const directory = join(parent, "binsight-hopper-501");
+  const previous = join(parent, "binsight-existing-session");
   await mkdir(previous);
   const before = await snapshotHopperRuntime(parent, directory);
-  const retained = join(parent, "rea-retained-session");
-  const unrelated = join(parent, "rea-unrelated-session");
-  const unknown = join(parent, "rea-no-ownership-record");
+  const retained = join(parent, "binsight-retained-session");
+  const unrelated = join(parent, "binsight-unrelated-session");
+  const unknown = join(parent, "binsight-no-ownership-record");
   for (const path of [retained, unrelated, unknown]) await mkdir(path);
   await writeFile(join(retained, "bootstrap.py"), "source-owned fixture");
   await writeFile(
@@ -85,8 +87,10 @@ it("reports retained sessions belonging to observed MCP processes", async () => 
 });
 
 it("reports an unexpected file at the shared lease root", async () => {
-  const parent = await createTestTempDirectory("rea-cleanup-invalid-lease-");
-  const directory = join(parent, "rea-hopper-501");
+  const parent = await createTestTempDirectory(
+    "binsight-cleanup-invalid-lease-",
+  );
+  const directory = join(parent, "binsight-hopper-501");
   await writeFile(directory, "unexpected lease root file");
 
   expect(await snapshotHopperRuntime(parent, directory)).toEqual(

@@ -12,7 +12,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const execute = promisify(execFile);
 
 it("reports partial JavaScript request targets through the public CLI", async () => {
-  const root = await createTestTempDirectory("rea-js-partial-endpoints-cli-");
+  const root = await createTestTempDirectory(
+    "binsight-js-partial-endpoints-cli-",
+  );
   await writeFile(
     join(root, "main.js"),
     "fetch(target); fetch('target'); fetch(`https://${hosts['a@b']}/items/${id}`); function other(target) { fetch(target); }",

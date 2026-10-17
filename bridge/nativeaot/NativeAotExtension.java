@@ -39,7 +39,7 @@ public final class NativeAotExtension {
         if (!program.getLanguageID().getIdAsString().startsWith("x86:LE:64"))
             return failure("unsupported", "NativeAOT adapter supports x86-64 only.");
         MessageLog log = new MessageLog();
-        int transaction = program.startTransaction("REA NativeAOT metadata recovery");
+        int transaction = program.startTransaction("BinSight NativeAOT metadata recovery");
         boolean commit = false;
         String stage = "directory-discovery";
         try {
@@ -68,7 +68,7 @@ public final class NativeAotExtension {
             new MethodTableCrawler(manager, program, scan).analyze(monitor, log);
             stage = "calling-convention-preservation";
             NativeAotMethodConventions.restore(program, manager, conventions, monitor);
-            log.appendMsg("REA", "Preserved pre-recovery calling conventions; new functions use the loaded compiler specification default. Original method signatures remain unknown.");
+            log.appendMsg("BinSight", "Preserved pre-recovery calling conventions; new functions use the loaded compiler specification default. Original method signatures remain unknown.");
             if (manager.getObjectMT() == null || manager.getMethodTableCount() == 0)
                 throw new UnsupportedOperationException("No unambiguous System.Object method table was recovered at header " + located.address());
             stage = "frozen-object-annotation";

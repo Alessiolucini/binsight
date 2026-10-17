@@ -307,7 +307,7 @@ const artifactDelivery = (evidence: Evidence): readonly Evidence[] => {
   return records;
 };
 
-/** Parse one completed transcript call and authenticate any successful REA Evidence. */
+/** Parse one completed transcript call and authenticate any successful BinSight Evidence. */
 export const parseCodexToolCall = (
   event: unknown,
 ): ParsedCodexToolCall | undefined => {
@@ -340,7 +340,7 @@ export const parseCodexToolCall = (
     evidence: [],
   };
   if (
-    parsed.server?.toLowerCase() !== "rea" ||
+    parsed.server?.toLowerCase() !== "binsight" ||
     status === "failed" ||
     (item.error !== undefined && item.error !== null)
   )

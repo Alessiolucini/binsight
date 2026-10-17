@@ -15,7 +15,7 @@ export interface TestMcp {
 }
 
 const DEFAULT_CLIENT_IDENTITY: McpClientIdentity = {
-  name: "rea-vitest",
+  name: "binsight-vitest",
   version: "1.0.0",
 };
 

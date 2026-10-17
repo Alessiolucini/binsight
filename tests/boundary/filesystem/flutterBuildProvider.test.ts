@@ -646,7 +646,7 @@ it("retains failed snapshot cleanup and retries it on close", async () => {
   expect(result).toMatchObject({
     code: "cleanup_incomplete",
     details: {
-      resources: [expect.stringContaining("rea-flutter-")],
+      resources: [expect.stringContaining("binsight-flutter-")],
       partial_observation: {
         operation: "identify_flutter_build",
         subject: { local_path: apk },
@@ -872,7 +872,7 @@ it("does not let two VM records replace a missing isolate header hash", async ()
 it.each(["identify_flutter_build", "inspect_dart_aot"] as const)(
   "%s preserves an oversized APK refusal as a resource constraint",
   async (operation) => {
-    const root = await createTestTempDirectory("rea-flutter-size-");
+    const root = await createTestTempDirectory("binsight-flutter-size-");
     const path = join(root, "oversized.apk");
     const file = await open(path, "wx");
     try {
@@ -993,7 +993,7 @@ it.each([undefined, "arm64-v8a", "x86_64", "mips"])(
 it.each(["identify_flutter_build", "inspect_dart_aot"] as const)(
   "%s preserves a real ZIP metadata budget refusal",
   async (operation) => {
-    const root = await createTestTempDirectory("rea-flutter-metadata-");
+    const root = await createTestTempDirectory("binsight-flutter-metadata-");
     const path = join(root, "large-directory.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter(), {
       useWebWorkers: false,
@@ -1069,12 +1069,12 @@ it.each(["identify_flutter_build", "inspect_dart_aot"] as const)(
     expect(cleanupFailure).toBeInstanceOf(ProviderCleanupError);
     expect(cleanupFailure).toMatchObject({
       operation: "close_flutter_build",
-      cleanupResources: [expect.stringContaining("rea-flutter-")],
+      cleanupResources: [expect.stringContaining("binsight-flutter-")],
       diagnostics: {
         reason: expect.stringContaining("file handle close refused"),
         retained_roots: [
           {
-            path: expect.stringContaining("rea-flutter-"),
+            path: expect.stringContaining("binsight-flutter-"),
             failures: [
               { message: expect.stringContaining("file handle close refused") },
             ],
@@ -1210,7 +1210,7 @@ it.each(["identify_flutter_build", "inspect_dart_aot"] as const)(
 it.each(["identify_flutter_build", "inspect_dart_aot"] as const)(
   "%s uses the selected path in malformed-APK diagnostics",
   async (operation) => {
-    const root = await createTestTempDirectory("rea-flutter-malformed-");
+    const root = await createTestTempDirectory("binsight-flutter-malformed-");
     const path = join(root, "selected.apk");
     await writeFile(path, "not a ZIP");
     const provider = new FlutterBuildProvider();
@@ -1253,7 +1253,7 @@ const expectSelectionIssue = async (
 };
 
 it("names a missing or non-file APK selection instead of blaming package bytes", async () => {
-  const root = await createTestTempDirectory("rea-flutter-selection-");
+  const root = await createTestTempDirectory("binsight-flutter-selection-");
   const provider = new FlutterBuildProvider();
   onTestFinished(() => provider.close());
   await expectSelectionIssue(
@@ -1272,7 +1272,7 @@ it("names a missing or non-file APK selection instead of blaming package bytes",
 it.skipIf(process.platform === "win32")(
   "names an unopenable Unix socket APK selection as a non-file",
   async () => {
-    const root = await createTestTempDirectory("rea-flutter-socket-");
+    const root = await createTestTempDirectory("binsight-flutter-socket-");
     const socketPath = join(root, "s.sock");
     const socket = createServer();
     await new Promise<void>((resolve) => socket.listen(socketPath, resolve));

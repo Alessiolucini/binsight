@@ -703,14 +703,14 @@ describe("passive V8 Inspector evidence", () => {
 });
 
 const runtimeFixture = async () => {
-  const root = await createTestTempDirectory("rea-v8-runtime-");
+  const root = await createTestTempDirectory("binsight-v8-runtime-");
   const entry = join(root, "entry.js");
   await writeFile(entry, "export const value = 1;\n");
   return { root, entry };
 };
 
 const temporaryFile = async (name: string): Promise<string> => {
-  const root = await createTestTempDirectory("rea-v8-outside-");
+  const root = await createTestTempDirectory("binsight-v8-outside-");
   const path = join(root, name);
   await writeFile(path, "export {};\n");
   return path;

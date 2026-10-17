@@ -23,7 +23,7 @@ describe.each([
   it.each(["[]", "null", "5", '"x"', "true"])(
     "classifies a readable %s root as invalid content, not an I/O failure",
     async (document) => {
-      const root = await createTestTempDirectory("rea-snapshot-root-");
+      const root = await createTestTempDirectory("binsight-snapshot-root-");
       const path = join(root, "snapshot.json");
       const encoded = `${" ".repeat(paddingBytes)}${document}`;
       await writeFile(path, encoded);
@@ -44,7 +44,7 @@ describe.each([
   );
 
   it("retains syntax and snapshot-member validation and loads valid objects", async () => {
-    const root = await createTestTempDirectory("rea-snapshot-validation-");
+    const root = await createTestTempDirectory("binsight-snapshot-validation-");
     const path = join(root, "snapshot.json");
     const prefix = " ".repeat(paddingBytes);
     await writeFile(path, `${prefix}[`);
@@ -73,7 +73,7 @@ describe.each([
 });
 
 it("keeps file-selection failures distinct from invalid snapshot contents", async () => {
-  const root = await createTestTempDirectory("rea-snapshot-selection-");
+  const root = await createTestTempDirectory("binsight-snapshot-selection-");
   for (const [path, reason] of [
     [join(root, "missing.json"), "missing"],
     [root, "not-file"],

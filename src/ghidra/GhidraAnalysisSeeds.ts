@@ -16,7 +16,7 @@ import {
 import { err, ok, type Result } from "../domain/result.js";
 
 /** Seed file format admitted by this adapter. */
-export const GHIDRA_SEED_FORMAT = "rea-ghidra-seeds-v1";
+export const GHIDRA_SEED_FORMAT = "binsight-ghidra-seeds-v1";
 export const MAX_GHIDRA_SEED_BYTES = 32 * 1024 * 1024;
 export const MAX_GHIDRA_SEED_ENTRIES = 1_000_000;
 const MAX_SEED_NAME_LENGTH = 2000;
@@ -58,7 +58,7 @@ interface SeedEntry {
 }
 
 const seedLineError = (line: number, constraint: string) =>
-  new ConfigurationError("Invalid REA environment configuration", {
+  new ConfigurationError("Invalid BinSight environment configuration", {
     settings: [
       {
         setting: "REA_GHIDRA_SEED_FILE",

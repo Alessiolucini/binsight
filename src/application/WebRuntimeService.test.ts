@@ -72,7 +72,7 @@ it("converts raw execution retained by provider cleanup failure into partial Evi
   };
   const execution = webExecutionFixture(args.target_id, args.observation_ms);
   const failure = new ProviderCleanupError(
-    "rea-cdp-browser",
+    "binsight-cdp-browser",
     ["selected-page"],
     { reason: "target detach failed" },
     { operation: "observe_web_execution", partialObservation: execution },

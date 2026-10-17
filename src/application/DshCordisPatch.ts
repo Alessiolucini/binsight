@@ -8,7 +8,7 @@ import { err, ok, type Result } from "../domain/result.js";
 import type { ClientConfigurationDocument } from "./ClientConfigurationDocument.js";
 import { CordisExpression, DshCordisYaml } from "./DshCordisYaml.js";
 
-export const DSH_ENTRY_ID = "rea-mcp";
+export const DSH_ENTRY_ID = "binsight-mcp";
 export const DSH_CLIENT_PACKAGE = "@deepseek-ai/dsh-mcp-client";
 const LAUNCHER_KEYS = new Set(["serverName", "transport", "command", "args"]);
 const SELECTOR_KEYS = new Set(["id", "name"]);
@@ -117,7 +117,7 @@ export class DshCordisDocument {
               (op) => op.unknownApplicability && op.ownedRows.length > 0,
             )
           ? new ConfigurationError(
-              "Cordis REA insertion targets a group with unknown activity; use a direct insertion before setup",
+              "Cordis BinSight insertion targets a group with unknown activity; use a direct insertion before setup",
             )
           : this.#unknownSelector
             ? new ConfigurationError(
@@ -204,7 +204,7 @@ export class DshCordisDocument {
       );
     if (config !== undefined && !isRecord(config))
       return err(
-        new ConfigurationError("Cordis REA config must be a mapping", {
+        new ConfigurationError("Cordis BinSight config must be a mapping", {
           settings: [
             {
               setting: "config",
@@ -308,7 +308,7 @@ export class DshCordisDocument {
         return [this.#entry(desired, invalidated)] as typeof inserted.items;
       });
       if (inserted.items.length === 0) copy.delete("insert");
-      // An emptied operation keeps caller fields unless it would patch REA's row.
+      // An emptied operation keeps caller fields unless it would patch BinSight's row.
       const kept =
         inserted.items.length > 0 ||
         (this.#id(op.map) !== DSH_ENTRY_ID &&
@@ -402,7 +402,7 @@ export const parseDshCordisDocument = (
   const source = new DshCordisDocument(text);
   return {
     document: { cordis: source },
-    servers: source.config === undefined ? {} : { rea: source.config },
+    servers: source.config === undefined ? {} : { binsight: source.config },
     serversPath: [],
     dialect: "dsh",
     legacyServers: {},
@@ -425,9 +425,9 @@ export const dshClientRegistrationEntry = (
   command: readonly string[],
   environment: Readonly<Record<string, string>> = {},
 ): Record<string, unknown> => {
-  const [executable = "rea", ...args] = command;
+  const [executable = "binsight", ...args] = command;
   return {
-    serverName: "rea",
+    serverName: "binsight",
     transport: "stdio",
     command: executable,
     args,

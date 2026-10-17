@@ -31,7 +31,7 @@ describe("HopperClient restart", () => {
     await expect(client.start()).resolves.toEqual({
       ok: true,
       value: {
-        name: "REA Hopper bridge",
+        name: "BinSight Hopper bridge",
         version: "1.0.0",
         processId: expect.any(Number),
       },
@@ -47,7 +47,7 @@ describe("HopperClient restart", () => {
     await expect(restarting).resolves.toEqual({
       ok: true,
       value: {
-        name: "REA Hopper bridge",
+        name: "BinSight Hopper bridge",
         version: "1.0.0",
         processId: expect.any(Number),
       },

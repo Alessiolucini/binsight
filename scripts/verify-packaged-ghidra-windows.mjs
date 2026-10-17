@@ -47,7 +47,9 @@ const [packageRootArgument, targetArgument, reportArgument] =
 // Windows locks the loaded package-owned addon until the verifier exits.
 // Keep installation cleanup in a parent that never loads that addon.
 if (!internalWorkspace) {
-  const ownedWorkspace = await mkdtemp(join(tmpdir(), "rea-packaged-ghidra-"));
+  const ownedWorkspace = await mkdtemp(
+    join(tmpdir(), "binsight-packaged-ghidra-"),
+  );
   let result;
   try {
     result = await exec(
@@ -116,7 +118,7 @@ if (packageRootArgument === undefined) {
       ],
       { timeout: 120_000, maxBuffer: 8 * 1024 * 1024 },
     );
-    packageRoot = join(prefix, "node_modules", "rea-agents");
+    packageRoot = join(prefix, "node_modules", "binsight");
   } catch (cause) {
     throw new Error("Packaged Windows verifier installation failed.", {
       cause,
@@ -217,8 +219,8 @@ const assertCleanup = async () => {
   const entries = await readdir(runtimeParent);
   report.runtimeResidualCount = entries.length;
   report.runtimeResidualKinds = entries.map((name) =>
-    name.startsWith("rea-")
-      ? "rea-runtime"
+    name.startsWith("binsight-")
+      ? "binsight-runtime"
       : name.startsWith("hsperfdata_")
         ? "jvm-performance-data"
         : "other",
@@ -268,7 +270,7 @@ try {
     stderr: "pipe",
   });
   const client = new Client({
-    name: "rea-packaged-windows-ghidra",
+    name: "binsight-packaged-windows-ghidra",
     version: "1.0.0",
   });
   const call = async (name, arguments_) => {
@@ -367,7 +369,7 @@ try {
     );
     await call("resolve_containing_procedure", { address: procedure.address });
     await call("search_procedures", { pattern: procedure.value });
-    await call("search_strings", { pattern: "rea" });
+    await call("search_strings", { pattern: "binsight" });
     report.byteSearch = await verifyWindowsGhidraByteSearch({
       invoke: call,
       sourceBytes,
@@ -414,8 +416,8 @@ try {
     await call("resolve_native_call_targets", { address: procedure.address });
     // Explicit caller-selected targets need not contain our fixture instructions.
     const controlledTargets = [
-      "rea-ghidra-windows.exe",
-      "rea-ghidra-windows-x86.exe",
+      "binsight-ghidra-windows.exe",
+      "binsight-ghidra-windows-x86.exe",
     ].map((name) => resolve("build", "fixtures", name));
     if (controlledTargets.includes(target))
       report.compactReferences = await verifyGhidraCompactReferences(

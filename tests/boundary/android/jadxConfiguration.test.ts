@@ -28,7 +28,7 @@ const resolveConfiguration = async (
 };
 
 it("rejects malformed or unrelated engine archives with JAR-specific recovery", async () => {
-  const root = await createTestTempDirectory("rea-jadx-invalid-jar-");
+  const root = await createTestTempDirectory("binsight-jadx-invalid-jar-");
   const javaHome = await createFakeJdk(root);
   const jar = join(root, "engine.jar");
   for (const malformed of [true, false]) {
@@ -52,7 +52,7 @@ it("rejects malformed or unrelated engine archives with JAR-specific recovery", 
 });
 
 it("rejects an explicit JAVA_HOME without an executable java binary", async () => {
-  const root = await createTestTempDirectory("rea-jadx-config-");
+  const root = await createTestTempDirectory("binsight-jadx-config-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = join(root, "missing-jdk");
   await writeJadxJarInventory(jar);
@@ -69,7 +69,7 @@ it("rejects an explicit JAVA_HOME without an executable java binary", async () =
 });
 
 it("accepts a full JDK and canonicalizes the selected JAR", async () => {
-  const root = await createTestTempDirectory("rea-jadx-config-");
+  const root = await createTestTempDirectory("binsight-jadx-config-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -87,7 +87,9 @@ it("accepts a full JDK and canonicalizes the selected JAR", async () => {
 });
 
 it("admits engine classes past repeated ZIP resource filenames", async () => {
-  const root = await createTestTempDirectory("rea-jadx-duplicate-resource-");
+  const root = await createTestTempDirectory(
+    "binsight-jadx-duplicate-resource-",
+  );
   const jar = join(root, "engine.jar");
   const javaHome = await createFakeJdk(root);
   await writeOrderedZip(jar, [
@@ -121,7 +123,7 @@ it("admits engine classes past repeated ZIP resource filenames", async () => {
 });
 
 it("configures heap and visible processors independently without forcing either", async () => {
-  const root = await createTestTempDirectory("rea-jadx-config-");
+  const root = await createTestTempDirectory("binsight-jadx-config-");
   const jar = join(root, "engine.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -169,7 +171,7 @@ it("configures heap and visible processors independently without forcing either"
 });
 
 it("distinguishes a runnable JRE from a missing Java executable", async () => {
-  const root = await createTestTempDirectory("rea-jadx-runtime-");
+  const root = await createTestTempDirectory("binsight-jadx-runtime-");
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
   const jreHome = await createFakeJdk(root, false);
@@ -209,7 +211,7 @@ it("distinguishes a runnable JRE from a missing Java executable", async () => {
 });
 
 it("preserves exact Java probe output and marks max-buffer capture as truncated", async () => {
-  const root = await createTestTempDirectory("rea-jadx-output-");
+  const root = await createTestTempDirectory("binsight-jadx-output-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = join(root, "fake-jdk");
   const bin = join(javaHome, "bin");
@@ -257,7 +259,7 @@ it("preserves exact Java probe output and marks max-buffer capture as truncated"
 });
 
 it("distinguishes an unreported Java version from an unsupported old version", async () => {
-  const root = await createTestTempDirectory("rea-jadx-version-listing-");
+  const root = await createTestTempDirectory("binsight-jadx-version-listing-");
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
 
@@ -299,7 +301,7 @@ it("distinguishes an unreported Java version from an unsupported old version", a
 });
 
 it("cancels an in-flight Java readiness probe", async () => {
-  const root = await createTestTempDirectory("rea-jadx-cancel-");
+  const root = await createTestTempDirectory("binsight-jadx-cancel-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const { javaHome, marker } = await createHangingJdk(root);
   await writeJadxJarInventory(jar);
@@ -328,7 +330,7 @@ it("cancels an in-flight Java readiness probe", async () => {
 });
 
 it("reports a killed Java probe as unresolved instead of missing runtime", async () => {
-  const root = await createTestTempDirectory("rea-jadx-timeout-");
+  const root = await createTestTempDirectory("binsight-jadx-timeout-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const { javaHome, java } = await createHangingJdk(root);
   await writeJadxJarInventory(jar);
@@ -389,7 +391,7 @@ it("tags unavailable diagnostics with the boundary failure kind", async () => {
 });
 
 it("reports the effective operation deadline and rejects unusable values", async () => {
-  const root = await createTestTempDirectory("rea-jadx-deadline-");
+  const root = await createTestTempDirectory("binsight-jadx-deadline-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);

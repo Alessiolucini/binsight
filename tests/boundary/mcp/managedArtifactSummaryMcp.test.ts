@@ -31,7 +31,7 @@ const createHarness = async () => {
 };
 
 it("returns a first-call overview and pages the unchanged source after its file disappears", async () => {
-  const directory = await createTestTempDirectory("rea-managed-summary-");
+  const directory = await createTestTempDirectory("binsight-managed-summary-");
   const path = join(directory, "fixture.dll");
   await writeFile(
     path,
@@ -145,7 +145,7 @@ it("returns a first-call overview and pages the unchanged source after its file 
 
 it("keeps malformed metadata, empty returned rows and historical null subjects explicit", async () => {
   const directory = await createTestTempDirectory(
-    "rea-managed-unavailable-view-",
+    "binsight-managed-unavailable-view-",
   );
   const path = join(directory, "malformed.dll");
   await writeFile(
@@ -220,7 +220,9 @@ it("keeps malformed metadata, empty returned rows and historical null subjects e
 }, 30000);
 
 it("refuses selected delivery before file access when the server cannot retain Evidence", async () => {
-  const directory = await createTestTempDirectory("rea-managed-fixed-view-");
+  const directory = await createTestTempDirectory(
+    "binsight-managed-fixed-view-",
+  );
   const path = join(directory, "fixture.dll");
   await writeFile(path, buildManagedPeFixture());
   const analysis = createTestBinarySession(() => {

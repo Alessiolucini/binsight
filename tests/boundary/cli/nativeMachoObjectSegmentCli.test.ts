@@ -16,7 +16,9 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "reports an object file's unnamed segment by its observed empty name",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-object-segment-");
+        const directory = await createTestTempDirectory(
+          "binsight-object-segment-",
+        );
         const source = join(directory, "qa.c");
         const object = join(directory, "qa.o");
         await writeFile(source, "int qa(void) { return 7; }\n");

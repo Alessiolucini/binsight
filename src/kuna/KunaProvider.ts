@@ -39,7 +39,7 @@ import { KunaRunSlots } from "./KunaRunSlots.js";
 import { KunaSessionClient } from "./KunaSessionClient.js";
 import { kunaUnavailable } from "./KunaUnavailable.js";
 
-/** Architectures REA verified Kuna on: x86-64 and AArch64 ELF and Mach-O, plus ARM Thumb. */
+/** Architectures BinSight verified Kuna on: x86-64 and AArch64 ELF and Mach-O, plus ARM Thumb. */
 const VERIFIED_ARCHITECTURES: ReadonlySet<string> = new Set([
   "x86_64",
   "arm64",
@@ -149,15 +149,15 @@ export class KunaProvider implements AnalysisProviderCandidate {
         code: "target_format_unsupported",
         reason:
           target.format === "mach-o-universal"
-            ? "REA's Kuna provider has no verified universal Mach-O slice selection yet; open a thin slice or use another provider."
-            : `REA verified the Kuna provider on ELF and thin Mach-O images; ${target.format} is not admitted yet.`,
+            ? "BinSight's Kuna provider has no verified universal Mach-O slice selection yet; open a thin slice or use another provider."
+            : `BinSight verified the Kuna provider on ELF and thin Mach-O images; ${target.format} is not admitted yet.`,
         diagnostics,
       };
     if (!VERIFIED_ARCHITECTURES.has(target.architecture))
       return {
         status: "unsupported",
         code: "architecture_unsupported",
-        reason: `REA verified the Kuna provider on x86-64, AArch64 and ARM; ${target.architecture} is not admitted yet.`,
+        reason: `BinSight verified the Kuna provider on x86-64, AArch64 and ARM; ${target.architecture} is not admitted yet.`,
         diagnostics: { ...diagnostics, architecture: target.architecture },
       };
     return { status: "supported", code: null, reason: null, diagnostics };

@@ -12,7 +12,7 @@ export const JEB_TOOL_CONTRACTS = [
     name: "inspect_jeb_client",
     ...toolContractMetadata("inspect_jeb_client"),
     description:
-      "Inspect the running JEB client serving MCP: engine version, GUI or headless mode, and startup time. Does not open a target. Requires a caller-started JEB client reachable at REA_JEB_MCP_URL (default http://127.0.0.1:8425/mcp); REA never installs or launches JEB.",
+      "Inspect the running JEB client serving MCP: engine version, GUI or headless mode, and startup time. Does not open a target. Requires a caller-started JEB client reachable at REA_JEB_MCP_URL (default http://127.0.0.1:8425/mcp); BinSight never installs or launches JEB.",
     kind: "jeb-provider",
     inputSchema: jebInputSchemas.inspect_jeb_client,
     outputSchema: evidenceResultOf(jebResultSchemas.inspect_jeb_client),
@@ -22,7 +22,7 @@ export const JEB_TOOL_CONTRACTS = [
     name: "open_jeb_project",
     ...toolContractMetadata("open_jeb_project"),
     description:
-      "Open or create a JEB project from an artifact file or existing .jdb2 database on the engine host. Returns the project's input-file digests and top-level units. The engine analyzes the target itself; REA does not read the file or execute it. Fails when a project is already open.",
+      "Open or create a JEB project from an artifact file or existing .jdb2 database on the engine host. Returns the project's input-file digests and top-level units. The engine analyzes the target itself; BinSight does not read the file or execute it. Fails when a project is already open.",
     kind: "jeb-provider",
     inputSchema: jebInputSchemas.open_jeb_project,
     outputSchema: evidenceResultOf(jebResultSchemas.open_jeb_project),

@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 const cases = ["unsafe-integer", "integral-real"] as const;
 const fixture = async (kind: (typeof cases)[number]) => {
-  const root = await createTestTempDirectory("rea-integer-scalar-");
+  const root = await createTestTempDirectory("binsight-integer-scalar-");
   const xml = build({
     $archiver: "NSKeyedArchiver",
     $version: 100000,

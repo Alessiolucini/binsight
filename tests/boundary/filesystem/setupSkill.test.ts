@@ -47,7 +47,9 @@ const expectPermissionMode = async (
 
 describe("skill recovery backup selection", () => {
   it("advertises a current recovery snapshot when the first backup is historical", async () => {
-    const home = await createTestTempDirectory("rea-skill-historical-backup-");
+    const home = await createTestTempDirectory(
+      "binsight-skill-historical-backup-",
+    );
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Missing shared skill root");
     const manifest = join(destination.path, "SKILL.md");
@@ -55,7 +57,7 @@ describe("skill recovery backup selection", () => {
     const oldSnapshot = "historical instructions V0\n";
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, current);
-    await writeFile(`${manifest}.rea.backup`, oldSnapshot);
+    await writeFile(`${manifest}.binsight.backup`, oldSnapshot);
     let manifestWrites = 0;
     const operations: SkillInstallFileOperations = {
       mkdir: async (path) =>
@@ -85,22 +87,24 @@ describe("skill recovery backup selection", () => {
       { path: manifest, reason: "injected rollback failure" },
     ]);
     const recovery = result.error.recoveryBackupPaths.find((path) =>
-      path.startsWith(`${manifest}.rea.backup.`),
+      path.startsWith(`${manifest}.binsight.backup.`),
     );
     expect(recovery).toBeDefined();
     expect(await readFile(recovery!, "utf8")).toBe(current);
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(oldSnapshot);
+    expect(await readFile(`${manifest}.binsight.backup`, "utf8")).toBe(
+      oldSnapshot,
+    );
   });
 });
 
 describe("skill recovery byte preservation", () => {
   it("backs up and restores the exact bytes of invalid UTF-8 before replacing a skill", async () => {
-    const home = await createTestTempDirectory("rea-skill-damaged-bytes-");
+    const home = await createTestTempDirectory("binsight-skill-damaged-bytes-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Missing shared skill root");
     const manifest = join(destination.path, "SKILL.md");
     const original = Buffer.from([0x63, 0x61, 0x66, 0xe9, 0xff, 0x0a]);
-    const firstBackup = `${manifest}.rea.backup`;
+    const firstBackup = `${manifest}.binsight.backup`;
     const recovery = `${firstBackup}.${createHash("sha256").update(original).digest("hex")}.recovery`;
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, original);
@@ -132,7 +136,7 @@ describe("skill recovery byte preservation", () => {
 describe("skill directory admission", () => {
   it("excludes a linked references directory from update maintenance", async () => {
     const directory = await createTestTempDirectory(
-      "rea-skill-linked-maintenance-",
+      "binsight-skill-linked-maintenance-",
     );
     const installed = await installCanonicalSkill(directory, ["claude_code"]);
     expect(installed.ok).toBe(true);
@@ -157,7 +161,7 @@ describe("skill directory admission", () => {
     "reports every unreadable reference with a %s manifest",
     async (manifestState) => {
       const directory = await createTestTempDirectory(
-        "rea-skill-unreadable-reference-",
+        "binsight-skill-unreadable-reference-",
       );
       expect((await installCanonicalSkill(directory, ["claude_code"])).ok).toBe(
         true,
@@ -210,7 +214,7 @@ describe("skill directory admission", () => {
   it.each(["root", "references"] as const)(
     "refuses a linked skill %s before changing any selected destination",
     async (linkedDirectory) => {
-      const home = await createTestTempDirectory("rea-skill-linked-root-");
+      const home = await createTestTempDirectory("binsight-skill-linked-root-");
       const destinations = skillDestinations(home, ["shared", "claude_code"]);
       const selected = destinations.find(
         ({ client }) => client === "claude_code",
@@ -255,7 +259,9 @@ describe("skill directory admission", () => {
 
 describe("canonical skill transaction", () => {
   it("does not roll back files when backup preparation fails", async () => {
-    const home = await createTestTempDirectory("rea-skill-backup-failure-");
+    const home = await createTestTempDirectory(
+      "binsight-skill-backup-failure-",
+    );
     const root = join(home, ".agents/skills/reverse-engineer-anything");
     const manifest = join(root, "SKILL.md");
     const connection = join(root, "references/connection-and-recovery.md");
@@ -296,9 +302,11 @@ describe("canonical skill transaction", () => {
     expect(writes).toEqual([]);
     expect(await readFile(manifest, "utf8")).toBe(original);
     expect(await readFile(connection, "utf8")).toBe(secondOriginal);
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${manifest}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
     await expect(
-      readFile(`${connection}.rea.backup`, "utf8"),
+      readFile(`${connection}.binsight.backup`, "utf8"),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -307,7 +315,9 @@ describe("canonical skill transaction", () => {
   });
 
   it("rolls back attempted writes independently and preserves original modes", async () => {
-    const home = await createTestTempDirectory("rea-skill-rollback-failure-");
+    const home = await createTestTempDirectory(
+      "binsight-skill-rollback-failure-",
+    );
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Missing shared skill root");
     const root = destination.path;
@@ -354,9 +364,9 @@ describe("canonical skill transaction", () => {
       { path: native, reason: "injected rollback failure" },
     ]);
     expect(result.error.recoveryBackupPaths).toEqual([
-      `${manifest}.rea.backup`,
-      `${connection}.rea.backup`,
-      `${native}.rea.backup`,
+      `${manifest}.binsight.backup`,
+      `${connection}.binsight.backup`,
+      `${native}.binsight.backup`,
     ]);
     expect(result.error.message).toContain(
       `${native} (injected rollback failure)`,
@@ -366,11 +376,13 @@ describe("canonical skill transaction", () => {
     await expectPermissionMode(manifest, 0o640);
     await expectPermissionMode(connection, 0o644);
     expect(await readFile(native, "utf8")).not.toBe("old native\n");
-    expect(await readFile(`${native}.rea.backup`, "utf8")).toBe("old native\n");
+    expect(await readFile(`${native}.binsight.backup`, "utf8")).toBe(
+      "old native\n",
+    );
     expect(nativeWrites).toHaveLength(2);
     expect(nativeWrites[1]).toEqual(Buffer.from("old native\n", "utf8"));
     expect(result.error.message).toContain(
-      `Existing-file backups remain at ${manifest}.rea.backup`,
+      `Existing-file backups remain at ${manifest}.binsight.backup`,
     );
   });
 });
@@ -379,7 +391,7 @@ describe("canonical skill discovery", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "preserves an unreadable existing skill instead of treating it as absent",
     async () => {
-      const home = await createTestTempDirectory("rea-skill-unreadable-");
+      const home = await createTestTempDirectory("binsight-skill-unreadable-");
       const destination = join(
         home,
         ".agents/skills/reverse-engineer-anything/SKILL.md",
@@ -397,7 +409,7 @@ describe("canonical skill discovery", () => {
       }
       expect(await readFile(destination, "utf8")).toBe(original);
       await expect(
-        readFile(`${destination}.rea.backup`, "utf8"),
+        readFile(`${destination}.binsight.backup`, "utf8"),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });
@@ -405,7 +417,7 @@ describe("canonical skill discovery", () => {
   );
 
   it("installs only the selected Claude Code personal skill", async () => {
-    const home = await createTestTempDirectory("rea-claude-skill-");
+    const home = await createTestTempDirectory("binsight-claude-skill-");
     const configDirectory = join(home, "claude-config");
     const skillsDirectory = join(configDirectory, "skills");
     const claudeSkill = join(
@@ -417,7 +429,7 @@ describe("canonical skill discovery", () => {
       join(configDirectory, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          binsight: {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           },
@@ -462,7 +474,7 @@ describe("canonical skill discovery", () => {
   });
 
   it("checks selected skill locations for independent drift", async () => {
-    const home = await createTestTempDirectory("rea-mixed-skill-");
+    const home = await createTestTempDirectory("binsight-mixed-skill-");
     const sharedSkill = join(
       home,
       ".agents/skills/reverse-engineer-anything/SKILL.md",
@@ -504,7 +516,7 @@ describe("canonical skill discovery", () => {
 
 describe("canonical skill transaction", () => {
   it("backs up and upgrades a stale managed skill without touching siblings", async () => {
-    const home = await createTestTempDirectory("rea-skill-test-");
+    const home = await createTestTempDirectory("binsight-skill-test-");
     const destination = join(
       home,
       ".agents/skills/reverse-engineer-anything/SKILL.md",
@@ -526,7 +538,7 @@ describe("canonical skill transaction", () => {
       ok: true,
       value: "installed",
     });
-    expect(await readFile(`${destination}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${destination}.binsight.backup`, "utf8")).toBe(
       "stale managed skill\n",
     );
     const installedSkill = await readFile(destination, "utf8");
@@ -543,7 +555,7 @@ describe("canonical skill transaction", () => {
       `version: "${PRODUCT_IDENTITY.skillVersion}"`,
     );
     await expectPermissionMode(destination, 0o640);
-    expect(await readFile(`${nativeGuide}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${nativeGuide}.binsight.backup`, "utf8")).toBe(
       "stale filesystem-write permission grant\n",
     );
     for (const reference of [
@@ -572,7 +584,7 @@ describe("canonical skill transaction", () => {
       );
     }
     expect(installedSkill).toContain(
-      "use normal repository tools and do not run REA",
+      "use normal repository tools and do not run BinSight",
     );
     expect(installedSkill).toContain(
       `tool_count: ${String(TOOL_CONTRACTS.length)}`,
@@ -596,7 +608,7 @@ describe("canonical skill transaction", () => {
   });
 
   it("binds portable conformance to the generated skill bytes that setup installs", async () => {
-    const home = await createTestTempDirectory("rea-skill-commitment-");
+    const home = await createTestTempDirectory("binsight-skill-commitment-");
     expect(await installCanonicalSkill(home)).toMatchObject({
       ok: true,
       value: "installed",
@@ -640,7 +652,7 @@ describe("canonical skill transaction", () => {
 });
 
 it("doctor verifies installed instructions and references even when metadata is current", async () => {
-  const home = await createTestTempDirectory("rea-skill-doctor-");
+  const home = await createTestTempDirectory("binsight-skill-doctor-");
   const destination = join(
     home,
     ".agents/skills/reverse-engineer-anything/SKILL.md",

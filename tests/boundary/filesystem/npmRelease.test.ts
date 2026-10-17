@@ -15,13 +15,13 @@ const metadata = (
   integrity: string,
   tags: Record<string, string>,
 ) => ({
-  name: "rea-agents",
-  versions: { [version]: { name: "rea-agents", version, dist: { integrity } } },
+  name: "binsight",
+  versions: { [version]: { name: "binsight", version, dist: { integrity } } },
   "dist-tags": tags,
 });
 
 it("accepts existing registry bytes only when content and selected channel match", async () => {
-  const root = await createTestTempDirectory("rea-npm-release-");
+  const root = await createTestTempDirectory("binsight-npm-release-");
   const tarball = join(root, "package.tgz");
   const archive = "qualified archive";
   await writeFile(tarball, archive);
@@ -79,7 +79,7 @@ it("distinguishes absence from failed or malformed registry responses", async ()
   ).resolves.toEqual({ status: "absent" });
   await expect(
     readNpmRelease("6.5.0", async () =>
-      Response.json({ name: "rea-agents", versions: {}, "dist-tags": {} }),
+      Response.json({ name: "binsight", versions: {}, "dist-tags": {} }),
     ),
   ).resolves.toEqual({ status: "absent" });
   await expect(

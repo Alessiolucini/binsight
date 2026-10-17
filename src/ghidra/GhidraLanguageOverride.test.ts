@@ -79,7 +79,7 @@ const legacyMips: BinaryTarget = {
 
 let installDir = "";
 beforeAll(async () => {
-  installDir = await mkdtemp(join(tmpdir(), "rea-ghidra-languages-"));
+  installDir = await mkdtemp(join(tmpdir(), "binsight-ghidra-languages-"));
   const languages = join(installDir, "Ghidra/Processors/x86/data/languages");
   await mkdir(languages, { recursive: true });
   await writeFile(join(languages, "x86.ldefs"), X86_LDEFS);
@@ -204,7 +204,7 @@ describe("Ghidra language catalog", () => {
   });
 
   it("reads a UTF-8 signed definition beside an unsigned sibling", async () => {
-    const root = await createTestTempDirectory("rea-ghidra-bom-");
+    const root = await createTestTempDirectory("binsight-ghidra-bom-");
     const module = (name: string) =>
       join(root, "Ghidra/Processors", name, "data/languages");
     await mkdir(module("probe"), { recursive: true });

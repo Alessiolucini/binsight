@@ -269,7 +269,7 @@ const emptyGraph = (
     provider: {
       id: provider.id,
       version: provider.version,
-      tool_version: "rea-native-ui-trace/1",
+      tool_version: "binsight-native-ui-trace/1",
     },
     nodes: [],
     edges: [],

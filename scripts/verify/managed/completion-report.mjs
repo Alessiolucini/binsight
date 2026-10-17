@@ -1,8 +1,8 @@
 import { createEvidence } from "../../../dist/domain/evidence.js";
 
 const COMPLETION_PROVIDER = {
-  id: "rea-managed-conformance",
-  name: "REA managed conformance verifier",
+  id: "binsight-managed-conformance",
+  name: "BinSight managed conformance verifier",
   version: "1",
 };
 
@@ -17,7 +17,7 @@ const completionClaim = ({
     ...new Set(targets.map(({ sha256: digest }) => digest)),
   ].sort();
   const evidence = createEvidence(targets[0], COMPLETION_PROVIDER, {
-    predicateType: "rea.verification",
+    predicateType: "binsight.verification",
     operation: "verify_managed_conformance",
     parameters: {
       scenario_id: scenarioId,

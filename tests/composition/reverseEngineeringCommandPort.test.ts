@@ -16,7 +16,7 @@ it("documents the shared combined capture limit for both command tools", () => {
 });
 
 it("uses provider profiles supplied through the application port", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-port-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-reverse-port-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
   const run = vi.fn(
@@ -65,7 +65,7 @@ it("uses provider profiles supplied through the application port", async () => {
 });
 
 it("does not reintroduce ambient variables absent from the captured provider environment", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-env-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-reverse-env-"));
   const path = join(directory, "fixture.bin");
   const variable = "REA_TEST_LATE_PROVIDER_ENV";
   const previous = process.env[variable];

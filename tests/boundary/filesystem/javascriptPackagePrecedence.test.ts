@@ -114,7 +114,7 @@ const cases: readonly {
 it.each(cases)(
   "matches Node package resolution for $name",
   async ({ metadata, index, specifier = "fixture", extraFiles = {} }) => {
-    const root = await createTestTempDirectory("rea-package-precedence-");
+    const root = await createTestTempDirectory("binsight-package-precedence-");
     const files = {
       ...extraFiles,
       "package.json": JSON.stringify({
@@ -235,7 +235,7 @@ it.each([
 ] as const)(
   "matches the native Node loader when $name",
   async ({ kind, metadata }) => {
-    const root = await createTestTempDirectory("rea-node-package-fields-");
+    const root = await createTestTempDirectory("binsight-node-package-fields-");
     const entry = kind === "import" ? "main.mjs" : "main.cjs";
     const source =
       kind === "import"

@@ -8,7 +8,7 @@ previous execution or emulate dependencies.
 
 The command runs with the current user's permissions and inherits the host
 environment before applying the scenario's explicit overrides. This is not a
-sandbox. Filesystem observation paths select what REA snapshots; they do not
+sandbox. Filesystem observation paths select what BinSight snapshots; they do not
 restrict what the process can read or write. The inherited environment is not
 recorded, so its influence may remain unknown.
 
@@ -17,24 +17,24 @@ recorded, so its influence may remain unknown.
 Capturing a new scenario currently requires Linux or macOS and a working
 native PTY backend. Native Windows capture is unavailable because the PTY
 adapter does not yet verify descendant cleanup. The native Job Object controls
-used by other REA providers do not establish PTY capture support. Reinstalling
+used by other BinSight providers do not establish PTY capture support. Reinstalling
 the Windows PTY binary does not enable this workflow.
 
-For Linux commands, use Linux REA inside WSL. Adapt the scenario to that host;
+For Linux commands, use Linux BinSight inside WSL. Adapt the scenario to that host;
 this does not establish capture of a native Windows process tree. Comparing
 existing capture Evidence through the CLI or MCP remains available on Windows
 and does not launch a PTY or the captured target.
 
 On supported capture hosts, a missing or incompatible native PTY binary has a
-different recovery: reinstall REA for the active platform, architecture, and
+different recovery: reinstall BinSight for the active platform, architecture, and
 Node.js version with optional dependencies enabled. Capability diagnostics
 distinguish this from the Windows capture-adapter limitation.
 
 macOS also requires Apple's Swift compiler through `xcrun` for process
-ownership inspection. REA compiles its packaged, narrow process-inspection
+ownership inspection. BinSight compiles its packaged, narrow process-inspection
 helper into a private temporary directory before a capture or owned provider
 process starts; the same prerequisite applies to owned provider-process
-supervision on macOS. REA removes that directory when it exits. REA does not
+supervision on macOS. BinSight removes that directory when it exits. BinSight does not
 install Xcode, Command Line Tools, or other software. Capability checks prepare
 this helper before reporting macOS capture as available.
 
@@ -53,13 +53,13 @@ For a small first capture, save this as `scenario.json`:
 Run the scenario through the CLI:
 
 ```sh
-rea capture-process ./scenario.json --json > capture.json
+binsight capture-process ./scenario.json --json > capture.json
 ```
 
 `--json` is required when saving input for JSON consumers; the default terminal
 format is TOON. The file contains the complete capture Evidence record.
 Choose an output file distinct from the scenario input: shell redirection opens
-and truncates the output before REA reads the scenario.
+and truncates the output before BinSight reads the scenario.
 
 Read the result's terminal observations, exit/settlement status, and cleanup
 outcome. [Scenario and result details](#scenario-and-result-details) describe
@@ -70,7 +70,7 @@ limits, normalization, filesystem coverage, and incomplete observations.
 Compare saved capture Evidence with:
 
 ```sh
-rea compare-process-captures authority.json reconstruction.json
+binsight compare-process-captures authority.json reconstruction.json
 ```
 
 The comparison checks terminal, interaction, exit, filesystem, and
@@ -101,7 +101,7 @@ difference.
 
 Select the producer's report directory and give `file_bytes` enough room for
 the complete files you need, including other files in those roots. For example,
-save this scenario and run `rea capture-process ./scenario.json --json > capture.json`:
+save this scenario and run `binsight capture-process ./scenario.json --json > capture.json`:
 
 ```json
 {
@@ -121,7 +121,7 @@ budget. Its complete SHA-256 appears in `normalized_result.files_after` at
 `root_0:final.json`; check `truncation_details.filesystem_after` for omissions
 and actual bytes hashed. The verbose terminal output is truncated without
 preventing the report digest. The same scenario object is the MCP
-`capture_process_scenario` input. REA never returns a prefix hash as a full-file
+`capture_process_scenario` input. BinSight never returns a prefix hash as a full-file
 digest: an insufficient remaining budget produces a null digest and an
 explicit omission reason.
 
@@ -131,16 +131,16 @@ can also have a complete digest. Choose the final file and verify the
 producer's documented completion marker, exit outcome and settlement
 observations before calling it final. `after_settlement` names a filesystem
 checkpoint, not a guarantee that an application finished successfully or
-that an unobserved writer will never change the file. REA checks opened-file
+that an unobserved writer will never change the file. BinSight checks opened-file
 identity/state around hashing and reports observed changes or unavailable
 files; cancellation stops the hash. If an external sealer produces a manifest,
-keep its completion claims and digest separate from REA's checkpoint facts.
+keep its completion claims and digest separate from BinSight's checkpoint facts.
 
 ## Scenario and result details
 
 ### Progress
 
-While the capture runs, REA writes live status to stderr as one JSON object per
+While the capture runs, BinSight writes live status to stderr as one JSON object per
 line. Stdout stays the final Evidence document:
 
 ```json
@@ -157,7 +157,7 @@ line. Stdout stays the final Evidence document:
 
 `phase` is the observed lifecycle stage: `prepare`, `running`, `settling`, or
 `cleanup`. `completed` counts collected terminal frames, process samples, and
-interaction events. `total` stays null; REA does not invent a unit total or a
+interaction events. `total` stays null; BinSight does not invent a unit total or a
 percentage. `message` reports elapsed time and those counts. The final line uses
 `phase` `cleanup` and sets `terminal` to true. Its `message` also contains
 `disposition=<value>` (`exited`, `timeout`, `idle_timeout`, `cancelled`, or `failed`)
@@ -221,13 +221,13 @@ values are not copied into Evidence.
 
 Terminal dimensions must satisfy `columns × (rows + scrollback) ≤ 1,000,000`.
 Every scheduled resize uses the same selected scrollback and must fit this
-working-buffer budget. REA rejects oversized scenarios before launching the
+working-buffer budget. BinSight rejects oversized scenarios before launching the
 command; it never clamps the requested dimensions. This limit is independent
 of `limits.output_bytes`, which bounds retained terminal observations.
 
 The capture contains raw PTY output chunks and rendered terminal states,
 interaction dispatch outcomes, exit reason, sampled process-tree observations,
-and settlement status. When filesystem paths are selected, REA records
+and settlement status. When filesystem paths are selected, BinSight records
 `files_before` and `files_after`, then classifies observed entries as created,
 deleted, modified, or unchanged. These are bounded snapshots, not a syscall
 trace; short-lived changes between snapshots may be missed. With no selected
@@ -236,7 +236,7 @@ paths, filesystem effects remain unknown.
 A missing entry proves creation or deletion only when the corresponding
 observation root's path enumeration was exhausted. Otherwise its effect has
 `status: "unknown"`, the available before/after state, and a reason; a null
-state in this variant means unobserved. Paths below symlinks that REA did not
+state in this variant means unobserved. Paths below symlinks that BinSight did not
 follow also remain unknown. Partial enumeration of one root does not erase
 known effects in another, and unavailable content hashes do not by themselves
 make path absence unknown.
@@ -289,7 +289,7 @@ sampling cannot prove that every short-lived or detached descendant was seen.
 ### Finalization interval
 
 By default a deadline sends `SIGKILL` at once. Set `finalization_ms` to give the
-target time to finish: when `timeout_ms` or `idle_timeout_ms` fires, REA sends
+target time to finish: when `timeout_ms` or `idle_timeout_ms` fires, BinSight sends
 `SIGTERM`, keeps capturing output and selected files, and sends `SIGKILL` once
 if the interval ends first. Cancellation is not delayed: it sends `SIGKILL`
 immediately, also during finalization, and ends the run as cancelled.
@@ -304,12 +304,12 @@ immediately, also during finalization, and ends the run as cancelled.
 }
 ```
 
-REA binds the captured root's first start identity to its ownership token,
+BinSight binds the captured root's first start identity to its ownership token,
 checking the identity before and after reading that token. A missing or
 mismatched token, or an identity change during validation, leaves the identity
 unverified rather than adopting a replacement process. Both finalization
 signals recheck that retained identity immediately before the call; the check
-and signal remain separate operating-system operations. REA does not fall back
+and signal remain separate operating-system operations. BinSight does not fall back
 to a bare PID kill for either finalization signal; failed identity or ownership
 validation is recorded as `unverified` with its reason. Cancellation before any
 deadline keeps the existing terminal kill. Descendants are not signalled during
@@ -350,7 +350,7 @@ absent when no finalization was attempted:
   not settle within the bound (1000 ms). An attempt recorded `unverified` after
   that bound can still complete later; it stays identity-checked, and its late
   result is not added to the record.
-- `elapsed_ms` is when REA observed the exit, relative to the start of
+- `elapsed_ms` is when BinSight observed the exit, relative to the start of
   finalization, or `null` when no exit was observed. The PTY layer can deliver the
   exit slightly after the operating system ended the process.
 - `exit_code` is the code the PTY reported when the exit was observed during
@@ -363,7 +363,7 @@ absent when no finalization was attempted:
   deadline exit. The record does not attribute an exit to a particular signal,
   and a `SIGKILL` from a scenario event next to the escalation cannot be told
   apart from it.
-- If the `SIGKILL` cannot be delivered, REA stops waiting for an exit, keeps every
+- If the `SIGKILL` cannot be delivered, BinSight stops waiting for an exit, keeps every
   observation collected so far with the delivery results, and releases the run
   through owned-process cleanup.
 - The `SIGKILL` is not sequenced after the `SIGTERM` delivery result: the two
@@ -435,7 +435,7 @@ Each filesystem checkpoint starts with a fresh `file_bytes` budget across all
 selected roots; it is not a per-file allowance. File contents are read in
 64 KiB chunks for hashing and are not embedded in capture Evidence.
 
-When the host withholds an unrelated process’s ownership token, REA leaves that
+When the host withholds an unrelated process’s ownership token, BinSight leaves that
 process untouched and records its PID and reason in `cleanup.unverified_processes`
 and process residual unknowns. Successful cleanup verifies the owned group;
 it does not attribute those unrelated processes. Related or otherwise unexplained
@@ -446,30 +446,30 @@ unreadable. Node documents that [setting the title overwrites argv memory](https
 With the pinned toolchain, a live child retained a readable start identity
 while its token became unavailable after this change; npm changes its title
 as well. A newly started unreadable process can prevent verified cleanup even
-after the selected command exits. REA preserves this uncertainty and leaves
+after the selected command exits. BinSight preserves this uncertainty and leaves
 that process untouched.
 
 Reading those tokens requires compiling a small Swift helper with `xcrun swiftc`.
 By default that compilation reuses Swift's shared module cache, while the
-compiler's intermediate objects stay inside the per-run temporary root that REA
+compiler's intermediate objects stay inside the per-run temporary root that BinSight
 removes afterwards. Set `REA_DARWIN_MODULE_CACHE_PATH` to a writable directory
 when a shared cache is unavailable, for example under an enforced write
-boundary. REA creates the directory, passes it to the compiler as
+boundary. BinSight creates the directory, passes it to the compiler as
 `-module-cache-path`, and exports it as `CLANG_MODULE_CACHE_PATH` so the
-Objective-C header modules the helper builds land there too. REA never removes
+Objective-C header modules the helper builds land there too. BinSight never removes
 that directory: it outlives each run, so the first compilation into a new
 directory pays a cold-cache build and later runs reuse it. An absent or empty
 value keeps the shared default.
 
 `xcrun` also maintains a separate tool-lookup cache. Its `--no-cache` option
 refreshes entries and does not guarantee a write-free lookup. To avoid that
-lookup while compiling REA's helper, set `REA_DARWIN_SWIFTC_PATH` to the absolute
+lookup while compiling BinSight's helper, set `REA_DARWIN_SWIFTC_PATH` to the absolute
 path of an installed `swiftc` and `SDKROOT` to the absolute path of a compatible
-macOS SDK. REA invokes that compiler directly with `-sdk` and the selected SDK;
+macOS SDK. BinSight invokes that compiler directly with `-sdk` and the selected SDK;
 an unset or empty compiler setting keeps the normal `xcrun swiftc` path. A
 missing or relative SDK/compiler path fails with an actionable prerequisite
 error before compilation. An incompatible installation reports the compiler's
-bounded diagnostics; REA does not repair or replace the toolchain.
+bounded diagnostics; BinSight does not repair or replace the toolchain.
 
 For example, select paths from your existing Xcode or Command Line Tools
 installation **before** entering an enforced write boundary:
@@ -480,20 +480,20 @@ export SDKROOT="$(xcrun --show-sdk-path)"
 export REA_DARWIN_MODULE_CACHE_PATH="$PWD/rea-cache/modules"
 export TMPDIR="$PWD/rea-cache/tmp"
 mkdir -p "$TMPDIR"
-rea analyze-javascript-application ./fixture --artifact-format directory
+binsight analyze-javascript-application ./fixture --artifact-format directory
 ```
 
-Keep the selected compiler and SDK paired. Permit REA's evidence/output paths
-and its temporary directory as well as the caller-owned module cache. REA does
+Keep the selected compiler and SDK paired. Permit BinSight's evidence/output paths
+and its temporary directory as well as the caller-owned module cache. BinSight does
 not create a sandbox or claim that these settings contain every write made by
-arbitrary toolchains or analysis providers. They bypass REA's `xcrun` lookup
+arbitrary toolchains or analysis providers. They bypass BinSight's `xcrun` lookup
 and select the helper's Swift/Clang cache without disabling ownership checks.
 The caller-owned cache survives cancellation and cleanup; per-run compiler
-intermediates and the compiled helper remain REA-owned temporary files.
+intermediates and the compiled helper remain BinSight-owned temporary files.
 
 The boundary must also permit process-table inspection. On macOS, `/bin/ps`
 is setuid and a blanket sandbox may reject its launch with `spawn EPERM`.
-REA then preserves ownership uncertainty and can report `cleanup_incomplete`;
+BinSight then preserves ownership uncertainty and can report `cleanup_incomplete`;
 it does not disable verification to continue. A sandbox that explicitly allows
 this read-only process inspector is a separate prerequisite from the compiler
 and cache settings.

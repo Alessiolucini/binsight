@@ -4,7 +4,7 @@ export const API_SURFACE_EXAMPLE = {
     source: {
       kind: "retained-evidence",
       evidence_id:
-        "ev_90073e9478eada1e2cc351b523e6ba9231c9b4bc9708773567b880094db9d4c7",
+        "ev_dd6f24c1a08bb1f67856ae0b48eb19008895edcea79104da335d7941922b142d",
     },
     view: {
       kind: "api-surface",
@@ -14,16 +14,16 @@ export const API_SURFACE_EXAMPLE = {
   },
   output: {
     parent_evidence_id:
-      "ev_90073e9478eada1e2cc351b523e6ba9231c9b4bc9708773567b880094db9d4c7",
+      "ev_dd6f24c1a08bb1f67856ae0b48eb19008895edcea79104da335d7941922b142d",
     parent_operation: "inspect_web_network_capture",
     parent_digest:
-      "90073e9478eada1e2cc351b523e6ba9231c9b4bc9708773567b880094db9d4c7",
+      "dd6f24c1a08bb1f67856ae0b48eb19008895edcea79104da335d7941922b142d",
     view_digest:
-      "c9494341920dc4cff6ecc6d8ed2c5e3abf15976642c253248e220d45f290ca7b",
+      "bd58228b01006b07657c3ed3e409e327b61153b0ff01a8676b02b0eb662d5398",
     artifact: {
       path: "/fixtures/api-surface.har",
       sha256:
-        "bf58e2c06e55bfe7e0628157c4ad027ce0aeb81a10e8edef8a7f95b8e5f14225",
+        "4a1411315a0e2ace8f10a7a59b7e5c31e464b917d2448868366eaae3b49553be",
     },
     coverage: {
       status: "page",

@@ -60,7 +60,7 @@ describe("Mach-O cleanup exceptions", () => {
 
 describe("Mach-O command cleanup lifecycle", () => {
   it("waits for active lipo capture before cleanup and preserves its failure", async () => {
-    const root = await createTestTempDirectory("rea-slices-close-race-");
+    const root = await createTestTempDirectory("binsight-slices-close-race-");
     const binary = join(root, "input");
     await writeFile(binary, Buffer.from("fixture"));
     let finishCommand!: (
@@ -156,7 +156,7 @@ describe("Mach-O command cleanup lifecycle", () => {
 
 describe("MachOSliceArtifactReader", () => {
   it("keeps a borrowed source usable after idle and active cancelled slice reads", async () => {
-    const root = await createTestTempDirectory("rea-slices-cancelled-");
+    const root = await createTestTempDirectory("binsight-slices-cancelled-");
     const binary = join(root, "fat");
     const x86 = machoImage({ cpu: CPU.x86_64 });
     const arm = Buffer.concat([
@@ -322,7 +322,7 @@ describe("universal slices outside the structural index", () => {
     }[],
     withRanges = true,
   ) => {
-    const root = await createTestTempDirectory("rea-slices-unsupported-");
+    const root = await createTestTempDirectory("binsight-slices-unsupported-");
     const binary = join(root, "fat");
     await writeFile(binary, fatImage(slices));
     const reader = new MachOSliceArtifactReader(

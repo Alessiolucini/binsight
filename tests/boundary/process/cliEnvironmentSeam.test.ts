@@ -23,9 +23,9 @@ describe("the CLI takes its environment as an input", () => {
       return;
     }
 
-    const root = await mkdtemp(join(tmpdir(), "rea-cli-env-process-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-cli-env-process-"));
     const bin = join(root, "bin");
-    const executable = join(bin, "rea-injected-process-probe");
+    const executable = join(bin, "binsight-injected-process-probe");
     const scenarioPath = join(root, "scenario.json");
     try {
       await mkdir(bin);
@@ -40,7 +40,7 @@ describe("the CLI takes its environment as an input", () => {
       await writeFile(
         scenarioPath,
         JSON.stringify({
-          executable: "rea-injected-process-probe",
+          executable: "binsight-injected-process-probe",
           working_directory: root,
           environment: { REA_CAPTURE_SCENARIO_OVERRIDE: "scenario-value" },
         }),

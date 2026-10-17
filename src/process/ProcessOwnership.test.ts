@@ -594,7 +594,12 @@ describe("rooted process-group cleanup", () => {
   });
   it("leaves an unrelated Hopper process group outside the rooted tree untouched", async () => {
     const processes = [
-      { pid: 100, parentPid: 1, processGroupId: 100, command: "rea-hopper" },
+      {
+        pid: 100,
+        parentPid: 1,
+        processGroupId: 100,
+        command: "binsight-hopper",
+      },
       { pid: 101, parentPid: 100, processGroupId: 101, command: "owned-child" },
       {
         pid: 900,

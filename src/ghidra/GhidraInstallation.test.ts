@@ -79,7 +79,7 @@ afterEach(() => {
 it.skipIf(process.platform === "win32")(
   "resolves a PATH launcher only when its real target is a complete installation",
   async () => {
-    const root = await createTestTempDirectory("rea-ghidra-path-");
+    const root = await createTestTempDirectory("binsight-ghidra-path-");
     const installation = join(root, "installation");
     const pathDirectory = join(root, "bin");
     const launcher = join(installation, "ghidraRun");
@@ -854,7 +854,7 @@ describe("Ghidra configuration paths", () => {
       "GHIDRA_INSTALL_DIR and JAVA_HOME must be absolute",
     ],
   ])(
-    "rejects relative paths that REA's configuration parser rejects (%o)",
+    "rejects relative paths that BinSight's configuration parser rejects (%o)",
     (paths, detail) => {
       const result = inspectGhidraInstallation(
         { environment: {}, ...paths, platform: "linux", architecture: "x64" },

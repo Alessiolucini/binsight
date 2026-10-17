@@ -11,7 +11,9 @@ import type { ArtifactEntry } from "../../../src/artifacts/ArtifactReader.js";
 import { ZipArtifactReader } from "../../../src/artifacts/ZipArtifactReader.js";
 
 it("retains distinct occurrences when ZIP paths normalize to the same child", async () => {
-  const root = await createTestTempDirectory("rea-zip-relative-duplicates-");
+  const root = await createTestTempDirectory(
+    "binsight-zip-relative-duplicates-",
+  );
   const path = join(root, "duplicates.zip");
   await writeOrderedZip(path, ["./data.txt", "data.txt"]);
 
@@ -36,7 +38,7 @@ it("retains distinct occurrences when ZIP paths normalize to the same child", as
 it.each([".", "././."])(
   "rejects a non-directory ZIP entry spelled %s instead of skipping it as a root marker",
   async (name) => {
-    const root = await createTestTempDirectory("rea-zip-root-file-");
+    const root = await createTestTempDirectory("binsight-zip-root-file-");
     const path = join(root, "root-file.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add(name, new TextReader("not a directory"));
@@ -55,7 +57,7 @@ it.each([
 ])(
   "does not skip a ZIP symlink spelled $sourcePath",
   async ({ sourcePath, path: logicalPath }) => {
-    const root = await createTestTempDirectory("rea-zip-root-symlink-");
+    const root = await createTestTempDirectory("binsight-zip-root-symlink-");
     const path = join(root, "root-symlink.zip");
     // Retain the Unix symlink mode even when the filename has a directory slash.
     const writer = new ZipWriter(new Uint8ArrayWriter(), {
@@ -80,7 +82,9 @@ it.each([
 );
 
 it("rejects traversal after removing harmless leading current-directory prefixes", async () => {
-  const root = await createTestTempDirectory("rea-zip-relative-traversal-");
+  const root = await createTestTempDirectory(
+    "binsight-zip-relative-traversal-",
+  );
   const path = join(root, "traversal.zip");
   await writeOrderedZip(path, ["./../escape.txt"]);
 

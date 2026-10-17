@@ -30,7 +30,7 @@ const DIGEST = createHash("sha256").update(CONTENT).digest("hex");
 it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
   "inventories and extracts literal POSIX backslashes from %s without changing names",
   async (format) => {
-    const root = await createTestTempDirectory("rea-literal-backslash-");
+    const root = await createTestTempDirectory("binsight-literal-backslash-");
     const source = join(root, "source");
     await mkdir(source);
     for (const name of NAMES) {
@@ -83,7 +83,7 @@ it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
 it.each(NAMES.filter((name) => name.includes("\\")))(
   "rejects Windows separator interpretation before materializing %j",
   async (name) => {
-    const root = await createTestTempDirectory("rea-backslash-output-");
+    const root = await createTestTempDirectory("binsight-backslash-output-");
     const output = join(root, "output");
     const tree = await SafeOutputTree.create(output, "win32");
     const stream = Readable.from(CONTENT);
@@ -114,7 +114,7 @@ it.each([
   "C:/outside",
   "safe/\0bad",
 ])("keeps output containment rejection for %j", async (name) => {
-  const root = await createTestTempDirectory("rea-backslash-containment-");
+  const root = await createTestTempDirectory("binsight-backslash-containment-");
   const output = join(root, "output");
   const tree = await SafeOutputTree.create(output);
   try {
@@ -133,7 +133,7 @@ it.each([
 it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
   "retains literal POSIX JavaScript names in application and semantic graphs from %s",
   async (format) => {
-    const root = await createTestTempDirectory("rea-backslash-js-graph-");
+    const root = await createTestTempDirectory("binsight-backslash-js-graph-");
     const source = join(root, "source");
     await mkdir(source);
     const names = [
@@ -170,7 +170,9 @@ it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
 it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
   "resolves ordinary relative imports inside a literal POSIX directory from %s",
   async (format) => {
-    const root = await createTestTempDirectory("rea-backslash-import-base-");
+    const root = await createTestTempDirectory(
+      "binsight-backslash-import-base-",
+    );
     const source = join(root, "source");
     const literal = "literal\\dir";
     await mkdir(join(source, literal), { recursive: true });

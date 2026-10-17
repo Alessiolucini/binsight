@@ -22,7 +22,7 @@ if (!process.env.REA_WAKARU_COMMAND)
   );
 const entrypoint =
   process.argv[2] ?? fileURLToPath(new URL("../../rea.mjs", import.meta.url));
-const root = await mkdtemp(join(tmpdir(), "rea-real-recovery-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-real-recovery-"));
 const environment = { ...process.env, REA_LOG_LEVEL: "silent" };
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -130,7 +130,7 @@ try {
         ) ?? result.modules[0];
       assert.ok(recoveredEntry);
       const oracle =
-        'await import((await import("node:url")).pathToFileURL(process.argv[1])); const f=globalThis.recoveryFixture; console.log(JSON.stringify([f.greet(null),f.greet("REA"),f.total([1,2,3])]));';
+        'await import((await import("node:url")).pathToFileURL(process.argv[1])); const f=globalThis.recoveryFixture; console.log(JSON.stringify([f.greet(null),f.greet("BinSight"),f.total([1,2,3])]));';
       for (const selected of fixture.additional_paths ||
       fixture.options?.extraction_mode === "inspection"
         ? []
@@ -142,7 +142,7 @@ try {
         );
         assert.deepEqual(JSON.parse(execution.stdout), [
           "Hello world",
-          "Hello REA",
+          "Hello BinSight",
           6,
         ]);
       }

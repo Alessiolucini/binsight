@@ -123,7 +123,7 @@ export class MachOSliceArtifactReader implements ArtifactReader {
         "integrity",
         `Mach-O structural slice index is malformed: ${structural.reason}`,
       );
-    // A valid universal binary can hold slices REA cannot index, such as
+    // A valid universal binary can hold slices BinSight cannot index, such as
     // big-endian PowerPC. lipo's own ranges still inventory every slice.
     if (
       structural.status === "unsupported" &&

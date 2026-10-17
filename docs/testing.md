@@ -1,4 +1,4 @@
-# Testing REA
+# Testing BinSight
 
 Use this guide when choosing coverage, pruning tests, or running a verification
 lane. Start with the commands below; use [real-toolchain lanes](#real-toolchain-verification-lanes)
@@ -112,7 +112,7 @@ when changing schema representations.
 
 The reused CLI boundary workers cap V8 old space at 384 MiB, based on their
 profiled allocation and cleanup behavior. This encourages collection between
-files; spawned REA processes retain their own heap settings.
+files; spawned BinSight processes retain their own heap settings.
 
 Vitest worker limits do not bound subprocesses launched within a test. Bound
 those batches separately so repeated CLI validation cannot oversubscribe the
@@ -572,7 +572,7 @@ The host lane also verifies namespaced C++ ABI symbols and annotation identity.
 That facet requires Ghidra's matching `demangler_gnu_v2_41` native component in
 `GPL/DemanglerGnu/os/<platform>/` or `build/os/<platform>/`, in addition to the
 native decompiler. The namespace verifier reports missing or non-executable
-components before testing the fixture. REA does not build or install them.
+components before testing the fixture. BinSight does not build or install them.
 
 Windows native conformance runs with `npm run verify:windows-native` and does
 not require Ghidra or Java. It includes Job Object commit-limit controls (a
@@ -587,7 +587,7 @@ rename, later-query handle-based recovery, successful-admission caching, and
 environment-teardown cleanup. It neither
 establishes the cause of the intermittent #1701 host failure nor replaces
 verification with the shipped production artifact.
-`npm run verify:ghidra:windows:package` additionally packs and installs REA into
+`npm run verify:ghidra:windows:package` additionally packs and installs BinSight into
 an isolated prefix and runs ordinary-user CLI/MCP operations against their
 canonical schemas. Run the controlled fixture generator before that lane, or
 supply an installed package root and an explicit fixture as arguments.
@@ -672,7 +672,7 @@ It also invokes the actual bridge methods on detached Ghidra model objects to
 check ambiguous dispatches, signed literals, precision bounds, shared targets,
 and conflicting labels. This reflection fixture depends on the pinned Ghidra
 model and does not claim a compiler produced those synthetic graph shapes.
-Pass `--entrypoint /path/to/installed/rea-agents/scripts/rea.mjs` directly to
+Pass `--entrypoint /path/to/installed/binsight/scripts/rea.mjs` directly to
 `scripts/verify-real-ghidra-switch.mjs` to verify an installed package through
 the same compiler oracles and CLI/MCP checks.
 
@@ -682,7 +682,7 @@ requires unresolved table bounds or case mappings to remain visible as
 residual unknowns.
 
 `npm run verify:inspector` requires the supported Node.js runtime and installed
-REA dependencies. CI runs it on Linux and macOS x64/arm64 and Windows x64. It starts owned loopback
+BinSight dependencies. CI runs it on Linux and macOS x64/arm64 and Windows x64. It starts owned loopback
 Node Inspector fixtures and verifies discovery and passive observation through
 the CLI and stdio MCP, including special filenames, unresolved discovery
 locations, and independently resolved loaded scripts. Double-quote filenames
@@ -715,7 +715,7 @@ See [Android analysis](android-analysis.md) for boundaries and resource budgets.
 already open, and verifies real CLI client inspection, unit listing coverage,
 and method decompilation. The script records the engine's exact response to
 `open_jeb_project`; JEB 5.48.0 headless instances do not advertise that tool.
-REA does not install or launch JEB; see [JEB analysis](jeb-analysis.md) for
+BinSight does not install or launch JEB; see [JEB analysis](jeb-analysis.md) for
 the bring-your-own boundary. Verified against JEB 5.48.0 serving
 `jeb-mcp-server` 1.3.0 at four scales: a compiled Java class fixture, a
 locally built signed probe APK with a launcher activity (manifest, v1/v2/v3
@@ -863,7 +863,7 @@ with `REA_NATIVEAOT_PROOF_FIXTURE_ROOT`, and optional evidence capture directory
 with `REA_NATIVEAOT_PROOF_CAPTURE_DIR` (absolute paths).
 
 Keep builds/imports sequential on small hosts; scope `GHIDRA_HEADLESS_MAXMEM`
-(e.g. `768M`) to this command and use CPU affinity if needed. REA does not install
+(e.g. `768M`) to this command and use CPU affinity if needed. BinSight does not install
 or upgrade Java, Ghidra, .NET or native toolchains. See
 [the supported layout and provenance](ghidra-nativeaot.md).
 
@@ -880,7 +880,7 @@ provides an optional small native fixture source with exported
 use `--second-procedure rea_fixture_subtract --second-marker='- 13'`.
 
 The lane invokes the production CLI dispatcher and connects the pinned MCP
-client SDK to the production REA server. It verifies function Evidence and
+client SDK to the production BinSight server. It verifies function Evidence and
 CLI/MCP parity, inventory/search, pseudocode, instructions, xrefs, malformed
 input, original-input preservation, and lifecycle cleanup. The headless
 profile also checks containing procedures, the admitted program as the
@@ -888,7 +888,7 @@ document, address context, and feature tracing. For headless
 analysis it confirms that the owned database IDs disappear from upstream
 discovery and private workspaces are removed. For attached analysis it confirms
 the existing GUI target remains reachable with the same input identity.
-`--package-root` selects an installed/extracted REA artifact. `--report` writes
+`--package-root` selects an installed/extracted BinSight artifact. `--report` writes
 private local observations with mode `0600`; the console summary contains no
 target paths or upstream output.
 
@@ -1022,7 +1022,7 @@ source-owned PE fixture, run from the repository root:
 
 ```powershell
 node scripts/create-ghidra-windows-fixture.mjs
-$proofRoot = Join-Path $env:TEMP 'rea-file-offset-source-proof'
+$proofRoot = Join-Path $env:TEMP 'binsight-file-offset-source-proof'
 New-Item -ItemType Directory -Path $proofRoot -Force | Out-Null
 Copy-Item bridge/ghidra/ReaGhidraBridge.java, bridge/ghidra/ReaGhidraExtensions.java, tests/conformance/ghidra/ReaFileOffsetSourceProbe.java -Destination $proofRoot
 & "$env:GHIDRA_INSTALL_DIR/support/analyzeHeadless.bat" $proofRoot source-proof -import "$PWD/build/fixtures/rea-ghidra-windows.exe" -scriptPath $proofRoot -postScript ReaFileOffsetSourceProbe.java -deleteProject
@@ -1272,7 +1272,7 @@ proposed omissions with the full run; incomplete or skipped observations do not
 establish that fewer tests would preserve regression detection.
 
 The eight automatic browser, binary-layout, EVM, JavaScript-recovery,
-recorded-crash, and web provider lanes download `rea-build-cache` from their own
+recorded-crash, and web provider lanes download `binsight-build-cache` from their own
 run after the build and static jobs succeed. Their existing build commands still
 validate task hashes and rebuild mismatched inputs; provider observations always
 run. Provider-workflow-only edits also admit the build without enabling source
@@ -1364,7 +1364,7 @@ runs `observe-native-calls` through the CLI and stdio MCP. It checks:
 
 ### Firmware adapters
 
-Linux-owned provider launches require a procps-compatible `ps` on REA's `PATH`
+Linux-owned provider launches require a procps-compatible `ps` on BinSight's `PATH`
 so ownership can be inspected before launching a child. A missing or incompatible
 command fails with an actionable capability error before the launch.
 
@@ -1428,7 +1428,7 @@ fixture compiler; static/unit checks do not acquire a browser. See
 the running Node engine's single-string limit. Shared input leaves keep the
 fixture's graph small; the verifier writes one temporary output file, checks its
 complete byte count and an independent digest, then removes it. It requires only
-Node and the built REA runtime, with space for the output plus a 1 GiB reserve.
+Node and the built BinSight runtime, with space for the output plus a 1 GiB reserve.
 Run `npm run verify:javascript:output -- jsonl` for compact JSONL coverage. This
 opt-in lane is separate from routine tests and the canonical hash check
 `npm run verify:javascript:digests`. It verifies serialization rather than an
@@ -1495,7 +1495,7 @@ missing/unsupported plugin errors. A historical-PID collision fixture references
 an owned live sentinel; inspection syscall traces reject process attach/memory
 access, provider lookups of that PID's `/proc` files and attempted Internet sockets. Traces admit
 the observed upstream startup helpers (`iconv -l`, the selected checkout's Git
-version lookup) and REA ownership inspection separately from target execution.
+version lookup) and BinSight ownership inspection separately from target execution.
 This is fixture evidence, not a sandbox claim. Inputs remain unchanged and the
 sentinel must stay alive; owned cleanup and empty verifier descendants are required. Pass an
 installed package entrypoint as the script's first argument for package coverage.
@@ -1511,9 +1511,9 @@ contains isolation, authentication cleanup, grading, and conformance boundaries.
 
 ## Frida instrumentation
 
-`npm run verify:frida` builds REA, spawns a short-lived local Node.js fixture,
+`npm run verify:frida` builds BinSight, spawns a short-lived local Node.js fixture,
 loads a harmless marker script before resuming it, captures the message, and
-detaches. This lane requires Linux on the REA host and the optional Frida
+detaches. This lane requires Linux on the BinSight host and the optional Frida
 binding; it does not need a Frida server or a caller-selected process. To run
 the separate remote attach lane, pass `-- --address HOST:PORT --pid PID` for an
 explicitly selected process. Optional remote flags are `--token`,
@@ -1538,7 +1538,7 @@ SDK, validates advertised schemas, checks identical CLI/MCP Evidence IDs and
 session bundle readback, retains invalid/truncated module diagnostics, preserves
 all inputs and checks workspace cleanup. Pass an installed package's
 `scripts/rea.mjs` as the first argument to run the same lane against the package.
-`npm run verify:wasm:package` packs and installs REA into an isolated temporary
+`npm run verify:wasm:package` packs and installs BinSight into an isolated temporary
 prefix with lifecycle scripts disabled and runs the same required real-tool lane.
 It requires WABT configuration and makes no host tool installation.
 

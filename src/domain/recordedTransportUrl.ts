@@ -25,7 +25,7 @@ export const parseRecordedTransportUrl = (
   const absolute = URL.parse(value);
   // Resolve references only to recognize credentials (including WHATWG's
   // backslash/control-character spellings), never to supply a projected origin.
-  const parsed = absolute ?? URL.parse(value, "https://rea.invalid");
+  const parsed = absolute ?? URL.parse(value, "https://binsight.invalid");
   const hasCredentials =
     parsed !== null && (parsed.username !== "" || parsed.password !== "");
   const origin =

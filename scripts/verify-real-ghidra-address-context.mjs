@@ -19,7 +19,7 @@ if (!process.env.GHIDRA_INSTALL_DIR)
 const exec = promisify(execFile);
 const run = createVerifierRun();
 const root = fileURLToPath(new URL("..", import.meta.url));
-const workspace = await mkdtemp(join(tmpdir(), "rea-address-context-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-address-context-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "pie.elf");
@@ -36,7 +36,10 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-address-context", version: "1" });
+const client = new Client({
+  name: "binsight-real-address-context",
+  version: "1",
+});
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);
@@ -185,9 +188,9 @@ try {
   assert.equal(error.code, "invalid_request");
   assert.ok(JSON.stringify(error).includes(`Ghidra image base: ${base}`));
   for (const command of [
-    "rea search <path> . --kind procedures --mode regex",
-    "rea analyze <path>",
-    "rea inspect-native-load-image <path>",
+    "binsight search <path> . --kind procedures --mode regex",
+    "binsight analyze <path>",
+    "binsight inspect-native-load-image <path>",
   ])
     assert.ok(JSON.stringify(error).includes(command));
   const cliProcedures = parseEvidence(

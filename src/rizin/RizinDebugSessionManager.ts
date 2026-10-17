@@ -77,7 +77,7 @@ const createRizinCommandEvidence = ({
   limitations,
 }: RizinCommandEvidenceInput): Evidence =>
   createEvidence(undefined, RIZIN_DEBUGGER_PROVIDER_IDENTITY, {
-    predicateType: "rea.debugger.command-observation",
+    predicateType: "binsight.debugger.command-observation",
     operation: "rizin_debug_command",
     parameters: {
       session_id: sessionId,

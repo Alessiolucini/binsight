@@ -175,7 +175,7 @@ const expectComparison = (
 cliTest.for(cases)(
   "CLI preserves passive inventory evidence: $name",
   async ({ name, left, right, change }, { cli }) => {
-    const root = await createTestTempDirectory("rea-passive-inventory-");
+    const root = await createTestTempDirectory("binsight-passive-inventory-");
     const paths = [
       join(root, "before.json"),
       join(root, "after.json"),

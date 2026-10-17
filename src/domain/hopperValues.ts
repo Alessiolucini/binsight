@@ -76,7 +76,7 @@ export const analysisStringSchema = z.object({
         .enum(["observed", "inferred"])
         .exactOptional()
         .describe(
-          "Whether the provider declares the encoding or REA infers it from the typed bytes and native display. This does not establish the original source's intended encoding.",
+          "Whether the provider declares the encoding or BinSight infers it from the typed bytes and native display. This does not establish the original source's intended encoding.",
         ),
       termination: z.enum(["missing", "present_or_not_required"]),
       byte_length: z.number().int().min(0),

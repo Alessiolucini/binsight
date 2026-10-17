@@ -11,7 +11,7 @@ import { writeOrderedZip } from "../../fixtures/artifactEntryOrder.js";
 const it = test.skipIf(process.platform === "win32");
 
 it("publishes REA_JADX_MCP_JAR as registration environment when the configured JAR validates", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -40,7 +40,7 @@ it("publishes REA_JADX_MCP_JAR as registration environment when the configured J
 });
 
 it("publishes JAVA_HOME alongside the JAR when the configured JAR validates", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-javahome-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-javahome-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -57,7 +57,7 @@ it("publishes JAVA_HOME alongside the JAR when the configured JAR validates", as
 });
 
 it("preserves the caller-selected JAR path when it is a symlink", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-symlink-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-symlink-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const link = join(root, "current.jar");
   const javaHome = await createFakeJdk(root);
@@ -74,7 +74,9 @@ it("preserves the caller-selected JAR path when it is a symlink", async () => {
 });
 
 it("guides Java selection when the Java runtime is missing", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-remediation-");
+  const root = await createTestTempDirectory(
+    "binsight-jadx-doctor-remediation-",
+  );
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
 
@@ -89,7 +91,7 @@ it("guides Java selection when the Java runtime is missing", async () => {
 });
 
 it("guides Java selection when JAVA_HOME is not an absolute path", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-options-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-options-");
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
 
@@ -124,7 +126,7 @@ it("publishes no registration environment when REA_JADX_MCP_JAR is unset", async
 });
 
 it("publishes no registration environment when the configured JAR fails validation", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-invalid-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-invalid-");
   const jar = join(root, "engine.jar");
   const javaHome = await createFakeJdk(root);
   await writeFile(jar, "not a Java archive");
@@ -152,7 +154,7 @@ it("publishes no registration environment when the configured JAR fails validati
 });
 
 it("classifies a missing Java runtime as a missing dependency", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-runtime-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-runtime-");
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
 
@@ -177,7 +179,7 @@ it("classifies a missing Java runtime as a missing dependency", async () => {
 });
 
 it("guides JVM option correction when REA_JADX_HEAP_MIB is invalid", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-heap-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-heap-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -194,7 +196,7 @@ it("guides JVM option correction when REA_JADX_HEAP_MIB is invalid", async () =>
 });
 
 it("publishes validated JVM resource overrides in the registration environment", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-overrides-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-overrides-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -216,7 +218,7 @@ it("publishes validated JVM resource overrides in the registration environment",
 });
 
 it("publishes and reports a validated operation deadline", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-deadline-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-deadline-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -239,7 +241,9 @@ it("publishes and reports a validated operation deadline", async () => {
 });
 
 it("guides deadline correction when REA_JADX_OPERATION_TIMEOUT_MS is invalid", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-bad-deadline-");
+  const root = await createTestTempDirectory(
+    "binsight-jadx-doctor-bad-deadline-",
+  );
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -264,7 +268,7 @@ it("guides deadline correction when REA_JADX_OPERATION_TIMEOUT_MS is invalid", a
 });
 
 it("guides JDK selection when the Java runtime is older than 17", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-oldjdk-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-oldjdk-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root, "11");
   await writeJadxJarInventory(jar);
@@ -280,7 +284,7 @@ it("guides JDK selection when the Java runtime is older than 17", async () => {
 });
 
 it("guides JAR replacement when the JAR misses bridge classes", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-classes-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-classes-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeOrderedZip(jar, ["com/atxx/jhmcp/JadxSession.class"]);
@@ -330,7 +334,7 @@ it("guides Windows native package correction when process ownership is unavailab
 
     expect(inspection.checks[0]?.code).toBe("runtime_missing");
     expect(inspection.checks[0]?.remediation).toContain(
-      "Windows x64 REA package",
+      "Windows x64 BinSight package",
     );
     expect(inspection.checks[0]?.remediation).not.toContain("JAVA_HOME");
   } finally {
@@ -346,7 +350,9 @@ it("guides Windows native package correction when process ownership is unavailab
 });
 
 it("guides Java probe correction when the module listing is unparseable", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-unparseable-");
+  const root = await createTestTempDirectory(
+    "binsight-jadx-doctor-unparseable-",
+  );
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
   // Fake JDK whose module listing lacks a parseable java.base version.
@@ -408,7 +414,7 @@ it("classifies missing Windows native artifacts as missing dependencies", async 
 });
 
 it("classifies malformed JAVA_HOME as configuration drift", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-javahome-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-javahome-");
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
 
@@ -422,7 +428,7 @@ it("classifies malformed JAVA_HOME as configuration drift", async () => {
 });
 
 it("preserves Java probe diagnostics in doctor output", async () => {
-  const root = await createTestTempDirectory("rea-jadx-doctor-probe-");
+  const root = await createTestTempDirectory("binsight-jadx-doctor-probe-");
   const jar = join(root, "jadx-headless-mcp.jar");
   await writeJadxJarInventory(jar);
   const javaHome = join(root, "fake-jdk-unparseable");

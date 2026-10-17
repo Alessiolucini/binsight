@@ -32,7 +32,9 @@ const applicationEnvelope = z.object({
 let cliCacheWorkspace: TestWorkspace | undefined;
 
 beforeAll(async () => {
-  cliCacheWorkspace = await createTestWorkspace("rea-export-bindings-cache-");
+  cliCacheWorkspace = await createTestWorkspace(
+    "binsight-export-bindings-cache-",
+  );
 });
 
 // Source semantics use the real stdio workflow throughout the matrix. The
@@ -950,7 +952,7 @@ describe("export writes in function evaluation contexts", () => {
 });
 
 it("retains namespace re-export bindings and provenance through stdio MCP and CLI", async () => {
-  const root = await createTestTempDirectory("rea-namespace-reexports-");
+  const root = await createTestTempDirectory("binsight-namespace-reexports-");
   const declarations = [
     { clause: "* as ns", name: "ns", imported: "*" },
     {
@@ -1058,7 +1060,9 @@ it("retains namespace re-export bindings and provenance through stdio MCP and CL
 });
 
 it("excludes erased namespace type exports through stdio MCP and CLI", async () => {
-  const root = await createTestTempDirectory("rea-namespace-type-exports-");
+  const root = await createTestTempDirectory(
+    "binsight-namespace-type-exports-",
+  );
   const path = join(root, "barrel.mts");
   await Promise.all([
     writeFile(
@@ -1234,7 +1238,9 @@ const analyzeVersions = async (
   exportName: string,
   fileName = "app.mjs",
 ) => {
-  const root = await createTestTempDirectory("rea-exported-function-bindings-");
+  const root = await createTestTempDirectory(
+    "binsight-exported-function-bindings-",
+  );
   const leftRoot = join(root, "left");
   const rightRoot = join(root, "right");
   await Promise.all([mkdir(leftRoot), mkdir(rightRoot)]);

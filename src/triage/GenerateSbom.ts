@@ -36,7 +36,7 @@ type Location = SbomComponent["locations"][number];
 /**
  * Inventory the components a local file records about itself. Go build
  * information and Rust cargo-auditable metadata yield derived identities; a
- * REA-authored signature table infers further components from embedded version
+ * BinSight-authored signature table infers further components from embedded version
  * banners. The file is read once and never executed; no network or vulnerability
  * database is consulted; nothing is written. Completeness is always partial:
  * an absent source is not evidence that a component is absent.

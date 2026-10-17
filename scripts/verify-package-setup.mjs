@@ -48,7 +48,7 @@ const CODEX_ORIGINAL = [
 const verifyMcpAdd = async ({ cli, environment, npxLog }) => {
   await run(cli, ["mcp", "add"], environment);
   const mcpRegistration = await readFile(npxLog, "utf8");
-  const expected = `add-mcp npx -y ${PRODUCT_IDENTITY.registrationPackageSpecifier} mcp --name rea`;
+  const expected = `add-mcp npx -y ${PRODUCT_IDENTITY.registrationPackageSpecifier} mcp --name binsight`;
   if (!mcpRegistration.includes(expected))
     throw new Error("Incur mcp add did not register the pinned npx command");
 };
@@ -117,7 +117,7 @@ const verifyInteractiveSetup = async ({
 
     terminal.onData((data) => {
       output += data;
-      if (!cancelled && output.includes("Which agents should use REA?")) {
+      if (!cancelled && output.includes("Which agents should use BinSight?")) {
         cancelled = true;
         terminal.write("\u0003");
       }
@@ -142,7 +142,7 @@ const verifyInteractiveSetup = async ({
       ) {
         finish(
           new Error(
-            `packaged rea-agents setup did not cancel with a restored terminal and exit 0: ${output}`,
+            `packaged binsight setup did not cancel with a restored terminal and exit 0: ${output}`,
           ),
         );
         return;
@@ -213,8 +213,8 @@ const verifyRedirectedStdoutSetup = async ({
         childResult.stdinTTY !== true ||
         childResult.stderrTTY !== true ||
         childResult.stdoutRedirected !== true ||
-        childResult.stdout?.includes("Which agents should use REA?") ||
-        allOutput.includes("Which agents should use REA?") ||
+        childResult.stdout?.includes("Which agents should use BinSight?") ||
+        allOutput.includes("Which agents should use BinSight?") ||
         /\u001b\[[0-9;?]*[ -/]*[@-~]/u.test(allOutput)
       ) {
         finish(
@@ -288,9 +288,9 @@ const verifyAbsentOpenCodeSetup = async ({ cli, environment, home }) => {
     execution.status !== 0 ||
     result.status !== "ready" ||
     !result.appliedActions.includes("configured_opencode") ||
-    config.mcp?.rea?.type !== "local" ||
-    config.mcp.rea.enabled !== true ||
-    JSON.stringify(config.mcp.rea.command) !== JSON.stringify([cli, "mcp"])
+    config.mcp?.binsight?.type !== "local" ||
+    config.mcp.binsight.enabled !== true ||
+    JSON.stringify(config.mcp.binsight.command) !== JSON.stringify([cli, "mcp"])
   )
     throw new Error(
       `packaged setup did not configure explicitly selected OpenCode without a config file: ${JSON.stringify(result)}`,
@@ -331,8 +331,9 @@ const verifyAbsentClaudeCodeSetup = async ({ cli, environment, home }) => {
     firstExecution.status !== 0 ||
     first.status !== "ready" ||
     !first.appliedActions.includes("configured_claude_code") ||
-    config.mcpServers?.rea?.command !== cli ||
-    JSON.stringify(config.mcpServers?.rea?.args) !== JSON.stringify(["mcp"]) ||
+    config.mcpServers?.binsight?.command !== cli ||
+    JSON.stringify(config.mcpServers?.binsight?.args) !==
+      JSON.stringify(["mcp"]) ||
     (await pathExists(markerPath)) ||
     registration?.state !== "aligned" ||
     registration.config_path !== configPath
@@ -424,11 +425,12 @@ export const assertClientConfig = async (cli, configPath, original) => {
   const config = json(await readFile(configPath, "utf8"));
   if (
     config.existing !== true ||
-    config.mcpServers?.rea?.command !== cli ||
-    JSON.stringify(config.mcpServers?.rea?.args) !== JSON.stringify(["mcp"])
+    config.mcpServers?.binsight?.command !== cli ||
+    JSON.stringify(config.mcpServers?.binsight?.args) !==
+      JSON.stringify(["mcp"])
   )
     throw new Error("packaged client readback failed");
-  if (!(await readFile(`${configPath}.rea.backup`)).equals(original))
+  if (!(await readFile(`${configPath}.binsight.backup`)).equals(original))
     throw new Error("packaged client backup failed");
 };
 
@@ -449,10 +451,11 @@ const assertOpenCodeConfig = async ({
     config?.model !== "provider/model" ||
     mcp?.other?.command?.[0] !== "node" ||
     (expectedRegistration &&
-      (mcp?.rea?.type !== "local" ||
-        mcp.rea.enabled !== true ||
-        JSON.stringify(mcp.rea.command) !== JSON.stringify([cli, "mcp"]))) ||
-    (!expectedRegistration && mcp?.rea !== undefined)
+      (mcp?.binsight?.type !== "local" ||
+        mcp.binsight.enabled !== true ||
+        JSON.stringify(mcp.binsight.command) !==
+          JSON.stringify([cli, "mcp"]))) ||
+    (!expectedRegistration && mcp?.binsight !== undefined)
   )
     throw new Error("packaged OpenCode JSONC registration readback failed");
 };
@@ -467,11 +470,12 @@ const assertCodexSymlink = async ({
   if (
     !(await lstat(codexConfig)).isSymbolicLink() ||
     !(await lstat(cursorConfig)).isSymbolicLink() ||
-    !codex.includes("[mcp_servers.rea]") ||
+    !codex.includes("[mcp_servers.binsight]") ||
     !codex.includes(`command = "${cli}"`) ||
     !codex.includes("startup_timeout_sec = 30") ||
     !codex.startsWith(CODEX_ORIGINAL) ||
-    (await readFile(`${codexConfig}.rea.backup`, "utf8")) !== CODEX_ORIGINAL
+    (await readFile(`${codexConfig}.binsight.backup`, "utf8")) !==
+      CODEX_ORIGINAL
   )
     throw new Error("packaged setup did not preserve config symlinks");
 };
@@ -554,7 +558,7 @@ const verifyConfigReadback = async ({
     expectedRegistration: true,
   });
   if (
-    (await readFile(`${opencodeConfig}.rea.backup`, "utf8")) !==
+    (await readFile(`${opencodeConfig}.binsight.backup`, "utf8")) !==
     opencodeOriginal
   )
     throw new Error(
@@ -586,7 +590,8 @@ const verifySetupFailureRecovery = async ({
     !failed.remediation?.includes("Claude Desktop") ||
     (await readFile(claudeConfig, "utf8")) !== "malformed" ||
     json(await readFile(cursorConfig, "utf8")).existing !== true ||
-    json(await readFile(cursorConfig, "utf8")).mcpServers?.rea !== undefined
+    json(await readFile(cursorConfig, "utf8")).mcpServers?.binsight !==
+      undefined
   )
     throw new Error(
       `packaged setup mutated clients after a preflight failure: ${JSON.stringify(failed)}`,
@@ -601,7 +606,8 @@ const verifySetupFailureRecovery = async ({
   if (
     recovered.status !== status ||
     recoveredExecution.status !== (status === "ready" ? 0 : 1) ||
-    json(await readFile(cursorConfig, "utf8")).mcpServers?.rea?.command !== cli
+    json(await readFile(cursorConfig, "utf8")).mcpServers?.binsight?.command !==
+      cli
   )
     throw new Error("packaged setup did not recover");
 };
@@ -625,7 +631,7 @@ const verifyDanglingSymlink = async ({ cli, environment, home }) => {
     !dangling.remediation?.includes("Gemini CLI") ||
     !dangling.remediation?.includes("unsafe or unresolved") ||
     !(await lstat(geminiConfig)).isSymbolicLink() ||
-    (await pathExists(`${geminiConfig}.rea.backup`))
+    (await pathExists(`${geminiConfig}.binsight.backup`))
   )
     throw new Error(
       `packaged setup did not reject a dangling config symlink before mutation: ${JSON.stringify(dangling)}`,
@@ -666,24 +672,25 @@ const verifyUninstall = async ({
     !(await lstat(cursorConfig)).isSymbolicLink() ||
     !(await lstat(codexConfig)).isSymbolicLink() ||
     cursorAfterUninstall.existing !== true ||
-    cursorAfterUninstall.mcpServers?.rea !== undefined ||
+    cursorAfterUninstall.mcpServers?.binsight !== undefined ||
     codexAfterUninstall !== CODEX_ORIGINAL ||
-    codexAfterUninstall.includes("mcp_servers.rea") ||
+    codexAfterUninstall.includes("mcp_servers.binsight") ||
     openCodeErrors.length !== 0 ||
     openCodeAfterUninstall?.model !== "provider/model" ||
-    openCodeAfterUninstall?.mcp?.rea !== undefined ||
+    openCodeAfterUninstall?.mcp?.binsight !== undefined ||
     openCodeAfterUninstall?.mcp?.other?.command?.[0] !== "node" ||
-    !(await readFile(`${opencodeConfig}.rea.backup`, "utf8")).includes(
+    !(await readFile(`${opencodeConfig}.binsight.backup`, "utf8")).includes(
       "OpenCode preferences must survive setup",
     ) ||
-    !(await readFile(`${opencodeConfig}.rea.backup`, "utf8")).includes(
+    !(await readFile(`${opencodeConfig}.binsight.backup`, "utf8")).includes(
       "Keep this independently managed server",
     ) ||
-    (await readFile(`${opencodeConfig}.rea.backup`, "utf8")) !==
+    (await readFile(`${opencodeConfig}.binsight.backup`, "utf8")) !==
       OPENCODE_ORIGINAL ||
-    (await readFile(`${cursorConfig}.rea.backup`, "utf8")) !==
+    (await readFile(`${cursorConfig}.binsight.backup`, "utf8")) !==
       '{"existing":true}\n' ||
-    (await readFile(`${codexConfig}.rea.backup`, "utf8")) !== CODEX_ORIGINAL
+    (await readFile(`${codexConfig}.binsight.backup`, "utf8")) !==
+      CODEX_ORIGINAL
   )
     throw new Error(
       `packaged uninstall did not preserve config symlinks: ${JSON.stringify(uninstall)}`,

@@ -140,7 +140,10 @@ let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr += chunk.toString();
 });
-const client = new Client({ name: "rea-real-android-verifier", version: "1" });
+const client = new Client({
+  name: "binsight-real-android-verifier",
+  version: "1",
+});
 try {
   await client.connect(transport, { timeout: 30_000 });
   for (const task of tasks) {

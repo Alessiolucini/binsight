@@ -13,7 +13,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplication.js";
 
 const createPackageSubpathFixture = async () => {
-  const root = await createTestTempDirectory("rea-package-subpaths-");
+  const root = await createTestTempDirectory("binsight-package-subpaths-");
   const source = [
     'const nearest = require("fixture/parser");',
     'const nested = require("nested/parser");',

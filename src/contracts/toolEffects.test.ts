@@ -62,7 +62,7 @@ const EXECUTION_WORDING_EXCEPTIONS: Readonly<Record<string, string>> = {
   inspect_recorded_crash: "inspects a core file without launching its target",
   inspect_macho: "runs host Mach-O inspection tools, not the target",
   inspect_evm_interface:
-    "decodes bytecode in REA's bundled worker without executing it",
+    "decodes bytecode in BinSight's bundled worker without executing it",
   compare_wasm_interfaces:
     "compares retained inspection Evidence without executing modules",
   inspect_wasm_artifact:
@@ -85,10 +85,12 @@ const EXECUTION_WORDING_EXCEPTIONS: Readonly<Record<string, string>> = {
   inspect_pcap_client:
     "probes the operator-selected tshark and capinfos; never installs them",
   inspect_jeb_client: "talks to a caller-started JEB; never launches it",
-  open_jeb_project: "the engine analyzes the file; REA does not execute it",
+  open_jeb_project:
+    "the engine analyzes the file; BinSight does not execute it",
   inspect_adb_client:
     "inspects the operator-selected adb client; never starts its server",
-  list_adb_devices: "may start the local adb server, which REA does not own",
+  list_adb_devices:
+    "may start the local adb server, which BinSight does not own",
   inspect_firmware_regions: "states there is no target execution",
   extract_firmware: "states that extracted code is never executed",
   analyze_javascript_application: "reconstructs the graph without executing",
@@ -102,7 +104,7 @@ const EXECUTION_WORDING_EXCEPTIONS: Readonly<Record<string, string>> = {
   project_harmony_application_graph: "execution-free inventory",
   trace_web_source_location: "states there is no application execution",
   trace_web_module_imports:
-    "runs only REA's resolver stub in operator-configured Chromium",
+    "runs only BinSight's resolver stub in operator-configured Chromium",
   export_web_scripts: "states there is no refetch or execution",
   observe_web_execution:
     "instruments an externally driven page; it does not run code itself",

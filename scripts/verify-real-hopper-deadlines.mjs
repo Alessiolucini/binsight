@@ -23,7 +23,7 @@ const fixtures = await loadRealHopperFixtureTargets(
     "build/conformance/manifest.json",
 );
 const root = await realpath(
-  await mkdtemp(join(tmpdir(), "rea-hopper-deadlines-")),
+  await mkdtemp(join(tmpdir(), "binsight-hopper-deadlines-")),
 );
 const target = join(root, "deadline-fixture");
 let client;

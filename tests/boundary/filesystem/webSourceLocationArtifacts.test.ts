@@ -19,7 +19,7 @@ const reader = () => {
   });
 };
 it("reads exact selected map bytes, retaining a BOM and explicitly selected URL context", async () => {
-  const root = await createTestTempDirectory("rea-map-artifacts-");
+  const root = await createTestTempDirectory("binsight-map-artifacts-");
   const path = join(root, "app.map");
   const text = '\uFEFF{"version":3,"sources":[],"names":[],"mappings":""}';
   await writeFile(path, text);
@@ -41,7 +41,7 @@ it("reads exact selected map bytes, retaining a BOM and explicitly selected URL 
 it.each(["unavailable", "invalid-utf8", "oversized"])(
   "preserves the selected map reader failure: %s",
   async (variant) => {
-    const root = await createTestTempDirectory("rea-map-artifacts-");
+    const root = await createTestTempDirectory("binsight-map-artifacts-");
     const path = join(root, "app.map");
     if (variant === "invalid-utf8")
       await writeFile(path, Buffer.from([255, 254]));

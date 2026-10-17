@@ -55,8 +55,8 @@ describe("static Electron application analysis", () => {
     const evidence = parseEvidence(result.value);
     expect(evidence).toMatchObject({
       operation: "analyze_javascript_application",
-      predicate_type: "rea.javascript-application-analysis",
-      provider: { id: "rea-javascript-application" },
+      predicate_type: "binsight.javascript-application-analysis",
+      provider: { id: "binsight-javascript-application" },
       authority: "shipped-artifact",
       confidence: "derived",
       subject: { local_path: root, format: "directory" },
@@ -126,7 +126,7 @@ describe("static Electron application analysis", () => {
       },
       utility_processes: 1,
     });
-    expect(handledChannels.sort()).toEqual(["rea:read", "rea:write"]);
+    expect(handledChannels.sort()).toEqual(["binsight:read", "binsight:write"]);
   });
 
   it("maps unchanged var and let require aliases while excluding reassigned bindings", async () => {
@@ -163,7 +163,9 @@ describe("static Electron application analysis", () => {
 });
 
 const exactRuntimeEntrypointFixture = async (): Promise<void> => {
-  const root = await createTestTempDirectory("rea-electron-exact-entrypoints-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-exact-entrypoints-",
+  );
   await mkdir(join(root, "renderer/page"), { recursive: true });
   await Promise.all([
     writeFile(
@@ -500,7 +502,7 @@ const expectElectronBoundaries = (graph: ApplicationGraph): void => {
         observations: expect.arrayContaining([
           expect.objectContaining({
             properties: expect.objectContaining({
-              api_key: "reaApi",
+              api_key: "binsightApi",
               members: expect.arrayContaining([
                 "nested",
                 "nested.write",
@@ -540,25 +542,27 @@ const expectElectronBoundaries = (graph: ApplicationGraph): void => {
   expect(pairingEdges).toHaveLength(4);
   expect(
     pairingEdges.some(
-      ({ properties }) => properties.channel === "rea:ambiguous",
+      ({ properties }) => properties.channel === "binsight:ambiguous",
     ),
   ).toBe(false);
   expect(graph.limitations.join(" ")).toMatch(/dynamic IPC|ambiguous/iu);
 };
 
 const fixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-boundaries-");
+  const root = await createTestTempDirectory("binsight-electron-boundaries-");
   await writeElectronBoundaryFixture(root);
   return root;
 };
 
 const requireAliasFixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-require-aliases-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-require-aliases-",
+  );
   await Promise.all([
     writeFile(
       join(root, "package.json"),
       JSON.stringify({
-        name: "rea-electron-require-aliases",
+        name: "binsight-electron-require-aliases",
         main: "main.cjs",
       }),
     ),
@@ -567,29 +571,29 @@ const requireAliasFixtureDirectory = async (): Promise<string> => {
       String.raw`
 var { ipcMain: main } = require("electron");
 let listener = require("electron/main").ipcMain;
-main.handle("rea:read", async () => "value");
-listener.on("rea:write", () => undefined);
+main.handle("binsight:read", async () => "value");
+listener.on("binsight:write", () => undefined);
 
 let replaced = require("electron").ipcMain;
 replaced = { handle() {} };
-replaced.handle("rea:reassigned", () => undefined);
+replaced.handle("binsight:reassigned", () => undefined);
 
 var assignedLater;
-assignedLater.handle("rea:before-assignment", () => undefined);
+assignedLater.handle("binsight:before-assignment", () => undefined);
 assignedLater = require("electron").ipcMain;
 
 if (globalThis.registerIpc) {
   var conditional = require("electron").ipcMain;
 }
-conditional.handle("rea:conditional", () => undefined);
+conditional.handle("binsight:conditional", () => undefined);
 `,
     ),
     writeFile(
       join(root, "preload.cjs"),
       String.raw`
 const { ipcRenderer } = require("electron");
-ipcRenderer.invoke("rea:read");
-ipcRenderer.send("rea:write", "value");
+ipcRenderer.invoke("binsight:read");
+ipcRenderer.send("binsight:write", "value");
 `,
     ),
   ]);
@@ -597,11 +601,11 @@ ipcRenderer.send("rea:write", "value");
 };
 
 const renamedBindingFixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-renamed-");
+  const root = await createTestTempDirectory("binsight-electron-renamed-");
   await Promise.all([
     writeFile(
       join(root, "package.json"),
-      JSON.stringify({ name: "rea-electron-renamed", main: "main.mjs" }),
+      JSON.stringify({ name: "binsight-electron-renamed", main: "main.mjs" }),
     ),
     // Bundlers rename colliding imports, e.g. esbuild's ipcMain2.
     writeFile(
@@ -611,11 +615,11 @@ import { BrowserWindow as BrowserWindow2, ipcMain as ipcMain2 } from "electron";
 import { ipcMain as ipcMain3, utilityProcess as utility } from "electron/main";
 
 new BrowserWindow2({ webPreferences: { preload: "./preload.cjs" } });
-ipcMain2.handle("rea:read", async () => "value");
-ipcMain3.on("rea:write", () => undefined);
+ipcMain2.handle("binsight:read", async () => "value");
+ipcMain3.on("binsight:write", () => undefined);
 utility.fork("./worker.js");
 function register(ipcMain2) {
-  ipcMain2.handle("rea:shadowed", async () => "local");
+  ipcMain2.handle("binsight:shadowed", async () => "local");
 }
 export { register };
 `,
@@ -624,9 +628,9 @@ export { register };
       join(root, "preload.cjs"),
       String.raw`
 const { contextBridge: bridge, ipcRenderer: ipc } = require("electron");
-bridge.exposeInMainWorld("reaApi", {
-  read: () => ipc.invoke("rea:read"),
-  write: (value) => ipc.send("rea:write", value),
+bridge.exposeInMainWorld("binsightApi", {
+  read: () => ipc.invoke("binsight:read"),
+  write: (value) => ipc.send("binsight:write", value),
 });
 `,
     ),
@@ -636,7 +640,9 @@ bridge.exposeInMainWorld("reaApi", {
 };
 
 const computedMemberFixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-computed-members-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-computed-members-",
+  );
   await mkdir(join(root, "native"));
   await Promise.all([
     writeFile(

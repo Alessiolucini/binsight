@@ -4,7 +4,7 @@ import { localPathStringSchema } from "../localPath.js";
 /**
  * Caller intent for JEB-backed inspection, independent of the engine build.
  *
- * JEB resolves paths on the host running the JEB client that serves MCP; REA
+ * JEB resolves paths on the host running the JEB client that serves MCP; BinSight
  * never launches the engine or opens the target itself.
  */
 export const jebInputSchemas = {

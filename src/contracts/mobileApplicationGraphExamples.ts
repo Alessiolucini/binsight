@@ -80,8 +80,8 @@ const inventory = (
 };
 
 const provider = {
-  id: "rea-artifact-graph",
-  name: "REA safe artifact graph provider",
+  id: "binsight-artifact-graph",
+  name: "BinSight safe artifact graph provider",
   version: "1",
 } as const;
 

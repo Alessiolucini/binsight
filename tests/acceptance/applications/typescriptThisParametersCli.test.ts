@@ -10,7 +10,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "maps arguments to runtime TypeScript parameters through %s",
   async (surface, { cli, processes }) => {
-    const root = await createTestTempDirectory("rea-this-parameters-");
+    const root = await createTestTempDirectory("binsight-this-parameters-");
     await writeFixtureFiles(root, {
       "bundle.mts": [
         "self.webpackChunkApp.push([[1], { 7: function(this: void, module: unknown, exports: Record<string, unknown>, require: (id: number) => unknown) { exports.answer = 42; } }, function(this: void, require: (id: number) => unknown) { require(7); }]);",

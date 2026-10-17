@@ -12,7 +12,7 @@ export const recoveryFixture = async (
   mode = "normal",
   source = "module.exports = 42;",
 ) => {
-  const root = await createTestTempDirectory("rea-recovery-fixture-");
+  const root = await createTestTempDirectory("binsight-recovery-fixture-");
   const path = join(root, "selected.js");
   await writeFile(path, source);
   const command = join(root, "fixture-wakaru");

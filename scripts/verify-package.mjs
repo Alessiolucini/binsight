@@ -37,7 +37,7 @@ const root = process.cwd();
 const execFileAsync = promisify(execFile);
 const retentionDirectory = process.env.REA_VERIFIED_PACKAGE_DIRECTORY;
 const verifierRun = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-package-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-package-"));
 const evidenceRoot = join(workspace, "evidence");
 const referenceRoot = join(workspace, "reference-source");
 let tarball;

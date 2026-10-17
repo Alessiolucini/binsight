@@ -1161,7 +1161,7 @@ it.skipIf(process.platform === "win32")(
   "retains the debugger owner while an unknown descendant holds output pipes open",
   async () => {
     const releaseDirectory = await mkdtemp(
-      join(tmpdir(), "rea-debugger-output-writer-"),
+      join(tmpdir(), "binsight-debugger-output-writer-"),
     );
     const releaseFile = join(releaseDirectory, "release-writer");
     const writerSource = `const{watch}=require("node:fs");const watcher=watch(${JSON.stringify(releaseDirectory)},(_event,name)=>{if(name==="release-writer"){watcher.close();process.exit(0)}});process.stdout.write("writer-ready\\n");`;
@@ -1241,7 +1241,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it.skipIf(process.platform === "win32")(
-  "preserves inferior output written to its selected PTY after the REA probe exits",
+  "preserves inferior output written to its selected PTY after the BinSight probe exits",
   async () => {
     const inferiorSource = [
       "process.stdout.write(`inferior-ready=${process.pid}\\n`);",
@@ -1308,7 +1308,7 @@ it.skipIf(process.platform === "win32")(
       inferiorPid = await ready;
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(
-          () => reject(new Error("REA probe did not exit")),
+          () => reject(new Error("BinSight probe did not exit")),
           3_000,
         );
         void probeExit.then(() => {

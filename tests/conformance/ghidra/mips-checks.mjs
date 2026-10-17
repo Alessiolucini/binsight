@@ -192,7 +192,7 @@ export function parseMipsReadelf(
   };
 }
 
-/** Independent reader is a bounded test prerequisite, never an REA provider. */
+/** Independent reader is a bounded test prerequisite, never an BinSight provider. */
 export async function inspectMipsReadelf(path, byteOrder, floatAbi = "hard") {
   const command = process.env.REA_MIPS_READELF ?? "readelf";
   const options = {

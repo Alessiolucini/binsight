@@ -194,7 +194,9 @@ describe("Hopper shutdown rejection diagnostics", () => {
 });
 
 it("keeps a prepared backing image when native document closure cannot be confirmed", async () => {
-  const parent = await createTestTempDirectory("rea-hopper-backing-lifetime-");
+  const parent = await createTestTempDirectory(
+    "binsight-hopper-backing-lifetime-",
+  );
   const runtimeRoot = await PrivateRuntimeRoot.create({ parent });
   const preparedImagePath = join(runtimeRoot.path, "image.macho");
   await writeFile(preparedImagePath, "owned backing bytes");

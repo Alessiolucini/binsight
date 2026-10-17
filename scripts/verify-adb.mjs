@@ -200,7 +200,7 @@ try {
     }
 
     if (pullCandidate !== null) {
-      const directory = await mkdtemp(join(tmpdir(), "rea-adb-verify-"));
+      const directory = await mkdtemp(join(tmpdir(), "binsight-adb-verify-"));
       try {
         const pull = await run("pull_adb_package", {
           serial,
@@ -237,14 +237,16 @@ try {
 
     // File transfer: push one lane-owned file, verify both digests, pull it
     // back, then clean up the device copy through the same fixed argv surface.
-    const transferRoot = await mkdtemp(join(tmpdir(), "rea-adb-transfer-"));
+    const transferRoot = await mkdtemp(
+      join(tmpdir(), "binsight-adb-transfer-"),
+    );
     try {
-      const payload = join(transferRoot, "rea-verify.txt");
-      const payloadBytes = "rea adb transfer verification\n";
+      const payload = join(transferRoot, "binsight-verify.txt");
+      const payloadBytes = "binsight adb transfer verification\n";
       await import("node:fs/promises").then((fs) =>
         fs.writeFile(payload, payloadBytes),
       );
-      const deviceTarget = `/data/local/tmp/rea-verify-${Date.now()}.txt`;
+      const deviceTarget = `/data/local/tmp/binsight-verify-${Date.now()}.txt`;
       const pushed = await run("push_adb_file", {
         serial,
         local_path: payload,
@@ -270,7 +272,7 @@ try {
             `${pulled.bytes} bytes`,
           );
       }
-      const screenRoot = await mkdtemp(join(tmpdir(), "rea-adb-screen-"));
+      const screenRoot = await mkdtemp(join(tmpdir(), "binsight-adb-screen-"));
       try {
         const screen = await run("capture_adb_screen", {
           serial,
@@ -298,7 +300,7 @@ try {
           );
       }
       if (options.installApk !== null && options.installApk !== undefined) {
-        const probePackage = "com.rea.adb.probe";
+        const probePackage = "com.binsight.adb.probe";
         const installedProbe = await run("install_adb_package", {
           serial,
           apk_path: options.installApk,
@@ -313,7 +315,7 @@ try {
           );
           const resolved = await run("resolve_adb_packages", {
             serial,
-            query: "rea.adb.probe",
+            query: "binsight.adb.probe",
           });
           if (resolved !== null)
             check(
@@ -361,7 +363,7 @@ try {
             );
           const afterRemoval = await run("resolve_adb_packages", {
             serial,
-            query: "rea.adb.probe",
+            query: "binsight.adb.probe",
           });
           if (afterRemoval !== null)
             check(

@@ -17,7 +17,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "closes cancelled discovery probes, stops queued probes and reuses the MCP connection",
   async () => {
-    const directory = await createTestTempDirectory("rea-cutter-discovery-");
+    const directory = await createTestTempDirectory(
+      "binsight-cutter-discovery-",
+    );
     await chmod(directory, 0o700);
     const sockets = new Set<Socket>();
     let accepted = 0;
@@ -277,7 +279,9 @@ it("cancels active discovery sockets, stops queued probes and recovers on the sa
     await import("../../../src/cutter/CutterBridgeClient.js");
   const { createTestTempDirectory } =
     await import("../../fixtures/temporaryDirectory.js");
-  const root = await createTestTempDirectory("rea-cutter-discovery-cancel-");
+  const root = await createTestTempDirectory(
+    "binsight-cutter-discovery-cancel-",
+  );
   const sockets = new Set<import("node:net").Socket>();
   let connections = 0;
   let ready!: () => void;

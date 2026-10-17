@@ -249,7 +249,9 @@ export class KunaTargetCommands {
 
   async #ensureWorkspace(): Promise<Result<Workspace, AnalysisError>> {
     this.#workspace ??= (async () => {
-      const root = await PrivateRuntimeRoot.create({ prefix: "rea-kuna-" });
+      const root = await PrivateRuntimeRoot.create({
+        prefix: "binsight-kuna-",
+      });
       try {
         const input = join(root.path, basename(this.target.path));
         const digest = await copyAndHash(

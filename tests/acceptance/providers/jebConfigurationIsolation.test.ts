@@ -39,7 +39,7 @@ test("keeps compiled CLI discovery usable while JEB rejects its malformed timeou
     expect(result.json).toMatchObject({
       capabilities: expect.arrayContaining([
         expect.objectContaining({
-          provider: expect.objectContaining({ id: "rea-artifact-graph" }),
+          provider: expect.objectContaining({ id: "binsight-artifact-graph" }),
         }),
       ]),
     });

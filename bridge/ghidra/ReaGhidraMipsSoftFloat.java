@@ -42,7 +42,7 @@ import org.xml.sax.InputSource;
  * as a specification extension, and assign it to every callable whose formal types use floats.
  */
 public final class ReaGhidraMipsSoftFloat extends GhidraScript {
-  static final String REPORT_KEY = "REA MIPS soft-float storage";
+  static final String REPORT_KEY = "BinSight MIPS soft-float storage";
   static final String POLICY = "o32-soft-float-prototype-v1";
   static final String PROTOTYPE = "__rea_soft_float";
   private static final Pattern FPU_REGISTER = Pattern.compile("f\\d+(_\\d+)?");
@@ -52,14 +52,14 @@ public final class ReaGhidraMipsSoftFloat extends GhidraScript {
     String processor = currentProgram.getLanguage().getProcessor().toString();
     if (!processor.equals("MIPS") || currentProgram.getDefaultPointerSize() != 4)
       throw new IllegalStateException(
-          "REA soft-float storage requires a 32-bit MIPS program, not " + processor);
+          "BinSight soft-float storage requires a 32-bit MIPS program, not " + processor);
     CompilerSpec spec = currentProgram.getCompilerSpec();
     PrototypeModel base = spec.getDefaultCallingConvention();
     new SpecExtension(currentProgram)
         .addReplaceCompilerSpecExtension(softFloatPrototype(base, spec), monitor);
     PrototypeModel soft = currentProgram.getCompilerSpec().getCallingConvention(PROTOTYPE);
     if (soft == null)
-      throw new IllegalStateException("REA soft-float prototype was not installed");
+      throw new IllegalStateException("BinSight soft-float prototype was not installed");
     requireIntegerStorage(
         soft.getStorageLocations(
             currentProgram,
@@ -92,12 +92,12 @@ public final class ReaGhidraMipsSoftFloat extends GhidraScript {
       definition.setCallingConvention(PROTOTYPE);
       definitions += 1;
     }
-    // Written last: any failure above leaves no report, and REA refuses the session.
+    // Written last: any failure above leaves no report, and BinSight refuses the session.
     currentProgram.getOptions(Program.PROGRAM_INFO).setString(
         REPORT_KEY,
         "{\"policy\":\"" + POLICY + "\",\"functions\":" + functions +
             ",\"definitions\":" + definitions + "}");
-    println("REA MIPS soft-float prototype: functions=" + functions + " definitions=" + definitions);
+    println("BinSight MIPS soft-float prototype: functions=" + functions + " definitions=" + definitions);
   }
 
   /** The default o32 model without floating-point registers or float-consuming rules. */
@@ -141,13 +141,13 @@ public final class ReaGhidraMipsSoftFloat extends GhidraScript {
   private static void requireIntegerStorage(VariableStorage[] storage, String owner) {
     for (VariableStorage item : storage) {
       if (item.isBadStorage() || item.isUnassignedStorage())
-        throw new IllegalStateException("REA soft-float storage unresolved for " + owner);
+        throw new IllegalStateException("BinSight soft-float storage unresolved for " + owner);
       List<Register> registers = item.getRegisters();
       if (registers == null) continue; // stack-only storage
       for (Register register : registers) {
         if (FPU_REGISTER.matcher(register.getName()).matches())
           throw new IllegalStateException(
-              "REA soft-float storage still uses " + register.getName() + " for " + owner);
+              "BinSight soft-float storage still uses " + register.getName() + " for " + owner);
       }
     }
   }

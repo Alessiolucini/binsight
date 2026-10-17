@@ -26,7 +26,7 @@ assert(
   "Usage: verify-grok-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-grok-client-"));
+const lab = await mkdtemp(join(tmpdir(), "binsight-grok-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -183,7 +183,10 @@ const fixture = await createOpenAiModelFixture({
   onRequest: async ({ body, tools }) => {
     // Native title/summary requests cannot execute the analyst workflow.
     if (!tools.some((tool) => tool.name === "search_tool"))
-      return { role: "assistant", content: "REA fixture auxiliary response" };
+      return {
+        role: "assistant",
+        content: "BinSight fixture auxiliary response",
+      };
     turn++;
     assert(
       containsText(body.messages, skillDirectory),
@@ -238,7 +241,7 @@ const fixture = await createOpenAiModelFixture({
         return call("run_terminal_command", {
           command: `${diagnostic} > ${shellQuote(diagnosticFile)} && ${projection}`,
           description:
-            "Diagnose REA registration while native MCP discovery is pending",
+            "Diagnose BinSight registration while native MCP discovery is pending",
         });
       }
       if (lastTool === "run_terminal_command") {
@@ -247,7 +250,7 @@ const fixture = await createOpenAiModelFixture({
           .find((item) => item.startsWith('{"rea_client_diagnostic":'));
         assert(
           line,
-          "Native REA diagnostics failed or did not return the selected status",
+          "Native BinSight diagnostics failed or did not return the selected status",
         );
         const diagnostic = JSON.parse(line).rea_client_diagnostic;
         assert.equal(diagnostic.healthy, true);
@@ -262,14 +265,14 @@ const fixture = await createOpenAiModelFixture({
         diagnosticsVerified = true;
       }
       if (discovery?.status !== "ready")
-        return call("search_tool", { query: "rea", limit: 255 });
+        return call("search_tool", { query: "binsight", limit: 255 });
       const inventory = discovery.results
-        .filter((result) => result.server === "rea")
+        .filter((result) => result.server === "binsight")
         .flatMap((result) => result.tools);
       assert.deepEqual(
         inventory.map((tool) => tool.tool_name).sort(),
         expectedNames,
-        "Native search_tool must discover the complete REA catalog",
+        "Native search_tool must discover the complete BinSight catalog",
       );
       for (const tool of inventory) {
         assert(tool.input_schema, `${tool.tool_name}: missing input schema`);
@@ -317,7 +320,7 @@ const fixture = await createOpenAiModelFixture({
           .map(shellQuote)
           .join(" "),
         description:
-          "Query full saved REA Evidence while preserving artifact identity",
+          "Query full saved BinSight Evidence while preserving artifact identity",
       });
     }
     const line = last
@@ -340,7 +343,7 @@ const fixture = await createOpenAiModelFixture({
 });
 const q = JSON.stringify;
 const original = `# Keep unrelated settings and server state.
-disabled_mcp_servers = ["rea", "other"]
+disabled_mcp_servers = ["binsight", "other"]
 [cli]
 auto_update = false
 [features]
@@ -348,8 +351,8 @@ telemetry = "off"
 [skills]
 paths = [${q(join(account, ".agents", "skills"))}]
 ignore = [${q(join(homedir(), ".agents", "skills"))}]
-[model.rea-client-fixture]
-model = "rea-client-fixture"
+[model.binsight-client-fixture]
+model = "binsight-client-fixture"
 base_url = ${q(fixture.baseUrl)}
 api_key = "local-fixture-key"
 api_backend = "chat_completions"
@@ -360,7 +363,7 @@ command = "unrelated-server"
 enabled = false
 `;
 await writeFile(configPath, original);
-const rea = async (args) =>
+const binsight = async (args) =>
   exec(
     process.execPath,
     [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
@@ -375,7 +378,7 @@ try {
     ["setup", "--client", "grok_build", "--yes"],
     ["doctor", "--client", "grok_build", "--skill"],
   ]) {
-    const result = await rea(args);
+    const result = await binsight(args);
     await writeFile(
       join(lab, `${args[0]}${args.includes("--dry-run") ? "-plan" : ""}.json`),
       result.stdout,
@@ -408,18 +411,24 @@ try {
       }
     }
   }
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const configured = await readFile(configPath, "utf8");
   assert(
     configured.includes("unrelated-server") &&
       configured.includes("# Keep unrelated settings"),
   );
   const repeated = JSON.parse(
-    (await rea(["setup", "--client", "grok_build", "--yes"])).stdout,
+    (await binsight(["setup", "--client", "grok_build", "--yes"])).stdout,
   );
   assert.deepEqual(repeated.appliedActions, []);
   assert.equal(await readFile(configPath, "utf8"), configured);
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const skill = await readFile(join(skillDirectory, "SKILL.md"), "utf8");
   expectedSkill = skill
     .trimEnd()
@@ -434,9 +443,9 @@ try {
       "-p",
       mode === "chat"
         ? "Say hello briefly."
-        : `Use the REA skill to analyze ${target}.`,
+        : `Use the BinSight skill to analyze ${target}.`,
       "-m",
-      "rea-client-fixture",
+      "binsight-client-fixture",
       "--output-format",
       "streaming-messages-json",
       "--always-approve",
@@ -461,9 +470,11 @@ try {
   const init = events.find(
     (event) => event.type === "system" && event.subtype === "init",
   );
-  assert(init?.mcp_servers?.some((server) => server.name === "rea"));
+  assert(init?.mcp_servers?.some((server) => server.name === "binsight"));
   assert(
-    init.mcp_servers.every((server) => ["rea", "other"].includes(server.name)),
+    init.mcp_servers.every((server) =>
+      ["binsight", "other"].includes(server.name),
+    ),
     "Do not inherit foreign MCP configuration",
   );
   assert(
@@ -511,7 +522,7 @@ try {
     discovery:
       "native GROK_HOME, isolated additional skill directory, disabled foreign compatibility sources; default OS-home skill discovery and Windows unverified",
     interface:
-      "default native search_tool/use_tool with a complete explicit inventory query; asynchronous partial discovery may trigger native REA diagnosis; large MCP outputs are queried via native terminal",
+      "default native search_tool/use_tool with a complete explicit inventory query; asynchronous partial discovery may trigger native BinSight diagnosis; large MCP outputs are queried via native terminal",
     catalogChecked,
     catalogSize: catalogChecked ? expectedNames.length : 0,
     schemasChecked,

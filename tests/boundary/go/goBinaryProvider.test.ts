@@ -14,7 +14,7 @@ import {
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("distinguishes unsupported MZ carriers from damaged PE declarations", async () => {
-  const root = await createTestTempDirectory("rea-go-mz-");
+  const root = await createTestTempDirectory("binsight-go-mz-");
   for (const fixture of createGoBinaryDiagnosticFixtures()) {
     const path = join(root, `${fixture.name}.exe`);
     await writeFile(path, fixture.bytes);
@@ -32,7 +32,7 @@ it("distinguishes unsupported MZ carriers from damaged PE declarations", async (
 it.each([32, 64] as const)(
   "rejects advertised PE%d data directories outside the optional header",
   async (bits) => {
-    const root = await createTestTempDirectory("rea-go-pe-directories-");
+    const root = await createTestTempDirectory("binsight-go-pe-directories-");
     const fixture = createGoBinaryFixture({ format: "pe", bits });
     fixture.bytes.writeUInt32LE(1, 152 + (bits === 64 ? 108 : 92));
     const path = join(root, `truncated-pe${String(bits)}.exe`);
@@ -52,7 +52,7 @@ it.each([32, 64] as const)(
 it("preserves the actual build-info byte guard as a resource failure", async () => {
   const fixture = createGoBinaryFixture();
   fixture.bytes.set([0x81, 0x80, 0x40], fixture.headerOffset + 32);
-  const root = await createTestTempDirectory("rea-go-resource-");
+  const root = await createTestTempDirectory("binsight-go-resource-");
   const path = join(root, "oversized-metadata.elf");
   await writeFile(path, fixture.bytes);
   const result = await new GoBinaryProvider().inspect({ path });
@@ -72,7 +72,7 @@ it("preserves the actual build-info byte guard as a resource failure", async () 
 it.skipIf(process.platform === "win32")(
   "rejects a symlink without replacing its selected file identity",
   async () => {
-    const root = await createTestTempDirectory("rea-go-symlink-");
+    const root = await createTestTempDirectory("binsight-go-symlink-");
     const selected = join(root, "selected");
     const original = join(root, "original.elf");
     await writeFile(original, createGoBinaryFixture().bytes);
@@ -88,7 +88,7 @@ it("reports a parse-complete GOPATH module text as unknown dependency coverage",
     "path\texample.com/tool/cmd/tool\n" +
     "build\t-compiler=gc\n" +
     "build\tGOOS=linux\n";
-  const root = await createTestTempDirectory("rea-go-gopath-metadata-");
+  const root = await createTestTempDirectory("binsight-go-gopath-metadata-");
   const path = join(root, "application.elf");
   await writeFile(path, createGoBinaryFixture({ moduleText }).bytes);
   const result = await new GoBinaryProvider().inspect({ path });
@@ -111,7 +111,7 @@ it("keeps a module-mode build with no dependency records as an observed empty li
     "path\texample.com/tool\n" +
     "mod\texample.com/tool\t(devel)\t\n" +
     "build\tGOOS=linux\n";
-  const root = await createTestTempDirectory("rea-go-empty-module-deps-");
+  const root = await createTestTempDirectory("binsight-go-empty-module-deps-");
   const path = join(root, "application.elf");
   await writeFile(path, createGoBinaryFixture({ moduleText }).bytes);
   const result = await new GoBinaryProvider().inspect({ path });

@@ -18,7 +18,7 @@ const sampleEntry = async (
 };
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-dir-reader-open-");
+  const root = await createTestTempDirectory("binsight-dir-reader-open-");
   const path = join(root, "sample.txt");
   await writeFile(path, "test payload\n");
   return { path, reader: new DirectoryArtifactReader(root) };
@@ -98,7 +98,7 @@ describe("DirectoryArtifactReader.open", () => {
   it.each(["truncate", "grow"])(
     "rejects a same-file %s between streamed chunks within the captured byte bound",
     async (mutation) => {
-      const root = await createTestTempDirectory("rea-dir-reader-mutate-");
+      const root = await createTestTempDirectory("binsight-dir-reader-mutate-");
       const path = join(root, "sample.txt");
       const originalBytes = 1024 * 1024;
       await writeFile(path, Buffer.alloc(originalBytes, 0x61));

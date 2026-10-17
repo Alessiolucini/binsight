@@ -52,7 +52,7 @@ export const createGhidraEndpoint = async (
     return { endpoint: { transport, path } };
   const socketRoot = await PrivateRuntimeRoot.create({
     parent: "/tmp",
-    prefix: "rea-ghidra-socket-",
+    prefix: "binsight-ghidra-socket-",
     platform,
   });
   return {

@@ -112,7 +112,7 @@ export async function buildMipsFixture(
           );
     if (named === -1)
       throw new Error("Legacy fixture lacks the expected ABI section name");
-    raw.write("x.rea.no.flags", named, "ascii");
+    raw.write("x.binsight.no.flags", named, "ascii");
     await writeFile(path, raw);
     const patched = await readFile(path);
     const patchedFlags =

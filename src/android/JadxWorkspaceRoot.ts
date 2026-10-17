@@ -146,7 +146,9 @@ class WindowsJadxWorkspaceRoot implements JadxWorkspaceRoot {
       if (
         win32.dirname(localDrivePath(observation.path)).toLowerCase() !==
           localDrivePath(win32.resolve(parent)).toLowerCase() ||
-        !/^rea-android-[a-f0-9]{32}$/u.test(win32.basename(observation.path))
+        !/^binsight-android-[a-f0-9]{32}$/u.test(
+          win32.basename(observation.path),
+        )
       )
         throw new Error(
           "Android workspace guardian returned an unexpected root",
@@ -221,4 +223,4 @@ class WindowsJadxWorkspaceRoot implements JadxWorkspaceRoot {
 export const createJadxWorkspaceRoot = (): Promise<JadxWorkspaceRoot> =>
   process.platform === "win32"
     ? WindowsJadxWorkspaceRoot.create()
-    : PrivateRuntimeRoot.create({ prefix: "rea-android-" });
+    : PrivateRuntimeRoot.create({ prefix: "binsight-android-" });

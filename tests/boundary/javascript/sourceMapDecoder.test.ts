@@ -74,7 +74,7 @@ it("runs the real pinned codec with an independent heap and removes its private 
   let path: string | undefined;
   const environment = {
     ...process.env,
-    NODE_OPTIONS: "--require=/rea-file-that-does-not-exist",
+    NODE_OPTIONS: "--require=/binsight-file-that-does-not-exist",
   };
   const decoder = realDecoder({
     environment,
@@ -108,7 +108,7 @@ it("runs the real pinned codec with an independent heap and removes its private 
       process_memory_limit_bytes: SOURCE_MAP_CODEC_MEMORY_LIMIT_BYTES,
     });
   expect(environment.NODE_OPTIONS).toBe(
-    "--require=/rea-file-that-does-not-exist",
+    "--require=/binsight-file-that-does-not-exist",
   );
   if (path === undefined) throw new Error("runtime not acquired");
   await expect(access(path)).rejects.toMatchObject({ code: "ENOENT" });

@@ -24,7 +24,7 @@ export const projectSemanticFunctionFingerprints = (
       createJavaScriptSemanticFingerprint(
         {
           function_node_id: callable.node_id,
-          algorithm: "rea.javascript-semantic-function",
+          algorithm: "binsight.javascript-semantic-function",
           status: fingerprint.status,
           components: {
             parameter_arity: fingerprint.components.parameterArity,

@@ -8,7 +8,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("imports test-suffixed filenames with unchanged paths, hashes, and languages", async () => {
-  const root = await createTestTempDirectory("rea-reference-test-filenames-");
+  const root = await createTestTempDirectory(
+    "binsight-reference-test-filenames-",
+  );
   const files = [
     ["main_test.go", "package main\n", ["source", "test"], "Go"],
     ["test_helper.py", "assert True\n", ["source", "test"], "Python"],
@@ -55,7 +57,9 @@ it("imports test-suffixed filenames with unchanged paths, hashes, and languages"
 });
 
 it("keeps parser failures and unknown dependencies visible for test filenames", async () => {
-  const root = await createTestTempDirectory("rea-reference-test-parsing-");
+  const root = await createTestTempDirectory(
+    "binsight-reference-test-parsing-",
+  );
   await Promise.all([
     writeFile(
       join(root, "loader_test.js"),

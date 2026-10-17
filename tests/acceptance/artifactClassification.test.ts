@@ -19,7 +19,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.for(["jar", "zip"])(
   "distinguishes JVM classes from universal Mach-O files in %s inventory",
   async (extension, { cli }) => {
-    const root = await createTestTempDirectory("rea-class-inventory-");
+    const root = await createTestTempDirectory("binsight-class-inventory-");
     const path = join(root, `mixed.${extension}`);
     // The large class can hold the entire 65-entry table suggested by its
     // version bytes. Checking only the table length does not distinguish it.

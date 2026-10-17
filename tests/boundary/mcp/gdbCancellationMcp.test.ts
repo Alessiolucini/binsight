@@ -34,7 +34,7 @@ import {
 it.skipIf(process.platform === "win32")(
   "propagates MCP cancellation into a running GDB command",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-gdb-mcp-cancel-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-gdb-mcp-cancel-"));
     const provider = join(directory, "fake-gdb.mjs");
     const commandPath = join(directory, "command-started");
     await writeFile(
@@ -106,7 +106,7 @@ process.stdin.on("data", async (chunk) => {
 it.skipIf(process.platform === "win32")(
   "accepts caller-selected inferior_tty and exposes verified sink status through MCP",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-gdb-mcp-tty-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-gdb-mcp-tty-"));
     const provider = join(directory, "fake-gdb.mjs");
     const tty = `${directory}/inferior-"terminal-Ω"`;
     await writeFile(
@@ -188,7 +188,9 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "exposes lossy GDB MI decoding through the strict status MCP contract",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-gdb-mcp-mi-utf8-"));
+    const directory = await mkdtemp(
+      join(tmpdir(), "binsight-gdb-mcp-mi-utf8-"),
+    );
     const provider = join(directory, "fake-gdb.mjs");
     await writeFile(
       provider,
@@ -259,7 +261,7 @@ it("records partial GDB Evidence from an MCP command error", async () => {
       version: null,
     },
     {
-      predicateType: "rea.debugger.console-observation",
+      predicateType: "binsight.debugger.console-observation",
       operation: "gdb_console",
       parameters: {
         session_id: "00000000-0000-4000-8000-000000000001",
@@ -445,7 +447,7 @@ it("records partial GDB startup Evidence from an MCP start error", async () => {
       version: null,
     },
     {
-      predicateType: "rea.debugger.startup-observation",
+      predicateType: "binsight.debugger.startup-observation",
       operation: "start_gdb_session",
       parameters: { command: "GDB startup" },
       result: {

@@ -3,7 +3,7 @@
   "params": {
     "protocolVersion": "2025-11-25",
     "capabilities": {},
-    "clientInfo": { "name": "rea-protocol-golden", "version": "1" }
+    "clientInfo": { "name": "binsight-protocol-golden", "version": "1" }
   },
   "jsonrpc": "2.0",
   "id": 0

@@ -290,7 +290,7 @@ describe("browserScenarioSchema secret declarations", () => {
     const unused = baseScenario();
     const redactionOnly = {
       secret_id: "unused",
-      environment_variable: "rea.test-unused",
+      environment_variable: "binsight.test-unused",
     };
     unused.secrets.push(redactionOnly);
     expect(browserScenarioSchema.safeParse(unused).success).toBe(true);

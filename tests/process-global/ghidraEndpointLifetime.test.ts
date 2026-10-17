@@ -108,7 +108,7 @@ afterEach(async () => {
 });
 
 const fixture = async (text = '{"host":"127.0.0.1","port":49152}\n') => {
-  const root = await createTestTempDirectory("rea-endpoint-lifetime-");
+  const root = await createTestTempDirectory("binsight-endpoint-lifetime-");
   fault.path = join(root, "bridge-endpoint.json");
   await writeFile(fault.path, text);
   return {

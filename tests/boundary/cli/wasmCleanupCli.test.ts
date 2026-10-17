@@ -15,7 +15,9 @@ const canDenyCleanup = process.platform !== "win32" && process.getuid?.() !== 0;
 it.runIf(canDenyCleanup)(
   "retains wasm evidence and primary diagnostics when real scratch cleanup is denied",
   async () => {
-    const directory = await createTestTempDirectory("rea-wasm-cleanup-cli-");
+    const directory = await createTestTempDirectory(
+      "binsight-wasm-cleanup-cli-",
+    );
     const tools = join(directory, "tools");
     const artifact = join(directory, "module.wasm");
     const locked = join(directory, "locked-paths.txt");

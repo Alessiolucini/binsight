@@ -124,7 +124,7 @@ export const compareProcessEvidenceFiles = async (
             traceSpecification,
           });
     return createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-comparison",
+      predicateType: "binsight.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_id: left.id,
@@ -163,7 +163,7 @@ const parseCaptureEvidence = (input: unknown, side: "left" | "right") => {
   }
   if (
     evidence.operation !== "capture_process_scenario" ||
-    evidence.predicate_type !== "rea.process-capture"
+    evidence.predicate_type !== "binsight.process-capture"
   ) {
     throw new ProcessCliFailure(
       "invalid_input",

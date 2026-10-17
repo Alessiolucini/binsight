@@ -158,7 +158,7 @@ const verifyKunaExecutable = async (
   if (executable.sha256 === installation.sha256) return ok(null);
   return err(
     new ProviderAdapterError(KUNA_PROVIDER_ID, KUNA_EXPORT_OPERATION, {
-      userMessage: `${installation.executable} changed after readiness inspection; reopen the target so REA probes the current Kuna executable.`,
+      userMessage: `${installation.executable} changed after readiness inspection; reopen the target so BinSight probes the current Kuna executable.`,
       diagnostics: {
         expected_sha256: installation.sha256,
         observed_sha256: executable.sha256,

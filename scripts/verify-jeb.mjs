@@ -30,7 +30,7 @@ let fixtureDirectory;
 let primaryFailure;
 let report;
 try {
-  fixtureDirectory = await mkdtemp(join(tmpdir(), "rea-jeb-"));
+  fixtureDirectory = await mkdtemp(join(tmpdir(), "binsight-jeb-"));
   const client = await service.execute("inspect_jeb_client", {});
   if (!client.ok) throw new Error(client.error.message);
   const engine = client.value.normalized_result.engine;

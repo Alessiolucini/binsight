@@ -50,7 +50,7 @@ const jobLimit = NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES;
 it.skipIf(process.versions.bun !== undefined && jobLimit === null)(
   "reports real HAR memory exhaustion through CLI and MCP and preserves server usability",
   async () => {
-    const root = await createTestTempDirectory("rea-har-capacity-");
+    const root = await createTestTempDirectory("binsight-har-capacity-");
     const path = join(root, "caller-marked.har");
     const dense = capture(34_098);
     expect(Buffer.byteLength(dense)).toBeLessThan(
@@ -100,7 +100,7 @@ it.skipIf(process.versions.bun !== undefined && jobLimit === null)(
       },
     });
     expect(JSON.stringify(response)).not.toContain("caller-marked");
-    expect(JSON.stringify(response)).not.toContain("rea doctor");
+    expect(JSON.stringify(response)).not.toContain("binsight doctor");
     const failed: unknown = await execute(process.execPath, [
       cli,
       "inspect-web-network-capture",

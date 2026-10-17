@@ -174,7 +174,7 @@ const comparisonEvidence = (
       detail: "Compared node has no actionable source location.",
     },
     extractor: {
-      name: "rea-application-version-comparison",
+      name: "binsight-application-version-comparison",
       version: "1",
       operation: "compare_application_versions",
       executable_sha256: null,

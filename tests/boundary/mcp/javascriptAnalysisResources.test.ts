@@ -9,8 +9,8 @@ import { z } from "zod";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("retains every static finding through public module views when application expansion exceeds memory, then accepts more work", async () => {
-  const root = await createTestTempDirectory("rea-js-resource-boundary-");
-  const nextRoot = await createTestTempDirectory("rea-js-resource-recovery-");
+  const root = await createTestTempDirectory("bs-js-resource-boundary-");
+  const nextRoot = await createTestTempDirectory("bs-js-resource-recovery-");
   await writeFile(join(nextRoot, "main.js"), "export const recovered = 9;\n");
   const source = Array.from(
     { length: 4000 },
@@ -160,7 +160,7 @@ it("retains every static finding through public module views when application ex
 }, 90000);
 
 it("returns a directly usable partial analysis reference for an oversized timeout observation", async () => {
-  const root = await createTestTempDirectory("rea-js-large-timeout-");
+  const root = await createTestTempDirectory("bs-js-large-timeout-");
   for (let offset = 0; offset < 1500; offset += 50)
     await Promise.all(
       Array.from({ length: 50 }, (_, index) =>
@@ -170,7 +170,7 @@ it("returns a directly usable partial analysis reference for an oversized timeou
         ),
       ),
     );
-  const nextRoot = await createTestTempDirectory("rea-js-timeout-recovery-");
+  const nextRoot = await createTestTempDirectory("bs-js-timeout-recovery-");
   await writeFile(join(nextRoot, "main.js"), "export const recovered = 9;\n");
   const { client, transport, diagnostics } = createResourceClient();
   try {

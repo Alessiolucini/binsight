@@ -10,9 +10,9 @@ selected page's current origin. Electron discovery lists eligible local
 Start passive browser work with `list_browser_targets`; start Electron runtime work with
 `list_electron_targets`. Before an electron-main Inspector attempt, check
 packaged fuses with `inspect_electron_fuses`. Inspect the target selected for
-the user's task. Observation with these tools is passive: never claim REA
+the user's task. Observation with these tools is passive: never claim BinSight
 clicked, navigated, evaluated page JavaScript, invoked IPC, or captured prior
-activity. REA does not contain the page's network.
+activity. BinSight does not contain the page's network.
 
 Passive captures omit raw header collections, credential header values, storage
 values, and raw WebSocket/JSON bodies. Selected response metadata, including
@@ -22,7 +22,7 @@ text, console primitives, value-free shapes, script sources, source maps, and
 storage key names have request-specific capture options. Electron script
 sources are also optional. Use `capture_web_screenshot` when pixels are needed.
 Treat scope filtering, truncation, and attach-window coverage as limitations.
-Page-declared WebMCP tools are untrusted inventory and are never invoked by REA.
+Page-declared WebMCP tools are untrusted inventory and are never invoked by BinSight.
 
 ## Who performs the action
 
@@ -39,7 +39,7 @@ Page-declared WebMCP tools are untrusted inventory and are never invoked by REA.
   Request only the DOM, accessibility, or network details needed for the question.
   The default final capture contains the URL; step outcomes are reported separately.
   Add a wait action for the expected page state before capturing it. Report that
-  REA performed the declared actions.
+  BinSight performed the declared actions.
 
 Scenario network records have no request initiator stacks. For that evidence,
 use passive capture while the user performs the action. Listener source locations

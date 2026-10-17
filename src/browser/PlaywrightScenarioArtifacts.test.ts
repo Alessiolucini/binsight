@@ -36,7 +36,7 @@ it("returns a complete requested text artifact beyond the former inline ceiling"
 });
 
 it("redacts declared secrets from current and historical URL artifacts", async () => {
-  const secretValue = "rea browser+verifier";
+  const secretValue = "binsight browser+verifier";
   const scenarioWithSecretUrl = browserScenarioSchema.parse({
     browser: { mode: "launch", executable_path: "/opt/chromium" },
     start_url: {

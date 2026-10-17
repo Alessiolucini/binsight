@@ -53,7 +53,9 @@ it.each([
 ])(
   "respects property presence when tracing $title",
   async ({ initializer, mutation, uncertainPresence }) => {
-    const root = await createTestTempDirectory("rea-mutation-presence-mcp-");
+    const root = await createTestTempDirectory(
+      "binsight-mutation-presence-mcp-",
+    );
     await writeFile(
       join(root, "parser.mjs"),
       `export default function make() {
@@ -129,7 +131,7 @@ it.each([
 );
 
 const analyzedSource = async (source: string) => {
-  const root = await createTestTempDirectory("rea-property-facts-mcp-");
+  const root = await createTestTempDirectory("binsight-property-facts-mcp-");
   await writeFile(join(root, "parser.mjs"), source);
   const analyzed = await analyzeJavaScriptApplication({ input_path: root });
   if (!analyzed.ok) throw analyzed.error;

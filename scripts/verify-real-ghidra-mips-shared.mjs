@@ -26,7 +26,7 @@ if (
   );
 const execute = promisify(execFile);
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-mips-shared-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-mips-shared-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
@@ -93,7 +93,7 @@ try {
         stderr: "pipe",
       });
       const client = new Client({
-        name: "rea-mips16-shared-conformance",
+        name: "binsight-mips16-shared-conformance",
         version: "1",
       });
       let stderr = "";

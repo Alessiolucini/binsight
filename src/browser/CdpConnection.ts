@@ -203,7 +203,7 @@ export class CdpConnection {
     });
   }
 
-  /** Close only REA's socket; never close the browser or selected page. */
+  /** Close only BinSight's socket; never close the browser or selected page. */
   close(): Promise<void> {
     this.#closePromise ??= this.#closeTransport().catch((cause: unknown) => {
       this.#closePromise = undefined;
@@ -260,7 +260,8 @@ export class CdpConnection {
             finish(
               gracefulFailure ??
                 new BrowserObservationError(this.operation, "cleanup_failed", {
-                  detail: "REA could not confirm release of its CDP WebSocket.",
+                  detail:
+                    "BinSight could not confirm release of its CDP WebSocket.",
                 }),
             );
           }, 1_000);

@@ -24,7 +24,7 @@ const { runProviderAnalysis } = createDirectAnalysis({});
 
 describe("Android application projection", () => {
   it("projects deterministic APK components and explicit bridge hypotheses", async () => {
-    const root = await createTestTempDirectory("rea-android-");
+    const root = await createTestTempDirectory("binsight-android-");
     const path = join(root, "Fixture.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add(
@@ -113,7 +113,7 @@ describe("Android application projection", () => {
 
   it("rejects non-APK inventory Evidence", async () => {
     const inventory = await createNonApplicationZipInventory(
-      "rea-android-invalid-",
+      "binsight-android-invalid-",
     );
     expect(
       projectAndroidApplicationEvidence({ inventory_evidence: [inventory] }),
@@ -131,7 +131,7 @@ describe("Android application projection", () => {
   });
 
   it("keeps uppercase path-derived bytecode families distinct from byte validity", async () => {
-    const root = await createTestTempDirectory("rea-android-suffixes-");
+    const root = await createTestTempDirectory("binsight-android-suffixes-");
     const path = join(root, "Suffixes.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     for (const entry of [
@@ -179,7 +179,7 @@ describe("APK family without a root manifest", () => {
   const missingManifest =
     "No root AndroidManifest.xml occurrence was observed. The APK family comes from the .apk suffix of a ZIP archive, so these bytes may not be an APK.";
   const projectApk = async (entries: Record<string, string>) => {
-    const root = await createTestTempDirectory("rea-android-manifest-");
+    const root = await createTestTempDirectory("binsight-android-manifest-");
     const path = join(root, "Plain.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     for (const [entry, text] of Object.entries(entries))
@@ -206,7 +206,7 @@ describe("APK family without a root manifest", () => {
 });
 
 it("retains encrypted native library paths as unknown component evidence", async () => {
-  const root = await createTestTempDirectory("rea-android-encrypted-");
+  const root = await createTestTempDirectory("binsight-android-encrypted-");
   const path = join(root, "Encrypted.apk");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add(
@@ -243,7 +243,7 @@ it("retains encrypted native library paths as unknown component evidence", async
 
 describe("case-distinct APK resource names", () => {
   it("inventories and projects an APK whose resource names differ only in case", async () => {
-    const root = await createTestTempDirectory("rea-android-case-");
+    const root = await createTestTempDirectory("binsight-android-case-");
     const path = join(root, "Shrunk.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add(
@@ -292,7 +292,7 @@ describe("case-distinct APK resource names", () => {
 
 describe("Android bridge candidate coverage", () => {
   it("returns every component and bridge candidate from the inventory", async () => {
-    const root = await createTestTempDirectory("rea-android-complete-");
+    const root = await createTestTempDirectory("binsight-android-complete-");
     const path = join(root, "Fixture.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     const dex = Uint8Array.from([0x64, 0x65, 0x78, 0x0a, 0x30, 0x33, 0x35, 0]);
@@ -321,7 +321,9 @@ describe("Android bridge candidate coverage", () => {
   });
 
   it("marks a multidex by native projection partial when escaped UTF-8 candidate paths exceed its byte budget", async () => {
-    const root = await createTestTempDirectory("rea-android-bridge-budget-");
+    const root = await createTestTempDirectory(
+      "binsight-android-bridge-budget-",
+    );
     const path = join(root, "Large.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     const dex = Uint8Array.from([0x64, 0x65, 0x78, 0x0a, 0x30, 0x33, 0x35, 0]);

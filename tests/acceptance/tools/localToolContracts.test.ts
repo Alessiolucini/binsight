@@ -35,7 +35,7 @@ it("keeps overall replay verification unknown when capture divergence is unknown
     } = {},
   ) =>
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "binsight.process-capture",
       operation: "capture_process_scenario",
       parameters: { side },
       result: {
@@ -326,7 +326,7 @@ const ignoredOptions = [
 captureTest(
   "rejects malformed process choices through CLI and MCP before launching the command",
   async () => {
-    const root = await createTestTempDirectory("rea-local-contracts-");
+    const root = await createTestTempDirectory("binsight-local-contracts-");
     const marker = join(root, "launched");
     const scenario = {
       executable: process.execPath,
@@ -470,7 +470,7 @@ captureTest(
 captureTest.each(["untruncated", "truncated"] as const)(
   "captures real process choices and composes a %s self-comparison",
   async (captureState) => {
-    const root = await createTestTempDirectory("rea-local-capture-");
+    const root = await createTestTempDirectory("binsight-local-capture-");
     const { call } = await connectLocalToolsMcp();
     const captured = await call("capture_process_scenario", {
       executable: process.execPath,

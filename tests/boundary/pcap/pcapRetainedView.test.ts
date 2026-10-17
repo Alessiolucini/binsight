@@ -58,7 +58,7 @@ const createPcapToolFixture = async (root: string) => {
 it.runIf(process.platform === "linux")(
   "retains every fact and pages late DNS/SNI rows after source deletion without another tool launch",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-view-");
+    const root = await createTestTempDirectory("binsight-pcap-view-");
     const { path, marker, environment } = await createPcapToolFixture(root);
     const complete = await promisify(execFile)(
       process.execPath,

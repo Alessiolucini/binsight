@@ -323,7 +323,7 @@ class HostVersionTest(unittest.TestCase):
 class ProtocolProducerTest(unittest.TestCase):
     def test_rejects_legacy_peers_before_ui_dispatch(self):
         with socket.create_connection(("127.0.0.1", self.server.port), timeout=2) as connection:
-            connection.sendall((json.dumps({"kind": "rea-auth-v1", "nonce": "a" * 64}) + "\n").encode())
+            connection.sendall((json.dumps({"kind": "binsight-auth-v1", "nonce": "a" * 64}) + "\n").encode())
             with connection.makefile("rb") as reader:
                 reply = json.loads(reader.readline())
         self.assertEqual(reply, {"ok": False, "error": "authentication-failed"})
@@ -351,20 +351,20 @@ class ProtocolProducerTest(unittest.TestCase):
         token = self.server.token.encode()
         client_nonce = os.urandom(32).hex()
         with socket.create_connection(("127.0.0.1", self.server.port), timeout=1) as connection:
-            _send(connection, {"kind": "rea-auth-v2", "nonce": client_nonce})
+            _send(connection, {"kind": "binsight-auth-v2", "nonce": client_nonce})
             challenge = _frame(connection)
             self.assertEqual(challenge["session_id"], self.server.session_id)
             server_nonce = challenge["nonce"]
-            expected_server = hmac.new(token, f"rea-cutter-server-v2:{self.server.session_id}:{client_nonce}:{server_nonce}".encode(), hashlib.sha256).hexdigest()
+            expected_server = hmac.new(token, f"binsight-cutter-server-v2:{self.server.session_id}:{client_nonce}:{server_nonce}".encode(), hashlib.sha256).hexdigest()
             self.assertTrue(hmac.compare_digest(challenge["proof"], expected_server))
             request_bytes = json.dumps(request, separators=(",", ":"))
-            proof = hmac.new(token, f"rea-cutter-client-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{request_bytes}".encode(), hashlib.sha256).hexdigest()
+            proof = hmac.new(token, f"binsight-cutter-client-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{request_bytes}".encode(), hashlib.sha256).hexdigest()
             _send(connection, {"request": request_bytes, "proof": proof})
             frame = _frame(connection)
             if "response" not in frame:
                 return frame, client_nonce
             response = frame["response"]
-            expected_response = hmac.new(token, f"rea-cutter-response-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{response}".encode(), hashlib.sha256).hexdigest()
+            expected_response = hmac.new(token, f"binsight-cutter-response-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{response}".encode(), hashlib.sha256).hexdigest()
             self.assertTrue(hmac.compare_digest(frame["proof"], expected_response))
             return json.loads(response), client_nonce
 
@@ -377,7 +377,7 @@ class ProtocolProducerTest(unittest.TestCase):
     def test_client_chosen_session_uuid_without_secret_proof_is_not_authenticated(self):
         client_nonce = os.urandom(32).hex()
         with socket.create_connection(("127.0.0.1", self.server.port), timeout=1) as connection:
-            _send(connection, {"kind": "rea-auth-v2", "nonce": client_nonce})
+            _send(connection, {"kind": "binsight-auth-v2", "nonce": client_nonce})
             _frame(connection)
             request_bytes = json.dumps({"kind": "status", "session_id": "client-chosen-session"}, separators=(",", ":"))
             _send(connection, {"request": request_bytes, "proof": "0" * 64})
@@ -532,7 +532,7 @@ class ProtocolProducerTest(unittest.TestCase):
             response = frame["response"]
             expected = hmac.new(
                 self.server.token.encode(),
-                f"rea-cutter-response-v2:{self.server.session_id}:{'a' * 64}:{'b' * 64}:{response}".encode(),
+                f"binsight-cutter-response-v2:{self.server.session_id}:{'a' * 64}:{'b' * 64}:{response}".encode(),
                 hashlib.sha256,
             ).hexdigest()
             self.assertTrue(hmac.compare_digest(frame["proof"], expected))

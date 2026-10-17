@@ -91,7 +91,7 @@ const fixture = (delivery: Delivery, artifact: string): Fixture => ({
   },
 });
 function compare(left: Fixture, right: Fixture) {
-  const root = mkdtempSync(join(tmpdir(), "rea-compare-test-"));
+  const root = mkdtempSync(join(tmpdir(), "binsight-compare-test-"));
   try {
     const directories = [join(root, "left"), join(root, "right")] as const;
     for (const [index, value] of [left, right].entries()) {

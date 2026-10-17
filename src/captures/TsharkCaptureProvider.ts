@@ -59,7 +59,7 @@ import { PrivateRuntimeRoot } from "../process/PrivateRuntimeRoot.js";
 const OPERATION = "inspect_packet_capture";
 export const TSHARK_PROVIDER_IDENTITY = {
   id: "tshark-capture",
-  name: "REA TShark capture adapter",
+  name: "BinSight TShark capture adapter",
   version: "tshark@4",
 } as const;
 type Launcher = NonNullable<Parameters<typeof runOwnedCommand>[2]>["launcher"];
@@ -71,7 +71,7 @@ export class TsharkCaptureProvider implements PacketCapturePort {
     readonly environment: Readonly<NodeJS.ProcessEnv> = process.env,
     readonly launcher?: Launcher,
     readonly createRuntime: () => Promise<ArtifactAnalysisRuntime> = () =>
-      PrivateRuntimeRoot.create({ prefix: "rea-tshark-" }),
+      PrivateRuntimeRoot.create({ prefix: "binsight-tshark-" }),
     readonly platform: NodeJS.Platform = process.platform,
     readonly readArtifact: typeof readStableArtifact = readStableArtifact,
     readonly readLimits: typeof readLinuxResourceLimits = readLinuxResourceLimits,
@@ -173,7 +173,7 @@ export class TsharkCaptureProvider implements PacketCapturePort {
             arguments: [...limitArguments, ...args],
             ...(root === undefined ? {} : { cwd: root.path }),
             expectedCommand: null,
-            runId: `rea-tshark-${randomUUID()}`,
+            runId: `binsight-tshark-${randomUUID()}`,
             hostEnvironment: {
               ...this.environment,
               WIRESHARK_CONFIG_DIR: configurationPath,

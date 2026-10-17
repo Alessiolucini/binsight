@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "uses syntax-aware bundle fingerprints for changed syntax and renamed bindings",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-fingerprint-version-");
+    const root = await createTestTempDirectory("binsight-fingerprint-version-");
     const pairs = [
       ["bigint", "exports.v = 1n;", "exports.v = 2n;"],
       ["bigint-key", "exports.v = { 1n: 1 };", "exports.v = { 2n: 1 };"],
@@ -157,7 +157,7 @@ cliTest(
 cliTest(
   "pairs repeated factory bodies by identity when application versions retain a shared bundle",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-version-matching-");
+    const root = await createTestTempDirectory("binsight-version-matching-");
     const factoryCount = 32;
     const factories = Array.from(
       { length: factoryCount },
@@ -245,7 +245,9 @@ cliTest(
 cliTest(
   "matches an unchanged source module after a sibling file changes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-source-module-version-");
+    const root = await createTestTempDirectory(
+      "binsight-source-module-version-",
+    );
     const versions = await Promise.all(
       ["left", "right"].map(async (name) => {
         const application = join(root, name);

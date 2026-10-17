@@ -12,7 +12,7 @@ export const ADB_TOOL_CONTRACTS = [
     name: "inspect_adb_client",
     ...toolContractMetadata("inspect_adb_client"),
     description:
-      "Inspect the caller-selected adb client: resolved binary, version, and install path. Never contacts devices and never starts the adb server. REA never installs platform tools; select a binary with REA_ADB_PATH (absolute) or adb on PATH.",
+      "Inspect the caller-selected adb client: resolved binary, version, and install path. Never contacts devices and never starts the adb server. BinSight never installs platform tools; select a binary with REA_ADB_PATH (absolute) or adb on PATH.",
     kind: "adb-provider",
     inputSchema: adbInputSchemas.inspect_adb_client,
     outputSchema: evidenceResultOf(adbResultSchemas.inspect_adb_client),
@@ -22,7 +22,7 @@ export const ADB_TOOL_CONTRACTS = [
     name: "list_adb_devices",
     ...toolContractMetadata("list_adb_devices"),
     description:
-      "List attached devices exactly as `adb devices -l` reports them: serial, state, transport, model metadata, and an inferred emulator/physical kind with its evidence basis. Emulators and USB or network devices appear alike; REA neither starts nor manages them. May start the local adb server on first use.",
+      "List attached devices exactly as `adb devices -l` reports them: serial, state, transport, model metadata, and an inferred emulator/physical kind with its evidence basis. Emulators and USB or network devices appear alike; BinSight neither starts nor manages them. May start the local adb server on first use.",
     kind: "adb-provider",
     inputSchema: adbInputSchemas.list_adb_devices,
     outputSchema: evidenceResultOf(adbResultSchemas.list_adb_devices),
@@ -69,7 +69,7 @@ export const ADB_TOOL_CONTRACTS = [
         input: {
           serial: "emulator-5554",
           package: "com.example.app",
-          output_directory: "/tmp/rea-pulls",
+          output_directory: "/tmp/binsight-pulls",
         },
       },
     ],
@@ -118,7 +118,7 @@ export const ADB_TOOL_CONTRACTS = [
         input: {
           serial: "emulator-5554",
           device_path: "/data/data/com.example.app/databases/app.db",
-          output_directory: "/tmp/rea-pulls",
+          output_directory: "/tmp/binsight-pulls",
         },
       },
     ],
@@ -155,7 +155,7 @@ export const ADB_TOOL_CONTRACTS = [
         title: "Capture the current screen",
         input: {
           serial: "emulator-5554",
-          output_directory: "/tmp/rea-captures",
+          output_directory: "/tmp/binsight-captures",
         },
       },
     ],
@@ -264,7 +264,7 @@ export const ADB_TOOL_CONTRACTS = [
         title: "Collect a bugreport",
         input: {
           serial: "emulator-5554",
-          output_directory: "/tmp/rea-bugreports",
+          output_directory: "/tmp/binsight-bugreports",
         },
       },
     ],

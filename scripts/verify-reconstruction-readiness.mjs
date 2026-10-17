@@ -45,7 +45,7 @@ const transport = new StdioClientTransport({
   stderr: "pipe",
 });
 const client = new Client({
-  name: "rea-readiness-verifier",
+  name: "binsight-readiness-verifier",
   version: "1",
   capabilities: { elicitation: {} },
 });

@@ -64,7 +64,9 @@ const expectResolution = (
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves CommonJS directory requests before path normalization through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-cjs-directory-lookup-");
+    const root = await createTestTempDirectory(
+      "binsight-cjs-directory-lookup-",
+    );
     const requests = [
       ["main.cjs", "./dep/.", "dep/index.js"],
       ["main.cjs", "./dep/", "dep/index.js"],
@@ -119,7 +121,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves loader-specific node_modules ancestors through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-cjs-ancestor-lookup-");
+    const root = await createTestTempDirectory("binsight-cjs-ancestor-lookup-");
     const requests = [
       [
         "node_modules/client/main.cjs",

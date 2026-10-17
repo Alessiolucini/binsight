@@ -28,7 +28,7 @@ class NeverStartedTracer implements NativeCallTracer {
 
 describe("native call target digest cancellation", () => {
   it("returns tagged cancellation when hashing aborts after a chunk", async () => {
-    const directory = await createTestTempDirectory("rea-native-digest-");
+    const directory = await createTestTempDirectory("binsight-native-digest-");
     const path = join(directory, "fixture");
     const bytes = "selected executable";
     await writeFile(path, bytes);

@@ -29,10 +29,10 @@ export type HopperTargetLeaseAcquisition =
 /** Shared private parent of Hopper lease sockets; it outlives individual sessions. */
 export const HOPPER_TARGET_LEASE_DIRECTORY = join(
   "/tmp",
-  `rea-hopper-${process.getuid?.() ?? 0}`,
+  `binsight-hopper-${process.getuid?.() ?? 0}`,
 );
 
-/** Keep two REA processes from opening duplicate Hopper documents for one target/profile. */
+/** Keep two BinSight processes from opening duplicate Hopper documents for one target/profile. */
 export const acquireHopperTargetLease = async (input: {
   readonly targetPath: string;
   readonly targetKind: "executable" | "database";
@@ -48,7 +48,7 @@ export const acquireHopperTargetLease = async (input: {
   } catch (cause: unknown) {
     throw new HopperStartError({
       cause,
-      userMessage: `REA could not resolve Hopper target ${JSON.stringify(input.targetPath)} to a canonical path before reserving the document. Confirm that the target exists and its path is accessible.`,
+      userMessage: `BinSight could not resolve Hopper target ${JSON.stringify(input.targetPath)} to a canonical path before reserving the document. Confirm that the target exists and its path is accessible.`,
     });
   }
   return acquireLease({
@@ -112,7 +112,7 @@ const acquireLease = async (input: {
     if (typeof recovered !== "string") return recovered;
     throw new HopperStartError({
       userMessage:
-        "REA could not reserve Hopper for this request. Close competing REA sessions and retry.",
+        "BinSight could not reserve Hopper for this request. Close competing BinSight sessions and retry.",
     });
   } finally {
     try {
@@ -122,7 +122,7 @@ const acquireLease = async (input: {
         await recovered.lease.release();
       throw new HopperStartError({
         cause,
-        userMessage: `REA could not remove its Hopper recovery directory at ${JSON.stringify(recoveryPath)}. Check this directory's write access before retrying.`,
+        userMessage: `BinSight could not remove its Hopper recovery directory at ${JSON.stringify(recoveryPath)}. Check this directory's write access before retrying.`,
       });
     }
   }
@@ -139,8 +139,8 @@ const reserveRecovery = async (recoveryPath: string): Promise<void> => {
     throw new HopperStartError({
       cause,
       userMessage: busy
-        ? `REA could not reserve Hopper lease recovery at ${JSON.stringify(recoveryPath)}; the existing socket was left unchanged. Retry after concurrent startup finishes. If recovery was interrupted, stop REA sessions and remove this recovery directory before retrying.`
-        : `REA could not create its Hopper recovery directory at ${JSON.stringify(recoveryPath)}; the existing socket was left unchanged. Check the parent directory's write access before retrying.`,
+        ? `BinSight could not reserve Hopper lease recovery at ${JSON.stringify(recoveryPath)}; the existing socket was left unchanged. Retry after concurrent startup finishes. If recovery was interrupted, stop BinSight sessions and remove this recovery directory before retrying.`
+        : `BinSight could not create its Hopper recovery directory at ${JSON.stringify(recoveryPath)}; the existing socket was left unchanged. Check the parent directory's write access before retrying.`,
     });
   }
 };
@@ -188,7 +188,8 @@ const ensureLeaseDirectory = async (directory: string): Promise<void> => {
   } catch (cause: unknown) {
     throw new HopperStartError({
       cause,
-      userMessage: "REA could not create its private Hopper lease directory.",
+      userMessage:
+        "BinSight could not create its private Hopper lease directory.",
     });
   }
   // Use O_DIRECTORY|O_NOFOLLOW to open the directory without following symlinks,
@@ -210,7 +211,7 @@ const ensureLeaseDirectory = async (directory: string): Promise<void> => {
     )
       throw new HopperStartError({
         userMessage:
-          "REA's Hopper lease directory is not a private directory owned by this user.",
+          "BinSight's Hopper lease directory is not a private directory owned by this user.",
       });
     // POSIX permission hardening: chmod on the already-opened descriptor avoids
     // a second TOCTOU window where the directory could be swapped between check
@@ -227,7 +228,7 @@ const ensureLeaseDirectory = async (directory: string): Promise<void> => {
       )
         throw new HopperStartError({
           userMessage:
-            "REA's Hopper lease directory permissions could not be secured.",
+            "BinSight's Hopper lease directory permissions could not be secured.",
         });
     }
   } catch (cause: unknown) {
@@ -240,8 +241,8 @@ const ensureLeaseDirectory = async (directory: string): Promise<void> => {
     throw new HopperStartError({
       cause,
       userMessage: accessDenied
-        ? `REA could not access its Hopper lease directory at ${JSON.stringify(directory)}. Check its ownership and parent-directory access. For a directory you own, restore owner-only read, write, and search permissions (0700), then retry.`
-        : "REA could not inspect its private Hopper lease directory.",
+        ? `BinSight could not access its Hopper lease directory at ${JSON.stringify(directory)}. Check its ownership and parent-directory access. For a directory you own, restore owner-only read, write, and search permissions (0700), then retry.`
+        : "BinSight could not inspect its private Hopper lease directory.",
     });
   } finally {
     await handle?.close();
@@ -283,7 +284,7 @@ const readOwner = (
       rejectOwner(
         new HopperStartError({
           cause,
-          userMessage: `REA could not verify the existing Hopper lease (${reason}); it was left unchanged. Retry when the owning REA session is responsive.`,
+          userMessage: `BinSight could not verify the existing Hopper lease (${reason}); it was left unchanged. Retry when the owning BinSight session is responsive.`,
         }),
       );
     };

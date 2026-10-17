@@ -16,7 +16,7 @@ export const createJavaScriptRuntimeReconciliationEvidence = (
   result: JavaScriptRuntimeReconciliationResult,
 ): Evidence =>
   createEvidence(undefined, JAVASCRIPT_RUNTIME_RECONCILIATION_PROVIDER, {
-    predicateType: "rea.javascript-runtime-reconciliation",
+    predicateType: "binsight.javascript-runtime-reconciliation",
     operation: "reconcile_javascript_runtime",
     parameters: parameters(input),
     result: jsonValueSchema.parse(result),

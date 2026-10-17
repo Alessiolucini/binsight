@@ -6,14 +6,14 @@ import type {
 import type { InspectMacho } from "../../domain/native/nativeInspection.js";
 
 const MANAGED_STATIC_EXAMPLE_PROVIDER = {
-  id: "rea-dotnet-static",
-  name: "REA managed static analysis provider",
+  id: "binsight-dotnet-static",
+  name: "BinSight managed static analysis provider",
   version: "1",
 } as const;
 
 const NATIVE_EXAMPLE_PROVIDER = {
   id: "native-macos",
-  name: "REA native macOS provider",
+  name: "BinSight native macOS provider",
   version: "1",
 } as const;
 

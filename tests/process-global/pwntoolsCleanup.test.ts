@@ -44,7 +44,7 @@ afterEach(() => {
 });
 
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-pwntools-cleanup-");
+  const workspace = await createTestWorkspace("binsight-pwntools-cleanup-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = join(workspace.root, "selected.elf");
   await writeFile(path, "source-owned-seam-bytes");

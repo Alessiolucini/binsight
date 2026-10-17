@@ -265,7 +265,7 @@ describe("HopperClient startup failures", () => {
     expect(restarted).toEqual({
       ok: true,
       value: {
-        name: "REA Hopper bridge",
+        name: "BinSight Hopper bridge",
         version: "1.0.0",
         processId: retriedProcess?.pid,
       },
@@ -297,7 +297,7 @@ describe("HopperClient startup failures", () => {
     expect(started).toEqual({
       ok: true,
       value: {
-        name: "REA Hopper bridge",
+        name: "BinSight Hopper bridge",
         version: "1.0.0",
         processId: launcher.processes[0]?.pid,
       },
@@ -354,7 +354,9 @@ describe("HopperClient startup failures", () => {
     if (result.ok) return;
 
     const projected = projectAnalysisError(result.error);
-    expect(projected.message).toContain("rea doctor --provider hopper --json");
+    expect(projected.message).toContain(
+      "binsight doctor --provider hopper --json",
+    );
     expect(projected.message).toContain("UI or license prompt");
     expect(projected.message).toContain("close stale Hopper sessions");
     expect(projected.details).toMatchObject({

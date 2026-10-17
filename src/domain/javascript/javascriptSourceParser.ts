@@ -1,6 +1,6 @@
 import { parse, type ParserOptions, type ParserPlugin } from "@babel/parser";
 
-/** Babel AST produced by REA's inert JavaScript parser boundary. */
+/** Babel AST produced by BinSight's inert JavaScript parser boundary. */
 export type ParsedJavaScriptSource = ReturnType<typeof parse>;
 
 /**

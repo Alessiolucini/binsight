@@ -193,20 +193,20 @@ const isScreenshotComparison = (
 const browserPredicate = (operation: BrowserEvidenceOperation): string => {
   switch (operation) {
     case "list_browser_targets":
-      return "rea.browser-target-list";
+      return "binsight.browser-target-list";
     case "inspect_web_page":
-      return "rea.web-page-inspection";
+      return "binsight.web-page-inspection";
     case "analyze_web_bundle":
-      return "rea.web-bundle-analysis";
+      return "binsight.web-bundle-analysis";
     case "observe_web_session":
-      return "rea.web-observation-session";
+      return "binsight.web-observation-session";
     case "discover_webmcp_tools":
-      return "rea.webmcp-discovery";
+      return "binsight.webmcp-discovery";
     case "compare_web_captures":
-      return "rea.web-capture-diff";
+      return "binsight.web-capture-diff";
     case "capture_web_screenshot":
-      return "rea.web-screenshot";
+      return "binsight.web-screenshot";
     case "compare_web_screenshots":
-      return "rea.web-screenshot-diff";
+      return "binsight.web-screenshot-diff";
   }
 };

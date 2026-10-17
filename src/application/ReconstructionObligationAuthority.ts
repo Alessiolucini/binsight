@@ -69,7 +69,7 @@ export const evidenceAuthoritySupportsProof = (
   if (
     evidence.confidence !== "observed" ||
     !proofEvidenceAuthorities[authority].includes(evidence.authority) ||
-    evidence.predicate_type !== "rea.reconstruction-proof" ||
+    evidence.predicate_type !== "binsight.reconstruction-proof" ||
     evidence.operation !== "verify_reconstruction_obligations"
   )
     return false;
@@ -103,7 +103,7 @@ export const evidenceSupportsOriginalAuthority = (
   if (authority === "process")
     return (
       evidence.operation === "capture_process_scenario" &&
-      evidence.predicate_type === "rea.process-capture"
+      evidence.predicate_type === "binsight.process-capture"
     );
   return evidence.authority === "external-service";
 };

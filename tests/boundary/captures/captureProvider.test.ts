@@ -17,7 +17,7 @@ import { silentLogger } from "../../../src/logger.js";
 
 // A command-boundary simulator: real process ownership/filesystem, not real TShark coverage.
 const fixture = async (mode = "ok", failCleanup = false) => {
-  const directory = await createTestTempDirectory("rea-capture-test-");
+  const directory = await createTestTempDirectory("binsight-capture-test-");
   const path = join(directory, "recorded bytes.pcap");
   await writeFile(path, "recording bytes");
   const script = join(directory, "producer.mjs");

@@ -14,7 +14,7 @@ import {
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("keeps a caller-selected cancellation reason opaque", async () => {
-  const root = await createTestTempDirectory("rea-file-caller-reason-");
+  const root = await createTestTempDirectory("binsight-file-caller-reason-");
   const path = join(root, "input.txt");
   await writeFile(path, "fixture bytes");
   const callerOwner = new OwnedFileHandle(await open(path, "r"));
@@ -45,7 +45,7 @@ it("keeps a caller-selected cancellation reason opaque", async () => {
 it.each([false, true])(
   "preserves a nested read cancellation with the same signal=%s",
   async (sameSignal) => {
-    const root = await createTestTempDirectory("rea-nested-file-cancel-");
+    const root = await createTestTempDirectory("binsight-nested-file-cancel-");
     const path = join(root, "input.txt");
     const bytes = Buffer.from("nested read bytes");
     await writeFile(path, bytes);
@@ -100,7 +100,7 @@ it.each(
 )(
   "observes cancellation after $stage with scope=$scoped",
   async ({ stage, scoped }) => {
-    const root = await createTestTempDirectory("rea-file-finalization-");
+    const root = await createTestTempDirectory("binsight-file-finalization-");
     const path = join(root, "input.txt");
     const bytes = Buffer.from("unchanged fixture bytes");
     await writeFile(path, bytes);
@@ -146,7 +146,7 @@ it.each(
 );
 
 it("observes cancellation during a recovered descriptor close", async () => {
-  const root = await createTestTempDirectory("rea-file-retry-cancel-");
+  const root = await createTestTempDirectory("binsight-file-retry-cancel-");
   const path = join(root, "input.txt");
   await writeFile(path, "fixture bytes");
   const controller = new AbortController();
@@ -180,7 +180,7 @@ it("observes cancellation during a recovered descriptor close", async () => {
 it.each(["completed", "failed"] as const)(
   "retains the physical read outcome when close fails after cancellation: %s",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-file-close-cancel-");
+    const root = await createTestTempDirectory("binsight-file-close-cancel-");
     const path = join(root, "input.txt");
     await writeFile(path, "fixture bytes");
     const controller = new AbortController();

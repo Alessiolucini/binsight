@@ -10,7 +10,7 @@ import { startHttpComparisonBrowser } from "../../fixtures/httpComparisonBrowser
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("CLI compares incomplete HTTP responses without inventing changes", async () => {
-  const root = await createTestTempDirectory("rea-http-comparison-");
+  const root = await createTestTempDirectory("binsight-http-comparison-");
   const response = {
     requestId: "request-1",
     status: 200,

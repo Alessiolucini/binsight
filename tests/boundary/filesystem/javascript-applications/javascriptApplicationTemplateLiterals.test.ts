@@ -8,7 +8,9 @@ import { javascriptApplicationAnalysisResultSchema } from "../../../../src/domai
 import { analyzeJavaScriptApplication } from "../../../support/javascriptApplicationScope.js";
 
 const graphIdentities = async (source: string) => {
-  const inputPath = await createTestTempDirectory("rea-js-template-literal-");
+  const inputPath = await createTestTempDirectory(
+    "binsight-js-template-literal-",
+  );
   await writeFile(join(inputPath, "app.js"), `${source}\n`);
   await writeFile(join(inputPath, "dep.js"), "module.exports = 1;\n");
   await writeFile(join(inputPath, "worker.js"), "self.onmessage = null;\n");

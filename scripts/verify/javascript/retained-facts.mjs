@@ -43,7 +43,7 @@ const environment = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   REA_LOG_LEVEL: "silent",
   REA_ANALYSIS_PROVIDER: "auto",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -70,7 +70,7 @@ const ownedCommand = async (command, arguments_) => {
         arguments: arguments_,
         cwd: temporary.path,
         env: environment,
-        runId: `rea-retained-facts-${randomUUID()}`,
+        runId: `binsight-retained-facts-${randomUUID()}`,
         expectedCommand: command === process.execPath ? process.execPath : null,
         sweepTokenOwnedProcesses: true,
       },
@@ -91,7 +91,7 @@ const resourceSnapshot = async () => {
     .split("\n")
     .find((line) => line.startsWith("0::"))
     ?.slice(3);
-  if (!group || !/\/rea-efficiency-[a-f0-9]{32}\.scope$/u.test(group))
+  if (!group || !/\/binsight-efficiency-[a-f0-9]{32}\.scope$/u.test(group))
     return null;
   const [cpu, peak] = await Promise.all([
     readFile(join("/sys/fs/cgroup", group, "cpu.stat"), "utf8"),
@@ -113,7 +113,7 @@ try {
     artifactHash.update(chunk);
   const artifactSha256 = artifactHash.digest("hex");
   temporary = await PrivateRuntimeRoot.create({
-    prefix: "rea-retained-facts-verifier-",
+    prefix: "binsight-retained-facts-verifier-",
   });
   await client.connect(transport);
   transport.stderr?.on("data", () => undefined);

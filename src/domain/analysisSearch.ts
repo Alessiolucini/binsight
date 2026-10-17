@@ -3,7 +3,7 @@ import { z } from "zod";
 import { analysisSearchInput } from "../contracts/analysisSearchContract.js";
 import { AnalysisInputError } from "./analysisErrorCore.js";
 
-/** Parsed `search_procedures`/`search_strings` query shared by providers that match in REA. */
+/** Parsed `search_procedures`/`search_strings` query shared by providers that match in BinSight. */
 export const analysisSearchQuerySchema = z.object(analysisSearchInput);
 
 export type AnalysisSearchQuery = z.infer<typeof analysisSearchQuerySchema>;

@@ -46,7 +46,7 @@ export const writeElectronApiAliasApplication = async (
     writeFile(
       join(root, "package.json"),
       JSON.stringify({
-        name: "rea-electron-api-alias-fixture",
+        name: "binsight-electron-api-alias-fixture",
         version: "1.0.0",
         main: "main.cjs",
       }),

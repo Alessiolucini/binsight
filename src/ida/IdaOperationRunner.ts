@@ -106,7 +106,7 @@ export class IdaOperationRunner {
       readonly callGraphAvailable?: boolean;
       /** False when the upstream server does not advertise `survey_binary`. */
       readonly surveyAvailable?: boolean;
-      /** The program identity REA admitted, reported by `list_documents`. */
+      /** The program identity BinSight admitted, reported by `list_documents`. */
       readonly admittedDocument?: string;
     } = {},
   ) {}

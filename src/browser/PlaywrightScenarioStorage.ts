@@ -117,7 +117,7 @@ export class PlaywrightScenarioStorage {
   readonly #initializedSession = new Set<string>();
   readonly #targets = new Map<string, StorageTarget>();
   readonly #replies = new Map<number, PendingReply>();
-  readonly #sourceUrl = `rea-storage-${randomUUID()}`;
+  readonly #sourceUrl = `binsight-storage-${randomUUID()}`;
   readonly #listeners: {
     readonly method: StorageEventMethod;
     readonly listener: (params: unknown) => void;

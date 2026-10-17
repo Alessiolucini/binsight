@@ -246,7 +246,7 @@ it("scans target-branch PRs through public gh GET requests and writes JSON and M
     throw new Error(`unexpected GET endpoint: ${endpoint}`);
   };
   const report = await collectPrCiHealth({
-    repository: "owner/rea",
+    repository: "owner/binsight",
     repositoryId: 11,
     defaultBranch: "main",
     now: observedAt,
@@ -305,7 +305,7 @@ it("counts older open PRs when deciding whether a branch/ref fallback is unique"
     throw new Error(`unexpected GET endpoint: ${endpoint}`);
   };
   const report = await collectPrCiHealth({
-    repository: "owner/rea",
+    repository: "owner/binsight",
     repositoryId: 11,
     defaultBranch: "main",
     now: observedAt,
@@ -349,7 +349,7 @@ it.each([false, true])(
       };
     };
     const report = await collectPrCiHealth({
-      repository: "owner/rea",
+      repository: "owner/binsight",
       repositoryId: 11,
       defaultBranch: "main",
       now: observedAt,
@@ -385,7 +385,7 @@ it("keeps the result unknown when the head changes between API snapshots", async
     };
   };
   const report = await collectPrCiHealth({
-    repository: "owner/rea",
+    repository: "owner/binsight",
     repositoryId: 11,
     defaultBranch: "main",
     now: observedAt,
@@ -424,7 +424,7 @@ it("public CLI uses only GET and produces a report from fixture GitHub responses
     env: {
       ...process.env,
       PATH: `${fixture.fakeBin}${delimiter}${process.env.PATH ?? ""}`,
-      CI_REPOSITORY: "owner/rea",
+      CI_REPOSITORY: "owner/binsight",
       CI_REPOSITORY_ID: "11",
       CI_DEFAULT_BRANCH: "main",
       CI_PR_HEALTH_DIRECTORY: outputDirectory,
@@ -461,7 +461,7 @@ it("rejects non-GET methods before launching the GitHub client", async () => {
     },
   });
   await expect(
-    request("POST", "repos/owner/rea/pulls", {
+    request("POST", "repos/owner/binsight/pulls", {
       requests: 0,
       startedAt: observedAt,
       limitMs: 1_000,
@@ -539,7 +539,7 @@ it("does not let an older proven run hide a newer run with an unverified reposit
     pull_requests: [{ number: 42, head: { sha: headSha } }],
   });
   const report = await collectPrCiHealth({
-    repository: "owner/rea",
+    repository: "owner/binsight",
     repositoryId: 11,
     defaultBranch: "main",
     now: observedAt,
@@ -598,19 +598,19 @@ function rawPull(number: number, overrides: Record<string, unknown> = {}) {
     number,
     draft: false,
     created_at: "2026-10-13T00:00:00Z",
-    html_url: `https://github.com/owner/rea/pull/${String(number)}`,
+    html_url: `https://github.com/owner/binsight/pull/${String(number)}`,
     base: { ref: "main", repo: { id: 11 } },
     head: {
       ref: `feature-${String(number)}`,
       sha: headSha,
-      repo: { id: 73, full_name: "contributor/rea" },
+      repo: { id: 73, full_name: "contributor/binsight" },
     },
     ...overrides,
   };
 }
 
 async function createFixture() {
-  const directory = await createTestTempDirectory("rea-ci-pr-health-");
+  const directory = await createTestTempDirectory("binsight-ci-pr-health-");
   const fakeBin = join(directory, "bin");
   await mkdir(fakeBin);
   return { directory, fakeBin };

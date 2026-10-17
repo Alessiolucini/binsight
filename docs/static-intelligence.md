@@ -44,19 +44,19 @@ decompilation and cross-references.
 
 ```bash
 # One-call triage of an unknown file
-rea triage-file /path/to/sample --json
+binsight triage-file /path/to/sample --json
 
 # A shareable Markdown report
-rea generate-triage-report /path/to/sample --json
+binsight generate-triage-report /path/to/sample --json
 
 # Structure, hardening, packing, hashes
-rea inspect-executable /path/to/sample --json
-rea inspect-binary-hardening /path/to/sample --json
-rea detect-binary-toolchain /path/to/sample --json
-rea compute-similarity-hashes /path/to/sample --json
+binsight inspect-executable /path/to/sample --json
+binsight inspect-binary-hardening /path/to/sample --json
+binsight detect-binary-toolchain /path/to/sample --json
+binsight compute-similarity-hashes /path/to/sample --json
 
 # Diff two builds
-rea compare-executables /path/to/old /path/to/new --json
+binsight compare-executables /path/to/old /path/to/new --json
 ```
 
 ## MCP

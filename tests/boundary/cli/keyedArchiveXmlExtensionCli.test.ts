@@ -11,7 +11,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "compiled CLI inspects an XML keyed archive with a non-plist suffix",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-xml-extension-cli-");
+    const root = await createTestTempDirectory(
+      "binsight-keyed-xml-extension-cli-",
+    );
     const path = join(root, "Model.archive");
     await writeFile(
       path,

@@ -13,12 +13,12 @@ const sourceEvidence = (variant: string) =>
   createEvidence(
     undefined,
     {
-      id: "rea-readiness-fixture",
-      name: "REA readiness fixture",
+      id: "binsight-readiness-fixture",
+      name: "BinSight readiness fixture",
       version: "1",
     },
     {
-      predicateType: "rea.reconstruction-readiness-fixture",
+      predicateType: "binsight.reconstruction-readiness-fixture",
       operation: "run_reconstruction_readiness_fixture",
       parameters: { variant },
       result: { passed: true, variant },
@@ -204,21 +204,21 @@ export const RECONSTRUCTION_READINESS_EXAMPLE: ReconstructionReadinessInput = {
     skill_digest: HASH,
     versions: [
       {
-        component: "rea-cli",
+        component: "binsight-cli",
         version: "2.4.0",
         digest: HASH,
         state: "current",
         remediation: null,
       },
       {
-        component: "rea-server",
+        component: "binsight-server",
         version: "2.3.0",
         digest: "b".repeat(64),
         state: "stale",
         remediation: "Restart the connected MCP server.",
       },
       {
-        component: "rea-server",
+        component: "binsight-server",
         version: "2.4.0",
         digest: HASH,
         state: "current",

@@ -16,7 +16,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "classifies a ZIP local-header offset beyond EOF as malformed input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-beyond-eof-");
+    const root = await createTestTempDirectory("binsight-zip-beyond-eof-");
     const archivePath = join(root, "beyond-eof.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("member.bin", new TextReader("valid member bytes"));
@@ -47,7 +47,7 @@ cliTest(
 cliTest(
   "inspects and extracts ZIP members with repeated current-directory prefixes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-relative-paths-");
+    const root = await createTestTempDirectory("binsight-zip-relative-paths-");
     const archivePath = join(root, "relative.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("./", undefined, { directory: true });
@@ -106,7 +106,7 @@ cliTest(
 cliTest(
   "treats a ZIP containing only root directory markers as empty",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-root-only-");
+    const root = await createTestTempDirectory("binsight-zip-root-only-");
     const archivePath = join(root, "root-only.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("./", undefined, { directory: true });

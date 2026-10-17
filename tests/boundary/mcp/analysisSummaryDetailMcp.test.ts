@@ -49,7 +49,7 @@ const connect = async (
 };
 
 const application = async () => {
-  const root = await createTestTempDirectory("rea-summary-detail-");
+  const root = await createTestTempDirectory("binsight-summary-detail-");
   await writeFile(
     join(root, "main.js"),
     'import { helper } from "./util.js";\nexport const greet = (name) => helper(name);\n',

@@ -38,7 +38,7 @@ export async function verifyGhidraFileOffsets(
   const { requestOptions } = resolveGhidraVerifierTimeouts(environment);
   const timeoutMs = requestOptions.timeout;
   const original = await readFile(targetPath);
-  const workspace = await mkdtemp(join(tmpdir(), "rea-file-offsets-"));
+  const workspace = await mkdtemp(join(tmpdir(), "binsight-file-offsets-"));
   const runtime = join(workspace, "runtime");
   await mkdir(runtime);
   const env = {
@@ -47,7 +47,7 @@ export async function verifyGhidraFileOffsets(
     TMP: runtime,
     TMPDIR: runtime,
   };
-  const client = new Client({ name: "rea-file-offsets", version: "1" });
+  const client = new Client({ name: "binsight-file-offsets", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [entrypoint, "mcp"],

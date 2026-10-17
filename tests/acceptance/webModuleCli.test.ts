@@ -12,7 +12,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "accepts zero-based numeric source indices and returns the same engine-free CLI/MCP trace",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-module-cli-");
+    const root = await createTestTempDirectory("binsight-module-cli-");
     const artifacts = webModuleArtifactsFixture("import(name)");
     const manifest = {
       ...artifacts.manifest,

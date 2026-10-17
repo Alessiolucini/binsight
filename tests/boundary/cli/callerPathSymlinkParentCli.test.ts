@@ -17,7 +17,7 @@ describe.skipIf(process.platform === "win32")(
     cliTest(
       "inspects the file the filesystem selects, not its lexical sibling",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-symlink-parent-");
+        const root = await createTestTempDirectory("binsight-symlink-parent-");
         await mkdir(join(root, "target/child"), { recursive: true });
         await symlink("target/child", join(root, "link"));
         const selected = createGoBinaryFixture({ goVersion: "go1.26.0" }).bytes;
@@ -52,7 +52,9 @@ describe.skipIf(process.platform === "win32")(
     cliTest(
       "reads PE resources from the file the filesystem selects",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-symlink-parent-pe-");
+        const root = await createTestTempDirectory(
+          "binsight-symlink-parent-pe-",
+        );
         await mkdir(join(root, "target/child"), { recursive: true });
         await symlink("target/child", join(root, "link"));
         const image = (payload: string) =>

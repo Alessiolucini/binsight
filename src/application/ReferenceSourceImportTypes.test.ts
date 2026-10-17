@@ -26,7 +26,7 @@ describe("reference-source import error projection", () => {
         "EIO while reading /selected/source/src/main.ts",
       );
       expect(projected.message).toMatch(
-        /try again|when ready|Check that|REA on Linux/u,
+        /try again|when ready|Check that|BinSight on Linux/u,
       );
     }
   });

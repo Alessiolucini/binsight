@@ -133,7 +133,7 @@ export const packageHopperEnvironment = (root, platform = process.platform) => {
     HOPPER_LOADER_ARGS_JSON: JSON.stringify([
       "-c",
       'node_path=$1; shift; "$node_path" "$@"',
-      "rea-package-hopper",
+      "binsight-package-hopper",
       process.execPath,
       fakeLauncher,
     ]),

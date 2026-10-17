@@ -81,7 +81,7 @@ if len(sys.argv) > 3:
     )))
 
 
-with tempfile.TemporaryDirectory(prefix="rea-owner-lifetime-") as root:
+with tempfile.TemporaryDirectory(prefix="binsight-owner-lifetime-") as root:
     directory = Path(root)
     sentinel = subprocess.Popen([sys.executable, "-c", "import time;time.sleep(100)"])
     worker = subprocess.Popen(

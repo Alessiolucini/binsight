@@ -52,7 +52,9 @@ import { parseJavaScriptSemanticGraph } from "../../../../src/domain/javascript/
 import { writeJavaScriptArtifactFixture } from "../../../fixtures/javascriptArtifactApplication.js";
 
 it("keeps excluded non-JavaScript files out of both semantic construction paths", async () => {
-  const root = await createTestTempDirectory("rea-js-semantic-applicability-");
+  const root = await createTestTempDirectory(
+    "binsight-js-semantic-applicability-",
+  );
   await Promise.all(
     (
       [
@@ -195,7 +197,9 @@ it("preserves graph commitments and export shapes when consuming file-local IR",
     ).toContain("unexported");
     expect(parseJavaScriptSemanticGraph(semantic)).toEqual(semantic);
     const transferred = createJavaScriptSemanticGraphProjection();
-    const wireRoot = await createTestTempDirectory("rea-javascript-transfer-");
+    const wireRoot = await createTestTempDirectory(
+      "binsight-javascript-transfer-",
+    );
     const decodedModules = new Map<string, JavaScriptModuleSemanticIr>();
     const decodedStatic = new Map<string, JavaScriptStaticAnalysis>();
     let rejectedInvalidTransfer = false;
@@ -310,7 +314,9 @@ const rejectInvalidTransfer = async (
 };
 
 it("reports semantic value resource limits in application graph coverage", async () => {
-  const root = await createTestTempDirectory("rea-javascript-semantic-limit-");
+  const root = await createTestTempDirectory(
+    "binsight-javascript-semantic-limit-",
+  );
   await writeFile(join(root, "app.js"), primitiveCandidateExpansionSource());
   await writeFile(join(root, "growth.js"), primitiveByteExpansionSource());
   const snapshot = await scanCanonicalArtifactInventory(root, {});
@@ -453,7 +459,7 @@ it("reconstructs package, Electron roles, Webpack/Rspack modules, and cross-laye
 });
 
 it("produces deterministic ASAR graphs with unpacked native linkage and complete paths/digests", async () => {
-  const root = await createTestTempDirectory("rea-javascript-asar-");
+  const root = await createTestTempDirectory("binsight-javascript-asar-");
   const source = join(root, "source");
   await mkdir(source);
   await writeJavaScriptArtifactFixture(source);
@@ -510,7 +516,7 @@ it("produces deterministic ASAR graphs with unpacked native linkage and complete
 
 it("keeps suffix-named ASAR directories in the graph and analyzes their files", async () => {
   const root = await createTestTempDirectory(
-    "rea-javascript-asar-suffix-directory-",
+    "binsight-javascript-asar-suffix-directory-",
   );
   const source = join(root, "source");
   const zipDirectory = join(source, "node_modules", "@zip.js");
@@ -552,7 +558,9 @@ it("keeps suffix-named ASAR directories in the graph and analyzes their files", 
 });
 
 it("keeps ASAR analysis usable when unpacked native companion bytes are absent", async () => {
-  const root = await createTestTempDirectory("rea-javascript-asar-missing-");
+  const root = await createTestTempDirectory(
+    "binsight-javascript-asar-missing-",
+  );
   const source = join(root, "source");
   await mkdir(source);
   await writeJavaScriptArtifactFixture(source);
@@ -641,7 +649,9 @@ it("keeps ASAR analysis usable when unpacked native companion bytes are absent",
 });
 
 it("recurses into filesystem-backed ASAR containers without losing container-relative paths", async () => {
-  const root = await createTestTempDirectory("rea-javascript-nested-asar-");
+  const root = await createTestTempDirectory(
+    "binsight-javascript-nested-asar-",
+  );
   const source = await fixtureDirectory();
   const outer = join(root, "outer");
   const resources = join(outer, "resources");
@@ -775,7 +785,7 @@ const reconstructAsarArchive = async (
 };
 
 const fixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-javascript-artifact-");
+  const root = await createTestTempDirectory("binsight-javascript-artifact-");
   await writeJavaScriptArtifactFixture(root);
   return root;
 };
@@ -784,7 +794,9 @@ for (const extension of ["ts", "tsx", "mts", "cts", "js", "mjs", "cjs"]) {
   it.each(["directory", "asar"] as const)(
     `retains ${extension} source facts from a real %s artifact`,
     async (format) => {
-      const root = await createTestTempDirectory("rea-nodenext-artifacts-");
+      const root = await createTestTempDirectory(
+        "binsight-nodenext-artifacts-",
+      );
       const directory = join(root, "source");
       await mkdir(directory);
       const path = `selected.${extension}`;

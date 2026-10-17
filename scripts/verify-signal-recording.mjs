@@ -27,7 +27,7 @@ const entrypoint =
   process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const run = createVerifierRun();
 const root = await PrivateRuntimeRoot.create({
-  prefix: "rea-signal-verifier-",
+  prefix: "binsight-signal-verifier-",
 });
 const path = join(root.path, "recording with spaces.vcd");
 const pagedPath = join(root.path, "paged.vcd");
@@ -56,7 +56,7 @@ const lines = [
   "1!",
 ];
 let tick = 1000;
-for (const byte of Buffer.from("REA")) {
+for (const byte of Buffer.from("BinSight")) {
   for (const bit of [
     0,
     ...Array.from({ length: 8 }, (_, i) => (byte >> i) & 1),

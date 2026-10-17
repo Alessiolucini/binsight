@@ -42,8 +42,8 @@ export type { CompareSide };
 
 /** Bundled reader identity. Differences between the two files are observed facts. */
 export const COMPARE_EXECUTABLES_PROVIDER_IDENTITY = {
-  id: "rea-compare-executables",
-  name: "REA executable comparison engine",
+  id: "binsight-compare-executables",
+  name: "BinSight executable comparison engine",
   version: "1",
 } as const;
 const OPERATION = "compare_executables";

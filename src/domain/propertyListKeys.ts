@@ -8,7 +8,7 @@ import { parse, parseOpenStep } from "plist";
 
 import { MAX_PLIST_DEPTH } from "./apple/plistValue.js";
 
-/** The dictionary key REA results cannot carry: validation strips it. */
+/** The dictionary key BinSight results cannot carry: validation strips it. */
 const PROTOTYPE_KEY = "__proto__";
 
 /** A decoded plist without `__proto__` entries, and how many were omitted. */
@@ -20,8 +20,8 @@ export interface PropertyListWithoutPrototypeKeys {
 /** Limitation for results whose source plist held `__proto__` entries. */
 export const omittedPrototypeKeysLimitation = (count: number | null): string =>
   count === null
-    ? "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key."
-    : `${String(count)} dictionary ${count === 1 ? "entry" : "entries"} keyed __proto__ ${count === 1 ? "was" : "were"} omitted because REA results cannot represent that key.`;
+    ? "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key."
+    : `${String(count)} dictionary ${count === 1 ? "entry" : "entries"} keyed __proto__ ${count === 1 ? "was" : "were"} omitted because BinSight results cannot represent that key.`;
 
 const withoutKey = (
   value: unknown,

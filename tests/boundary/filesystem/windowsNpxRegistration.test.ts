@@ -17,7 +17,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const configurationSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+    binsight: z.object({ command: z.string(), args: z.array(z.string()) }),
   }),
 });
 
@@ -30,17 +30,19 @@ it.each([
       "mcp",
     ],
   },
-  { previousCommand: ["cmd", "/c", "npx", "-y", "rea-agents@5.0.0", "mcp"] },
+  { previousCommand: ["cmd", "/c", "npx", "-y", "binsight@5.0.0", "mcp"] },
 ])(
-  "migrates Windows npx registration $previousCommand idempotently and uninstalls only REA",
+  "migrates Windows npx registration $previousCommand idempotently and uninstalls only BinSight",
   async ({ previousCommand }) => {
-    const home = await createTestTempDirectory("rea-windows-registration-");
+    const home = await createTestTempDirectory(
+      "binsight-windows-registration-",
+    );
     const configPath = join(home, ".claude.json");
     const original = JSON.stringify({
       theme: "dark",
       mcpServers: {
         other: { command: "another-server" },
-        rea: {
+        binsight: {
           command: previousCommand[0],
           args: previousCommand.slice(1),
         },
@@ -71,7 +73,9 @@ it.each([
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "removed",
     });
@@ -86,11 +90,11 @@ it.each([
 it.each(["npx", "bunx"] as const)(
   "keeps the Windows %s launcher aligned through Codex TOML setup and removal",
   async (runner) => {
-    const home = await createTestTempDirectory("rea-windows-codex-");
+    const home = await createTestTempDirectory("binsight-windows-codex-");
     await mkdir(join(home, ".codex"));
     const configPath = join(home, ".codex", "config.toml");
     const original =
-      '\uFEFF# Keep this explanation.\nnotify = ["a", "b"]\nliteral = \'C:\\demo\\path\'\ndisabled_mcp_servers = ["rea"]\n\n[mcp_servers.other]\ncommand = "another-server"\n';
+      '\uFEFF# Keep this explanation.\nnotify = ["a", "b"]\nliteral = \'C:\\demo\\path\'\ndisabled_mcp_servers = ["binsight"]\n\n[mcp_servers.other]\ncommand = "another-server"\n';
     await writeFile(configPath, original);
     const client = { name: "codex", configPath, format: "toml" } as const;
     const command = setupRegistrationCommand("win32", runner, undefined);
@@ -108,7 +112,9 @@ it.each(["npx", "bunx"] as const)(
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "removed",
     });
@@ -116,30 +122,34 @@ it.each(["npx", "bunx"] as const)(
   },
 );
 
-it("retains rea-named custom shell registrations without writing a backup", async () => {
-  const home = await createTestTempDirectory("rea-custom-shell-registration-");
+it("retains binsight-named custom shell registrations without writing a backup", async () => {
+  const home = await createTestTempDirectory(
+    "binsight-custom-shell-registration-",
+  );
   const configPath = join(home, ".claude.json");
   const client = { name: "claude_code", configPath, format: "json" } as const;
   for (const command of [
     ["cmd.exe", "/d", "/c", "node", "custom.js", "mcp"],
-    ["cmd.exe", "/k", "npx", "-y", "rea-agents@5.0.0", "mcp"],
-    ["cmd.exe", "/c", "npx -y rea-agents@5.0.0 mcp"],
+    ["cmd.exe", "/k", "npx", "-y", "binsight@5.0.0", "mcp"],
+    ["cmd.exe", "/c", "npx -y binsight@5.0.0 mcp"],
     ["cmd.exe", "/c", "npx", "-y", "another-package", "mcp"],
-    ["cmd.exe", "/c", "npx", "-y", "rea-agents@5.0.0", "mcp", "&", "other"],
-    ["cmd.exe", "/c", "npx", "-y", "rea-agents@5.0.0 & other", "mcp"],
+    ["cmd.exe", "/c", "npx", "-y", "binsight@5.0.0", "mcp", "&", "other"],
+    ["cmd.exe", "/c", "npx", "-y", "binsight@5.0.0 & other", "mcp"],
     ["cmd.exe", "/c", "bunx", "another-package", "mcp"],
-    ["cmd.exe", "/c", "bunx", "-y", "rea-agents@5.0.0", "mcp"],
-    ["cmd.exe", "/c", "bunx", "rea-agents@5.0.0", "mcp", "&", "other"],
+    ["cmd.exe", "/c", "bunx", "-y", "binsight@5.0.0", "mcp"],
+    ["cmd.exe", "/c", "bunx", "binsight@5.0.0", "mcp", "&", "other"],
   ]) {
     const original = JSON.stringify({
-      mcpServers: { rea: { command: command[0], args: command.slice(1) } },
+      mcpServers: { binsight: { command: command[0], args: command.slice(1) } },
     });
     await writeFile(configPath, original);
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "retained",
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(
+      readFile(`${configPath}.binsight.backup`),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
   }
@@ -151,7 +161,7 @@ it.skipIf(process.platform !== "win32").each([
 ] as const)(
   "starts the written Windows registration through a native %s.cmd shim",
   async (runner, shimArguments) => {
-    const root = await createTestTempDirectory("rea-windows-mcp-");
+    const root = await createTestTempDirectory("binsight-windows-mcp-");
     const home = join(root, "home with spaces");
     await mkdir(home);
     const configPath = join(home, ".claude.json");
@@ -168,7 +178,7 @@ it.skipIf(process.platform !== "win32").each([
         : configureClientConfiguration(setupClient, {}, command)),
     ).toMatchObject({ status: "configured" });
     const decoded: unknown = JSON.parse(await readFile(configPath, "utf8"));
-    const registration = configurationSchema.parse(decoded).mcpServers.rea;
+    const registration = configurationSchema.parse(decoded).mcpServers.binsight;
     expect([registration.command, ...registration.args]).toEqual(command);
     const entry = fileURLToPath(
       new URL("../../../scripts/rea.mjs", import.meta.url),

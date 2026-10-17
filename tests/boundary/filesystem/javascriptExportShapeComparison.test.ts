@@ -1181,4 +1181,4 @@ const sourceOwnedParsers = async (): Promise<[GraphSource, GraphSource]> => {
 };
 
 const temporaryRoot = (): Promise<string> =>
-  createTestTempDirectory("rea-export-shapes-");
+  createTestTempDirectory("binsight-export-shapes-");

@@ -88,7 +88,7 @@ export function parseMipsRelocatableReadelf(text) {
   return { sections, symbols, relocations };
 }
 
-/** Independent reader is a bounded test prerequisite, never an REA provider. */
+/** Independent reader is a bounded test prerequisite, never an BinSight provider. */
 export async function inspectMipsRelocatableReadelf(path, byteOrder, floatAbi) {
   const command = process.env.REA_MIPS_READELF ?? "readelf";
   const options = {

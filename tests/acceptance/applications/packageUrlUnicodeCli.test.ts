@@ -96,7 +96,7 @@ const targets = {
     exports: "rejected",
   },
   opaqueReentry: {
-    value: ["./%2\te%2\te/rea-op\taque-0/feature.js", "another-package"],
+    value: ["./%2\te%2\te/binsight-op\taque-0/feature.js", "another-package"],
     imports: "external",
     exports: "rejected",
   },
@@ -164,7 +164,7 @@ const sources = ["import", "require"].map((mode) => ({
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves package target facts under unrepresentable URL paths through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-url-unicode-");
+    const root = await createTestTempDirectory("binsight-package-url-unicode-");
     const application = join(root, "application");
     await mkdir(application);
     const fixture = join(root, "source");

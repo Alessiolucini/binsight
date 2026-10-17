@@ -85,7 +85,7 @@ export const ARTIFACT_TOOL_CONTRACTS = [
   ),
   artifact(
     "extract_artifact",
-    "Extract all regular files from the active archive or application package into a fresh temporary directory chosen by REA. The result includes its location. Rejects traversal and symlink escapes, never overwrites, and verifies cleanup. Integrity mismatches fail by default; record-and-continue extracts the observed bytes and returns each mismatch as an explicitly untrusted integrity contradiction.",
+    "Extract all regular files from the active archive or application package into a fresh temporary directory chosen by BinSight. The result includes its location. Rejects traversal and symlink escapes, never overwrites, and verifies cleanup. Integrity mismatches fail by default; record-and-continue extracts the observed bytes and returns each mismatch as an explicitly untrusted integrity contradiction.",
     artifactExtractionInputSchema,
   ),
   artifact(

@@ -17,7 +17,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const CONTENT = "module.exports = 'owned';\n";
 
 const createArchive = async (content = CONTENT) => {
-  const root = await createTestTempDirectory("rea-asar-reader-cleanup-");
+  const root = await createTestTempDirectory("binsight-asar-reader-cleanup-");
   const source = join(root, "source");
   const archive = join(root, "fixture.asar");
   await mkdir(source);
@@ -101,7 +101,7 @@ describe("ASAR reader cleanup", () => {
         handle: memberHandle,
         root,
       } = await openPackedMember(reader, opened);
-      expect(memberHandle.path).toContain("rea-asar-snapshot-");
+      expect(memberHandle.path).toContain("binsight-asar-snapshot-");
       expectDescriptorOpen(memberHandle.fd);
       expect(output.destroyed).toBe(false);
 
@@ -166,7 +166,7 @@ describe("ASAR reader cleanup", () => {
     });
     const { reader, opened } = createTrackedReader(archive, {
       beforeAdoption: async (path) => {
-        if (pauseMemberOpen && path.includes("rea-asar-snapshot-")) {
+        if (pauseMemberOpen && path.includes("binsight-asar-snapshot-")) {
           pauseMemberOpen = false;
           memberOpenReached();
           await memberOpenGate;

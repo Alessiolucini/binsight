@@ -19,7 +19,7 @@ let context;
 let report;
 let primaryError;
 try {
-  profile = await mkdtemp(join(tmpdir(), "rea-browser-dom-"));
+  profile = await mkdtemp(join(tmpdir(), "binsight-browser-dom-"));
   site = await startBrowserVerifierSite();
   context = await chromium.launchPersistentContext(profile, {
     executablePath: executable,

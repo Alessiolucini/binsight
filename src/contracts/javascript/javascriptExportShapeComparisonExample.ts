@@ -114,7 +114,7 @@ const exampleEvidence = (property: "count" | "total") => {
       value: { kind: "source-range", source: modulePath, ...link.location },
     },
     extractor: {
-      name: "rea-javascript-artifact-reconstruction",
+      name: "binsight-javascript-artifact-reconstruction",
       version: "1",
       operation: "recover-module-export",
       executable_sha256: null,
@@ -250,12 +250,12 @@ const exampleEvidence = (property: "count" | "total") => {
       format: "directory",
     },
     {
-      id: "rea-javascript-application",
-      name: "REA JavaScript application analyzer",
+      id: "binsight-javascript-application",
+      name: "BinSight JavaScript application analyzer",
       version: "1",
     },
     {
-      predicateType: "rea.javascript-application-analysis",
+      predicateType: "binsight.javascript-application-analysis",
       operation: "analyze_javascript_application",
       parameters: {},
       result,

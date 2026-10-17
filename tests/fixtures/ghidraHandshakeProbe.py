@@ -100,7 +100,7 @@ public class ReaHandshakeProbe {
 __METHODS__
 }
 '''.replace("__METHODS__", methods)
-with tempfile.TemporaryDirectory(prefix="rea-ghidra-handshake-") as directory:
+with tempfile.TemporaryDirectory(prefix="binsight-ghidra-handshake-") as directory:
     source = pathlib.Path(directory) / "ReaHandshakeProbe.java"
     source.write_text(harness)
     subprocess.run([sys.argv[1] if len(sys.argv) > 1 else "java", str(source)],

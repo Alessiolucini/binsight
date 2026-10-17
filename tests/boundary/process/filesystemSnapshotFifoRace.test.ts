@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "does not block when an observed regular file is replaced by a FIFO",
   async () => {
-    const directory = await createTestTempDirectory("rea-snapshot-fifo-");
+    const directory = await createTestTempDirectory("binsight-snapshot-fifo-");
     const probe = fileURLToPath(
       new URL(
         "../../fixtures/filesystemSnapshotFifoProbe.mjs",
@@ -29,7 +29,7 @@ it.skipIf(process.platform === "win32")(
     const launch = await spawnOwnedProviderProcess({
       command: process.execPath,
       arguments: [probe, snapshotModule, directory],
-      runId: `rea-snapshot-fifo-${randomUUID()}`,
+      runId: `binsight-snapshot-fifo-${randomUUID()}`,
       cwd: tmpdir(),
       hostEnvironment: process.env,
     });

@@ -219,7 +219,7 @@ export const createRizinCoverageHarness = (
     body: string,
     shebang = "#!/usr/bin/env node",
   ): Promise<string> => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-coverage-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-rizin-coverage-"));
     directories.add(directory);
     latestDirectory = directory;
     const provider = join(directory, "fake-rizin.mjs");

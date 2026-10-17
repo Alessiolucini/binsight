@@ -20,12 +20,12 @@ const reconciliation = reconcileJavaScriptRuntime(
 const reconciliationEvidence = createEvidence(
   undefined,
   {
-    id: "rea-javascript-runtime-reconciliation",
-    name: "REA JavaScript runtime reconciliation",
+    id: "binsight-javascript-runtime-reconciliation",
+    name: "BinSight JavaScript runtime reconciliation",
     version: "1",
   },
   {
-    predicateType: "rea.javascript-runtime-reconciliation",
+    predicateType: "binsight.javascript-runtime-reconciliation",
     operation: "reconcile_javascript_runtime",
     parameters: {
       static_layers:
@@ -100,7 +100,7 @@ export const SOURCE_TO_BUNDLE_COMPARISON_EXAMPLE = {
     manifests: [],
     vcs: { kind: "none", head: null, dirty: null },
     provenance: {
-      importer: "rea",
+      importer: "binsight",
       importer_version: "1",
       caller: "contract-example",
     },

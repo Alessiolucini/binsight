@@ -371,7 +371,7 @@ const fridaEvidence = (
     undefined,
     { id: "frida", name: "Frida", version: null },
     {
-      predicateType: "rea.frida.instrumentation-observation",
+      predicateType: "binsight.frida.instrumentation-observation",
       operation,
       parameters: jsonObjectSchema.parse(parameters),
       result: jsonValueSchema.parse(result),

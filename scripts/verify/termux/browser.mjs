@@ -20,7 +20,7 @@ const executable = `${process.env.PREFIX}/bin/chromium`;
 const { stdout: chromiumVersion } = await execute(executable, ["--version"], {
   timeout: 30_000,
 });
-const marker = "rea-termux-browser-smoke";
+const marker = "binsight-termux-browser-smoke";
 const server = createServer((_request, response) => {
   response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
   response.end(`<!doctype html><html><body><h1>${marker}</h1></body></html>`);

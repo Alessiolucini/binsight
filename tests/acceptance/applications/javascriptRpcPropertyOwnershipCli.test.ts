@@ -11,7 +11,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains standalone GraphQL sources and only suppresses owned copies through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-graphql-source-");
+    const root = await createTestTempDirectory("binsight-graphql-source-");
     await writeFixtureFiles(root, {
       "classic.js": `
         const document = {
@@ -109,7 +109,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains only final known RPC object properties through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-rpc-properties-");
+    const root = await createTestTempDirectory("binsight-rpc-properties-");
     await writeFixtureFiles(root, {
       "entry.mjs": `
         function httpBatchLink(options) { return options.url; }

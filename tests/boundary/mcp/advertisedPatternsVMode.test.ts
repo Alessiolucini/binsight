@@ -55,7 +55,7 @@ it("advertises portable NUL escapes and patterns that compile in all JS modes", 
   }
 
   // Annex B and `u` mode accept an unescaped `-`, `/` or `[` inside a character
-  // class, so REA's own schema validation cannot observe the defect. `v` mode
+  // class, so BinSight's own schema validation cannot observe the defect. `v` mode
   // rejects them, and a client that compiles advertised patterns rejects the
   // complete tools request rather than the affected call.
   const uncompilable = patterns.flatMap((entry) =>

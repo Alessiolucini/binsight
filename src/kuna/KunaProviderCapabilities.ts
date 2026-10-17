@@ -38,7 +38,7 @@ export const KUNA_STRING_LIMITATION =
   "Kuna scans its mapped sections or segments for printable runs of at least five characters, including unterminated fragments. Encodings are ASCII, UTF-8 and Latin-range UTF-16LE; other text can remain undiscovered. String scanning skips references; an empty search is not proof of absence.";
 
 export const KUNA_XREF_LIMITATION =
-  "Kuna's static reference walk unifies forwarding aliases and omits references internal to that alias class. REA keeps only exact-address incoming edges; an empty result does not prove no reference exists.";
+  "Kuna's static reference walk unifies forwarding aliases and omits references internal to that alias class. BinSight keeps only exact-address incoming edges; an empty result does not prove no reference exists.";
 
 /** Whether an operation is one Kuna answers. */
 export const isKunaOperation = (

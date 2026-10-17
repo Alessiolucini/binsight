@@ -12,7 +12,7 @@ import {
 const it = nativeTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE);
 
 const createDatabase = async (sql: string): Promise<string> => {
-  const workspace = await createTestWorkspace("rea-sqlite-expansion-");
+  const workspace = await createTestWorkspace("binsight-sqlite-expansion-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("private.db");
   const producer = new DatabaseSync(path);

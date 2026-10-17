@@ -93,7 +93,7 @@ describe("apktoolInvocation", () => {
           command: "C:\\ProgramData\\chocolatey\\bin\\apktool.BAT",
           commandSource: "environment",
         },
-        ["d", "-o", "C:\\Users\\Analyst\\AppData\\Local\\Temp\\rea out"],
+        ["d", "-o", "C:\\Users\\Analyst\\AppData\\Local\\Temp\\binsight out"],
         windows,
         "win32",
       ),
@@ -105,7 +105,7 @@ describe("apktoolInvocation", () => {
         "/v:off",
         "/s",
         "/c",
-        '""C:\\ProgramData\\chocolatey\\bin\\apktool.BAT" "d" "-o" "C:\\Users\\Analyst\\AppData\\Local\\Temp\\rea out""',
+        '""C:\\ProgramData\\chocolatey\\bin\\apktool.BAT" "d" "-o" "C:\\Users\\Analyst\\AppData\\Local\\Temp\\binsight out""',
       ],
       windowsVerbatimArguments: true,
     });

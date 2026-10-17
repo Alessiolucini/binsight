@@ -88,7 +88,7 @@ export const cleanupHopperSession = async (
     0,
     input.retainDocument &&
       input.resources.launch?.preparedImagePath === undefined
-      ? "detaching REA from the Hopper document"
+      ? "detaching BinSight from the Hopper document"
       : "requesting Hopper document shutdown",
   );
   await requestShutdown(input, state);
@@ -408,7 +408,7 @@ const cleanupOutcome = (
       state.resources.has("hopper-document")
         ? {
             remediationAction:
-              "Export the Evidence bundle before close_binary clears session records. Let Hopper finish initial analysis or complete its pending dialog, then retry close_binary on this connection so REA can authenticate and close the retained document. If no matching bridge becomes available, manually close the reported document in Hopper, then restart the MCP connection. A helper exit or open:false does not establish that retained cleanup is complete.",
+              "Export the Evidence bundle before close_binary clears session records. Let Hopper finish initial analysis or complete its pending dialog, then retry close_binary on this connection so BinSight can authenticate and close the retained document. If no matching bridge becomes available, manually close the reported document in Hopper, then restart the MCP connection. A helper exit or open:false does not establish that retained cleanup is complete.",
           }
         : undefined,
     ),

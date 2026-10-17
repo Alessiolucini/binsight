@@ -11,7 +11,7 @@ it.each([0x01c0, 0x01c2, 0x01c4])(
   async (machine) => {
     const bytes = buildManagedPeFixture({ cliFlags: 0 });
     bytes.writeUInt16LE(machine, bytes.readUInt32LE(0x3c) + 4);
-    const directory = await createTestTempDirectory("rea-managed-arm-");
+    const directory = await createTestTempDirectory("binsight-managed-arm-");
     const path = join(directory, "fixture.exe");
     await writeFile(path, bytes);
     const parsed = await parseBinaryTarget(path);

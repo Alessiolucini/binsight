@@ -1,5 +1,5 @@
 /**
- * REA-authored binary component classifiers. Each signature anchors on a short
+ * BinSight-authored binary component classifiers. Each signature anchors on a short
  * ASCII literal that well-known projects embed in their own code or banners,
  * then confirms a version with a narrow window-local pattern. Matching a
  * signature is an inferred attribution of observed bytes, never proof that the

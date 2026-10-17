@@ -51,7 +51,7 @@ Ghidra's header-based selection is not reliable for RV32. The 12.1.4
 | RV32 ELF, `e_flags 0x5`, no Andes declaration   | `RISCV:LE:32:AndeStar_v5:gcc` |
 
 So an ordinary RV32 image lands on an Andes processor model unless the language
-is stated. REA therefore pins `RISCV:LE:32:default` or `RISCV:LE:64:default`
+is stated. BinSight therefore pins `RISCV:LE:32:default` or `RISCV:LE:64:default`
 with the `gcc` compiler specification per class, records
 `language_selection: provider-pinned-v1`, and refuses a caller-selected
 `REA_GHIDRA_LANGUAGE_ID` or `REA_GHIDRA_COMPILER_SPEC_ID` that disagrees with the

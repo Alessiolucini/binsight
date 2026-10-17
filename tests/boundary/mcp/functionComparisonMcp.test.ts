@@ -341,13 +341,13 @@ it.each([
     const result = compareFunctions(left, right);
     expect(result.status).toBe(status);
     const provider = {
-      id: "rea-function-comparison",
-      name: "REA function comparison",
+      id: "binsight-function-comparison",
+      name: "BinSight function comparison",
       version: "1",
     };
     const observation = {
       operation: "compare_functions",
-      predicateType: "rea.function-comparison",
+      predicateType: "binsight.function-comparison",
       parameters: {
         left_evidence_id: left.evidence_id,
         right_evidence_id: right.evidence_id,
@@ -367,7 +367,9 @@ it.each([
             ...observation,
             result: jsonValueSchema.parse({ ...result, status: "unchanged" }),
           });
-    const directory = await createTestTempDirectory("rea-function-status-");
+    const directory = await createTestTempDirectory(
+      "binsight-function-status-",
+    );
     const path = join(directory, "bundle.json");
     await writeFile(
       path,

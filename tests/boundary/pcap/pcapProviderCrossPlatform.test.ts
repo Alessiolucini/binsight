@@ -111,7 +111,7 @@ it("resolves a retained tool-probe error after its process owner closes", async 
 it.runIf(hasNativeBound)(
   "inspects a capture with metadata, endpoints, DNS, and protocol facts",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-x-");
+    const root = await createTestTempDirectory("binsight-pcap-x-");
     const capturePath = join(root, "capture.pcap");
     const captureBytes = "cross-platform-pcap-fixture";
     await writeFile(capturePath, captureBytes);

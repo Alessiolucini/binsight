@@ -33,7 +33,7 @@ describe("compiled CLI JSON input failure status", () => {
     cliTest(
       `${command} rejects malformed inline input before dispatch`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-cli-json-status-");
+        const root = await createTestTempDirectory("binsight-cli-json-status-");
         const input = "{";
         const result = await cli.run({
           arguments: [command, input, "--json"],
@@ -58,7 +58,7 @@ describe("compiled CLI JSON input failure status", () => {
     cliTest(
       `preserves ${kind} JSON input diagnostics through a real command`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-cli-json-status-");
+        const root = await createTestTempDirectory("binsight-cli-json-status-");
         const input = join(root, "input.json");
         if (kind === "file") await writeFile(input, "{");
 
@@ -96,7 +96,7 @@ describe("compiled CLI JSON input diagnostic preservation", () => {
     cliTest(
       `keeps the failure status with ${format} output`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-cli-json-format-");
+        const root = await createTestTempDirectory("binsight-cli-json-format-");
         const input = join(root, "missing.json");
         const result = await cli.run({
           arguments: ["compare-javascript-export-shapes", input, ...flags],
@@ -121,7 +121,7 @@ describe("compiled CLI JSON input diagnostic preservation", () => {
   cliTest(
     "rejects an empty file path without losing its diagnostic",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-cli-json-empty-");
+      const root = await createTestTempDirectory("binsight-cli-json-empty-");
       const result = await cli.run({
         arguments: ["compare-javascript-export-shapes", "", "--json"],
         environment: {
@@ -142,7 +142,7 @@ describe("compiled CLI JSON input diagnostic preservation", () => {
   cliTest(
     "classifies an overlong malformed inline value before dispatch",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-cli-json-overlong-");
+      const root = await createTestTempDirectory("binsight-cli-json-overlong-");
       const input = `[${"x".repeat(3_000)}`;
       const result = await cli.run({
         arguments: ["compare-javascript-export-shapes", input, "--json"],
@@ -171,7 +171,9 @@ describe("compiled CLI JSON input diagnostic preservation", () => {
   cliTest(
     "preserves explicit overlong JSON path diagnostics",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-cli-json-overlong-path-");
+      const root = await createTestTempDirectory(
+        "binsight-cli-json-overlong-path-",
+      );
       const input = `[${"x".repeat(3_000)}.json`;
       const result = await cli.run({
         arguments: ["compare-javascript-export-shapes", input, "--json"],
@@ -196,7 +198,7 @@ describe("compiled CLI JSON path ambiguity", () => {
   cliTest(
     "classifies malformed inline JSON when a path prefix is a regular file",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-cli-json-not-dir-");
+      const root = await createTestTempDirectory("binsight-cli-json-not-dir-");
       await writeFile(join(root, "[prefix"), "regular file");
       const input = "[prefix/rest";
       const result = await cli.run({
@@ -227,7 +229,7 @@ describe("compiled CLI JSON path ambiguity", () => {
   cliTest.runIf(process.platform !== "win32" && process.getuid?.() !== 0)(
     "preserves permission errors for malformed path-like JSON input",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-cli-json-denied-");
+      const root = await createTestTempDirectory("binsight-cli-json-denied-");
       const denied = join(root, "[locked");
       const input = "[locked/rest";
       await mkdir(denied);
@@ -270,7 +272,9 @@ describe("compiled JSON parser and logger success seam", () => {
     cliTest(
       `preserves valid ${kind} data and a zero exit status without running a workflow`,
       async ({ processes }) => {
-        const root = await createTestTempDirectory("rea-cli-json-success-");
+        const root = await createTestTempDirectory(
+          "binsight-cli-json-success-",
+        );
         const value = {
           error: "source data",
           code: "invalid_request",
@@ -307,7 +311,7 @@ describe("compiled CLI parser with relative brace and bracket paths", () => {
     cliTest(
       `reads the selected relative file ${filename}`,
       async ({ processes }) => {
-        const root = await createTestTempDirectory("rea-cli-json-path-");
+        const root = await createTestTempDirectory("binsight-cli-json-path-");
         const value = { selected: filename };
         await writeFile(join(root, filename), JSON.stringify(value));
         const moduleUrl = new URL(
@@ -343,7 +347,9 @@ describe("compiled CLI parser with relative brace and bracket paths", () => {
     cliTest(
       `keeps missing relative path diagnostics for ${filename}`,
       async ({ processes }) => {
-        const root = await createTestTempDirectory("rea-cli-json-missing-");
+        const root = await createTestTempDirectory(
+          "binsight-cli-json-missing-",
+        );
         const moduleUrl = new URL(
           "../../../dist/cliJsonInput.js",
           import.meta.url,

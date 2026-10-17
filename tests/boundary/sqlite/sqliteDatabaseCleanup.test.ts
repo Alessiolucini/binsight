@@ -32,7 +32,7 @@ const createUnavailableProvider = (
   );
 
 const cleanupFixture = async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-cleanup-");
+  const workspace = await createTestWorkspace("binsight-sqlite-cleanup-");
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const roots: PrivateRuntimeRoot[] = [];
@@ -114,7 +114,9 @@ it("awaits shared shutdown cleanup and retains failures for a later close", asyn
 });
 
 it("waits for concurrent acquisitions and releases only owners whose cleanup succeeds", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-concurrent-cleanup-");
+  const workspace = await createTestWorkspace(
+    "binsight-sqlite-concurrent-cleanup-",
+  );
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const acquired = createDeferred<void>();
@@ -187,7 +189,9 @@ it("waits for concurrent acquisitions and releases only owners whose cleanup suc
 });
 
 it("retains the snapshot until a failed worker cleanup owner can be stopped", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-worker-cleanup-");
+  const workspace = await createTestWorkspace(
+    "binsight-sqlite-worker-cleanup-",
+  );
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const child = spawnProviderProcessFixture("graceful");
@@ -279,7 +283,9 @@ it("retains the snapshot until a failed worker cleanup owner can be stopped", as
 });
 
 it("keeps a retained worker owner when the worker fails and its cleanup is unresolved", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-retained-worker-");
+  const workspace = await createTestWorkspace(
+    "binsight-sqlite-retained-worker-",
+  );
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   let mayClean = false;

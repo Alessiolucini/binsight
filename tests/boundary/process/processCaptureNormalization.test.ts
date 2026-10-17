@@ -31,7 +31,9 @@ const itWithLinuxCaptureCapability =
 itWithCaptureCapability(
   "captures a POSIX PATH executable with a literal backslash in its basename",
   async () => {
-    const root = await createTestTempDirectory("rea-process-backslash-name-");
+    const root = await createTestTempDirectory(
+      "binsight-process-backslash-name-",
+    );
     const bin = join(root, "bin");
     await mkdir(bin);
     const command = "selected\\node";
@@ -60,7 +62,9 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "preserves numeric reports and original normalized PTY text in Evidence",
   async () => {
-    const root = await createTestTempDirectory("rea-process-numeric-report-");
+    const root = await createTestTempDirectory(
+      "binsight-process-numeric-report-",
+    );
     const report = JSON.stringify({
       pid: 32,
       size: 108,
@@ -118,7 +122,7 @@ itWithCaptureCapability.each([
 ])(
   "preserves literal replacement $replacement and rejects legacy comparison semantics",
   async ({ pattern, replacement, expected }) => {
-    const root = await createTestTempDirectory("rea-process-literal-");
+    const root = await createTestTempDirectory("binsight-process-literal-");
     const scenario = parseProcessScenario({
       executable: process.execPath,
       arguments: ["-e", 'process.stdout.write("AB")'],
@@ -171,7 +175,7 @@ itWithCaptureCapability.each([
 itWithLinuxCaptureCapability.each([false, true])(
   "honors pids=%s in owned Linux capture samples and committed Evidence",
   async (pids) => {
-    const root = await createTestTempDirectory("rea-process-identifiers-");
+    const root = await createTestTempDirectory("binsight-process-identifiers-");
     const identityPath = join(root, "identity.json");
     const scenario = parseProcessScenario({
       executable: process.execPath,
@@ -235,7 +239,9 @@ itWithLinuxCaptureCapability.each([false, true])(
 itWithCaptureCapability(
   "preserves selected nested path identities in actual PTY Evidence",
   async () => {
-    const root = await createTestTempDirectory("rea-process-nested-paths-");
+    const root = await createTestTempDirectory(
+      "binsight-process-nested-paths-",
+    );
     const executable = join(root, "selected-node");
     const observed = join(root, "data");
     await symlink(process.execPath, executable);

@@ -27,7 +27,7 @@ const { stdout: sdk } = await exec(
 const sdkPath = sdk.trim();
 assert.ok(sdkPath.length > 0, "iPhoneSimulator SDK path is empty");
 
-const root = await mkdtemp(join(tmpdir(), "rea-legacy-simulator-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-legacy-simulator-"));
 const xcrun = (...args) =>
   exec("/usr/bin/xcrun", args, {
     timeout: 120_000,

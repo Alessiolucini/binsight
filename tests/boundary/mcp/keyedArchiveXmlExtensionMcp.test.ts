@@ -19,7 +19,9 @@ import { mcpTest } from "../../support/mcp/mcpFixture.js";
 mcpTest(
   "MCP inspects an XML keyed archive with a non-plist suffix",
   async ({ mcp, onTestFinished }) => {
-    const root = await createTestTempDirectory("rea-keyed-xml-extension-mcp-");
+    const root = await createTestTempDirectory(
+      "binsight-keyed-xml-extension-mcp-",
+    );
     const path = join(root, "Model.archive");
     await writeFile(
       path,

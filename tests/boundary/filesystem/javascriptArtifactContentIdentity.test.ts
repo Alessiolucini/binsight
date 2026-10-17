@@ -11,7 +11,9 @@ import { DirectoryArtifactReader } from "../../../src/artifacts/DirectoryArtifac
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-ingestion-content-identity-");
+  const root = await createTestTempDirectory(
+    "binsight-ingestion-content-identity-",
+  );
   const source = join(root, "source");
   const bundle = join(root, "bundle");
   await Promise.all([mkdir(source), mkdir(bundle)]);
@@ -55,7 +57,9 @@ describe("JavaScript artifact ingestion content identities", () => {
   );
 
   it("rejects changed opaque native-addon bytes after inventory", async () => {
-    const root = await createTestTempDirectory("rea-ingestion-native-bytes-");
+    const root = await createTestTempDirectory(
+      "binsight-ingestion-native-bytes-",
+    );
     const addon = join(root, "addon.node");
     await writeFile(addon, Buffer.from([0xcf, 0xfa, 0xed, 0xfe, 1]));
     const snapshot = await scanArtifactInventory(root);

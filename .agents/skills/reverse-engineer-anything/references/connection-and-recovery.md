@@ -4,26 +4,26 @@ Read this guide only for an observed connection, command, approval or provider
 blocker. Keep the user's target and question in view. Explain what prevented the
 operation and the next useful step; after repair, continue the investigation.
 
-Commands below use an installed `rea`. If none is available, use the package
-invocation in `SKILL.md` when acquiring REA is authorized. Follow the connected
+Commands below use an installed `binsight`. If none is available, use the package
+invocation in `SKILL.md` when acquiring BinSight is authorized. Follow the connected
 server's schemas and the installed CLI's help rather than assuming repository
 main and an older release expose the same arguments.
 
 ## Choose the remedy from the observed failure
 
-| Observation                                                     | Meaning and next step                                                                                                                                                                                                                                                                                                 |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No REA tools in the active session                              | Inspect registration with `rea doctor --client codex --json`. A skill installation alone does not register MCP.                                                                                                                                                                                                       |
-| Missing, malformed or stale registration                        | Prepare a scoped setup plan; apply only authorized changes with backups.                                                                                                                                                                                                                                              |
-| Aligned registration, but no connected tools                    | Restart/reconnect the client. Doctor checks registration; it cannot establish the current agent's connection. Inspect the client's launch error if reconnection fails.                                                                                                                                                |
-| `MCP tool call requires approval, but approval policy is never` | Codex rejected the call before REA executed it. Do not install an engine or repeat setup to solve this client-policy decision. See the approval section below.                                                                                                                                                        |
-| REA returns `provider_unavailable` or an unavailable tool entry | Read that operation's provider diagnostics or `binary_session.result.tool_availability`. Expand each group's tool names and inherit the shared client requirements unless overridden. Use the operation's availability, reason, and remediation; a complete tool catalog does not imply every operation is available. |
-| `rea` is missing in a child shell, or Node is incompatible      | Inspect the actual shell PATH and launcher/runtime. A prefix installation may be absent from a login shell's PATH; this does not establish a broken MCP registration.                                                                                                                                                 |
+| Observation                                                          | Meaning and next step                                                                                                                                                                                                                                                                                                 |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No BinSight tools in the active session                              | Inspect registration with `binsight doctor --client codex --json`. A skill installation alone does not register MCP.                                                                                                                                                                                                  |
+| Missing, malformed or stale registration                             | Prepare a scoped setup plan; apply only authorized changes with backups.                                                                                                                                                                                                                                              |
+| Aligned registration, but no connected tools                         | Restart/reconnect the client. Doctor checks registration; it cannot establish the current agent's connection. Inspect the client's launch error if reconnection fails.                                                                                                                                                |
+| `MCP tool call requires approval, but approval policy is never`      | Codex rejected the call before BinSight executed it. Do not install an engine or repeat setup to solve this client-policy decision. See the approval section below.                                                                                                                                                   |
+| BinSight returns `provider_unavailable` or an unavailable tool entry | Read that operation's provider diagnostics or `binary_session.result.tool_availability`. Expand each group's tool names and inherit the shared client requirements unless overridden. Use the operation's availability, reason, and remediation; a complete tool catalog does not imply every operation is available. |
+| `binsight` is missing in a child shell, or Node is incompatible      | Inspect the actual shell PATH and launcher/runtime. A prefix installation may be absent from a login shell's PATH; this does not establish a broken MCP registration.                                                                                                                                                 |
 
 If the client cannot launch its shell/sandbox helper or read the installed skill,
 inspect its launch diagnostic. For example, Codex can refuse helper aliases when
 CODEX_HOME is under `/tmp`; use an authorized profile outside the OS temporary
-directory. REA setup cannot repair the client's executor. Preserve the sandbox
+directory. BinSight setup cannot repair the client's executor. Preserve the sandbox
 instead of silently disabling it to make an analysis command work.
 
 Static JavaScript and ordinary ZIP inventory need neither Hopper nor Ghidra.
@@ -32,15 +32,15 @@ decompilation, Android analysis and firmware extraction have their own
 bring-your-own prerequisites. Use supported inventory/static evidence when it
 answers part of the question, and name the unavailable evidence separately.
 Do not substitute another target. Label observations from ordinary shell tools
-as such; only actual REA output supplies REA Evidence.
+as such; only actual BinSight output supplies BinSight Evidence.
 
 ## Repair registration when needed
 
 For Codex:
 
 ```bash
-rea doctor --client codex --json
-rea setup --client codex --dry-run --json
+binsight doctor --client codex --json
+binsight setup --client codex --dry-run --json
 ```
 
 Use the current supported client's ID: `claude_code`, `claude_desktop`, `codex`,
@@ -52,15 +52,15 @@ For unsupported clients, use version-pinned manual stdio registration or CLI.
 
 Show the plan's exact paths, backups, changes and bundled-skill replacement.
 Obtain approval for writes when that concrete scope is not already authorized,
-then apply the same scope with `rea setup --client codex --yes`. Add
+then apply the same scope with `binsight setup --client codex --yes`. Add
 `--install-hopper` only when separately needed and explicitly approved. Do not
 install or upgrade unrelated prerequisites. Restart/reconnect, verify tools
 actually appear, and resume the original task. If they remain absent, inspect
 the launch failure rather than looping through setup.
 
-## Codex tool approval is separate from REA readiness
+## Codex tool approval is separate from BinSight readiness
 
-REA tools have no permission-grant handshake. Codex can still require approval
+BinSight tools have no permission-grant handshake. Codex can still require approval
 because an operation creates owned resources, launches a helper or has cleanup
 effects. An advertised tool or successful doctor result does not override that
 client policy. `workspace-write` alone does not resolve an MCP approval
@@ -91,31 +91,31 @@ Show the proposed config edit and preserve unrelated entries and backups before
 writing. Managed policy can constrain client settings. Consult the
 [Codex configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
 for the installed client's supported settings. This is an optional recovery
-choice, not a prerequisite for every REA task.
+choice, not a prerequisite for every BinSight task.
 
 ## Continue through an installed CLI
 
 Check the command environment only if the launcher fails:
 
 ```bash
-command -v rea
+command -v binsight
 command -v node
 node --version
-rea --version
+binsight --version
 ```
 
 Use the public launcher at its known installation path with a supported existing
 Node on PATH when the child shell loses a prefix installation. Avoid internal
 `dist/cli.js` entrypoints or global toolchain changes. MCP may have its own valid
-launcher even when a shell cannot resolve `rea`.
+launcher even when a shell cannot resolve `binsight`.
 
 For a user-supplied JavaScript tree or ASAR, select output files in the authorized
 workspace and save complete Evidence before reading a view:
 
 ```bash
-rea analyze-javascript-application /absolute/path/to/app --json > app-evidence.json
+binsight analyze-javascript-application /absolute/path/to/app --json > app-evidence.json
 jq -c '{source: {kind: "inline", evidence: .}, view: {kind: "summary"}}' app-evidence.json > app-view.json
-rea inspect-analysis-view app-view.json
+binsight inspect-analysis-view app-view.json
 ```
 
 These commands do not register MCP or install an analysis engine. CLI JavaScript

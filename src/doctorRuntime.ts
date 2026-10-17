@@ -94,9 +94,9 @@ const inspectLinuxPrivateDisplay = async (
     details: { private_display: { ...value } },
     remediation:
       value.failure_code === "x11_socket_directory_unusable"
-        ? "Enable unprivileged user and mount namespaces, or provide a writable mode-1777 /tmp/.X11-unix directory. Do not mutate the current host mount with sudo; then rerun rea doctor --provider hopper."
+        ? "Enable unprivileged user and mount namespaces, or provide a writable mode-1777 /tmp/.X11-unix directory. Do not mutate the current host mount with sudo; then rerun binsight doctor --provider hopper."
         : missingDependency
-          ? "Install Xvfb, xauth, Python 3, libX11, and libXtst, then rerun rea doctor --provider hopper."
-          : "Inspect the private-display diagnostic, correct the reported local condition, and rerun rea doctor --provider hopper.",
+          ? "Install Xvfb, xauth, Python 3, libX11, and libXtst, then rerun binsight doctor --provider hopper."
+          : "Inspect the private-display diagnostic, correct the reported local condition, and rerun binsight doctor --provider hopper.",
   };
 };

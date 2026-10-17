@@ -10,7 +10,7 @@ import { verifyPublishedPackageIntegrity } from "./verified-package.mjs";
 /** Parse one npm metadata snapshot; errors and malformed records are never absence. */
 export async function readNpmRelease(version, request = fetch) {
   const tag = releaseNpmTag(version);
-  const response = await request("https://registry.npmjs.org/rea-agents", {
+  const response = await request("https://registry.npmjs.org/binsight", {
     headers: {
       Accept: "application/vnd.npm.install-v1+json",
       "Cache-Control": "no-cache",
@@ -22,7 +22,7 @@ export async function readNpmRelease(version, request = fetch) {
     throw new Error(`npm registry lookup failed: HTTP ${response.status}`);
   const metadata = z
     .object({
-      name: z.literal("rea-agents"),
+      name: z.literal("binsight"),
       versions: z.record(z.string(), z.unknown()),
       "dist-tags": z.record(z.string(), z.string()),
     })
@@ -30,7 +30,7 @@ export async function readNpmRelease(version, request = fetch) {
   if (!Object.hasOwn(metadata.versions, version)) return { status: "absent" };
   const published = z
     .object({
-      name: z.literal("rea-agents"),
+      name: z.literal("binsight"),
       version: z.literal(version),
       dist: z.object({ integrity: z.string().min(1) }),
     })
@@ -44,7 +44,7 @@ export async function readNpmRelease(version, request = fetch) {
   };
 }
 
-/** REA update follows stable latest even when the candidate is published on next. */
+/** BinSight update follows stable latest even when the candidate is published on next. */
 export function stableUpdateVersion(version, published) {
   if (published.status !== "published" || published.taggedVersion !== version)
     throw new Error(`npm does not select ${version} on its release channel`);
@@ -63,7 +63,7 @@ export function stableUpdateVersion(version, published) {
 /** Validate content before accepting a previously published or newly visible version. */
 export async function requireMatchingNpmRelease(tarball, version, published) {
   if (published.status !== "published")
-    throw new Error(`rea-agents@${version} is not published`);
+    throw new Error(`binsight@${version} is not published`);
   await verifyPublishedPackageIntegrity(tarball, published.integrity);
   if (published.taggedVersion !== version)
     throw new Error(
@@ -84,7 +84,7 @@ export async function waitForNpmRelease(
     if (attempt < attempts) await pause(15_000);
   }
   throw new Error(
-    `rea-agents@${version} was not visible on npm after 120 attempts over 30 minutes`,
+    `binsight@${version} was not visible on npm after 120 attempts over 30 minutes`,
   );
 }
 
@@ -113,7 +113,7 @@ async function main() {
   } else if (process.env.GITHUB_STEP_SUMMARY !== undefined) {
     await appendFile(
       process.env.GITHUB_STEP_SUMMARY,
-      `npm: rea-agents@${version} is published, matches the qualified tarball, and is selected by ${published.tag}.\n`,
+      `npm: binsight@${version} is published, matches the qualified tarball, and is selected by ${published.tag}.\n`,
     );
   }
   process.stdout.write(`${JSON.stringify({ version, ...published })}\n`);

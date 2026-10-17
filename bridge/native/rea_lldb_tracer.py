@@ -1,6 +1,6 @@
 """Bounded native call observation executed inside LLDB's embedded Python.
 
-REA imports this module into `lldb --batch` and runs `rea_trace <config.json>`.
+BinSight imports this module into `lldb --batch` and runs `rea_trace <config.json>`.
 It launches one owned process, stops at the requested functions and
 Objective-C methods, records each entry from registers and memory reads only,
 continues, and kills the process once it exits, the event or aggregate resource
@@ -36,7 +36,7 @@ MAX_TARGET_OUTPUT_BYTES = 1024 * 1024
 OUTPUT_DRAIN_BYTES_PER_PASS = 1024 * 1024
 OUTPUT_EOF_WAIT_SECONDS = 1.0
 OUTPUT_READER_JOIN_SECONDS = 0.5
-LISTENER_NAME = "rea-native-call-observation"
+LISTENER_NAME = "binsight-native-call-observation"
 
 
 def _can_retain_trace(current_bytes, current_frames, event_bytes, event_frames):

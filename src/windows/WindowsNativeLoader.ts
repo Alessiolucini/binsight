@@ -88,7 +88,7 @@ export interface WindowsNativeLoadHost {
 }
 
 const missingWindowsNativeFileReason = (file: string): string =>
-  `Missing packaged Windows native file native/windows/build/${file} (ENOENT). Restore both native/windows/build/manifest.json and native/windows/build/rea-windows-x64.node from the rea-agents@${PACKAGE_METADATA.version} tarball or build them with native/windows/README.md; no native artifact was loaded.`;
+  `Missing packaged Windows native file native/windows/build/${file} (ENOENT). Restore both native/windows/build/manifest.json and native/windows/build/rea-windows-x64.node from the binsight@${PACKAGE_METADATA.version} tarball or build them with native/windows/README.md; no native artifact was loaded.`;
 
 const readPackagedWindowsNativeFile = <T>(file: string, read: () => T): T => {
   try {
@@ -113,21 +113,23 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "host",
-      reason: "REA Windows native controls require a Windows x64 host.",
+      reason: "BinSight Windows native controls require a Windows x64 host.",
     };
   const nodeApiVersion = Number(host.nodeApiVersion);
   if (!Number.isSafeInteger(nodeApiVersion) || nodeApiVersion < 8)
     return {
       available: false,
       failureStage: "host",
-      reason: "REA Windows native controls require Node-API 8 or newer.",
+      reason: "BinSight Windows native controls require Node-API 8 or newer.",
     };
   try {
     const manifest = windowsNativeManifestSchema.parse(
       readPackagedWindowsNativeFile("manifest.json", () => host.readManifest()),
     );
     if (manifest.packageVersion !== host.packageVersion)
-      throw new Error("Windows native artifact belongs to another REA version");
+      throw new Error(
+        "Windows native artifact belongs to another BinSight version",
+      );
     const artifact = readPackagedWindowsNativeFile("rea-windows-x64.node", () =>
       host.readArtifact(),
     );
@@ -148,7 +150,7 @@ export const loadWindowsNativeAuthority = (
         available: false,
         failureStage: "self-test",
         retryable: true,
-        reason: `REA Windows native self-test failed: ${cause instanceof Error ? cause.message : String(cause)}`,
+        reason: `BinSight Windows native self-test failed: ${cause instanceof Error ? cause.message : String(cause)}`,
       };
     }
     const parsed = inspectionSchema.safeParse(observed);
@@ -156,7 +158,7 @@ export const loadWindowsNativeAuthority = (
       return {
         available: false,
         failureStage: "inspection",
-        reason: `REA Windows native inspection is invalid: ${parsed.error.message}`,
+        reason: `BinSight Windows native inspection is invalid: ${parsed.error.message}`,
       };
     const inspection = parsed.data;
     return { available: true, authority: { call: binding.call, inspection } };
@@ -164,7 +166,7 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "artifact",
-      reason: `REA Windows native controls are unavailable: ${cause instanceof Error ? cause.message : String(cause)}`,
+      reason: `BinSight Windows native controls are unavailable: ${cause instanceof Error ? cause.message : String(cause)}`,
     };
   }
 };

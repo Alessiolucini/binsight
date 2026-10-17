@@ -35,7 +35,9 @@ it
   .each(["inspect-binary-layout", "inspect-recorded-crash"] as const)(
   "reports actionable configuration failures through %s",
   async (command) => {
-    const workspace = await createTestWorkspace("rea-pwntools-remediation-");
+    const workspace = await createTestWorkspace(
+      "binsight-pwntools-remediation-",
+    );
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const nonExecutable = workspace.path("python-no-execute");
     await writeFile(nonExecutable, "not executable", { mode: 0o600 });
@@ -108,7 +110,7 @@ it
           ],
         },
       });
-      expect(stdout).not.toContain("rea doctor");
+      expect(stdout).not.toContain("binsight doctor");
       expect(process.exitCode).toBe(1);
     }
   },

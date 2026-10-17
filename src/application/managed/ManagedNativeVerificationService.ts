@@ -46,7 +46,7 @@ const createManagedNativeVerificationEvidence = (
   result: ManagedNativeVerificationResult,
 ): Evidence =>
   createEvidence(undefined, MANAGED_WORKFLOW_PROVIDER, {
-    predicateType: "rea.managed-native-verification",
+    predicateType: "binsight.managed-native-verification",
     operation: OPERATION,
     parameters: {
       managed_boundaries_evidence_id: input.managed_boundaries.evidence_id,

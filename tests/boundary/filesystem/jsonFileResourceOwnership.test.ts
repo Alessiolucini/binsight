@@ -10,7 +10,7 @@ import { OwnedFileHandle } from "../../../src/filesystem/OwnedFileHandle.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("retains and retries a JSON file owner after a persistent close failure", async () => {
-  const root = await createTestTempDirectory("rea-json-file-owner-");
+  const root = await createTestTempDirectory("binsight-json-file-owner-");
   const path = join(root, "input.json");
   await writeFile(path, '{"value":"retained"}');
   const resources = new ArtifactResourceScope();
@@ -49,7 +49,7 @@ it("retains and retries a JSON file owner after a persistent close failure", asy
 });
 
 it("returns parsed JSON when a failed file close is recovered by the resource scope", async () => {
-  const root = await createTestTempDirectory("rea-json-file-close-retry-");
+  const root = await createTestTempDirectory("binsight-json-file-close-retry-");
   const path = join(root, "input.json");
   await writeFile(path, '{"value":"retained"}');
   const resources = new ArtifactResourceScope();

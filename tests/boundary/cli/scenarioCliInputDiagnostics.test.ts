@@ -71,7 +71,7 @@ for (const field of [
   "application_root",
 ] as const) {
   cliTest(`names the unresolved Electron ${field}`, async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-path-");
+    const root = await createTestTempDirectory("binsight-electron-path-");
     const missing = join(root, "missing");
     const result = await cli.run({
       arguments: [

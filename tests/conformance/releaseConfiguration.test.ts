@@ -60,7 +60,7 @@ describe("release configuration", () => {
           content,
         )?.[0];
 
-      expect(versionBlock).toContain(`rea-agents@${packageJson.version}`);
+      expect(versionBlock).toContain(`binsight@${packageJson.version}`);
     },
   );
 
@@ -100,8 +100,8 @@ describe("release configuration", () => {
     };
 
     expect(packageJson).toMatchObject({
-      name: "rea-agents",
-      mcpName: "io.github.morluto/rea",
+      name: "binsight",
+      mcpName: "io.github.alessiolucini/binsight",
     });
     expect(serverJson).toMatchObject({
       name: packageJson.mcpName,

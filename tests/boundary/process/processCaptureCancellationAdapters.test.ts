@@ -77,7 +77,7 @@ const cleanupFixture = async (marker: Marker | undefined): Promise<void> => {
 itWithCaptureCapability.each(["SIGINT", "SIGTERM"] as const)(
   "awaits owned workload cleanup and emits a typed CLI cancellation after %s",
   async (signal) => {
-    const root = await createTestTempDirectory("rea-process-cli-cancel-");
+    const root = await createTestTempDirectory("binsight-process-cli-cancel-");
     const scenario = join(root, "scenario.json");
     await writeFile(
       scenario,
@@ -137,7 +137,9 @@ itWithCaptureCapability.each(["SIGINT", "SIGTERM"] as const)(
 itWithCaptureCapability(
   "preserves completed observations as partial evidence when SIGINT arrives during CLI cleanup",
   async () => {
-    const root = await createTestTempDirectory("rea-process-cleanup-cancel-");
+    const root = await createTestTempDirectory(
+      "binsight-process-cleanup-cancel-",
+    );
     const scenario = join(root, "scenario.json");
     const cleanupMarker = join(root, "cleanup.json");
     await writeFile(
@@ -224,7 +226,7 @@ itWithCaptureCapability(
   "stops the owned descendant when an MCP request is cancelled during post-exit settlement",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-process-mcp-settle-cancel-",
+      "binsight-process-mcp-settle-cancel-",
     );
     const session = createTestBinarySession(() => {
       throw new Error("Process capture must not launch a binary provider");

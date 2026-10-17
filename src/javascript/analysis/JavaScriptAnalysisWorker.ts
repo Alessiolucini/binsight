@@ -65,7 +65,7 @@ const WORKER_HEAP_FLAGS_ENFORCED =
 
 /** One sequential owned worker, retained between source files and closed after analysis. */
 export class JavaScriptAnalysisWorker {
-  readonly #runId = `rea-javascript-analysis-${randomUUID()}`;
+  readonly #runId = `binsight-javascript-analysis-${randomUUID()}`;
   #root: PrivateRuntimeRoot | undefined;
   #supervisor: ProviderProcessSupervisor | undefined;
   #ready = false;
@@ -453,7 +453,7 @@ export class JavaScriptAnalysisWorker {
     this.#phase = "startup";
     this.#heapLimitBytes = 0;
     this.#root ??= await PrivateRuntimeRoot.create({
-      prefix: "rea-javascript-analysis-",
+      prefix: "binsight-javascript-analysis-",
     });
     const environment: NodeJS.ProcessEnv = {
       ...process.env,

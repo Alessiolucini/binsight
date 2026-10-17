@@ -1,5 +1,5 @@
 /**
- * REA-authored toolchain signature table.
+ * BinSight-authored toolchain signature table.
  *
  * Every entry is a public, factual byte or structural marker emitted by a
  * compiler, linker, packer, protector, installer, language runtime or

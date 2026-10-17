@@ -156,7 +156,7 @@ test.each([
     scenario: "failed upstream reply",
     mode: "tool-error",
     errorCode: "execution_failure",
-    serverName: "rea-jadx-bridge",
+    serverName: "binsight-jadx-bridge",
     serverVersion: "1",
     engineVersion: "0.7.1",
     calls: [
@@ -174,7 +174,7 @@ test.each([
     scenario: "transport error after successful replies",
     mode: "rpc-disconnect",
     errorCode: "execution_failure",
-    serverName: "rea-jadx-bridge",
+    serverName: "binsight-jadx-bridge",
     serverVersion: "1",
     engineVersion: "0.7.1",
     calls: [{ operation: "rea_jvm_status" }, { operation: "load_apk" }],
@@ -238,7 +238,7 @@ test.each([
       operation: "inspect_android_package",
       target: { selected_path: apk, path: apk, format: "apk" },
       provider_facts: {
-        bridge_name: "rea-jadx-bridge",
+        bridge_name: "binsight-jadx-bridge",
         bridge_version: "1",
         server_name: serverName,
         server_version: serverVersion,

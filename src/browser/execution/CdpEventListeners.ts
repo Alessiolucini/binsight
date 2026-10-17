@@ -95,10 +95,10 @@ export const captureWebEventListeners = async (
       cleanup: "confirmed",
       limitations: [
         "Inspects listeners registered directly on the first native CSS match in the selected main document. Delegated ancestor listeners, descendants, closed shadow roots and framework registries are not enumerated.",
-        "Native CDP listener descriptors report callback locations; registration time, dispatch history and UI causality remain unknown. REA does not dispatch an event, evaluate JavaScript or invoke a handler.",
+        "Native CDP listener descriptors report callback locations; registration time, dispatch history and UI causality remain unknown. BinSight does not dispatch an event, evaluate JavaScript or invoke a handler.",
         "Source identity uses this session's script ID and proven main-frame default-world metadata. Isolated or unknown worlds cannot establish website callback/source joins. A URL or sourceURL declaration never establishes identity or execution.",
         "Source text is retained inline with its independently computed UTF-8 digest; the producer hash is preserved separately. Missing source ownership or collected scripts remain explicit.",
-        "REA releases its remote object group, disables enabled domains and detaches its transport; the externally owned page remains open.",
+        "BinSight releases its remote object group, disables enabled domains and detaches its transport; the externally owned page remains open.",
       ],
     };
   } finally {
@@ -108,4 +108,4 @@ export const captureWebEventListeners = async (
 
 /** Use an owned remote object namespace so cleanup does not release caller objects. */
 export const eventListenerObjectGroup = (): string =>
-  `rea-listeners-${randomUUID()}`;
+  `binsight-listeners-${randomUUID()}`;

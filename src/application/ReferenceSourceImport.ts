@@ -88,7 +88,7 @@ export const normalizeHistoricalSourceParseFailures = (
 const buildProvenance = (
   options: ReferenceSourceImportOptions,
 ): HistoricalSourceGraphInput["provenance"] => ({
-  importer: options.importer ?? "rea-reference-source-import",
+  importer: options.importer ?? "binsight-reference-source-import",
   importer_version: options.importerVersion ?? null,
   caller: options.caller,
 });

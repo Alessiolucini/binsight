@@ -108,12 +108,12 @@ const createMcpBridge = async (
         unknown
       >;
       payload = payload.slice(newline + 1);
-      if (frame.kind === "rea-auth-v2") {
+      if (frame.kind === "binsight-auth-v2") {
         clientNonce = String(frame.nonce);
         serverNonce = `${ordinal.toString(16).padStart(16, "0")}${"c".repeat(48)}`;
         const proof = createHmac("sha256", token)
           .update(
-            `rea-cutter-server-v2:${sessionId}:${clientNonce}:${serverNonce}`,
+            `binsight-cutter-server-v2:${sessionId}:${clientNonce}:${serverNonce}`,
           )
           .digest("hex");
         connection.write(
@@ -125,7 +125,7 @@ const createMcpBridge = async (
       const request = JSON.parse(requestBytes) as Record<string, unknown>;
       const expected = createHmac("sha256", token)
         .update(
-          `rea-cutter-client-v2:${sessionId}:${clientNonce}:${serverNonce}:${requestBytes}`,
+          `binsight-cutter-client-v2:${sessionId}:${clientNonce}:${serverNonce}:${requestBytes}`,
         )
         .digest("hex");
       if (frame.proof !== expected) {
@@ -167,7 +167,7 @@ const createMcpBridge = async (
       );
       const responseProof = createHmac("sha256", token)
         .update(
-          `rea-cutter-response-v2:${sessionId}:${clientNonce}:${serverNonce}:${response}`,
+          `binsight-cutter-response-v2:${sessionId}:${clientNonce}:${serverNonce}:${response}`,
         )
         .digest("hex");
       connection.end(`${JSON.stringify({ response, proof: responseProof })}\n`);
@@ -196,7 +196,7 @@ const createMcpBridge = async (
 };
 
 it("preserves live Cutter command Evidence and parity through the MCP boundary", async () => {
-  const directory = await createTestTempDirectory("rea-cutter-mcp-");
+  const directory = await createTestTempDirectory("binsight-cutter-mcp-");
   if (process.platform !== "win32") await chmod(directory, 0o700);
   const sessionId = "27d3e3f1-f1e5-49ae-91ec-95af1f343a5a";
   const token = "synthetic-cutter-bridge-token-for-mcp-test";

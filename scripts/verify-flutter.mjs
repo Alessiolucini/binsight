@@ -30,7 +30,7 @@ const expectations =
     ? null
     : JSON.parse(await readFile(options.expectations, "utf8"));
 // This is a shared test parent, not a leased provider-owned Windows runtime.
-const root = await mkdtemp(join(tmpdir(), "rea-flutter-verifier-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-flutter-verifier-"));
 const resources = new ArtifactResourceScope();
 const entrypoint = resolve("scripts/rea.mjs");
 const environment = Object.fromEntries(

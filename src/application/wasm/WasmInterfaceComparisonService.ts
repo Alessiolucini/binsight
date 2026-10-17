@@ -220,7 +220,7 @@ export const compareWasmInterfaces = async (
     return ok(
       createEvidence(undefined, ARTIFACT_COMPARISON_PROVIDER, {
         operation: OPERATION,
-        predicateType: "rea.wasm-interface-comparison",
+        predicateType: "binsight.wasm-interface-comparison",
         parameters: {
           left_evidence_id: left.evidence.evidence_id,
           right_evidence_id: right.evidence.evidence_id,

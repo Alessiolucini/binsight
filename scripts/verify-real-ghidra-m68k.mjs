@@ -54,7 +54,7 @@ assert.equal(
   "7679358409efee4c5c2465f9a47158c4d49e0415ba12b3170898440db7ea0bc9",
 );
 await mkdir(join(root, "build"), { recursive: true });
-const workspace = await mkdtemp(join(root, "build", "rea-m68k-proof-"));
+const workspace = await mkdtemp(join(root, "build", "binsight-m68k-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "image.bin");
@@ -75,7 +75,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-m68k-proof", version: "1" });
+const client = new Client({ name: "binsight-real-m68k-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);
@@ -227,7 +227,9 @@ try {
   // Ghidra projects end with their sessions; on macOS the server keeps its
   // process-token helper under TMPDIR until shutdown, checked after close.
   assert.deepEqual(
-    (await readdir(runtime)).filter((name) => name.startsWith("rea-ghidra-")),
+    (await readdir(runtime)).filter((name) =>
+      name.startsWith("binsight-ghidra-"),
+    ),
     [],
     "Owned Ghidra runtime survived close",
   );

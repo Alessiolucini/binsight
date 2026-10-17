@@ -29,7 +29,7 @@ afterEach(async () => {
   );
 });
 const root = async () => {
-  const path = await mkdtemp(join(tmpdir(), "rea-extension-test-"));
+  const path = await mkdtemp(join(tmpdir(), "binsight-extension-test-"));
   roots.push(path);
   return path;
 };

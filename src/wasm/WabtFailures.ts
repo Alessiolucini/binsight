@@ -136,7 +136,7 @@ export const wabtFailure = (
       {
         cause,
         ...cleanupOptions,
-        userMessage: `${reason} Supply WABT 1.0.42 via absolute REA_WABT_BIN_DIRECTORY; REA does not install tools.`,
+        userMessage: `${reason} Supply WABT 1.0.42 via absolute REA_WABT_BIN_DIRECTORY; BinSight does not install tools.`,
       },
     );
   if (

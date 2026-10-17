@@ -14,7 +14,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "links a block source-map URL containing an asterisk through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-block-map-");
+    const root = await createTestTempDirectory("binsight-block-map-");
     const directory = join(root, "input");
     await mkdir(directory);
     const url = "app*part.js.map";

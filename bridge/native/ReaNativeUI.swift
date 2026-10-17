@@ -71,11 +71,11 @@ func observe(_ request: Request) async throws -> [String: Any] {
     try fail("window-mismatch", "Selected window is absent or belongs to another process")
   }
   if request.screenshot && !CGPreflightScreenCaptureAccess() {
-    try fail("screen-recording-denied", "Grant Screen Recording to the REA host in System Settings > Privacy & Security, then retry; no broad capture fallback is used")
+    try fail("screen-recording-denied", "Grant Screen Recording to the BinSight host in System Settings > Privacy & Security, then retry; no broad capture fallback is used")
   }
   var selected: AXUIElement?
   if request.accessibility || request.action != nil {
-    guard AXIsProcessTrusted() else { try fail("accessibility-denied", "Grant Accessibility to the REA host in System Settings > Privacy & Security, then retry") }
+    guard AXIsProcessTrusted() else { try fail("accessibility-denied", "Grant Accessibility to the BinSight host in System Settings > Privacy & Security, then retry") }
     let application = AXUIElementCreateApplication(request.pid)
     AXUIElementSetMessagingTimeout(application, 2)
     guard let axWindows = attribute(application, kAXWindowsAttribute) as? [AXUIElement] else {

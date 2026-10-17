@@ -11,7 +11,7 @@ it("architecture selectors cannot silently choose a different fixture", () => {
   ])
     assert.throws(() => windowsGhidraFixtureOptions(arguments_));
   assert.equal(
-    windowsGhidraFixtureOptions(["D:/tmp/rea/--arm"]).architecture,
+    windowsGhidraFixtureOptions(["D:/tmp/binsight/--arm"]).architecture,
     "x86_64",
   );
 });

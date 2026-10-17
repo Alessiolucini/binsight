@@ -120,7 +120,7 @@ const BREAKPOINTS = [
 ];
 
 const fixtureTarget = async () => {
-  const directory = await createTestTempDirectory("rea-native-calls-");
+  const directory = await createTestTempDirectory("binsight-native-calls-");
   const path = join(directory, "Fixture");
   await writeFile(path, "fixture executable");
   return {
@@ -314,7 +314,7 @@ describe("observe_native_calls projection: reports partial observation coverage"
         "Observation stopped at max_events (1); later calls were not recorded and the process was killed.",
         "Breakpoints 1 matched no code in any image loaded while observing; their calls could not be observed.",
         "Target output beyond 1 MiB per stream is counted but not kept.",
-        "REA could not confirm that process 4242 exited; check for it before relying on host state.",
+        "BinSight could not confirm that process 4242 exited; check for it before relying on host state.",
       ]),
     );
   });

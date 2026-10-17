@@ -35,7 +35,7 @@ export class PcapSnapshot {
   static async create(): Promise<PcapSnapshot> {
     try {
       return new PcapSnapshot(
-        await PrivateRuntimeRoot.create({ prefix: "rea-pcap-" }),
+        await PrivateRuntimeRoot.create({ prefix: "binsight-pcap-" }),
       );
     } catch (cause) {
       if (cause instanceof PrivateRuntimeRootUnavailableError)

@@ -74,7 +74,7 @@ const archive = async (entries = members(), password?: string, level = 6) => {
   return Buffer.from(await writer.close());
 };
 const fixture = async (bytes: Buffer) => {
-  const root = await createTestTempDirectory("rea-saz-capture-");
+  const root = await createTestTempDirectory("binsight-saz-capture-");
   const path = join(root, "capture.saz");
   await writeFile(path, bytes);
   return path;

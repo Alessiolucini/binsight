@@ -42,7 +42,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           finalized=$(gh api --paginate "repos/${GH_REPO}/pulls?state=open&base=main&per_page=100" \
-            --jq '.[] | select(.head.repo.full_name == .base.repo.full_name) | select(.head.ref | startswith("release-please--branches--main--")) | select(any(.labels[]; .name == "rea:release-notes-finalized")) | .number')
+            --jq '.[] | select(.head.repo.full_name == .base.repo.full_name) | select(.head.ref | startswith("release-please--branches--main--")) | select(any(.labels[]; .name == "binsight:release-notes-finalized")) | .number')
           if [[ -n "${finalized}" ]]; then
             echo "Finalized release notes on PR ${finalized}; automatic proposal refresh is paused." >> "$GITHUB_STEP_SUMMARY"
             echo "frozen=true" >> "$GITHUB_OUTPUT"

@@ -23,7 +23,7 @@ const scenarios = [
 cliTest.for(scenarios)(
   "preserves numeric meaning and graph identity for %s Interface Builder attributes",
   async (scenario, { cli }) => {
-    const root = await createTestTempDirectory("rea-ib-plist-numbers-");
+    const root = await createTestTempDirectory("binsight-ib-plist-numbers-");
     const app = join(root, "Numbers.app");
     const contents = join(app, "Contents");
     const resources = join(contents, "Resources");

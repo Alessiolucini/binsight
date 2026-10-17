@@ -126,7 +126,8 @@ export class PwntoolsDecoder<
     readonly launcher?: PwntoolsLauncher,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-artifact-decoder-" }),
+    > = () =>
+      PrivateRuntimeRoot.create({ prefix: "binsight-artifact-decoder-" }),
   ) {
     this.identity = profile.identity;
   }
@@ -235,7 +236,7 @@ export class PwntoolsDecoder<
         );
       if (!isAbsolute(selectedPath))
         throw pwntoolsUnavailable(
-          "Set REA_PWNTOOLS_PYTHON to an absolute caller-supplied Python executable with pwntools 4.15.0, pyelftools 0.33 and Unicorn 2.1.2; REA never installs Python or packages.",
+          "Set REA_PWNTOOLS_PYTHON to an absolute caller-supplied Python executable with pwntools 4.15.0, pyelftools 0.33 and Unicorn 2.1.2; BinSight never installs Python or packages.",
           selectedPath,
           undefined,
           undefined,
@@ -304,7 +305,7 @@ export class PwntoolsDecoder<
             requestPath,
           ],
           cwd: root.path,
-          runId: `rea-artifact-decoder-${randomUUID()}`,
+          runId: `binsight-artifact-decoder-${randomUUID()}`,
           hostEnvironment: {
             ...this.environment,
             PWNLIB_NOTERM: "1",

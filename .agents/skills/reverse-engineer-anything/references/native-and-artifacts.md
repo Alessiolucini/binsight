@@ -34,7 +34,7 @@ schema and samples 20 rows. Select `columns` to avoid irrelevant or large cells,
 and request `schema_scope: "database"` only for complete schema details.
 Choose `row_limit` when a finite sample is useful and keep truncation and
 unspecified row order explicit. Virtual tables, shadow tables and views are
-schema facts, not row-read targets. REA inspects private copies and leaves
+schema facts, not row-read targets. BinSight inspects private copies and leaves
 the source files untouched; obtain a coherent quiescent database/WAL snapshot
 before inspection. See [SQLite snapshots](https://github.com/morluto/rea/blob/main/docs/sqlite-databases.md).
 
@@ -131,7 +131,7 @@ loaded bytes, file mappings, relocations and the entry against the immutable
 snapshot. Keep `mismatch` and `unsupported` explicit. Verified import covers the
 reported static image, not runtime DOS or PC-98 hardware behavior.
 
-For Ghidra decompilation, `procedure_pseudo_code` also accepts `procedure: "file-offset:0x..."`; CLI `rea decompile <path> --file-offset=0x... --provider ghidra` resolves the source byte offset internally. An unresolved 0x-prefixed numeric procedure selector also falls back to a unique file mapping. Existing symbols and analysis addresses win; multiple mappings fail as ambiguous. Preserve the returned file-offset and address locations and raw selection observations. ELF virtual addresses are distinct from file offsets; never assume an arbitrary offset plus image base is an analysis address.
+For Ghidra decompilation, `procedure_pseudo_code` also accepts `procedure: "file-offset:0x..."`; CLI `binsight decompile <path> --file-offset=0x... --provider ghidra` resolves the source byte offset internally. An unresolved 0x-prefixed numeric procedure selector also falls back to a unique file mapping. Existing symbols and analysis addresses win; multiple mappings fail as ambiguous. Preserve the returned file-offset and address locations and raw selection observations. ELF virtual addresses are distinct from file offsets; never assume an arbitrary offset plus image base is an analysis address.
 
 Use `read_bytes` for initialized analysis memory and `address_to_file_offset` to
 anchor one observed address to original file bytes. Loader fixups can change a
@@ -151,7 +151,7 @@ that a class is a root class or has no ivars.
 
 ## Managed PE/CLI
 
-Start with `inspect_managed_artifact`. REA's canonical managed inspection is
+Start with `inspect_managed_artifact`. BinSight's canonical managed inspection is
 execution-free: do not claim it loaded, reflected, executed, or resolved the
 assembly. Keep managed/native boundaries and unavailable reconstruction facts
 explicit. A bring-your-own reconstruction oracle is separate from the canonical
@@ -188,11 +188,11 @@ inference.
 
 NativeAOT images can be PE/COFF, ELF, or Mach-O executables and shared
 libraries. Use file bytes and loader metadata rather than suffixes to identify
-them. For packaged apps, inventory/extract with REA's artifact tools and retain
+them. For packaged apps, inventory/extract with BinSight's artifact tools and retain
 the exact contained image identity. PDB, ELF debug, or dSYM sidecars are
 additional evidence only when the provider accepts and matches them.
 
-REA has a built-in read-only snapshot parser for x64 PE targets with .NET 8 RTR
+BinSight has a built-in read-only snapshot parser for x64 PE targets with .NET 8 RTR
 9.1 metadata. An optional headless Ghidra adapter adds database annotations and
 broader metadata recovery on Linux; it requires an explicitly configured
 NativeAOT JAR. These are separate routes. The built-in parser also runs on
@@ -229,7 +229,7 @@ provides them.
 Use `extract_artifact` when materialized files are needed. It extracts the active
 target and accepts optional `integrity_policy`; see the [MCP contracts](https://github.com/morluto/rea/blob/main/docs/mcp-contracts.md).
 It materializes all regular files into a fresh temporary directory chosen by
-REA. Symlinks and encrypted entries are inventory facts, not extractable files.
+BinSight. Symlinks and encrypted entries are inventory facts, not extractable files.
 The result reports the materialized directory; callers do not choose the
 destination. No separate permission grant is needed.
 
@@ -263,7 +263,7 @@ Use `annotate_native_function` for one function name and/or entry comments, with
 ## Offline PE resource inventory
 
 Use `inspect_pe_resources` with an absolute `path`, or
-`rea inspect-pe-resources ./selected.exe --json`, for portable PE32/PE32+
+`binsight inspect-pe-resources ./selected.exe --json`, for portable PE32/PE32+
 resource inspection without opening a native target. Preserve returned Evidence:
 type/name/language IDs and UTF-16 names, original directory/data/payload ranges,
 code pages, payload hashes and static icon-group references. Same-language icon
@@ -276,4 +276,4 @@ For exact core-module import/export differences, use `compare_wasm_interfaces`
 with two complete inspection Evidence records (or current-session retained
 references) and explicit scope. Preserve unknown types/duplicate names; static
 interface equality is not runtime compatibility. CLI accepts complete inline
-Evidence in `rea compare-wasm-interfaces input.json --json`.
+Evidence in `binsight compare-wasm-interfaces input.json --json`.

@@ -135,7 +135,7 @@ afterEach(async () => {
 it.skipIf(process.platform === "win32")(
   "rejects writerless FIFO input, hash and report through the compiled reader",
   async () => {
-    const root = await createTestTempDirectory("rea-firmware-fifo-");
+    const root = await createTestTempDirectory("binsight-firmware-fifo-");
     const fifo = join(root, "input.fifo");
     const work = join(root, "work");
     await mkdir(work);
@@ -166,7 +166,7 @@ it.skipIf(process.platform === "win32")(
 it.each(["hash", "report"] as const)(
   "retains completed %s and exact owner across rejected retry",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-firmware-read-owner-");
+    const root = await createTestTempDirectory("binsight-firmware-read-owner-");
     const path = join(root, "selected.bin");
     await writeFile(path, '{"value":"固件"}');
     fault.selected = path;
@@ -211,7 +211,7 @@ it.each(["hash", "report"] as const)(
 );
 
 it("preserves malformed-report failure when cancellation arrives during failed close", async () => {
-  const root = await createTestTempDirectory("rea-firmware-primary-");
+  const root = await createTestTempDirectory("binsight-firmware-primary-");
   const path = join(root, "report.json");
   await writeFile(path, "{");
   fault.selected = path;
@@ -233,7 +233,9 @@ it("preserves malformed-report failure when cancellation arrives during failed c
 it.each([null, "caller cancellation", new Error("caller cancellation")])(
   "preserves exact cancellation during final close: %s",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-firmware-final-cancel-");
+    const root = await createTestTempDirectory(
+      "binsight-firmware-final-cancel-",
+    );
     const path = join(root, "report.json");
     await writeFile(path, "{}");
     fault.selected = path;
@@ -256,7 +258,9 @@ it.each([null, "caller cancellation", new Error("caller cancellation")])(
 it.each(["descriptor-first", "workspace-first"])(
   "keeps provider mixed-owner cleanup incomplete until both release: %s",
   async (order) => {
-    const root = await createTestTempDirectory("rea-firmware-mixed-owner-");
+    const root = await createTestTempDirectory(
+      "binsight-firmware-mixed-owner-",
+    );
     const path = join(root, "input.bin");
     await writeFile(path, "firmware bytes");
     fault.selected = "report.json";
@@ -311,7 +315,9 @@ it.each(["descriptor-first", "workspace-first"])(
 );
 
 it("retains completed firmware observation when cancellation arrives during workspace close", async () => {
-  const root = await createTestTempDirectory("rea-firmware-workspace-cancel-");
+  const root = await createTestTempDirectory(
+    "binsight-firmware-workspace-cancel-",
+  );
   const path = join(root, "input.bin");
   await writeFile(path, "firmware bytes");
   const controller = new AbortController();
@@ -342,7 +348,7 @@ it.skipIf(process.platform === "win32").each(["snapshot", "report"] as const)(
   "retains typed %s admission failure when rejecting a directory also fails close",
   async (kind) => {
     const root = await createTestTempDirectory(
-      "rea-firmware-rejected-admission-",
+      "binsight-firmware-rejected-admission-",
     );
     const path = join(root, "selected");
     const work = join(root, "work");
@@ -373,7 +379,9 @@ it.skipIf(process.platform === "win32").each(["snapshot", "report"] as const)(
 it.each([false, true])(
   "retains timeout during workspace finalization (close fails: %s)",
   async (closeFails) => {
-    const root = await createTestTempDirectory("rea-firmware-final-timeout-");
+    const root = await createTestTempDirectory(
+      "binsight-firmware-final-timeout-",
+    );
     const path = join(root, "input.bin");
     await writeFile(path, "firmware bytes");
     const deadline = new AbortController();
@@ -413,7 +421,7 @@ it.each([false, true])(
 );
 
 it("classifies a deadline before composing failed descriptor cleanup", async () => {
-  const root = await createTestTempDirectory("rea-firmware-file-timeout-");
+  const root = await createTestTempDirectory("binsight-firmware-file-timeout-");
   const path = join(root, "report.json");
   await writeFile(path, "{}");
   fault.selected = path;
@@ -443,7 +451,7 @@ const publication = async (
   deadline = new AbortController().signal,
 ) => {
   const root = await createTestTempDirectory(
-    "rea-firmware-publication-lifetime-",
+    "binsight-firmware-publication-lifetime-",
   );
   const inputPath = join(root, "input.bin");
   const outputRoot = join(root, "extracted");
@@ -633,7 +641,9 @@ it("retains a completed published observation when commit cleanup and rollback b
 });
 
 it("waits through selected-range snapshot finalization when shutdown starts during source close", async () => {
-  const root = await createTestTempDirectory("rea-firmware-selected-close-");
+  const root = await createTestTempDirectory(
+    "binsight-firmware-selected-close-",
+  );
   const path = join(root, "input.bin");
   const work = join(root, "work");
   await mkdir(work);
@@ -768,7 +778,9 @@ it.each(["source-first", "tree-first"])(
 );
 
 it("shares one workspace cleanup attempt across concurrent shutdown callers", async () => {
-  const root = await createTestTempDirectory("rea-firmware-concurrent-close-");
+  const root = await createTestTempDirectory(
+    "binsight-firmware-concurrent-close-",
+  );
   const path = join(root, "input.bin");
   await writeFile(path, "firmware bytes");
   let blocked = true;

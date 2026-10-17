@@ -11,7 +11,7 @@ import { fakeKunaCalls, writeFakeKuna } from "./fakeKuna.js";
 const it = test.skipIf(process.platform === "win32");
 
 it("accepts empty caller inventories but requires source-owned fixture literals", async () => {
-  const root = await createTestTempDirectory("rea-kuna-verifier-empty-");
+  const root = await createTestTempDirectory("binsight-kuna-verifier-empty-");
   const result = spawnSync(
     process.execPath,
     [
@@ -58,7 +58,9 @@ it.each([
 ])(
   "rejects an unverified caller matrix: $names, populated=$populated",
   async ({ populated, names, reason }) => {
-    const root = await createTestTempDirectory("rea-kuna-verifier-selection-");
+    const root = await createTestTempDirectory(
+      "binsight-kuna-verifier-selection-",
+    );
     const kuna = await writeFakeKuna(root);
     const targets = join(root, "targets");
     await mkdir(targets);
@@ -144,16 +146,18 @@ it.each([
 ])(
   "reports failure-path lineage (cleanup: $rejectClose, read: $rejectRead, wrong xrefs: $wrongXrefs, wrong strings: $wrongStrings)",
   async ({ rejectClose, rejectRead, wrongXrefs, wrongStrings }) => {
-    const root = await createTestTempDirectory("rea-kuna-verifier-cleanup-");
+    const root = await createTestTempDirectory(
+      "binsight-kuna-verifier-cleanup-",
+    );
     const kuna = await writeFakeKuna(root, {
       stringRows: [
-        { address: 12288, text: "REA fixture prompt" },
+        { address: 12288, text: "BinSight fixture prompt" },
         {
           address: 12320,
-          text: "＿φ( °-°)/ REA unicode marker",
+          text: "＿φ( °-°)/ BinSight unicode marker",
           encoding: "utf8",
         },
-        { address: 12400, text: "REA wide marker", encoding: "utf16" },
+        { address: 12400, text: "BinSight wide marker", encoding: "utf16" },
       ],
       functions: [
         { name: "main", addr: "0x1000" },

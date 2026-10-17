@@ -36,7 +36,9 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 
 const CONTENT = "registered executable bytes";
 const fixture = async () => {
-  const directory = await createTestTempDirectory("rea-signature-binding-");
+  const directory = await createTestTempDirectory(
+    "binsight-signature-binding-",
+  );
   const path = join(directory, "program");
   await writeFile(path, CONTENT);
   return {
@@ -388,7 +390,7 @@ it("cleans the private snapshot when inspection throws", async () => {
 it.skipIf(process.platform !== "darwin")(
   "keeps real codesign bound to registered bytes during an ancestor directory swap",
   async () => {
-    const root = await createTestTempDirectory("rea-signature-swap-");
+    const root = await createTestTempDirectory("binsight-signature-swap-");
     const selected = join(root, "selected");
     const replacement = join(root, "replacement");
     const saved = join(root, "saved");
@@ -398,8 +400,8 @@ it.skipIf(process.platform !== "darwin")(
     const replacementPath = join(replacement, "program");
     const run = promisify(execFile);
     for (const [program, identifier] of [
-      [path, "rea.original"],
-      [replacementPath, "rea.replacement"],
+      [path, "binsight.original"],
+      [replacementPath, "binsight.replacement"],
     ] as const) {
       await copyFile("/usr/bin/true", program);
       await run("/usr/bin/codesign", [
@@ -435,7 +437,7 @@ it.skipIf(process.platform !== "darwin")(
       .execute("inspect_signature", {});
     expect(result.ok && result.value.result).toMatchObject({
       signed: true,
-      identifier: "rea.original",
+      identifier: "binsight.original",
     });
     if (!result.ok) throw result.error;
     expect(

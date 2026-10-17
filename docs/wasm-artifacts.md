@@ -2,13 +2,13 @@
 
 `inspect_wasm_artifact` / `inspect-wasm-artifact` inspects explicitly selected
 local WASM bytes using caller-supplied WABT 1.0.42. No active binary target is
-required. REA does not install tools or fetch artifacts and does not execute WASM.
+required. BinSight does not install tools or fetch artifacts and does not execute WASM.
 
 `open_binary` is not the WASM inspection route. A recognized WASM v1 header
 returns `target_unavailable` with category `unsupported_target` and constraint
 `wasm_requires_static_inspection`, including the selected path in a valid
 `inspect_wasm_artifact` call. Use that target-free tool or
-`rea inspect-wasm-artifact <path> --format json` with the toolchain below.
+`binsight inspect-wasm-artifact <path> --format json` with the toolchain below.
 Check `binary_session` for configured capability availability. A recognized
 header is not validation of the complete module; missing WABT is reported
 separately as an unavailable capability, not as missing native engine support.
@@ -27,7 +27,7 @@ private-workspace controls must also be available. The real-tool profile has
 been exercised on macOS arm64; other hosts require their own verification.
 
 ```bash
-REA_WABT_BIN_DIRECTORY=/absolute/wabt/bin rea inspect-wasm-artifact \
+REA_WABT_BIN_DIRECTORY=/absolute/wabt/bin binsight inspect-wasm-artifact \
   /artifacts/module.wasm --glue_paths /artifacts/glue.js \
   --candidate_paths /artifacts/other/module.wasm --format json
 ```
@@ -115,7 +115,7 @@ records, or exact retained references in the current MCP session, and required
 WABT toolchain. CLI uses portable inline Evidence in one JSON document:
 
 ```bash
-rea compare-wasm-interfaces comparison-input.json --json
+binsight compare-wasm-interfaces comparison-input.json --json
 ```
 
 ```json

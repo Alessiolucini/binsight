@@ -7,7 +7,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("imports valid CommonJS wrapper syntax without inventing a parse failure", async () => {
-  const root = await createTestTempDirectory("rea-reference-commonjs-mode-");
+  const root = await createTestTempDirectory(
+    "binsight-reference-commonjs-mode-",
+  );
   await Promise.all([
     writeFile(
       join(root, "main.cjs"),
@@ -46,7 +48,9 @@ it.each([
 ])(
   "resolves %s runtime-extension imports to present source %s/%s",
   async (from, specifier, target) => {
-    const root = await createTestTempDirectory("rea-reference-ts-extension-");
+    const root = await createTestTempDirectory(
+      "binsight-reference-ts-extension-",
+    );
     await Promise.all([
       writeFile(join(root, from), `export { value } from "./${specifier}";\n`),
       writeFile(
@@ -75,7 +79,9 @@ it.each([
 it.each(["main.ts", "main.js"])(
   "retains an existing declared runtime file for %s",
   async (from) => {
-    const root = await createTestTempDirectory("rea-reference-ts-control-");
+    const root = await createTestTempDirectory(
+      "binsight-reference-ts-control-",
+    );
     await Promise.all([
       writeFile(join(root, from), 'export { value } from "./dep.js";\n'),
       writeFile(join(root, "dep.js"), "export const value = 2;\n"),
@@ -98,7 +104,7 @@ it.each(["main.ts", "main.js"])(
 );
 
 it("does not substitute TypeScript sources for a JavaScript runtime import", async () => {
-  const root = await createTestTempDirectory("rea-reference-js-control-");
+  const root = await createTestTempDirectory("binsight-reference-js-control-");
   await Promise.all([
     writeFile(join(root, "main.js"), 'export { value } from "./dep.js";\n'),
     writeFile(join(root, "dep.ts"), "export const value = 1;\n"),

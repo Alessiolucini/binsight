@@ -28,7 +28,7 @@ export const createProcessCaptureEvidence = (
   capture: ProcessCapture,
 ) => {
   return createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "binsight.process-capture",
     operation: "capture_process_scenario",
     parameters: processEvidenceParameters(scenario, capture.manifest.platform),
     result: jsonValueSchema.parse(capture),

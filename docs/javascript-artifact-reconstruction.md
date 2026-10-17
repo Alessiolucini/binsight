@@ -15,12 +15,12 @@ when an operation is interrupted.
 The tool reads the caller-selected local directory or ASAR path directly:
 
 ```bash
-rea analyze /absolute/path/to/apps/app.asar --json
-rea analyze-javascript-application /absolute/path/to/apps/app.asar \
+binsight analyze /absolute/path/to/apps/app.asar --json
+binsight analyze-javascript-application /absolute/path/to/apps/app.asar \
   --integrity-policy record-and-continue --json
 ```
 
-Generic `rea analyze` selects this static provider for directories and `.asar`
+Generic `binsight analyze` selects this static provider for directories and `.asar`
 paths when neither `--provider` nor `--snapshot` is supplied. The dedicated
 command and the generic route return their complete results inline. Native
 targets, single JavaScript files, `.app` bundles, and explicit deep-provider or
@@ -31,10 +31,10 @@ parsing, graph construction, validation, and Evidence hashing begin. Stdout
 remains the selected result document. Completion is reported after Evidence
 creation; a failed analysis retains its typed diagnostic result.
 
-Configure an MCP client with the ordinary REA setup command:
+Configure an MCP client with the ordinary BinSight setup command:
 
 ```bash
-rea setup
+binsight setup
 ```
 
 The equivalent MCP input is:
@@ -67,7 +67,7 @@ For a question about known entry sources, supply exact artifact-relative file
 paths in `source_paths`, or repeat `--source-path` on either CLI route:
 
 ```bash
-rea analyze /absolute/path/to/app.asar \
+binsight analyze /absolute/path/to/app.asar \
   --source-path package.json --source-path main.js --json
 ```
 
@@ -79,7 +79,7 @@ rea analyze /absolute/path/to/app.asar \
 }
 ```
 
-REA inventories and verifies the complete artifact, including unselected bytes,
+BinSight inventories and verifies the complete artifact, including unselected bytes,
 but allocates source text and performs static analysis only for selected files.
 Include supporting manifests, HTML or source maps explicitly when needed;
 imports do not expand the selection. Paths must match relevant inventoried
@@ -156,7 +156,7 @@ graph coverage partial and include every contradicted path in the limitations.
 Mismatched nested ASARs stay opaque rather than being expanded.
 
 An unpacked entry whose companion bytes were not supplied remains
-`unavailable`. REA continues analyzing embedded JavaScript and records the
+`unavailable`. BinSight continues analyzing embedded JavaScript and records the
 missing native/resource bytes as unknown. The occurrence keeps
 `hash_status: unavailable`; no content-addressed child artifact is created for
 those missing bytes. See [MCP integrity handling](mcp-contracts.md#integrity-record-and-continue)
@@ -345,7 +345,7 @@ are absent.
 
 Source-map contents are parsed as local input. The graph stores original source names and optional content digests, not raw `sourcesContent` text.
 
-Only explicitly present BrowserWindow values are observations. REA does not
+Only explicitly present BrowserWindow values are observations. BinSight does not
 substitute version-dependent Electron defaults for omitted `webPreferences`.
 Unresolved option objects, bridge keys, API objects, and IPC channel expressions
 remain unknown and make coverage partial.
@@ -466,7 +466,7 @@ parses as a URL. When a recognized request target cannot be resolved exactly,
 the endpoint's partial resolution retains the original source expression with
 its call-site provenance. This does not establish that the request executed.
 Artifact paths, digests, parse locations, and analysis metadata remain
-actionable because REA is local-only.
+actionable because BinSight is local-only.
 
 ## Safety boundary
 
@@ -568,7 +568,7 @@ deadline per source, including startup and fact transfer. Select
 `max_heap_mb` and `analysis_timeout_ms` through MCP, or `--max-heap-mb` and
 `--analysis-timeout-ms` on the dedicated CLI command. These choices control the
 analyzer; the caller's `NODE_OPTIONS` still controls the CLI/MCP process heap.
-V8 old-space limits do not impose a process RSS limit. When REA runs on Bun,
+V8 old-space limits do not impose a process RSS limit. When BinSight runs on Bun,
 the analyzer ignores the V8 heap flags; resource failures then report
 `worker_heap_limit_bytes` as null instead of a requested or V8-reported limit.
 On Windows, the analyzer's owned Job Object instead limits its committed

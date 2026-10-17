@@ -63,7 +63,7 @@ describe("ZCode configuration paths", () => {
 });
 
 const zcodeClient = async () => {
-  const home = await createTestTempDirectory("rea-zcode-");
+  const home = await createTestTempDirectory("binsight-zcode-");
   const client = zcodePath(home, process.platform);
   if (client?.markerPath === undefined) throw new Error("missing ZCode client");
   await mkdir(client.markerPath, { recursive: true });
@@ -71,13 +71,13 @@ const zcodeClient = async () => {
 };
 
 describe("ZCode JSON registration", () => {
-  it("upserts rea into mcp.servers while preserving unrelated settings", async () => {
+  it("upserts binsight into mcp.servers while preserving unrelated settings", async () => {
     const { home, client } = await zcodeClient();
     await writeFile(
       client.configPath,
       `{
   "mcp": {
-    "rea": { "unrelated": true },
+    "binsight": { "unrelated": true },
     "servers": {
       "other": { "command": "other-server" }
     }
@@ -89,9 +89,9 @@ describe("ZCode JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcp.rea).toEqual({ unrelated: true });
+    expect(parsed.mcp.binsight).toEqual({ unrelated: true });
     expect(parsed.mcp.servers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -120,7 +120,7 @@ describe("ZCode JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.ui).toEqual({ theme: "dark" });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -133,13 +133,13 @@ describe("ZCode JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the binsight entry on uninstall", async () => {
     const { home, client } = await zcodeClient();
     await writeFile(
       client.configPath,
@@ -156,7 +156,7 @@ describe("ZCode JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcp.servers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcp.servers.rea).toBeUndefined();
+    expect(parsed.mcp.servers.binsight).toBeUndefined();
   });
 });
 
@@ -175,8 +175,8 @@ describe("ZCode .agents fallback preservation", () => {
           {
             mcpServers: {
               other: { command: "other-server", env: { TOKEN: "x" } },
-              rea: {
-                command: "old-rea",
+              binsight: {
+                command: "old-binsight",
                 args: ["mcp"],
                 env: {
                   REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
@@ -199,7 +199,7 @@ describe("ZCode .agents fallback preservation", () => {
         command: "other-server",
         env: { TOKEN: "x" },
       });
-      expect(parsed.mcp.servers.rea).toEqual({
+      expect(parsed.mcp.servers.binsight).toEqual({
         command: command[0],
         args: command.slice(1),
         env: {
@@ -209,9 +209,9 @@ describe("ZCode .agents fallback preservation", () => {
         },
       });
       if (original !== undefined) {
-        expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
-          original,
-        );
+        expect(
+          await readFile(`${client.configPath}.binsight.backup`, "utf8"),
+        ).toBe(original);
         if (JSON.parse(original).ui !== undefined)
           expect(parsed.ui).toEqual({ theme: "dark" });
       }
@@ -252,7 +252,7 @@ describe("ZCode .agents fallback preservation", () => {
     expect(parsed.mcp.servers.existing).toEqual({
       command: "existing-server",
     });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -274,7 +274,7 @@ describe("ZCode fallback uninstall", () => {
     async (mode) => {
       const { home } = await zcodeClient();
       const valid = await writeFallback(home, {
-        rea: owned,
+        binsight: owned,
         other: { command: "other-server" },
       });
       const original =
@@ -290,19 +290,19 @@ describe("ZCode fallback uninstall", () => {
       );
       expect(await readFile(fallbackPath(home), "utf8")).toBe(original);
       await expect(
-        readFile(`${fallbackPath(home)}.rea.backup`),
+        readFile(`${fallbackPath(home)}.binsight.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
     },
   );
 
-  it("removes the REA-owned fallback entry with the native registration", async () => {
+  it("removes the BinSight-owned fallback entry with the native registration", async () => {
     const { home, client } = await zcodeClient();
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcp: { servers: { rea: owned } } }),
+      JSON.stringify({ mcp: { servers: { binsight: owned } } }),
     );
     const original = await writeFallback(home, {
-      rea: owned,
+      binsight: owned,
       other: { command: "other-server" },
     });
 
@@ -319,17 +319,17 @@ describe("ZCode fallback uninstall", () => {
       ui: { keep: true },
       mcpServers: { other: { command: "other-server" } },
     });
-    expect(await readFile(`${fallbackPath(home)}.rea.backup`, "utf8")).toBe(
-      original,
-    );
+    expect(
+      await readFile(`${fallbackPath(home)}.binsight.backup`, "utf8"),
+    ).toBe(original);
   });
 
-  it("removes a fallback-only REA entry and keeps a foreign rea entry", async () => {
+  it("removes a fallback-only BinSight entry and keeps a foreign binsight entry", async () => {
     for (const [servers, expected] of [
-      [{ rea: owned }, {}],
+      [{ binsight: owned }, {}],
       [
-        { rea: { command: "someone-else" } },
-        { rea: { command: "someone-else" } },
+        { binsight: { command: "someone-else" } },
+        { binsight: { command: "someone-else" } },
       ],
     ] as const) {
       const { home } = await zcodeClient();
@@ -347,12 +347,12 @@ describe("ZCode fallback uninstall", () => {
 
 describe("ZCode fallback admission", () => {
   it.each([{ PORT: 123 }, { REA_MCP_INPUT_SCHEMA_PROFILE: "unknown" }])(
-    "refuses malformed fallback REA environment %j before native writes",
+    "refuses malformed fallback BinSight environment %j before native writes",
     async (env) => {
       const { home, client } = await zcodeClient();
       await mkdir(join(home, ".agents"), { recursive: true });
       const original = JSON.stringify({
-        mcpServers: { rea: { command: "old-rea", env } },
+        mcpServers: { binsight: { command: "old-binsight", env } },
       });
       await writeFile(fallbackPath(home), original);
       expect(
@@ -431,7 +431,7 @@ describe("ZCode disabled registrations", () => {
         {
           mcp: {
             servers: {
-              rea: {
+              binsight: {
                 command: command[0],
                 args: command.slice(1),
                 enable: false,
@@ -467,7 +467,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: command[0], args: command.slice(1) },
+          binsight: { command: command[0], args: command.slice(1) },
         },
       }),
     );
@@ -512,7 +512,11 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: command[0], args: command.slice(1), enable: false },
+          binsight: {
+            command: command[0],
+            args: command.slice(1),
+            enable: false,
+          },
         },
       }),
     );
@@ -540,7 +544,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: "fallback-command", args: ["mcp"] },
+          binsight: { command: "fallback-command", args: ["mcp"] },
         },
       }),
     );
@@ -548,7 +552,9 @@ describe("ZCode disabled registrations", () => {
       client.configPath,
       JSON.stringify({
         mcp: {
-          servers: { rea: { command: command[0], args: command.slice(1) } },
+          servers: {
+            binsight: { command: command[0], args: command.slice(1) },
+          },
         },
       }),
     );
@@ -583,7 +589,7 @@ describe("ZCode strict native JSON", () => {
       });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`),
+        readFile(`${client.configPath}.binsight.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
       expect(
         (

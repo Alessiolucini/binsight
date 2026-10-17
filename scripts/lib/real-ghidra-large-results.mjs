@@ -29,7 +29,9 @@ export async function verifyGhidraLargeResults({
   // Hex encoding, Evidence projection and the two MCP representations multiply
   // the source size. Derive the fixture from the pinned SDK's receive budget.
   const length = Math.ceil(STDIO_DEFAULT_MAX_BUFFER_SIZE / 4);
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-large-results-"));
+  const workspace = await mkdtemp(
+    join(tmpdir(), "binsight-ghidra-large-results-"),
+  );
   const path = join(workspace, "large-results");
   const source = fileURLToPath(
     new URL("../../tests/conformance/ghidra/large-results.c", import.meta.url),
@@ -144,7 +146,7 @@ export async function verifyGhidraLargeResults({
     );
     assert.ok(originalError);
     assert.equal(originalError.operation, "mcp_tool_error");
-    assert.equal(originalError.provider.id, "rea-mcp");
+    assert.equal(originalError.provider.id, "binsight-mcp");
     assert.equal(originalError.subject, null);
     assert.equal(originalError.parameters.tool_name, "procedure_address");
     assert.equal(originalError.normalized_result.error.code, "invalid_request");

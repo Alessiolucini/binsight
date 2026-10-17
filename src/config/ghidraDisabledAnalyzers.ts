@@ -4,7 +4,7 @@ export const MAX_GHIDRA_DISABLED_ANALYZER_NAMES = 32;
 export const MAX_GHIDRA_DISABLED_ANALYZER_NAME_LENGTH = 120;
 
 // Ghidra's headless parser consumes `-`-prefixed arguments after a script path
-// as its own options, and REA joins the names with commas into one pre-script
+// as its own options, and BinSight joins the names with commas into one pre-script
 // argument, so a name can neither start with `-` nor contain a comma. The
 // remaining admitted characters keep the argument a single quotable token on
 // every supported launcher, including the Windows batch invocation.

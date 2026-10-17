@@ -140,7 +140,7 @@ class IdaCleanupError extends ProviderAdapterError {
                   }),
                 ),
                 reason:
-                  "Release of upstream sessions matching the requested session ID or private input was not confirmed; input_path preserves the last observed binding and is null when no inventory has reported it. is_active preserves registry activity and is null when unknown; it does not establish process liveness. A worker outlives its supervisor and may keep running until it finishes and reaches its idle timeout; exiting REA does not stop it. A gui session belongs to an IDA instance REA does not control. An empty session_id means upstream reported none; owned is null when no inventory has reported ownership; an empty list means the requested worker's close was confirmed but no inventory has identified any remaining session.",
+                  "Release of upstream sessions matching the requested session ID or private input was not confirmed; input_path preserves the last observed binding and is null when no inventory has reported it. is_active preserves registry activity and is null when unknown; it does not establish process liveness. A worker outlives its supervisor and may keep running until it finishes and reaches its idle timeout; exiting BinSight does not stop it. A gui session belongs to an IDA instance BinSight does not control. An empty session_id means upstream reported none; owned is null when no inventory has reported ownership; an empty list means the requested worker's close was confirmed but no inventory has identified any remaining session.",
               },
             }),
       },
@@ -279,7 +279,7 @@ export class IdaSessionClient implements AnalysisClient {
             reason: "invalid_value",
             expected: this.target.path,
             message:
-              "IDA document must be the REA-bound target; omit document or use its admitted path.",
+              "IDA document must be the BinSight-bound target; omit document or use its admitted path.",
           },
         ]),
       );
@@ -670,7 +670,7 @@ export class IdaSessionClient implements AnalysisClient {
       identity !== this.#initialIdentity
     )
       throw new AnalysisProtocolError(
-        "The attached IDA target or image base changed during the REA session; reopen the target.",
+        "The attached IDA target or image base changed during the BinSight session; reopen the target.",
       );
     this.#initialIdentity = identity;
     return this.#metadata;

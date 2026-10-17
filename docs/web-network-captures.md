@@ -5,8 +5,8 @@ retained producer evidence. This is an offline operation: recorded URLs are
 never fetched, and no browser or proxy listener is started.
 
 ```sh
-rea inspect-web-network-capture /absolute/session.har har --json
-rea inspect-web-network-capture /absolute/session.har har --record 2 --record 0 --json
+binsight inspect-web-network-capture /absolute/session.har har --json
+binsight inspect-web-network-capture /absolute/session.har har --record 2 --record 0 --json
 ```
 
 ```json
@@ -25,7 +25,7 @@ and original zero-based producer ordinals; duplicate or out-of-range selections
 are input errors. Every record is validated before selection, so selecting one
 entry does not hide a malformed entry elsewhere.
 
-For agent discovery over MCP, request `detail: "summary"`. REA retains the
+For agent discovery over MCP, request `detail: "summary"`. BinSight retains the
 complete selected Evidence in the session and returns identity and counts.
 Use `normalized_result.parent_evidence_id` with `inspect_analysis_view`:
 
@@ -66,13 +66,13 @@ are rejected before materialization. Prototype-named members such as
 `__proto__` are preserved as ordinary own JSON members without prototype
 mutation. Original capture files remain unchanged.
 The observed mitmproxy 12.2.3 `SaveHar` profile can emit `postData.text: null`
-for a missing request body. REA preserves that reported null, omitting the
+for a missing request body. BinSight preserves that reported null, omitting the
 optional field only from its validation copy for this exact producer profile;
 it does not invent an empty string or body bytes.
 The observed Playwright 1.58.2 profile can report a bracketed IPv6
 `serverIPAddress`, forwarded from Chromium's `remoteIPAddress` through
 [Playwright's HAR tracer](https://github.com/microsoft/playwright/blob/v1.58.2/packages/playwright-core/src/server/har/harTracer.ts).
-REA preserves the original spelling in reported Evidence and removes brackets
+BinSight preserves the original spelling in reported Evidence and removes brackets
 only from its validation copy, only for this declared producer and a valid IPv6
 literal. Invalid addresses, bracketed IPv4, ports and zone identifiers remain
 validation failures. Producer declarations do not authenticate origin.
@@ -81,10 +81,10 @@ Native mitmproxy decoding requires a caller-supplied **mitmdump 12.2.3 on
 Linux**. Set its absolute executable path:
 
 ```sh
-REA_MITMDUMP_COMMAND=/absolute/mitmdump rea inspect-web-network-capture /absolute/session.mitm mitmproxy --json
+REA_MITMDUMP_COMMAND=/absolute/mitmdump binsight inspect-web-network-capture /absolute/session.mitm mitmproxy --json
 ```
 
-REA does not install mitmproxy. Its owned process uses a private configuration
+BinSight does not install mitmproxy. Its owned process uses a private configuration
 directory, `--no-server`, and the unchanged upstream `mitmproxy.io.tnetstring`
 decoder. It does not run `FlowReader` migrations or convert native states to
 HAR. Raw IDs, state versions, flow types, backup states and unknown extensions
@@ -100,12 +100,12 @@ Fiddler Everywhere saves traffic in **Session Archive Zip (`.saz`)** files.
 Inspect native SAZ directly, without installing Fiddler or converting to HAR:
 
 ```sh
-rea inspect-web-network-capture /absolute/session.saz saz --json
-rea inspect-web-network-capture /absolute/session.saz saz --record 0 --json
+binsight inspect-web-network-capture /absolute/session.saz saz --json
+binsight inspect-web-network-capture /absolute/session.saz saz --record 0 --json
 ```
 
 MCP uses the same `capture_path`, `format: "saz"`, and optional
-`record_ordinals` fields as the examples above. REA pairs `raw/<id>_c.txt`
+`record_ordinals` fields as the examples above. BinSight pairs `raw/<id>_c.txt`
 requests, `_s.txt` responses, and `_m.xml` metadata by filename stem. Archive
 member names identify the source; zero-based ordinals follow each session's
 first member in ZIP directory order, not its numeric ID or capture time.
@@ -143,7 +143,7 @@ original SAZ when exporting. See the [import/export instructions](https://www.te
 ## Fiddler Everywhere MCP and public skills
 
 For agent-driven traffic debugging, connect Everywhere's MCP server separately
-from REA. Run a current Everywhere release with MCP access (Trial, Pro, or
+from BinSight. Run a current Everywhere release with MCP access (Trial, Pro, or
 higher), internet access, and a compatible MCP client. Use
 **Settings > MCP Server > Coding agent**, or **Manual setup** with the generated
 API key. The default endpoint is `http://localhost:8868/mcp`. See Telerik's
@@ -164,7 +164,7 @@ session IDs. Set `sessionsSource` to `LiveTraffic` for HTTP(S) traffic or
 `AgentCalls` for enriched LLM calls; active filters affect the session list.
 For an existing run, skip the skill's pre-capture steps that replace process
 filters and clear sessions. The documented MCP session sources do not provide
-a saved-snapshot selector; use the SAZ workflow above for saved files. REA does
+a saved-snapshot selector; use the SAZ workflow above for saved files. BinSight does
 not register or wrap the Fiddler MCP server.
 
 ## Reading the evidence
@@ -329,7 +329,7 @@ process cleanup. Owned decoder diagnostics retain at most 1 MiB across stdout
 and stderr; the collector drops overflow as it arrives, reports the limit
 failure and verifies cleanup. Heap limits alone do not establish aggregate RSS limits.
 SAZ and qlog refuse decoding when neither a Node heap limit nor a Windows Job Object bound can be enforced. Existing HAR availability is preserved.
-When REA runs on Bun, the HAR/SAZ/qlog decoder runs on Bun, which ignores these V8 heap
+When BinSight runs on Bun, the HAR/SAZ/qlog decoder runs on Bun, which ignores these V8 heap
 flags; its limitations and resource failures then omit the heap sizes. On
 Windows, the decoder's owned Job Object instead limits its committed memory to
 704 MiB, the 192 MiB budget plus a 512 MiB reserve for Bun itself. The
@@ -352,7 +352,7 @@ original failure information. The original capture is never changed.
 
 ## Excluded coordinates and read failures
 
-Explicitly marked values also exclude matching source coordinates and their sidecars. A hidden record coordinate is reported as `location.kind: "unknown"`; REA does not invent a replacement pointer. Original record ordinals and artifact digests remain available.
+Explicitly marked values also exclude matching source coordinates and their sidecars. A hidden record coordinate is reported as `location.kind: "unknown"`; BinSight does not invent a replacement pointer. Original record ordinals and artifact digests remain available.
 
 Host filesystem read denials return `code: "access_denied"`, `category: "unavailable"`, the actual `EACCES`/`EPERM` code and read-access guidance. Missing files remain input failures. Cleanup failures retain the prior structured error, including its input constraints or provider diagnostics, with explicitly marked text excluded.
 
@@ -363,15 +363,15 @@ the capture file is stable before retrying. No unstable snapshot is decoded.
 Command cleanup failures retain the original status and both diagnostic streams;
 the decoder's ownership preparation receives the same cancellation signal.
 
-MCP advertises the same strict named input contract used by the application. Historical inspection delegates argument validation to that shared application boundary so accepted explicit-sensitive declarations also cover invalid argument names and other correction details. The SDK receives raw arguments through its Standard Schema interface; malformed inputs still fail before decoder or filesystem effects and return the normal structured REA error. Protocol-envelope validation remains owned by MCP.
+MCP advertises the same strict named input contract used by the application. Historical inspection delegates argument validation to that shared application boundary so accepted explicit-sensitive declarations also cover invalid argument names and other correction details. The SDK receives raw arguments through its Standard Schema interface; malformed inputs still fail before decoder or filesystem effects and return the normal structured BinSight error. Protocol-envelope validation remains owned by MCP.
 
 ## Retained aioquic qlog
 
 Select `format: "qlog"` through `inspect_web_network_capture`, or:
 
 ```bash
-rea inspect-web-network-capture /absolute/origin.qlog qlog --json
-rea inspect-web-network-capture /absolute/origin.qlog qlog --record 95 --record 0 --json
+binsight inspect-web-network-capture /absolute/origin.qlog qlog --json
+binsight inspect-web-network-capture /absolute/origin.qlog qlog --record 95 --record 0 --json
 ```
 
 The initial profile is **aioquic 1.5.0, JSON qlog 0.3**: one JSON object with

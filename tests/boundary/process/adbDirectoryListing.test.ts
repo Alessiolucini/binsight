@@ -107,7 +107,7 @@ const runScript = async (
 ) => {
   const { stdout } = await execFileAsync(
     "/bin/sh",
-    ["-c", script, "rea-list-directory", ...paths],
+    ["-c", script, "binsight-list-directory", ...paths],
     { encoding: "buffer", env: environment, maxBuffer: 64 * 1024 },
   );
   return stdout;
@@ -116,7 +116,9 @@ const runScript = async (
 itPosix(
   "lists adversarial names through the complete adb provider command",
   async () => {
-    const root = await createTestTempDirectory("rea-adb-directory-listing-");
+    const root = await createTestTempDirectory(
+      "binsight-adb-directory-listing-",
+    );
     const bin = join(root, "bin");
     const deviceDirectory = join(root, "device dir ' $");
     await mkdir(bin);
@@ -193,7 +195,7 @@ itPosix(
   "discards a failed stat batch instead of pairing shortened rows with later names",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-adb-directory-stat-failure-",
+      "binsight-adb-directory-stat-failure-",
     );
     const bin = join(root, "bin");
     await mkdir(bin);
@@ -241,7 +243,7 @@ itPosix(
   "preserves distinct invalid UTF-8 filenames as partial evidence",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-adb-directory-invalid-utf8-",
+      "binsight-adb-directory-invalid-utf8-",
     );
     const deviceDirectory = join(root, "device");
     await mkdir(deviceDirectory);

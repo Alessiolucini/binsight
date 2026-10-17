@@ -5,7 +5,7 @@ import type {
 } from "../domain/triage/generateSbom.js";
 
 /** Bundled engine identity recorded as the SBOM-producing tool. */
-const TOOL_NAME = "rea-static-triage";
+const TOOL_NAME = "binsight-static-triage";
 const TOOL_VERSION = "1.0";
 /**
  * Fixed creation timestamp. Static triage is deterministic and reads no clock,
@@ -47,7 +47,7 @@ export const buildSpdx = (
   name:
     components.find((component) => component.type === "application")?.name ??
     "component-inventory",
-  documentNamespace: `urn:rea:sbom:${sha256}`,
+  documentNamespace: `urn:binsight:sbom:${sha256}`,
   creationInfo: {
     created: FIXED_CREATED,
     creators: [`Tool: ${TOOL_NAME}-${TOOL_VERSION}`],

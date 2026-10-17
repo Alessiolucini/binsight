@@ -20,7 +20,9 @@ import { artifactInspectionResultSchema } from "../../../src/domain/artifactInsp
 import { parseEvidence } from "../../../src/domain/evidence.js";
 
 it("completes an empty ZIP extraction with an empty identity", async () => {
-  const root = await createTestTempDirectory("rea-empty-artifact-extraction-");
+  const root = await createTestTempDirectory(
+    "binsight-empty-artifact-extraction-",
+  );
   const archive = join(root, "empty.zip");
   await writeOrderedZip(archive, []);
   const archiveTarget = await parseBinaryTarget(archive);
@@ -64,7 +66,7 @@ it.each([
 ] as const)(
   "preserves %s ZIP member names",
   async (_label, rawName, utf8Flag, logicalPath) => {
-    const root = await createTestTempDirectory("rea-zip-decoded-name-");
+    const root = await createTestTempDirectory("binsight-zip-decoded-name-");
     const path = join(root, "names.zip");
     await writeSingleEntryZip(path, "x.txt");
     const archive = await readFile(path);
@@ -86,7 +88,7 @@ it.each([
 it.skipIf(process.platform === "win32").each(legacyControlNames)(
   "extracts %s ZIP members under their stored names",
   async (_label, rawName, utf8Flag, logicalPath) => {
-    const root = await createTestTempDirectory("rea-zip-extracted-name-");
+    const root = await createTestTempDirectory("binsight-zip-extracted-name-");
     const path = join(root, "names.zip");
     await writeSingleEntryZip(path, "x.txt");
     const archive = await readFile(path);
@@ -116,7 +118,7 @@ it.skipIf(process.platform === "win32").each(legacyControlNames)(
 );
 
 it("preserves valid Info-ZIP Unicode Path overrides", async () => {
-  const root = await createTestTempDirectory("rea-zip-unicode-path-");
+  const root = await createTestTempDirectory("binsight-zip-unicode-path-");
   const path = join(root, "unicode-path.zip");
   const rawName = Buffer.from("legacy.txt");
   const unicodeName = Buffer.from("café.txt", "utf8");
@@ -144,7 +146,7 @@ it("preserves valid Info-ZIP Unicode Path overrides", async () => {
 });
 
 it("rejects malformed UTF-8 in flagged ZIP member names", async () => {
-  const root = await createTestTempDirectory("rea-zip-invalid-utf8-name-");
+  const root = await createTestTempDirectory("binsight-zip-invalid-utf8-name-");
   const path = join(root, "invalid-utf8.zip");
   await writeSingleEntryZip(path, "x.txt");
   const archive = await readFile(path);
@@ -162,7 +164,9 @@ it("rejects malformed UTF-8 in flagged ZIP member names", async () => {
 });
 
 it("rejects malformed UTF-8 in a CRC-valid Unicode Path extra field", async () => {
-  const root = await createTestTempDirectory("rea-zip-invalid-unicode-extra-");
+  const root = await createTestTempDirectory(
+    "binsight-zip-invalid-unicode-extra-",
+  );
   const path = join(root, "invalid-unicode-extra.zip");
   const rawName = Buffer.from("legacy.txt");
   const malformedName = Buffer.from([0xc3, 0x28, 0x2e, 0x74, 0x78]);
@@ -188,7 +192,7 @@ it("rejects malformed UTF-8 in a CRC-valid Unicode Path extra field", async () =
 });
 
 it("bounds a requested metadata read without rejecting the underlying valid ZIP", async () => {
-  const root = await createTestTempDirectory("rea-zip-metadata-budget-");
+  const root = await createTestTempDirectory("binsight-zip-metadata-budget-");
   const path = join(root, "large-directory.zip");
   const name = `${"a".repeat(8192)}.class`;
   await writeOrderedZip(path, [name]);
@@ -211,7 +215,7 @@ it("bounds a requested metadata read without rejecting the underlying valid ZIP"
 });
 
 it("binds ZIP opens to the emitted entry metadata", async () => {
-  const root = await createTestTempDirectory("rea-zip-entry-identity-");
+  const root = await createTestTempDirectory("binsight-zip-entry-identity-");
   const path = join(root, "entries.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("first.txt", new TextReader("first bytes"));
@@ -268,7 +272,9 @@ it("binds ZIP opens to the emitted entry metadata", async () => {
 cliTest(
   "retains duplicate ZIP members without replacing their source identities",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-duplicate-identity-");
+    const root = await createTestTempDirectory(
+      "binsight-zip-duplicate-identity-",
+    );
     const path = join(root, "duplicates.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("x.txt", new TextReader("first bytes\n"), { level: 0 });
@@ -369,7 +375,7 @@ cliTest(
 );
 
 it("can enumerate case-distinct ZIP members again without losing entry identity", async () => {
-  const root = await createTestTempDirectory("rea-zip-entry-replay-");
+  const root = await createTestTempDirectory("binsight-zip-entry-replay-");
   const path = join(root, "case-distinct.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("x.txt", new TextReader("first bytes\n"), { level: 0 });
@@ -400,7 +406,7 @@ it("can enumerate case-distinct ZIP members again without losing entry identity"
 });
 
 it("rejects overlapping ZIP member data ranges through artifact inventory", async () => {
-  const root = await createTestTempDirectory("rea-zip-overlap-");
+  const root = await createTestTempDirectory("binsight-zip-overlap-");
   const path = join(root, "overlap.zip");
   await writeOrderedZip(path, ["a.txt", "b.txt"]);
   const bytes = await readFile(path);
@@ -424,7 +430,7 @@ it("rejects overlapping ZIP member data ranges through artifact inventory", asyn
 });
 
 it("preserves encrypted-member and corrupt-CRC observations", async () => {
-  const root = await createTestTempDirectory("rea-zip-integrity-");
+  const root = await createTestTempDirectory("binsight-zip-integrity-");
   const encryptedPath = join(root, "encrypted.zip");
   const encryptedWriter = new ZipWriter(new Uint8ArrayWriter());
   await encryptedWriter.add("secret.txt", new TextReader("secret bytes"), {
@@ -449,7 +455,7 @@ it("preserves encrypted-member and corrupt-CRC observations", async () => {
       hash_status: "unavailable",
     }),
   );
-  // REA does not decrypt entries, so complete extraction is unsupported.
+  // BinSight does not decrypt entries, so complete extraction is unsupported.
   const extractionRoot = join(root, "encrypted-output");
   const extraction = await withArtifactClient(encryptedTarget.value, (client) =>
     client.execute("extract_artifact", { output_root: extractionRoot }),
@@ -491,7 +497,7 @@ it("preserves encrypted-member and corrupt-CRC observations", async () => {
 });
 
 it("rejects a truncated ZIP through artifact inventory", async () => {
-  const root = await createTestTempDirectory("rea-zip-malformed-");
+  const root = await createTestTempDirectory("binsight-zip-malformed-");
   const path = join(root, "truncated.zip");
   await writeFile(path, Buffer.from([0x50, 0x4b, 0x03, 0x04]));
 
@@ -503,12 +509,12 @@ it("rejects a truncated ZIP through artifact inventory", async () => {
 });
 
 it("reports an unsupported ZIP compression method as unavailable", async () => {
-  const root = await createTestTempDirectory("rea-zip-method-");
+  const root = await createTestTempDirectory("binsight-zip-method-");
   const path = join(root, "lzma.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("data.txt", new TextReader("member bytes"), { level: 0 });
   const bytes = Buffer.from(await writer.close());
-  // Declare LZMA (14) in both headers; REA reads only stored and Deflate data.
+  // Declare LZMA (14) in both headers; BinSight reads only stored and Deflate data.
   const localHeader = bytes.indexOf(Buffer.from([0x50, 0x4b, 0x03, 0x04]));
   const centralHeader = bytes.indexOf(Buffer.from([0x50, 0x4b, 0x01, 0x02]));
   if (localHeader < 0 || centralHeader < 0)

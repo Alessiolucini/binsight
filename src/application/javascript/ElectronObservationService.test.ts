@@ -92,11 +92,11 @@ it("converts a retained raw Electron inspection into partial Evidence", async ()
       normalized_result: {
         ...inspection,
         limitations: [
-          "REA closed its CDP transport; this does not imply target shutdown.",
+          "BinSight closed its CDP transport; this does not imply target shutdown.",
         ],
       },
       limitations: expect.arrayContaining([
-        "REA closed its CDP transport; this does not imply target shutdown.",
+        "BinSight closed its CDP transport; this does not imply target shutdown.",
       ]),
     });
   }
@@ -104,7 +104,7 @@ it("converts a retained raw Electron inspection into partial Evidence", async ()
 
 it("converts a raw inspection retained by provider cleanup failure", async () => {
   const failure = new ProviderCleanupError(
-    "rea-cdp-electron",
+    "binsight-cdp-electron",
     ["electron-page"],
     { reason: "target detach failed" },
     {

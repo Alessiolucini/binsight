@@ -46,7 +46,7 @@ class FakeMacHopperHost implements MacHopperInstallHost {
           }
         : { ok: this.archiveOk, bytes: this.archive },
     );
-  createTemporaryDirectory = () => Promise.resolve("/tmp/rea-hopper-test");
+  createTemporaryDirectory = () => Promise.resolve("/tmp/binsight-hopper-test");
   createMountDirectory = () => Promise.resolve();
   writePackage = () => Promise.resolve();
   mount = () =>

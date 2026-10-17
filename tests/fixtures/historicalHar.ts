@@ -2,7 +2,7 @@
 export const historicalHar = () => ({
   log: {
     version: "1.2",
-    creator: { name: "rea-source-owned-fixture", version: "1" },
+    creator: { name: "binsight-source-owned-fixture", version: "1" },
     entries: [
       {
         startedDateTime: "2026-10-07T13:00:00.123+08:00",

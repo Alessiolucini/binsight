@@ -14,7 +14,7 @@ afterEach(async () => {
 const runVerifier = async (
   settings: { closeFails?: boolean; thrown?: "undefined" | "null" } = {},
 ) => {
-  const root = await mkdtemp(join(tmpdir(), "rea-adb-verifier-test-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-adb-verifier-test-"));
   roots.push(root);
   await mkdir(join(root, "scripts", "lib"), { recursive: true });
   await mkdir(join(root, "dist", "application", "adb"), { recursive: true });

@@ -32,14 +32,14 @@ const actions = [
     kind: "configure_client",
     label: "Codex",
     target: "/isolated/.codex/config.toml",
-    detail: "Add the REA MCP registration for Codex.",
+    detail: "Add the BinSight MCP registration for Codex.",
     external: false,
     operation: "create",
   },
   {
     id: "install_skill",
     kind: "install_skill",
-    label: "REA reverse-engineering skill",
+    label: "BinSight reverse-engineering skill",
     target: "/isolated/.agents/skills/reverse-engineering/SKILL.md",
     detail: "Install the bundled reverse-engineering skill.",
     external: false,
@@ -124,7 +124,7 @@ const runSetupDryRunInTty = async (
 
 describe("TTY setup dry run", () => {
   it("prints the plan and no-mutation notice for a TTY dry run", async () => {
-    const home = await createTestTempDirectory("rea-cli-setup-dry-run-");
+    const home = await createTestTempDirectory("binsight-cli-setup-dry-run-");
     const { exitCode, output } = await runSetupDryRunInTty(home, [
       "--client",
       "codex",
@@ -143,7 +143,9 @@ describe("TTY setup dry run", () => {
   });
 
   it("shows the refusal instead of a blocked skill plan for a TTY dry run", async () => {
-    const home = await createTestTempDirectory("rea-cli-setup-linked-dry-run-");
+    const home = await createTestTempDirectory(
+      "binsight-cli-setup-linked-dry-run-",
+    );
     const managed = join(home, "managed-skill");
     const linked = join(home, ".claude/skills/reverse-engineer-anything");
     const original = "user-managed skill bytes\n";
@@ -165,8 +167,8 @@ describe("TTY setup dry run", () => {
     expect(output).toContain("Skill directory is a symbolic link.");
     expect(output).toContain(linked);
     expect(output).toContain("--skill=false");
-    expect(output).not.toContain("REA setup plan");
-    expect(output).not.toContain("Install or update the REA skill");
+    expect(output).not.toContain("BinSight setup plan");
+    expect(output).not.toContain("Install or update the BinSight skill");
     expect((await lstat(linked)).isSymbolicLink()).toBe(true);
     expect(await readFile(join(managed, "SKILL.md"), "utf8")).toBe(original);
     expect(await readdir(managed)).toEqual(["SKILL.md"]);
@@ -180,7 +182,7 @@ describe("interactive setup journey", () => {
   it("shows detected and absent clients without preselecting detected clients", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", "\u001b[B"),
+        step("Which agents should use BinSight?", "\u001b[B"),
         step("Not detected · configuration is still available", "\r"),
       ],
       false,
@@ -190,15 +192,15 @@ describe("interactive setup journey", () => {
     expect(result.output).toContain(
       "Not detected · configuration is still available",
     );
-    expect(result.output).toContain("Which agents should use REA?");
-    expect(result.output).not.toContain("What should REA set up?");
+    expect(result.output).toContain("Which agents should use BinSight?");
+    expect(result.output).not.toContain("What should BinSight set up?");
     expect(result.decision.selectedActionIds).toEqual([]);
   });
 
   it("selects an absent OpenCode client and bundles its skill", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", "\u001b[B \r"),
+        step("Which agents should use BinSight?", "\u001b[B \r"),
         step("Apply these 2 changes?", "\r"),
       ],
       false,
@@ -223,7 +225,7 @@ describe("interactive setup journey", () => {
   it("shows the launcher, backup, and path before final approval", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", " \r"),
+        step("Which agents should use BinSight?", " \r"),
         step("Apply these 2 changes?", "\r"),
       ],
       false,
@@ -232,13 +234,13 @@ describe("interactive setup journey", () => {
           ...actions[0],
           operation: "update",
           backupPath: "/isolated/.codex/config.toml.bak",
-          commands: ["npx -y rea-agents@3.2.1 mcp"],
+          commands: ["npx -y binsight@3.2.1 mcp"],
         },
         actions[1],
       ],
     );
     expect(result.output).toContain("/isolated/.codex/config.toml.bak");
-    expect(result.output).toContain("command: npx -y rea-agents@3.2.1 mcp");
+    expect(result.output).toContain("command: npx -y binsight@3.2.1 mcp");
     expect(result.output.indexOf("command:")).toBeLessThan(
       result.output.indexOf("Apply these 2 changes?"),
     );
@@ -246,7 +248,7 @@ describe("interactive setup journey", () => {
 
   it("treats final No as cancellation", async () => {
     const result = await runJourney([
-      step("Which agents should use REA?", " \r"),
+      step("Which agents should use BinSight?", " \r"),
       step("Apply these 2 changes?", "\u001b[D\r"),
     ]);
     expect(result.output).toContain("Setup cancelled. No changes were made.");
@@ -256,7 +258,7 @@ describe("interactive setup journey", () => {
 
   it("restores the terminal after Ctrl-C during selection", async () => {
     const result = await runJourney([
-      step("Which agents should use REA?", "\u0003"),
+      step("Which agents should use BinSight?", "\u0003"),
     ]);
     expect(result.output).toContain("\u001b[?25h");
     expect(result.decision.cancelled).toBe(true);
@@ -264,8 +266,8 @@ describe("interactive setup journey", () => {
 
   it("can install the skill for CLI use without an agent registration", async () => {
     const result = await runJourney([
-      step("Which agents should use REA?", "\r"),
-      step("Install the guided REA skill for CLI use?", "\u001b[D\r"),
+      step("Which agents should use BinSight?", "\r"),
+      step("Install the guided BinSight skill for CLI use?", "\u001b[D\r"),
       step("Apply this change?", "\r"),
     ]);
     expect(result.decision.selectedActionIds).toEqual(["install_skill"]);
@@ -275,7 +277,7 @@ describe("interactive setup journey", () => {
   it("offers Hopper separately and defaults against installing it", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", " \r"),
+        step("Which agents should use BinSight?", " \r"),
         step("Install Hopper for deep binary analysis?", "\r"),
         step("Apply these 2 changes?", "\r"),
       ],
@@ -303,10 +305,10 @@ describe("interactive setup journey", () => {
     ]);
   });
 
-  it("preselects only a prior REA registration", async () => {
+  it("preselects only a prior BinSight registration", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", "\r"),
+        step("Which agents should use BinSight?", "\r"),
         step("Apply these 2 changes?", "\r"),
       ],
       false,
@@ -322,16 +324,16 @@ describe("interactive setup journey", () => {
 
 describe("interactive setup completion", () => {
   it.each([
-    { npmCommand: "", userAgent: "", launcher: "rea" },
+    { npmCommand: "", userAgent: "", launcher: "binsight" },
     {
       npmCommand: "exec",
       userAgent: "npm/10.9.0 node/v24.11.0 linux x64",
-      launcher: "npx rea-agents",
+      launcher: "npx binsight",
     },
     {
       npmCommand: "exec",
       userAgent: "bun/1.4.2 npm/? node/v26.3.0 linux x64",
-      launcher: "bunx rea-agents",
+      launcher: "bunx binsight",
     },
   ])(
     "prints an available next command for $launcher invocation",
@@ -412,7 +414,9 @@ const runJourney = async (
   journeyActions: readonly object[] = agentActions,
   initialClientIds: readonly string[] = [],
 ): Promise<JourneyResult> => {
-  const isolatedHome = await createTestTempDirectory("rea-cli-setup-test-");
+  const isolatedHome = await createTestTempDirectory(
+    "binsight-cli-setup-test-",
+  );
   const script = [
     'import { confirmInteractiveSetup } from "./dist/cli/interactiveSetup.js";',
     `const actions = ${JSON.stringify(journeyActions)};`,

@@ -410,7 +410,9 @@ export class NativeDmgArtifactReader implements ArtifactReader {
         image["system-entities"].map(({ "dev-entry": device }) => device),
       ),
     );
-    const mountRoot = await realpath(await mkdtemp(join(tmpdir(), "rea-dmg-")));
+    const mountRoot = await realpath(
+      await mkdtemp(join(tmpdir(), "binsight-dmg-")),
+    );
     this.#mountRoot = mountRoot;
     try {
       this.#attachMayHaveMounted = true;

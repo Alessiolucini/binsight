@@ -80,7 +80,7 @@ export const withSignatureTarget = async <T>(
   ) => Promise<Result<T, AnalysisError>>,
   signal?: AbortSignal,
   createRoot: () => Promise<Pick<PrivateRuntimeRoot, "path" | "close">> = () =>
-    PrivateRuntimeRoot.create({ prefix: "rea-signature-" }),
+    PrivateRuntimeRoot.create({ prefix: "binsight-signature-" }),
 ): Promise<Result<T, AnalysisError>> => {
   try {
     return await resources.run(async () => {

@@ -203,7 +203,9 @@ it("binds provider build reuse to the current run while keeping standalone dispa
   for (const name of consumers) {
     const caller = jobs[name];
     expect(caller?.needs).toContain("build");
-    expect(caller?.with).toEqual({ build_cache_artifact: "rea-build-cache" });
+    expect(caller?.with).toEqual({
+      build_cache_artifact: "binsight-build-cache",
+    });
     const path = z.string().parse(caller?.uses);
     const called = z
       .object({

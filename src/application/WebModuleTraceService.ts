@@ -59,7 +59,7 @@ const LIMITATIONS = [
   "A resolved URL or captured source does not prove loading, execution, UI causality, or module namespace identity. Execution remains unknown.",
   "Only native ES module syntax is resolved. Bundler module IDs, computed imports, workers and non-HTTP(S) importer contexts are outside this trace.",
   "Source-map declarations do not establish retained map bytes or executed original-source coverage.",
-  "Selected application code is parsed as data and never executed. The owned resolver executes only REA's trusted stub; its page requests are locally fulfilled or blocked.",
+  "Selected application code is parsed as data and never executed. The owned resolver executes only BinSight's trusted stub; its page requests are locally fulfilled or blocked.",
   "Manifest, source and import-map limits are 32 MiB, 16 MiB and 4 MiB. Native resolution has a 20-second deadline; cleanup may extend it. One renderer is requested; no aggregate host memory limit is claimed.",
 ];
 
@@ -246,8 +246,8 @@ export class WebModuleTraceService {
           format: "file",
         },
         {
-          id: "rea-web-module-trace",
-          name: "REA captured module relationship trace",
+          id: "binsight-web-module-trace",
+          name: "BinSight captured module relationship trace",
           version: "1",
         },
         {

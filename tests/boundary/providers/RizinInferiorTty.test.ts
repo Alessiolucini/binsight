@@ -191,7 +191,7 @@ it.skipIf(process.platform !== "linux").each([
   "validates Rizin `olj` close response: $name",
   async ({ response, closeSucceeds }) => {
     const tty = await rizinTestInferiorTty();
-    testDirectory = await mkdtemp(join(tmpdir(), "rea-rizin-olj-"));
+    testDirectory = await mkdtemp(join(tmpdir(), "binsight-rizin-olj-"));
     const provider = join(testDirectory, "fake-rizin.cjs");
     await writeFile(
       provider,
@@ -444,7 +444,7 @@ it.skipIf(
       });
     });
     const tty = await realpath(ttyPath);
-    testDirectory = await mkdtemp(join(tmpdir(), "rea-rizin-tty-"));
+    testDirectory = await mkdtemp(join(tmpdir(), "binsight-rizin-tty-"));
     const wrapper = join(testDirectory, "rizin-with-long-lived-inferior.sh");
     const pidPath = join(testDirectory, "target.pid");
     const releasePath = join(testDirectory, "emit-output");
@@ -533,7 +533,7 @@ async function startFakeInferiorSession(
   } = {},
 ): Promise<string> {
   const tty = await realpath(await rizinTestInferiorTty());
-  testDirectory = await mkdtemp(join(tmpdir(), "rea-rizin-protocol-"));
+  testDirectory = await mkdtemp(join(tmpdir(), "binsight-rizin-protocol-"));
   const targetPath = join(testDirectory, "inferior.mjs");
   const pidPath = join(testDirectory, "target.pid");
   const provider = join(testDirectory, "fake-rizin.cjs");

@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 it.each(["utf8", "utf8-bom", "utf16le", "utf16be", "binary"] as const)(
   "reads the same captured Foundation graph encoded as %s",
   async (encoding) => {
-    const root = await createTestTempDirectory("rea-keyed-encoding-");
+    const root = await createTestTempDirectory("binsight-keyed-encoding-");
     const xml = await nativeFixture("archive-xml-encoding/archive.xml");
     const utf16 = Buffer.from(xml.replace("UTF-8", "UTF-16"), "utf16le");
     const bytes =
@@ -49,7 +49,7 @@ it.each(["utf8", "utf8-bom", "utf16le", "utf16be", "binary"] as const)(
 );
 
 it("rejects an incomplete UTF-16 code unit instead of substituting text", async () => {
-  const root = await createTestTempDirectory("rea-keyed-encoding-");
+  const root = await createTestTempDirectory("binsight-keyed-encoding-");
   await writeFile(join(root, "archive.plist"), Buffer.from([0xff, 0xfe, 0x3c]));
   await expect(
     inspectBundleKeyedArchive({
@@ -63,7 +63,7 @@ it("rejects an incomplete UTF-16 code unit instead of substituting text", async 
 it.each(["utf8-as-utf16", "utf16-as-utf8"] as const)(
   "rejects contradictory XML declaration %s",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-keyed-encoding-");
+    const root = await createTestTempDirectory("binsight-keyed-encoding-");
     const xml = await nativeFixture("archive-xml-encoding/archive.xml");
     const bytes =
       kind === "utf8-as-utf16"

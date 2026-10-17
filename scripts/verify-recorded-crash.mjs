@@ -33,7 +33,9 @@ if (process.platform !== "linux" || process.arch !== "x64")
   throw new Error("verify:recorded:crash requires Linux x64.");
 const run = createVerifierRun();
 environment.REA_PROCESS_RUN_ID = run.run_id;
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-core-verifier-" });
+const root = await PrivateRuntimeRoot.create({
+  prefix: "binsight-core-verifier-",
+});
 const options = { root: root.path, environment, runId: run.run_id };
 const entrypoint =
   process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));

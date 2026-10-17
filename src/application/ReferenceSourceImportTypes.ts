@@ -26,7 +26,7 @@ const IMPORT_FAILURE_GUIDANCE = {
   unsupported: {
     category: "unsupported_host",
     message:
-      "Safe no-follow file opens are unavailable on this host. Import the source tree with REA on Linux (including WSL) or macOS.",
+      "Safe no-follow file opens are unavailable on this host. Import the source tree with BinSight on Linux (including WSL) or macOS.",
   },
   io: {
     category: "execution_failure",

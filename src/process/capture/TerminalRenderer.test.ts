@@ -155,7 +155,7 @@ it.each(["write", "resize"] as const)(
     });
     const scope = new ProcessCaptureResourceScope();
     const temporaryRoot = await mkdtemp(
-      join(tmpdir(), "rea-terminal-cleanup-"),
+      join(tmpdir(), "binsight-terminal-cleanup-"),
     );
     try {
       if (operation === "write") renderer.write("output", 0);
@@ -204,7 +204,9 @@ it("retains disposal failures for a later cleanup retry", async () => {
     normalize: boundedNormalize((value) => value),
   });
   const scope = new ProcessCaptureResourceScope();
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "rea-terminal-retry-"));
+  const temporaryRoot = await mkdtemp(
+    join(tmpdir(), "binsight-terminal-retry-"),
+  );
   try {
     const cleanup = await scope.release({
       timers: new Set(),

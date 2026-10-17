@@ -77,7 +77,7 @@ const stopHolder = async (holder: ChildProcess) => {
 };
 
 it("reports a selected database held by another process as retryable and unavailable", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-busy-");
+  const workspace = await createTestWorkspace("binsight-sqlite-busy-");
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const roots: string[] = [];
@@ -96,7 +96,7 @@ it("reports a selected database held by another process as retryable and unavail
 });
 
 it("names the WAL when another process holds that member of the file set", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-busy-wal-");
+  const workspace = await createTestWorkspace("binsight-sqlite-busy-wal-");
   const database = createSqliteDatabaseFixture(workspace.root, true);
   const roots: string[] = [];
   const provider = createProvider(workspace.root, roots);
@@ -117,7 +117,7 @@ it("names the WAL when another process holds that member of the file set", async
 it.runIf(process.platform === "win32")(
   "reports a database that another Windows process holds without sharing as retryable",
   async () => {
-    const workspace = await createTestWorkspace("rea-sqlite-busy-native-");
+    const workspace = await createTestWorkspace("binsight-sqlite-busy-native-");
     const database = createSqliteDatabaseFixture(workspace.root);
     database.close();
     const roots: string[] = [];

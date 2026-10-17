@@ -10,7 +10,7 @@ those hosts. It does not acquire samples or communicate with hardware.
 
 ```sh
 export REA_SIGROK_COMMAND=/absolute/path/to/sigrok-cli
-rea decode-signal-recording /artifacts/uart.vcd \
+binsight decode-signal-recording /artifacts/uart.vcd \
   --decoders uart:rx=RX:baudrate=9600 --input_format vcd \
   --annotations uart=rx-data --format json
 ```
@@ -30,7 +30,7 @@ The corresponding MCP request is:
 ```
 
 `decoders` uses sigrok's decoder stack and option/channel syntax. Channel names
-must match the recording; REA does not guess wiring, baud rate or protocol.
+must match the recording; BinSight does not guess wiring, baud rate or protocol.
 Omitting `input_format` requests sigrok's autodetection. Omitting `annotations`
 retains every annotation class. Both omitted selections are recorded as null.
 See the [upstream manual](https://sigrok.org/wiki/Sigrok-cli) for formats,
@@ -41,7 +41,7 @@ Output defaults to 50 literal LF-separated lines. Use `line_offset` and
 for all remaining output. `output_window` reports `total_lines`, `returned_lines`
 and `has_more`; these count display lines, **not annotations or samples**.
 Line endings, blank lines and text within the selected window stay unchanged.
-REA does not parse display text into protocol facts, as explained by
+BinSight does not parse display text into protocol facts, as explained by
 [upstream's annotation output guidance](https://sigrok.org/wiki/Protocol_decoder_output).
 Paging does not shorten decoding and producer output must still fit its limit.
 Use annotation-class selection to reduce producer output. Calls independently
@@ -63,7 +63,7 @@ from the separate version probe. Post-run identity failures name the tool, limit
 or private copy involved, rather than blaming the admitted source. Resource-signal
 failures retain the signal and effective limits without inferring its exact cause.
 
-REA decodes a private, read-only copy of the recording, verifies that copy and
+BinSight decodes a private, read-only copy of the recording, verifies that copy and
 the selected executable and resource limiter after decoding, and removes the workspace after owned
 process cleanup. Failed descriptor, process or workspace cleanup retains ownership for retry, and the one-shot
 CLI awaits a retry without replacing the original failure or completed Evidence.
@@ -90,10 +90,10 @@ npm run build:cached
 REA_SIGROK_COMMAND=/absolute/path/to/sigrok-cli node scripts/verify-signal-recording.mjs
 ```
 
-The verifier synthesizes a 9600-baud 8N1 UART VCD carrying `REA`, then checks
+The verifier synthesizes a 9600-baud 8N1 UART VCD carrying `BinSight`, then checks
 actual CLI/MCP parity, advertised schemas, stored Evidence, source hashes,
 annotation filtering/autodetection, invalid decoder/input failures and cleanup.
-An optional positional REA entrypoint verifies an installed package.
+An optional positional BinSight entrypoint verifies an installed package.
 The real-tool lane requires Linux, sigrok-cli 0.7.2 and libsigrokdecode. A separate
 kernel-limit regression checks the inherited soft/hard limits and verifies an
 oversized allocation is refused before it can consume memory. Other formats,
@@ -113,9 +113,9 @@ remains owned and retryable.
 sigrok catalog without opening a recording or scanning devices:
 
 ```sh
-rea inspect-signal-decoders --query uart
-rea inspect-signal-decoders --decoder uart --query baud
-rea inspect-signal-decoders --decoder i2c --offset 0 --limit 50
+binsight inspect-signal-decoders --query uart
+binsight inspect-signal-decoders --decoder uart --query baud
+binsight inspect-signal-decoders --decoder i2c --offset 0 --limit 50
 ```
 
 Omit `decoder` to search decoder IDs and names. Supply one exact decoder ID to

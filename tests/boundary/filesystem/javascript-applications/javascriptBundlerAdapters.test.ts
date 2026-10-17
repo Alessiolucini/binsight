@@ -154,7 +154,7 @@ describe("Webpack and Rspack runtime adapters", () => {
 });
 
 const bundlerFixture = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-bundler-adapters-");
+  const root = await createTestTempDirectory("binsight-bundler-adapters-");
   await writeFixtureFiles(root, {
     "renderer/chunks/runtime.js": `
       // A cache-like name here is not evidence about either registration.
@@ -210,7 +210,7 @@ const bundlerFixture = async (): Promise<string> => {
 };
 
 const esmRuntimeFixture = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-esm-runtime-adapters-");
+  const root = await createTestTempDirectory("binsight-esm-runtime-adapters-");
   await writeFixtureFiles(root, {
     "main.js": `
       const __vite__mapDeps = (indexes, map = __vite__mapDeps, dependencies =

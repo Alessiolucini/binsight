@@ -10,7 +10,7 @@ export async function snapshotHopperRuntime(
   const resources = new Set();
   for (const entry of await readdir(parent, { withFileTypes: true })) {
     const path = join(parent, entry.name);
-    if (!entry.name.startsWith("rea-") || path === targetLeaseDirectory)
+    if (!entry.name.startsWith("binsight-") || path === targetLeaseDirectory)
       continue;
     if (
       ownedProcessIds !== undefined &&

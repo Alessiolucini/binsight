@@ -39,8 +39,8 @@ const source = (
     {
       predicateType:
         authority === "controlled-replay"
-          ? "rea.process-capture"
-          : "rea.analysis",
+          ? "binsight.process-capture"
+          : "binsight.analysis",
       operation:
         authority === "controlled-replay"
           ? "capture_process_scenario"
@@ -101,12 +101,12 @@ const processComparison = (
   createEvidence(
     undefined,
     {
-      id: "rea-process",
-      name: "REA deterministic process harness",
+      id: "binsight-process",
+      name: "BinSight deterministic process harness",
       version: "3",
     },
     {
-      predicateType: "rea.process-comparison",
+      predicateType: "binsight.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_id: left.evidence_id,
@@ -126,12 +126,12 @@ const multiSourceProcessComparison = (
   createEvidence(
     undefined,
     {
-      id: "rea-process",
-      name: "REA deterministic process harness",
+      id: "binsight-process",
+      name: "BinSight deterministic process harness",
       version: "3",
     },
     {
-      predicateType: "rea.process-comparison",
+      predicateType: "binsight.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_ids: left.map(({ evidence_id: id }) => id),
@@ -196,12 +196,12 @@ const artifactComparison = (
   createEvidence(
     undefined,
     {
-      id: "rea-artifact-comparison",
-      name: "REA artifact comparison",
+      id: "binsight-artifact-comparison",
+      name: "BinSight artifact comparison",
       version: "1",
     },
     {
-      predicateType: "rea.artifact-comparison",
+      predicateType: "binsight.artifact-comparison",
       operation: "compare_artifacts",
       parameters: {
         left_evidence_ids: [left.evidence_id],
@@ -525,7 +525,7 @@ describe("reconstruction verification integrity", () => {
         undefined,
         { id: "fixture", name: "Fixture", version: "1" },
         {
-          predicateType: "rea.residual-unknown-mutation",
+          predicateType: "binsight.residual-unknown-mutation",
           operation: "record_unknown",
           parameters: { index },
           result: { action: "record" },

@@ -37,7 +37,7 @@ const inspect = async (
 
 describe("PE resource provider budget reporting", () => {
   it("reports an input byte budget as a file-size bound", async () => {
-    const root = await createTestTempDirectory("rea-pe-input-budget-");
+    const root = await createTestTempDirectory("binsight-pe-input-budget-");
     const path = join(root, "resource.exe");
     await writeFile(path, peResourceFixture().bytes);
     const result = await inspect(path, { max_file_bytes: 64 });
@@ -57,7 +57,7 @@ describe("PE resource provider budget reporting", () => {
   });
 
   it("reports an entry budget as a capacity bound", async () => {
-    const root = await createTestTempDirectory("rea-pe-entry-budget-");
+    const root = await createTestTempDirectory("binsight-pe-entry-budget-");
     const path = join(root, "resource.exe");
     await writeFile(path, peResourceFixture().bytes);
     const result = await inspect(path, { max_entries: 1 });
@@ -71,7 +71,7 @@ describe("PE resource provider budget reporting", () => {
   });
 
   it("reports a file-size budget without memory remediation advice", async () => {
-    const root = await createTestTempDirectory("rea-pe-budget-advice-");
+    const root = await createTestTempDirectory("binsight-pe-budget-advice-");
     const path = join(root, "resource.exe");
     await writeFile(path, peResourceFixture().bytes);
     const result = await inspect(path, { max_file_bytes: 64 });
@@ -88,7 +88,7 @@ describe("PE resource provider budget reporting", () => {
   });
 
   it("keeps an entry budget refusal non-retryable with its own advice", async () => {
-    const root = await createTestTempDirectory("rea-pe-entry-advice-");
+    const root = await createTestTempDirectory("binsight-pe-entry-advice-");
     const path = join(root, "resource.exe");
     await writeFile(path, peResourceFixture().bytes);
     const result = await inspect(path, { max_entries: 1 });

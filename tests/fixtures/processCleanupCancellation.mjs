@@ -8,8 +8,8 @@ fs.promises.rm = async function (path, ...args) {
   const name = basename(String(path));
   if (
     observed ||
-    !name.startsWith("rea-process-") ||
-    name.startsWith("rea-process-token-")
+    !name.startsWith("binsight-process-") ||
+    name.startsWith("binsight-process-token-")
   )
     return remove.call(this, path, ...args);
   observed = true;

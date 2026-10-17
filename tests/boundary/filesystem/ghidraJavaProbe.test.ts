@@ -44,7 +44,7 @@ it.each([
 ])(
   "preserves the reported Unicode Java home and classifies JDK $major (full JDK: $fullJdk)",
   async ({ major, fullJdk, vmName }) => {
-    const root = await createTestTempDirectory("rea-java-probe-");
+    const root = await createTestTempDirectory("binsight-java-probe-");
     const configuredHome = join(root, "selected-jdk");
     const reportedHome = join(root, "Réa逆向", `JDK ${String(major)}`);
     const installDir = join(root, "ghidra");
@@ -125,7 +125,7 @@ it.each([
     shown: 'bitness unknown (sun.arch.data.model = "9007199254740993")',
   },
 ])("keeps $label Java bitness unresolved", async ({ property, shown }) => {
-  const root = await createTestTempDirectory("rea-java-bitness-");
+  const root = await createTestTempDirectory("binsight-java-bitness-");
   const configuredHome = join(root, "selected-jdk");
   const reportedHome = join(root, "reported-jdk");
   const installDir = join(root, "ghidra");
@@ -170,7 +170,7 @@ it.each([
 });
 
 it("keeps a known 32-bit Java report classified as unsupported", async () => {
-  const root = await createTestTempDirectory("rea-java-bitness-known-");
+  const root = await createTestTempDirectory("binsight-java-bitness-known-");
   const configuredHome = join(root, "selected-jdk");
   const reportedHome = join(root, "reported-jdk");
   const installDir = join(root, "ghidra");
@@ -211,7 +211,7 @@ it("keeps a known 32-bit Java report classified as unsupported", async () => {
 });
 
 it("bounds the Java version probe and reports an over-budget probe as a failed Java check", async () => {
-  const root = await createTestTempDirectory("rea-java-probe-bound-");
+  const root = await createTestTempDirectory("binsight-java-probe-bound-");
   const configuredHome = join(root, "selected-jdk");
   const installDir = join(root, "ghidra");
   await mkdir(join(installDir, "Ghidra"), { recursive: true });

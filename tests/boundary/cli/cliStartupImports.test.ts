@@ -162,7 +162,7 @@ const evaluate = (source: string): readonly string[] => [
 describe("CLI startup imports", () => {
   it("detects each deferred package when its command code loads", async () => {
     const missingBrowser = join(
-      await createTestTempDirectory("rea-startup-browser-"),
+      await createTestTempDirectory("binsight-startup-browser-"),
       "missing-browser",
     );
     const scenario = {
@@ -176,7 +176,7 @@ describe("CLI startup imports", () => {
         ),
       ),
     ).resolves.toContain("playwright-core");
-    const source = await createTestTempDirectory("rea-startup-imports-");
+    const source = await createTestTempDirectory("binsight-startup-imports-");
     await mkdir(join(source, ".git"));
     await expect(
       resolvedPackages(
@@ -194,7 +194,7 @@ describe("CLI startup imports", () => {
   });
 
   it("does not load native provider composition for JavaScript application analysis", async () => {
-    const source = await createTestTempDirectory("rea-cli-js-startup-");
+    const source = await createTestTempDirectory("binsight-cli-js-startup-");
     await mkdir(join(source, "src"));
     await writeFile(
       join(source, "package.json"),
@@ -247,7 +247,10 @@ describe("MCP startup imports", () => {
     transport.stderr?.on("data", (chunk: Buffer) => {
       stderr += chunk.toString("utf8");
     });
-    const client = new Client({ name: "rea-startup-imports", version: "1" });
+    const client = new Client({
+      name: "binsight-startup-imports",
+      version: "1",
+    });
     try {
       await client.connect(transport);
       const { tools } = await client.listTools();

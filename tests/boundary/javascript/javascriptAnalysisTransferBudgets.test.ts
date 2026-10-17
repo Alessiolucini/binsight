@@ -23,7 +23,7 @@ it("allows larger streamed transfers only with corresponding parent capacity", (
 });
 
 it("enforces the offered complete-file byte budget while preserving authenticated round trips", async () => {
-  const root = await createTestTempDirectory("rea-js-transfer-budget-");
+  const root = await createTestTempDirectory("binsight-js-transfer-budget-");
   const text = "export function add(value) { return value + 1; }";
   const file: JavaScriptArtifactFile = {
     path: "app.mjs",

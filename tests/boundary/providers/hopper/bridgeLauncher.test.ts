@@ -59,17 +59,17 @@ const options = (launcherPath: string): HopperApplicationLauncherOptions => ({
   targetPath: "/target",
   targetKind: "executable",
   loaderArgs: [],
-  bridgeScriptPath: "/rea/hopper_bridge.py",
+  bridgeScriptPath: "/binsight/hopper_bridge.py",
   launchMode: "verified_linux_demo",
-  demoHelperPath: "/rea/hopper-demo-x11.py",
+  demoHelperPath: "/binsight/hopper-demo-x11.py",
 });
 
 it("retains cancelled verification cleanup through client shutdown and retries it", async () => {
-  const directory = await createTestTempDirectory("rea-publisher-cancel-");
+  const directory = await createTestTempDirectory("binsight-publisher-cancel-");
   const targetPath = join(directory, "target");
   await writeFile(targetPath, "source-owned target");
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-publisher-pending-",
+    prefix: "binsight-publisher-pending-",
   });
   const resources = new ArtifactResourceScope();
   let allowCleanup = false;
@@ -164,7 +164,7 @@ describe("Hopper bridge launcher selection", () => {
         targetPath: "/target",
         targetKind: "executable",
         loaderArgs: [],
-        bridgeScriptPath: "/rea/hopper_bridge.py",
+        bridgeScriptPath: "/binsight/hopper_bridge.py",
         launchMode: "native",
       }),
     ).toBe(false);
@@ -174,8 +174,8 @@ describe("Hopper bridge launcher selection", () => {
     const launch = linuxDemoLaunch(
       options("/opt/hopper/bin/Hopper"),
       {
-        directory: "/tmp/rea-fixture",
-        socketPath: "/tmp/rea-fixture/bridge.sock",
+        directory: "/tmp/binsight-fixture",
+        socketPath: "/tmp/binsight-fixture/bridge.sock",
         token: "not-forwarded",
         runId: "fixture-run",
       },
@@ -194,7 +194,7 @@ describe("Hopper bridge launcher selection", () => {
         "--propagation",
         "private",
         "/usr/bin/python3",
-        "/rea/hopper-demo-x11.py",
+        "/binsight/hopper-demo-x11.py",
         "--owner-stdin",
         "--strategy",
         "user-mount-namespace",
@@ -204,7 +204,7 @@ describe("Hopper bridge launcher selection", () => {
         "--expected-launcher-sha256",
         verifiedSha256,
         "--socket",
-        "/tmp/rea-fixture/bridge.sock",
+        "/tmp/binsight-fixture/bridge.sock",
         "--",
         "/opt/hopper/bin/Hopper",
         "--analysis",
@@ -219,8 +219,8 @@ describe("Hopper bridge launcher selection", () => {
       linuxDemoLaunch(
         options("/opt/hopper/bin/Hopper"),
         {
-          directory: "/tmp/rea-fixture",
-          socketPath: "/tmp/rea-fixture/bridge.sock",
+          directory: "/tmp/binsight-fixture",
+          socketPath: "/tmp/binsight-fixture/bridge.sock",
           token: "not-forwarded",
           runId: "fixture-run",
         },
@@ -231,7 +231,7 @@ describe("Hopper bridge launcher selection", () => {
     ).toMatchObject({
       command: "/usr/bin/python3",
       args: [
-        "/rea/hopper-demo-x11.py",
+        "/binsight/hopper-demo-x11.py",
         "--owner-stdin",
         "--strategy",
         "direct",
@@ -240,7 +240,7 @@ describe("Hopper bridge launcher selection", () => {
         "--expected-launcher-sha256",
         verifiedSha256,
         "--socket",
-        "/tmp/rea-fixture/bridge.sock",
+        "/tmp/binsight-fixture/bridge.sock",
         "--",
         "/opt/hopper/bin/Hopper",
       ],
@@ -248,7 +248,7 @@ describe("Hopper bridge launcher selection", () => {
   });
 
   it("rejects launcher bytes changed since publisher verification before executing them", async () => {
-    const directory = await createTestTempDirectory("rea-hopper-wrapper-");
+    const directory = await createTestTempDirectory("binsight-hopper-wrapper-");
     const wrapper = join(directory, "hopper-wrapper");
     const marker = join(directory, "executed");
     try {
@@ -284,7 +284,9 @@ describe("Hopper bridge launcher selection", () => {
 });
 
 it("launches Hopper helpers with the caller-selected environment without restoring ambient values", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-selected-env-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-selected-env-",
+  );
   const targetPath = join(directory, "target");
   await writeFile(targetPath, "fixture target");
   const launcher = new HopperApplicationLauncher({
@@ -297,7 +299,7 @@ it("launches Hopper helpers with the caller-selected environment without restori
       "process.stdout.write(JSON.stringify({ selected: process.env.REA_SELECTED_VALUE ?? null, home: process.env.HOME ?? null }))",
       "--",
     ],
-    bridgeScriptPath: "/rea/unused-bridge.py",
+    bridgeScriptPath: "/binsight/unused-bridge.py",
     launchMode: "native",
   });
   const launched = await launcher.launch({
@@ -326,7 +328,9 @@ it("launches Hopper helpers with the caller-selected environment without restori
 it.skipIf(process.platform !== "linux")(
   "gives the demo helper a live owner stream through Node's actual stdio transport",
   async () => {
-    const directory = await createTestTempDirectory("rea-hopper-owner-stdio-");
+    const directory = await createTestTempDirectory(
+      "binsight-hopper-owner-stdio-",
+    );
     const launcher = new HopperApplicationLauncher(
       {
         ...options(process.execPath),
@@ -371,7 +375,9 @@ it.skipIf(process.platform !== "linux")(
 it.skipIf(process.platform !== "linux")(
   "preserves a publisher rejection through the public error without inventing a helper exit",
   async () => {
-    const directory = await createTestTempDirectory("rea-publisher-rejection-");
+    const directory = await createTestTempDirectory(
+      "binsight-publisher-rejection-",
+    );
     const targetPath = join(directory, "target");
     await writeFile(targetPath, "fixture target");
     const rejected = new HopperReleaseError(

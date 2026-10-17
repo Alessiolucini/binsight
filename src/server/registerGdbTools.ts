@@ -21,7 +21,7 @@ export type GdbToolManager = Pick<
   "start" | "execute" | "status" | "close" | "retryCleanupFailures"
 >;
 
-/** Register persistent GDB session operations on the existing REA MCP server. */
+/** Register persistent GDB session operations on the existing BinSight MCP server. */
 export const registerGdbTools = (
   server: McpServer,
   manager: GdbToolManager,

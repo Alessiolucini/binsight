@@ -30,7 +30,7 @@ export const createJadxProtocolFixture = async (
   inventory?: { readonly classCount?: number },
   settings: Readonly<Record<string, string>> = {},
 ) => {
-  const root = await createTestTempDirectory("rea-android-boundary-");
+  const root = await createTestTempDirectory("binsight-android-boundary-");
   const apk = join(root, "fixture.apk");
   const jar = join(root, "fixture.jar");
   const javaHome = join(root, "jdk");

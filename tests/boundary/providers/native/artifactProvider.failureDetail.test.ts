@@ -16,7 +16,7 @@ import { ArtifactOperationError } from "../../../../src/domain/artifactOperation
 import { projectAnalysisError } from "../../../../src/domain/analysisErrorProjection.js";
 
 it("keeps logical names that differ only in case and records the limitation", async () => {
-  const root = await createTestTempDirectory("rea-artifact-detail-");
+  const root = await createTestTempDirectory("binsight-artifact-detail-");
   const path = join(root, "fixture.zip");
   await writeOrderedZip(path, ["Main.js", "main.js"]);
   const target = await parseBinaryTarget(path);
@@ -42,7 +42,7 @@ it("keeps logical names that differ only in case and records the limitation", as
 });
 
 it("keeps literal backslash ZIP names distinct from slash paths", async () => {
-  const root = await createTestTempDirectory("rea-artifact-detail-");
+  const root = await createTestTempDirectory("binsight-artifact-detail-");
   const path = join(root, "fixture.zip");
   await writeOrderedZip(path, ["a\\b.js", "a/b.js"]);
   const target = await parseBinaryTarget(path);
@@ -64,7 +64,7 @@ it("keeps literal backslash ZIP names distinct from slash paths", async () => {
 });
 
 it("reports an unsafe path as a hostile artifact path", async () => {
-  const root = await createTestTempDirectory("rea-artifact-detail-");
+  const root = await createTestTempDirectory("binsight-artifact-detail-");
   const path = join(root, "fixture.zip");
   await writeOrderedZip(path, ["../outside.js"]);
   const target = await parseBinaryTarget(path);

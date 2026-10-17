@@ -18,7 +18,7 @@ export const parseLogLevel = (
   const parsed = logLevelSchema.safeParse(value);
   if (parsed.success) return ok(parsed.data);
   return err(
-    new ConfigurationError("Invalid REA environment configuration", {
+    new ConfigurationError("Invalid BinSight environment configuration", {
       cause: parsed.error,
       settings: parsed.error.issues.map(({ message }) => ({
         setting: "REA_LOG_LEVEL",
@@ -33,7 +33,7 @@ export const createLogger = (mode: "mcp" | "cli", level: LogLevel): Logger =>
   pino(
     {
       level,
-      base: { application: "rea", mode },
+      base: { application: "binsight", mode },
     },
     pino.destination({ dest: 2, sync: false }),
   );

@@ -13,7 +13,7 @@ describe("artifact directory diagnostics", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "preserves the inaccessible member path and errno through provider projection",
     async () => {
-      const root = await createTestTempDirectory("rea-directory-eacces-");
+      const root = await createTestTempDirectory("binsight-directory-eacces-");
       const appPath = join(root, "Denied.app");
       const contentsPath = join(appPath, "Contents");
       const executablePath = join(contentsPath, "MacOS", "Fixture");

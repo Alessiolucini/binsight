@@ -17,7 +17,7 @@ import { sqliteDatabaseFailure } from "./SqliteDatabaseFailures.js";
 it("reports filesystem sizes above the safe-integer range exactly before opening files", async () => {
   const databaseBytes = BigInt(Number.MAX_SAFE_INTEGER) + 1n;
   const walBytes = 17n;
-  const workspace = await mkdtemp(join(tmpdir(), "rea-sqlite-budget-"));
+  const workspace = await mkdtemp(join(tmpdir(), "binsight-sqlite-budget-"));
   const databasePath = join(workspace, "selected.db");
   const walPath = `${databasePath}-wal`;
   const journalPath = `${databasePath}-journal`;
@@ -108,7 +108,9 @@ it.each([
 ])(
   "preserves $label when a late read-limit failure becomes changed evidence",
   async ({ retainCleanup }) => {
-    const workspace = await mkdtemp(join(tmpdir(), "rea-sqlite-read-cleanup-"));
+    const workspace = await mkdtemp(
+      join(tmpdir(), "binsight-sqlite-read-cleanup-"),
+    );
     const databasePath = join(workspace, "selected.db");
     await writeFile(databasePath, "tiny fixture");
     const stat = await lstat(databasePath, { bigint: true });

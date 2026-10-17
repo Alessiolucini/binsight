@@ -40,7 +40,7 @@ describe("CLI selected environment", () => {
     const cli = createCli(environment);
     environment.REA_ANALYSIS_PROVIDER = "changed-provider";
     environment.HOPPER_LAUNCHER_PATH = "/changed/hopper";
-    const root = await createTestTempDirectory("rea-cli-selected-env-");
+    const root = await createTestTempDirectory("binsight-cli-selected-env-");
     const target = join(root, "fixture.hop");
     await writeFile(target, "fixture");
 
@@ -77,7 +77,9 @@ describe("CLI selected environment", () => {
       "REA_AMBIENT_CAPTURE_SENTINEL",
       "ambient-value-must-not-be-captured",
     );
-    const root = await createTestTempDirectory("rea-cli-isolated-artifact-");
+    const root = await createTestTempDirectory(
+      "binsight-cli-isolated-artifact-",
+    );
     const target = join(root, "empty.zip");
     await writeFile(
       target,

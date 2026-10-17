@@ -70,7 +70,7 @@ describe("Qwen Code configuration paths", () => {
 
 describe("Qwen Code client lifecycle", () => {
   const qwenClient = async () => {
-    const home = await createTestTempDirectory("rea-qwen-");
+    const home = await createTestTempDirectory("binsight-qwen-");
     const client = qwenPath(home, process.platform, {});
     if (client?.markerPath === undefined)
       throw new Error("missing Qwen Code client");
@@ -78,7 +78,7 @@ describe("Qwen Code client lifecycle", () => {
     return { home, client };
   };
 
-  it("registers rea in mcpServers while preserving unrelated settings and comments", async () => {
+  it("registers binsight in mcpServers while preserving unrelated settings and comments", async () => {
     const { home, client } = await qwenClient();
     await writeFile(
       client.configPath,
@@ -98,7 +98,7 @@ describe("Qwen Code client lifecycle", () => {
       model: { name: "qwen3-coder-plus" },
       mcpServers: {
         other: { command: "other-server" },
-        rea: { command: "npx", args: command.slice(1) },
+        binsight: { command: "npx", args: command.slice(1) },
       },
     });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -133,7 +133,7 @@ describe("Qwen Code profile setup", () => {
   it.each([false, true])(
     "installs and removes the shared skill with a custom home: %s",
     async (customHome) => {
-      const home = await createTestTempDirectory("rea-qwen-profile-");
+      const home = await createTestTempDirectory("binsight-qwen-profile-");
       const profile = join(home, customHome ? "qwen-profile" : ".qwen");
       const environment = {
         HOME: home,

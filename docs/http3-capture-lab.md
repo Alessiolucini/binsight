@@ -1,6 +1,6 @@
 # Verify real HTTP/3 MITM captures
 
-This optional Linux laboratory checks native mitmproxy captures through REA's
+This optional Linux laboratory checks native mitmproxy captures through BinSight's
 public CLI and MCP. It changes no runtime contracts or adapters and establishes
 only the specific producer, mode and clients exercised here.
 
@@ -30,9 +30,9 @@ SSH forwarding bound to host loopback; keep host directories unmounted. Install
 and build dependencies inside the guest, then remove its default route before
 generating traffic. Host trust, routes and installed packages stay unchanged.
 
-Record the image digest, REA source revision and these dependency versions:
+Record the image digest, BinSight source revision and these dependency versions:
 
-- REA's `.nvmrc`, `package.json#packageManager` and locked npm dependencies.
+- BinSight's `.nvmrc`, `package.json#packageManager` and locked npm dependencies.
 - Official Linux x86_64 mitmproxy **12.2.3** standalone archive. SHA-256:
   `2e95286b618fa6fd33e5e62a78c2e5112571d85f42ec2bac29b97ee242bdb5c5`.
 - A private Python virtual environment using the complete pinned graph in
@@ -44,7 +44,7 @@ The verified guest used Python 3.14.7, cURL 8.22.0, ngtcp2 1.25.0 and nghttp3
 `/etc/hosts` before adding `127.0.0.1 lab.test`. Reserve guest TCP/UDP loopback
 ports 18443 and 19443. These changes belong only to the disposable guest.
 
-From the guest REA checkout, use its pinned Node/npm toolchain:
+From the guest BinSight checkout, use its pinned Node/npm toolchain:
 
 ```sh
 npm ci
@@ -68,7 +68,7 @@ tar -xzf /absolute/lab/mitmproxy.tar.gz -C /absolute/lab/tools
 /absolute/lab/tools/mitmdump --version
 ```
 
-Pin the REA revision with `git rev-parse HEAD` or archive SHA-256. Build using
+Pin the BinSight revision with `git rev-parse HEAD` or archive SHA-256. Build using
 the exact `.nvmrc` and npm version; do not copy a different checkout's `dist`.
 For stronger offline dependency reproduction, preserve downloaded Python
 archives, their digests and built wheels along with the image and toolchain.
@@ -160,7 +160,7 @@ Empty/absent/incomplete/redacted body semantics, cancellations, resets,
 certificate failures, malformed captures, HAR and qlog are separate increments.
 Local/WireGuard, browsers, QUIC v2, migration, 0-RTT, mTLS, replay, sustained load
 and loss tolerance remain unverified by this profile. Passing it does not
-establish general HTTP/3 support in REA.
+establish general HTTP/3 support in BinSight.
 
 Official references: [mitmproxy protocol support](https://github.com/mitmproxy/mitmproxy/blob/v12.2.3/docs/src/content/concepts/protocols.md),
 [HTTP/3 implementation](https://github.com/mitmproxy/mitmproxy/blob/v12.2.3/mitmproxy/proxy/layers/http/_http3.py),
@@ -169,7 +169,7 @@ Official references: [mitmproxy protocol support](https://github.com/mitmproxy/m
 
 ## Verifier regressions
 
-After building REA, run these inside the same isolated guest:
+After building BinSight, run these inside the same isolated guest:
 
 ```sh
 node --test scripts/lib/http3-verifier-lifecycle.test.mjs scripts/lib/http3-capture-assertions.test.mjs

@@ -20,7 +20,7 @@ export type RizinDebugToolManager = Pick<
   "start" | "execute" | "status" | "close" | "retryCleanupFailures"
 >;
 
-/** Register persistent Rizin debugger operations on the existing REA MCP server. */
+/** Register persistent Rizin debugger operations on the existing BinSight MCP server. */
 export const registerRizinDebugTools = (
   server: McpServer,
   manager: RizinDebugToolManager,

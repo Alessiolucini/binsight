@@ -54,7 +54,7 @@ const createClient = (tracer: NativeCallTracer) =>
 
 const runtimeRoot = (error: ProviderCleanupError): string => {
   const root = error.cleanupResources.find((resource) =>
-    resource.startsWith(`${tmpdir()}/rea-lldb-`),
+    resource.startsWith(`${tmpdir()}/binsight-lldb-`),
   );
   if (root === undefined) throw new Error("Expected retained runtime root");
   return root;

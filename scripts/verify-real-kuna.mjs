@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Real Kuna provider lane. Requires a caller-supplied kuna (REA_KUNA_COMMAND)
-// and a host C compiler; REA installs neither. The default run builds a
+// and a host C compiler; BinSight installs neither. The default run builds a
 // source-owned fixture, with symbols and stripped, and verifies the public MCP
 // workflow: cold single-function pseudocode, the project export, warm reuse
 // from a fresh server, and cleanup. `--targets DIR --functions a,b` adds
@@ -77,7 +77,7 @@ const fileCloseResources = {
     fileCloseScope.retain({ kind: "file-handle", resource, handle: owner }),
   run: (operation) => fileCloseScope.run(operation),
 };
-const workspace = await mkdtemp(join(tmpdir(), "rea-kuna-lane-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-kuna-lane-"));
 const cacheRoot = join(workspace, "cache");
 // A server retains its workspace until both provider and transport cleanup
 // have positively completed, even if later lineage observation is empty.
@@ -89,7 +89,7 @@ let kunaVersion;
 const FIXTURE_SOURCE = String.raw`
 #include <stdio.h>
 #include <stdlib.h>
-static const char rea_kuna_utf8[] __attribute__((used)) = "＿φ( °-°)/ REA unicode marker";
+static const char rea_kuna_utf8[] __attribute__((used)) = "＿φ( °-°)/ BinSight unicode marker";
 /* The leading NUL unit ends any UTF-16 run that bytes before this array would
    start: the UTF-8 marker's last byte and NUL decode as the unit 'r', so on
    layouts where it precedes this array Kuna reports "rREA wide marker". */
@@ -186,7 +186,7 @@ const openServer = async (provider) => {
     },
     stderr: "ignore",
   });
-  const client = new Client({ name: "rea-real-kuna", version: "1" });
+  const client = new Client({ name: "binsight-real-kuna", version: "1" });
   let peakKiB = 0;
   const cpu = new Map();
   const sampleOnce = async () => {
@@ -526,7 +526,7 @@ try {
   await mkdir(fixtureDir);
   const source = join(fixtureDir, "fixture.c");
   await writeFile(source, FIXTURE_SOURCE);
-  const built = join(fixtureDir, "rea-kuna-fixture");
+  const built = join(fixtureDir, "binsight-kuna-fixture");
   await exec(process.env.REA_CC ?? "cc", ["-O2", "-o", built, source]);
   const stripped = `${built}.stripped`;
   await writeFile(stripped, await readFile(built));
@@ -543,8 +543,8 @@ try {
     results.push({
       binary: binary.slice(workspace.length + 1),
       kuna: await verifyKuna(binary, [...fixtureFunctions], fixtureMain, [
-        "＿φ( °-°)/ REA unicode marker",
-        "REA wide marker",
+        "＿φ( °-°)/ BinSight unicode marker",
+        "BinSight wide marker",
       ]),
     });
 

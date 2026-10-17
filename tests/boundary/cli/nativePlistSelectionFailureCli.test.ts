@@ -14,7 +14,10 @@ const environment = {
 
 /** An app bundle whose Contents holds a directory and a non-plist file. */
 const fixtureApp = async () => {
-  const app = join(await createTestTempDirectory("rea-plist-fail-"), "A.app");
+  const app = join(
+    await createTestTempDirectory("binsight-plist-fail-"),
+    "A.app",
+  );
   const contents = join(app, "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
   await mkdir(join(contents, "Folder.plist"));
@@ -103,7 +106,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "reports a missing default Info.plist as unavailable for the target",
       async ({ cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-bare-");
+        const directory = await createTestTempDirectory("binsight-plist-bare-");
         const program = join(directory, "tool");
         await writeFile(program, thinMach(0xfeedfacf, 0x100000c));
         const result = await cli.run({

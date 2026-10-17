@@ -107,7 +107,7 @@ const providerWith = async (
     beforeClose?: () => void;
   } = {},
 ) => {
-  const root = await createTestTempDirectory("rea-pcap-");
+  const root = await createTestTempDirectory("binsight-pcap-");
   const { tshark, capinfos } = await writeStubTools(root, options);
   const provider = new PcapProvider({
     environment: { REA_TSHARK_COMMAND: tshark, REA_CAPINFOS_COMMAND: capinfos },
@@ -358,7 +358,7 @@ it("cancels before spawning anything", async () => {
 });
 
 it("reports relative configuration and missing capinfos as capability gaps", async () => {
-  const root = await createTestTempDirectory("rea-pcap-config-");
+  const root = await createTestTempDirectory("binsight-pcap-config-");
   const { tshark } = await writeStubTools(root);
   for (const environment of [
     { REA_TSHARK_COMMAND: "relative/tshark" },
@@ -384,7 +384,7 @@ it("reports relative configuration and missing capinfos as capability gaps", asy
 });
 
 it("names the prlimit selection when the Linux limiter is unusable", async () => {
-  const root = await createTestTempDirectory("rea-pcap-prlimit-");
+  const root = await createTestTempDirectory("binsight-pcap-prlimit-");
   const tools = await writeStubTools(root);
   const provider = new PcapProvider({
     environment: {
@@ -423,7 +423,7 @@ const versionProbe =
   "if (process.argv[2] === '--version') { console.log((process.argv[1].includes('capinfos') ? 'Capinfos' : 'TShark') + ' (Wireshark) 4.6.6-test'); process.exit(0); }";
 
 it("refuses observations whose owned snapshot changed during dissection", async () => {
-  const root = await createTestTempDirectory("rea-pcap-mutated-");
+  const root = await createTestTempDirectory("binsight-pcap-mutated-");
   const { capinfos } = await writeStubTools(root);
   const path = await captureFixture(root);
   const before = await readFile(path);
@@ -452,7 +452,7 @@ console.log(${JSON.stringify(TSHARK_JSON)});`,
 });
 
 it("binds both tools to the snapshot when the original capture changes", async () => {
-  const root = await createTestTempDirectory("rea-pcap-identity-");
+  const root = await createTestTempDirectory("binsight-pcap-identity-");
   const path = join(root, "caller capture.pcap");
   await writeFile(path, "192.0.2.1");
   const capinfos = await nodeTool(
@@ -494,7 +494,7 @@ console.log(JSON.stringify([{_source:{layers:{'frame.number':['1'],'frame.protoc
 it.each(["probe", "capinfos", "tshark"] as const)(
   "preserves in-flight %s cancellation and cleans up",
   async (phase) => {
-    const root = await createTestTempDirectory("rea-pcap-cancel-");
+    const root = await createTestTempDirectory("binsight-pcap-cancel-");
     const marker = join(root, "ready");
     const slow = await nodeTool(
       root,

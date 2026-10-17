@@ -12,7 +12,9 @@ export const writeJavaScriptSourceSelectionFixture = async (root: string) => {
     ],
     [
       "package.json",
-      Buffer.from('{"name":"rea-selected-source-fixture","main":"main.mjs"}\n'),
+      Buffer.from(
+        '{"name":"binsight-selected-source-fixture","main":"main.mjs"}\n',
+      ),
     ],
     ["vendor.js", Buffer.from("export const unrelated = ;\n")],
     ["invalid.mjs", Buffer.from([0xff, 0xfe, 0x80])],

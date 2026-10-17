@@ -76,8 +76,9 @@ describe("doctor", () => {
       ),
     ).toEqual({
       node: `Install ${SUPPORTED_NODE_VERSION_PROSE}.`,
-      host: "REA supports macOS 12+, Linux distributions with a recognized apt, dnf, or pacman package family, and the experimental Windows x64 Ghidra P0 boundary; automated Hopper setup additionally requires Ubuntu 24.04+, Fedora 41+, Nobara 44+, 64-bit Arch Linux, CachyOS, or Omarchy.",
-      hopper: "Run rea setup to install Hopper, or set HOPPER_LAUNCHER_PATH.",
+      host: "BinSight supports macOS 12+, Linux distributions with a recognized apt, dnf, or pacman package family, and the experimental Windows x64 Ghidra P0 boundary; automated Hopper setup additionally requires Ubuntu 24.04+, Fedora 41+, Nobara 44+, 64-bit Arch Linux, CachyOS, or Omarchy.",
+      hopper:
+        "Run binsight setup to install Hopper, or set HOPPER_LAUNCHER_PATH.",
       target: "Supply a readable local app or program path.",
     });
   });
@@ -211,7 +212,10 @@ describe("doctor installation identity", () => {
       undefined,
       host({
         installationPaths: () =>
-          Promise.resolve(["/usr/local/bin/rea", "/home/user/bin/rea"]),
+          Promise.resolve([
+            "/usr/local/bin/binsight",
+            "/home/user/bin/binsight",
+          ]),
         installedSkillIdentity: () =>
           Promise.resolve({
             version: "10",
@@ -227,7 +231,8 @@ describe("doctor installation identity", () => {
       skill: {
         installed_version: "10",
         state: "stale",
-        remediation: "Run rea setup to update the installed REA skill.",
+        remediation:
+          "Run binsight setup to update the installed BinSight skill.",
       },
     });
   });
@@ -240,14 +245,14 @@ describe("doctor installation identity", () => {
     expect(result.healthy).toBe(false);
     expect(result.identity?.skill).toMatchObject({
       state: "missing",
-      remediation: "Run rea setup to update the installed REA skill.",
+      remediation: "Run binsight setup to update the installed BinSight skill.",
     });
     expect(result.checks).toContainEqual({
       name: "skill:identity",
       ok: false,
       classification: "config_drift",
-      detail: "Installed REA skill identity is missing.",
-      remediation: "Run rea setup to update the installed REA skill.",
+      detail: "Installed BinSight skill identity is missing.",
+      remediation: "Run binsight setup to update the installed BinSight skill.",
     });
   });
   it("reports stale client registration paths without claiming live state", async () => {
@@ -259,10 +264,10 @@ describe("doctor installation identity", () => {
             {
               client: "codex",
               config_path: "/home/user/.codex/config.toml",
-              command: ["/old/rea", "mcp"],
+              command: ["/old/binsight", "mcp"],
               state: "stale",
               remediation:
-                "Run rea setup to refresh this registration, then restart the client.",
+                "Run binsight setup to refresh this registration, then restart the client.",
             },
           ]),
       }),
@@ -324,16 +329,16 @@ describe("doctor scoped readiness", () => {
       {
         client: "codex",
         config_path: "/home/user/.codex/config.toml",
-        command: ["/current/rea", "mcp"],
+        command: ["/current/binsight", "mcp"],
         state: "aligned",
         remediation: null,
       },
       {
         client: "cursor",
         config_path: "/home/user/.cursor/mcp.json",
-        command: ["/old/rea", "mcp"],
+        command: ["/old/binsight", "mcp"],
         state: "unknown",
-        remediation: "Run rea setup to refresh this registration.",
+        remediation: "Run binsight setup to refresh this registration.",
       },
     ];
     const scoped = await runDoctor(
@@ -375,7 +380,7 @@ describe("doctor scoped readiness", () => {
             {
               client: "kimi",
               config_path: "/home/user/.kimi-code/mcp.json",
-              command: ["/current/rea", "mcp"],
+              command: ["/current/binsight", "mcp"],
               state: "aligned",
               remediation: null,
               advisory: "The configured toolTimeoutMs is shorter than startup.",
@@ -465,7 +470,7 @@ describe("doctor scoped readiness", () => {
             {
               client: "codex",
               config_path: "/home/user/.codex/config.toml",
-              command: ["rea", "mcp"],
+              command: ["binsight", "mcp"],
               state: "aligned",
               remediation: null,
             },
@@ -553,7 +558,7 @@ describe("doctor scoped readiness", () => {
 
 describe("doctor Linux and Hopper discovery", () => {
   it("accepts an officially supported Linux distribution", async () => {
-    const path = "/home/user/.local/share/rea/hopper/bin/Hopper";
+    const path = "/home/user/.local/share/binsight/hopper/bin/Hopper";
     const result = await runDoctor(
       undefined,
       host({

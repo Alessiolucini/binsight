@@ -22,7 +22,7 @@ it.each([
 ])(
   "retains completed facts and prior Evidence after SDK cancellation during $phase, then accepts subsequent work",
   async ({ phase, message, parsedFiles }) => {
-    const root = await createTestTempDirectory("rea-mcp-js-cancellation-");
+    const root = await createTestTempDirectory("binsight-mcp-js-cancellation-");
     await writeFile(join(root, "main.js"), "export const observed = 1;\n");
     await writeFile(join(root, "second.js"), "export const pending = 2;\n");
     const session = createTestBinarySession(() => {

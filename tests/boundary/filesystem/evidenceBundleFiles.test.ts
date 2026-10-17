@@ -45,7 +45,7 @@ it.each([
 ] as const)(
   "cancels a %s bundle read before opening its selected path",
   async (_, read) => {
-    const root = await createTestTempDirectory("rea-bundle-pre-cancel-");
+    const root = await createTestTempDirectory("binsight-bundle-pre-cancel-");
     const controller = new AbortController();
     controller.abort(new Error("cancel before bundle read"));
     expect(
@@ -62,7 +62,7 @@ it.each([
 );
 
 it("preserves the failed-close owner when import is also cancelled", async () => {
-  const root = await createTestTempDirectory("rea-import-cancel-cleanup-");
+  const root = await createTestTempDirectory("binsight-import-cancel-cleanup-");
   const path = join(root, "bundle.json");
   await writeFile(path, JSON.stringify(bundle()));
   const controller = new AbortController();
@@ -94,7 +94,7 @@ it("preserves the failed-close owner when import is also cancelled", async () =>
 
 describe("evidence bundle export cancellation", () => {
   it("does not inspect the path or advance a source cancelled before writing", async () => {
-    const root = await createTestTempDirectory("rea-export-pre-cancel-");
+    const root = await createTestTempDirectory("binsight-export-pre-cancel-");
     const controller = new AbortController();
     controller.abort();
     let advanced = false;
@@ -130,7 +130,7 @@ describe("evidence bundle export cancellation", () => {
   it.each([false, true])(
     "closes a cancelled source and preserves the destination (overwrite: %s)",
     async (overwrite) => {
-      const root = await createTestTempDirectory("rea-export-cancel-");
+      const root = await createTestTempDirectory("binsight-export-cancel-");
       const path = join(root, "bundle.json");
       if (overwrite) await writeFile(path, "original");
       const controller = new AbortController();
@@ -174,7 +174,7 @@ describe("evidence bundle export cancellation", () => {
   );
 
   it("does not publish when cancellation arrives at source exhaustion", async () => {
-    const root = await createTestTempDirectory("rea-export-final-cancel-");
+    const root = await createTestTempDirectory("binsight-export-final-cancel-");
     const path = join(root, "bundle.json");
     await writeFile(path, "original");
     const controller = new AbortController();
@@ -220,7 +220,9 @@ describe("evidence bundle publication", () => {
   it.each([false, true])(
     "never publishes a partial streamed file (overwrite: %s)",
     async (overwrite) => {
-      const root = await createTestTempDirectory("rea-stream-publication-");
+      const root = await createTestTempDirectory(
+        "binsight-stream-publication-",
+      );
       const path = join(root, "bundle.json");
       if (overwrite) await writeFile(path, "original");
       function* brokenParts() {
@@ -237,7 +239,7 @@ describe("evidence bundle publication", () => {
   );
 
   it("counts complete Unicode bytes and publishes a private file", async () => {
-    const root = await createTestTempDirectory("rea-stream-bytes-");
+    const root = await createTestTempDirectory("binsight-stream-bytes-");
     const path = join(root, "bundle.json");
     const parts = ["雪", "😀", "\n"];
     expect(await writeParts(parts, path, false)).toEqual({
@@ -249,7 +251,7 @@ describe("evidence bundle publication", () => {
       expect((await stat(path)).mode & 0o777).toBe(0o600);
   });
   it("allows only one simultaneous export without overwrite approval", async () => {
-    const root = await createTestTempDirectory("rea-evidence-exclusive-");
+    const root = await createTestTempDirectory("binsight-evidence-exclusive-");
     const path = join(root, "bundle.json");
     const candidates = [bundle(), bundle(false)];
     const results = await Promise.all(
@@ -268,7 +270,7 @@ describe("evidence bundle publication", () => {
   });
 
   it("round trips caller-selected paths without configured roots", async () => {
-    const root = await createTestTempDirectory("rea-evidence-dot-child-");
+    const root = await createTestTempDirectory("binsight-evidence-dot-child-");
     const directory = join(root, "..cache");
     await mkdir(directory);
     const path = join(directory, "bundle.json");
@@ -284,7 +286,7 @@ describe("evidence bundle publication", () => {
 });
 
 it("reuses authenticated file snapshots while isolating mutable public reads", async () => {
-  const directory = await createTestTempDirectory("rea-evidence-owned-");
+  const directory = await createTestTempDirectory("binsight-evidence-owned-");
   const path = join(directory, "bundle.json");
   const evidence = createEvidence(
     {
@@ -325,7 +327,7 @@ it("reuses authenticated file snapshots while isolating mutable public reads", a
 
 describe("evidence bundle filesystem adapter", () => {
   it("round trips canonical bytes and requires explicit overwrite", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("binsight-evidence-");
     const path = join(directory, "bundle.json");
     const evidenceBundle = bundle();
     const first = await writeBundle(evidenceBundle, path, false);
@@ -359,7 +361,7 @@ describe("evidence bundle filesystem adapter", () => {
   });
 
   it("reads the caller-selected symlink target and refuses to replace a symlink", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("binsight-evidence-");
     const outside = join(directory, "outside");
     await mkdir(outside);
     const outsidePath = join(outside, "bundle.json");
@@ -377,7 +379,7 @@ describe("evidence bundle filesystem adapter", () => {
   });
 
   it("reports a missing file or output directory with the selected path", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("binsight-evidence-");
     const absent = join(directory, "absent.json");
     const read = await readEvidenceBundle(absent);
     expect(read).toMatchObject({
@@ -405,7 +407,7 @@ describe("evidence bundle filesystem adapter", () => {
   it.each([readEvidenceBundle, readImmutableEvidenceBundle])(
     "rejects malformed and tampered input (%s)",
     async (readBundle) => {
-      const directory = await createTestTempDirectory("rea-evidence-");
+      const directory = await createTestTempDirectory("binsight-evidence-");
       const malformed = join(directory, "malformed.json");
       await writeFile(malformed, "{");
       expect(await readBundle(malformed)).toMatchObject({
@@ -435,7 +437,7 @@ describe("evidence bundle filesystem adapter", () => {
   );
 
   it("names schema mismatches that prevent bundle parsing", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("binsight-evidence-");
     const partial = join(directory, "partial.json");
     await writeFile(partial, JSON.stringify({ evidence_id: "typo" }));
     const rejected = await readEvidenceBundle(partial);
@@ -467,7 +469,7 @@ describe("evidence bundle filesystem adapter", () => {
 
 describe("standalone Evidence bundle inputs", () => {
   it("classifies a record only after authenticating it", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("binsight-evidence-");
     const record = bundle().records[0];
     const single = join(directory, "record.json");
     await writeFile(single, JSON.stringify(record));

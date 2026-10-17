@@ -32,7 +32,7 @@ const fixture = async (
   mode: string,
   javaVmName: string | null = "OpenJDK 64-Bit Server VM",
 ) => {
-  const root = await createTestTempDirectory("rea-ghidra-java-launch-");
+  const root = await createTestTempDirectory("binsight-ghidra-java-launch-");
   const javaHome = join(root, "jdk");
   await mkdir(join(javaHome, "bin"), { recursive: true });
   await writeFile(

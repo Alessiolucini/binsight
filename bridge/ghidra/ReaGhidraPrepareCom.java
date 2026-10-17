@@ -27,6 +27,6 @@ public final class ReaGhidraPrepareCom extends GhidraScript {
         if (!disassemble(entry) || createFunction(entry, "entry") == null) {
             throw new IllegalStateException("DOS COM entry cannot be decoded as a function");
         }
-        currentProgram.getOptions(Program.PROGRAM_INFO).setBoolean("REA DOS COM prepared", true);
+        currentProgram.getOptions(Program.PROGRAM_INFO).setBoolean("BinSight DOS COM prepared", true);
     }
 }

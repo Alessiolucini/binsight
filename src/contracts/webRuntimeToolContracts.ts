@@ -35,7 +35,7 @@ export const WEB_RUNTIME_TOOL_CONTRACTS = [
     name: "inspect_web_event_listeners",
     ...toolContractMetadata("inspect_web_event_listeners"),
     description:
-      "Inspect listeners registered directly on the first main-document CSS match in one selected CDP page. Returns event flags, native callback locations, source ownership and exact script text/digests inline. Does not dispatch events, evaluate JavaScript or invoke handlers. Delegated ancestor/framework listeners and execution history remain unknown. Releases REA's object group and transport, preserving the external page.",
+      "Inspect listeners registered directly on the first main-document CSS match in one selected CDP page. Returns event flags, native callback locations, source ownership and exact script text/digests inline. Does not dispatch events, evaluate JavaScript or invoke handlers. Delegated ancestor/framework listeners and execution history remain unknown. Releases BinSight's object group and transport, preserving the external page.",
     kind: "browser-provider",
     inputSchema: inspectWebEventListenersInputSchema,
     outputSchema: evidenceResultOf(webEventListenersSchema),

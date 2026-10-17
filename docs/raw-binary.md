@@ -1,15 +1,15 @@
 # Headerless raw-binary analysis with Ghidra
 
-REA admits a headerless executable when the caller supplies the CPU family and
+BinSight admits a headerless executable when the caller supplies the CPU family and
 the address where file offset 0 should be mapped. That interpretation is not
 inferred from a `.bin` suffix or from unrecognized bytes.
 
 ## Open and inspect
 
 ```bash
-rea inspect /absolute/path/to/ecu.bin --target-format raw-binary --architecture arm --entry-point 0x8000000 --provider ghidra --json
-rea function /absolute/path/to/ecu.bin 0x8000000 --target-format raw-binary --architecture arm --entry-point 0x8000000 --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/ecu.bin --target-format raw-binary --architecture arm --entry-point 0x8000000 --provider ghidra --json
+binsight inspect /absolute/path/to/ecu.bin --target-format raw-binary --architecture arm --entry-point 0x8000000 --provider ghidra --json
+binsight function /absolute/path/to/ecu.bin 0x8000000 --target-format raw-binary --architecture arm --entry-point 0x8000000 --provider ghidra --json
+binsight inspect-native-load-image /absolute/path/to/ecu.bin --target-format raw-binary --architecture arm --entry-point 0x8000000 --provider ghidra --json
 ```
 
 ```json
@@ -82,8 +82,8 @@ Object ownership, immutable snapshots, and the no-mutation policy still apply.
 ## NMOS 6502
 
 ```bash
-rea function /absolute/path/to/image.bin 0x8001 --target-format raw-binary --architecture 6502 --entry-point 0x8001 --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture 6502 --entry-point 0x8001 --provider ghidra --json
+binsight function /absolute/path/to/image.bin 0x8001 --target-format raw-binary --architecture 6502 --entry-point 0x8001 --provider ghidra --json
+binsight inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture 6502 --entry-point 0x8001 --provider ghidra --json
 ```
 
 Select only headerless NMOS 6502 code with a known entry at file offset 0.
@@ -94,7 +94,7 @@ calling conventions are analysis conventions, not a recovered source ABI.
 
 This lane does not interpret iNES headers, cartridge mappers, bank switching,
 or other console-specific memory layouts. 65C02 and 65816 programs need different
-processor semantics and are not admitted as those variants. REA does not infer
+processor semantics and are not admitted as those variants. BinSight does not infer
 the CPU from the file suffix, guess the reset vector, or emulate the target.
 
 `npm run verify:ghidra:6502` assembles and links the source-owned fixture with
@@ -113,8 +113,8 @@ Windows run.
 ## Motorola 68000
 
 ```bash
-rea function /absolute/path/to/image.bin 0x1000 --target-format raw-binary --architecture m68k --entry-point 0x1000 --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture m68k --entry-point 0x1000 --provider ghidra --json
+binsight function /absolute/path/to/image.bin 0x1000 --target-format raw-binary --architecture m68k --entry-point 0x1000 --provider ghidra --json
+binsight inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture m68k --entry-point 0x1000 --provider ghidra --json
 ```
 
 Select only headerless big-endian 68000-family code with a known, even entry at
@@ -127,7 +127,7 @@ selected language, entry, file digest, and verified source mapping. Register and
 calling conventions are analysis conventions, not a recovered source ABI.
 
 This lane does not interpret Amiga hunks, Atari ST, or other container headers,
-cartridge or console memory maps, or bank switching. REA does not read the
+cartridge or console memory maps, or bank switching. BinSight does not read the
 initial stack pointer and reset vector from the first eight bytes; select the
 entry explicitly. Windows Ghidra P0 does not admit m68k.
 

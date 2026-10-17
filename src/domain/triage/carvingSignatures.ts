@@ -1,5 +1,5 @@
 /**
- * REA-authored magic-byte signature table for embedded-content identification
+ * BinSight-authored magic-byte signature table for embedded-content identification
  * (the `scan_embedded_content` tool). This is pure reference data: each entry
  * names a content family, the fixed byte prefixes that announce it, and the
  * key of the structural validator that confirms the match. The table never

@@ -8,7 +8,7 @@ describe("macOS Hopper setup failure projection", () => {
     expect(setupInstallFailure("publisher_verification_failed")).toEqual({
       status: "failed",
       code: "publisher_verification_failed",
-      remediation: `The mounted Hopper application is not signed by the publisher REA pins (${HOPPER_PUBLISHER.bundleIdentifier}, Apple team ${HOPPER_PUBLISHER.teamIdentifier}); nothing was copied or launched. Install Hopper yourself and set HOPPER_LAUNCHER_PATH to its launcher, then rerun rea setup.`,
+      remediation: `The mounted Hopper application is not signed by the publisher BinSight pins (${HOPPER_PUBLISHER.bundleIdentifier}, Apple team ${HOPPER_PUBLISHER.teamIdentifier}); nothing was copied or launched. Install Hopper yourself and set HOPPER_LAUNCHER_PATH to its launcher, then rerun binsight setup.`,
     });
   });
 
@@ -17,7 +17,7 @@ describe("macOS Hopper setup failure projection", () => {
       status: "failed",
       code: "bundle_invalid",
       remediation:
-        "The mounted package did not contain the expected Hopper application bundle. Retry setup; if it repeats, update REA before installing.",
+        "The mounted package did not contain the expected Hopper application bundle. Retry setup; if it repeats, update BinSight before installing.",
     });
   });
 });
@@ -49,7 +49,7 @@ describe("Linux package-manager setup failure projection", () => {
       status: "failed",
       code: "authorization_or_package_manager_failed",
       remediation:
-        "Allow the system package-manager operation or install the planned Hopper package and Linux runtime dependencies, then rerun rea setup.",
+        "Allow the system package-manager operation or install the planned Hopper package and Linux runtime dependencies, then rerun binsight setup.",
     });
   });
 

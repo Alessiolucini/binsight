@@ -87,7 +87,7 @@ cliTest.for(cases)(
     { archives, hierarchyComplete, document, omittedEdges, unresolvedEdge },
     { cli },
   ) => {
-    const root = await createTestTempDirectory("rea-ib-hierarchy-limits-");
+    const root = await createTestTempDirectory("binsight-ib-hierarchy-limits-");
     const app = join(root, "Fixture.app");
     const contents = join(app, "Contents");
     const resources = join(contents, "Resources");

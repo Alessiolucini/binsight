@@ -34,7 +34,7 @@ import { DirectoryArtifactReader } from "../../../src/artifacts/DirectoryArtifac
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const makeFixture = async () => {
-  const root = await createTestTempDirectory("rea-directory-owner-");
+  const root = await createTestTempDirectory("binsight-directory-owner-");
   const file = join(root, "sample.txt");
   await writeFile(file, "directory content\n");
   return { root, file, reader: new DirectoryArtifactReader(root) };

@@ -1,6 +1,6 @@
 # Firmware analysis
 
-REA accepts **Binwalk 3.1.x** for region inspection and **Unblob 26.6.x** for
+BinSight accepts **Binwalk 3.1.x** for region inspection and **Unblob 26.6.x** for
 explicit extraction. The report parsers are verified with Binwalk 3.1.0 and
 Unblob 26.6.4. Another build on those lines is accepted, the observed version
 is reported, and a limitation records that the parser was not verified against
@@ -9,8 +9,8 @@ No device, root privilege, mount, emulation or execution of extracted programs
 is needed. Arbitrary firmware bytes do not pass native executable admission;
 select a returned ELF separately for supported Ghidra analysis.
 
-On Linux, Binwalk and Unblob run as REA-owned processes and require a
-procps-compatible `ps` on REA's `PATH`; see the shared
+On Linux, Binwalk and Unblob run as BinSight-owned processes and require a
+procps-compatible `ps` on BinSight's `PATH`; see the shared
 [Linux process prerequisite](installation.md#linux-owned-process-prerequisite).
 
 ## Caller-supplied tools
@@ -22,14 +22,14 @@ export REA_BINWALK_COMMAND=/absolute/path/to/binwalk
 export REA_UNBLOB_COMMAND=/absolute/path/to/unblob
 ```
 
-REA does not install these tools, their dependencies or system packages. It
+BinSight does not install these tools, their dependencies or system packages. It
 checks the tool's `--version` banner when executing a request. Binwalk must
 print `binwalk <version>` and Unblob must print the version alone. Inspection and
 extraction have independent prerequisites; one does not require the other.
 Both require util-linux `prlimit`, normally `/usr/bin/prlimit`; override its
 absolute path with `REA_FIRMWARE_PRLIMIT_COMMAND` if needed.
 
-REA retains at most 8 MiB of combined stdout and stderr per command. Exceeding
+BinSight retains at most 8 MiB of combined stdout and stderr per command. Exceeding
 that diagnostic budget stops analysis with an explicit truncated-output error;
 child process limits do not bound parent-side pipe retention. Completed commands
 drain their output streams before recording diagnostics. Failed worker cleanup
@@ -38,7 +38,7 @@ retains the worker and workspace for retry before another request or at shutdown
 Unblob needs the external extractor for the selected format on its inherited
 `PATH`: for example, `debugfs` for ext2/ext3/ext4. Its default Landlock sandbox
 and skip rules stay enabled. Sandbox startup failures remain actionable errors;
-REA does not retry with `--no-sandbox`. Missing extractors reported in a valid
+BinSight does not retry with `--no-sandbox`. Missing extractors reported in a valid
 analysis report retain partial results and dependency names inline.
 
 Upstream sources are preserved unmodified as optional pinned submodules:
@@ -47,15 +47,15 @@ Upstream sources are preserved unmodified as optional pinned submodules:
 git submodule update --init third_party/binwalk third_party/unblob
 ```
 
-Normal REA builds and npm packages do not include or build these sources or
+Normal BinSight builds and npm packages do not include or build these sources or
 engine binaries. See [upstream provenance](https://github.com/morluto/rea/blob/main/third_party/README.md).
 
 ## CLI and MCP
 
 ```sh
-rea inspect-firmware-regions /path/to/firmware.bin
-rea extract-firmware /path/to/firmware.bin /path/to/new-output
-rea extract-firmware /path/to/firmware.bin /path/to/selected-output \
+binsight inspect-firmware-regions /path/to/firmware.bin
+binsight extract-firmware /path/to/firmware.bin /path/to/new-output
+binsight extract-firmware /path/to/firmware.bin /path/to/selected-output \
   --offset 64 --length 4096 --max-depth 3
 ```
 
@@ -95,7 +95,7 @@ build's source revision, so that field remains unknown.
   a valid partition, encryption or runtime behavior.
 - Extraction returns regular file paths, independently verified SHA-256 values,
   producer hashes when available, chunks, diagnostics and task derivations.
-  Unblob's task report is unordered; REA resolves relationships by paths and
+  Unblob's task report is unordered; BinSight resolves relationships by paths and
   blob IDs. Logical references use `$input`, `$output`, or `$output/<relative-path>`
   so a real file named `$input` stays distinct from the original input.
   Chunk offsets belong to the task's input file. Only chunks in the
@@ -122,7 +122,7 @@ build's source revision, so that field remains unknown.
   child rather than repeating the same extraction with unchanged handlers.
   Inspection requires separately configured Binwalk (`REA_BINWALK_COMMAND`);
   without it, the inspection step is unavailable and the region remains unexamined. A listed gap does not
-  mean the target is corrupt or that a retained region is empty; REA installs
+  mean the target is corrupt or that a retained region is empty; BinSight installs
   nothing.
 - The destination must be absent, absolute, with an existing parent. Publication
   uses exclusive, symlink-resistant writes and durable digest readback. Existing

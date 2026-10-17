@@ -169,7 +169,7 @@ export function contributionRecord(raw) {
 /** Keep the full authorship snapshot available without duplicating public thanks. */
 export function contributionSummary(raw) {
   const inventory = releaseInventorySchema.parse(raw);
-  return `Full contribution record: [${inventory.commits.length} commits and ${inventory.pullRequests.length} merged PR${inventory.pullRequests.length === 1 ? "" : "s"}](https://github.com/${inventory.repository}/blob/rea-agents-${inventory.version}/docs/releases/${inventory.version}.contributions.json).\n`;
+  return `Full contribution record: [${inventory.commits.length} commits and ${inventory.pullRequests.length} merged PR${inventory.pullRequests.length === 1 ? "" : "s"}](https://github.com/${inventory.repository}/blob/binsight-${inventory.version}/docs/releases/${inventory.version}.contributions.json).\n`;
 }
 
 export function selectedReleaseNotes(text, version) {

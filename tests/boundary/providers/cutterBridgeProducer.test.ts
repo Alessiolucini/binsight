@@ -13,7 +13,7 @@ import {
 } from "../../../tests/support/process/processFixture.js";
 
 const startPythonBridge = async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-cutter-receipt-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-cutter-receipt-"));
   await chmod(directory, 0o700);
   const processes = createTestProcessRegistry();
   const child = processes.spawn(

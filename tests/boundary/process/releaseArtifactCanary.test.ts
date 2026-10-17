@@ -19,7 +19,7 @@ const execute = promisify(execFile);
 it.skipIf(process.platform === "win32")(
   "fails without declared runtime, then rehearses an installed tarball and rejects catalog drift",
   async () => {
-    const root = await createTestTempDirectory("rea-release-canary-");
+    const root = await createTestTempDirectory("binsight-release-canary-");
     const candidate = join(root, "candidate");
     const controller = join(root, "controller");
     const { version } = z
@@ -44,7 +44,7 @@ it.skipIf(process.platform === "win32")(
     await writeFile(
       join(candidate, "package.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "binsight",
         version,
         type: "module",
         files: ["scripts"],
@@ -66,7 +66,7 @@ if (process.argv[2] === "mcp") {
   process.argv[2] = fileURLToPath(new URL("./reply.json", import.meta.url));
   await import("./replay.mjs");
 } else if (["--help", "--llms"].includes(process.argv[2])) {
-  console.log("REA fixture CLI");
+  console.log("BinSight fixture CLI");
 } else { process.exitCode = 1; }
 `,
     );
@@ -93,7 +93,7 @@ if (process.argv[2] === "mcp") {
     }
     await writeFile(
       join(controller, "package.json"),
-      JSON.stringify({ name: "rea-agents", version, type: "module" }),
+      JSON.stringify({ name: "binsight", version, type: "module" }),
     );
     await symlink(
       resolve("node_modules"),
@@ -120,7 +120,7 @@ if (process.argv[2] === "mcp") {
     );
     const result = JSON.parse((await invoke()).stdout);
     expect(result).toMatchObject({
-      package: "rea-agents",
+      package: "binsight",
       version,
       source: tarball,
       mcpTools: snapshot.tools.tools.length,
@@ -146,7 +146,7 @@ if (process.argv[2] === "mcp") {
     await writeFile(
       join(candidate, "package.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "binsight",
         version: "0.0.0",
         type: "module",
         files: ["scripts"],

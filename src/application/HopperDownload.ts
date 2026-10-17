@@ -22,7 +22,7 @@ export const downloadHopperPackage = async (
   )
     throw new RangeError("Invalid Hopper response byte budget");
   const response = await fetch(url, {
-    headers: { accept: "application/json", "user-agent": "rea-installer" },
+    headers: { accept: "application/json", "user-agent": "binsight-installer" },
     signal:
       options.signal === undefined
         ? deadline

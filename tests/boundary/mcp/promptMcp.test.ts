@@ -191,7 +191,9 @@ describe("guided prompts over MCP", () => {
 });
 
 it("preserves caller-selected paths and verbatim crash signals", async () => {
-  const directory = await createTestTempDirectory("rea-prompt-exact-context-");
+  const directory = await createTestTempDirectory(
+    "binsight-prompt-exact-context-",
+  );
   temporaryDirectories.push(directory);
   const targetPath = join(directory, "target with trailing space ");
   await writeFile(targetPath, "owned prompt target", "utf8");
@@ -320,7 +322,7 @@ describe("guided prompt completion registry", () => {
 });
 
 it("guided prompt completion avoids cold startup and cancels warm lookup on close", async () => {
-  const directory = await createTestTempDirectory("rea-prompt-warm-only-");
+  const directory = await createTestTempDirectory("binsight-prompt-warm-only-");
   temporaryDirectories.push(directory);
   const target = join(directory, "target.hop");
   await writeFile(target, "fixture target");
@@ -432,7 +434,7 @@ describe("guided prompt completion lifecycle", () => {
   });
 
   it("refreshes wire completions across open, switch, concurrency, and close", async () => {
-    const directory = await createTestTempDirectory("rea-prompt-mcp-");
+    const directory = await createTestTempDirectory("binsight-prompt-mcp-");
     temporaryDirectories.push(directory);
     const first = join(directory, "first.hop");
     const second = join(directory, "second.hop");

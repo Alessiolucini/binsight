@@ -24,7 +24,7 @@ afterEach(async () => {
 
 describe("Ghidra local transport", () => {
   it("observes Unix readiness without interpreting endpoint content", async () => {
-    const root = await createTestTempDirectory("rea-ghidra-transport-");
+    const root = await createTestTempDirectory("binsight-ghidra-transport-");
     roots.push(root);
     const path = join(root, "bridge.sock");
 
@@ -38,7 +38,7 @@ describe("Ghidra local transport", () => {
   });
 
   it("accepts only an exact IPv4 loopback endpoint record", async () => {
-    const root = await createTestTempDirectory("rea-ghidra-transport-");
+    const root = await createTestTempDirectory("binsight-ghidra-transport-");
     roots.push(root);
     const runtime = await createGhidraTestRuntime(root);
     runtimes.push(runtime);
@@ -65,7 +65,7 @@ describe("Ghidra local transport", () => {
   ])(
     "rejects an invalid or expanded TCP endpoint: $host:$port",
     async (value) => {
-      const root = await createTestTempDirectory("rea-ghidra-transport-");
+      const root = await createTestTempDirectory("binsight-ghidra-transport-");
       roots.push(root);
       const runtime = await createGhidraTestRuntime(root);
       runtimes.push(runtime);

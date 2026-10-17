@@ -28,8 +28,8 @@ it.skipIf(process.platform === "android")(
       );
     const testTask = config.tasks["test:run"];
     const dependencies = z.array(z.string()).parse(testTask?.dependsOn);
-    const root = await createTestTempDirectory("rea-test-cache-");
-    const external = await createTestTempDirectory("rea-test-dependency-");
+    const root = await createTestTempDirectory("binsight-test-cache-");
+    const external = await createTestTempDirectory("binsight-test-dependency-");
     const dependency = join(external, "provider.json");
     const scripts: Record<string, string> = { "test:run": "node check.mjs" };
     const tasks: Record<string, unknown> = { "test:run": testTask };
@@ -43,7 +43,7 @@ it.skipIf(process.platform === "android")(
     await writeFile(
       join(root, "package.json"),
       JSON.stringify({
-        name: "rea-cache-fixture",
+        name: "binsight-cache-fixture",
         version: "1.0.0",
         private: true,
         type: "module",
@@ -54,10 +54,10 @@ it.skipIf(process.platform === "android")(
     await writeFile(
       join(root, "package-lock.json"),
       JSON.stringify({
-        name: "rea-cache-fixture",
+        name: "binsight-cache-fixture",
         version: "1.0.0",
         lockfileVersion: 3,
-        packages: { "": { name: "rea-cache-fixture", version: "1.0.0" } },
+        packages: { "": { name: "binsight-cache-fixture", version: "1.0.0" } },
       }),
     );
     await writeFile(join(root, "turbo.json"), JSON.stringify({ tasks }));
@@ -106,7 +106,7 @@ it.skipIf(process.platform === "android")(
     }
     // Provider jobs receive the producer's cache in a fresh checkout, not its
     // outputs. Turbo must restore identical inputs and rebuild changed ones.
-    const consumer = await createTestTempDirectory("rea-cache-consumer-");
+    const consumer = await createTestTempDirectory("binsight-cache-consumer-");
     await cp(root, consumer, {
       recursive: true,
       filter: (path) =>

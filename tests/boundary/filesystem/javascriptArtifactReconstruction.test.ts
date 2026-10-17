@@ -32,7 +32,7 @@ it("reads local source maps as part of static artifact analysis", async () => {
 
 it("does not follow symlinks and analyzes each local source file", async () => {
   const root = await fixtureDirectory();
-  const outside = await createTestTempDirectory("rea-javascript-outside-");
+  const outside = await createTestTempDirectory("binsight-javascript-outside-");
   const outsideFile = join(outside, "secret.js");
   await writeFile(
     outsideFile,
@@ -121,7 +121,9 @@ it("keeps malformed JavaScript, package metadata, and source maps as explicit un
 });
 
 it("retains every source declared by every included local source map", async () => {
-  const root = await createTestTempDirectory("rea-javascript-source-maps-");
+  const root = await createTestTempDirectory(
+    "binsight-javascript-source-maps-",
+  );
   await Promise.all([
     writeFile(
       join(root, "a.js.map"),
@@ -164,7 +166,7 @@ it.each([
   "reports %s as an invalid local source map",
   async (_description, content) => {
     const root = await createTestTempDirectory(
-      "rea-javascript-invalid-source-map-",
+      "binsight-javascript-invalid-source-map-",
     );
     await writeFile(
       join(root, "invalid.js.map"),
@@ -195,7 +197,7 @@ it.each([
 
 it("accepts omitted and explicitly null source-map source contents", async () => {
   const root = await createTestTempDirectory(
-    "rea-javascript-null-source-content-",
+    "binsight-javascript-null-source-content-",
   );
   await Promise.all([
     writeFile(
@@ -241,7 +243,7 @@ it.each([
   "keeps every source declaration when sourcesContent is %s than sources",
   async (length, sourcesContent) => {
     const root = await createTestTempDirectory(
-      `rea-javascript-${length}-source-content-`,
+      `binsight-javascript-${length}-source-content-`,
     );
     await writeFile(
       join(root, "bundle.js.map"),
@@ -280,7 +282,9 @@ it.each([
 );
 
 it("retains unnamed source declarations without shifting later source evidence", async () => {
-  const root = await createTestTempDirectory("rea-javascript-unnamed-source-");
+  const root = await createTestTempDirectory(
+    "binsight-javascript-unnamed-source-",
+  );
   const text = JSON.stringify({
     version: 3,
     sections: [
@@ -351,7 +355,9 @@ it("retains unnamed source declarations without shifting later source evidence",
 });
 
 it("retains every repeated content observation and containment path", async () => {
-  const root = await createTestTempDirectory("rea-javascript-observations-");
+  const root = await createTestTempDirectory(
+    "binsight-javascript-observations-",
+  );
   await Promise.all(
     Array.from({ length: 70 }, (_, index) =>
       writeFile(
@@ -454,7 +460,7 @@ class TraversalReader implements ArtifactReader {
 }
 
 const fixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-javascript-artifact-");
+  const root = await createTestTempDirectory("binsight-javascript-artifact-");
   await writeJavaScriptArtifactFixture(root);
   return root;
 };

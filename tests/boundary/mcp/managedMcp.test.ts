@@ -25,7 +25,7 @@ type ManagedOutputAssertion = Awaited<ReturnType<typeof createOutputAssertion>>;
 
 it("runs every managed static inspection independently of an active native target", async () => {
   const directory = await createTestTempDirectory(
-    "rea-managed-independent-mcp-",
+    "binsight-managed-independent-mcp-",
   );
   const path = join(directory, "fixture.dll");
   const otherPath = join(directory, "other-fixture.dll");
@@ -76,7 +76,7 @@ it("runs every managed static inspection independently of an active native targe
     );
     expect(artifact).toMatchObject({
       operation: "inspect_managed_artifact",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "binsight-dotnet-static" },
       subject: { local_path: path, format: "pe" },
     });
     const misspelledPath = await client.callTool({
@@ -94,7 +94,7 @@ it("runs every managed static inspection independently of an active native targe
     );
     expect(members).toMatchObject({
       operation: "inspect_managed_members",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "binsight-dotnet-static" },
       subject: { local_path: path, format: "pe" },
     });
     const otherArtifact = structured(
@@ -122,7 +122,7 @@ it("runs every managed static inspection independently of an active native targe
     );
     expect(boundaries).toMatchObject({
       operation: "inspect_managed_native_boundaries",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "binsight-dotnet-static" },
       subject: { local_path: path, format: "pe" },
     });
     const partial = structured(
@@ -153,7 +153,7 @@ it("runs every managed static inspection independently of an active native targe
 }, 30_000);
 
 it("opens a managed PE and executes the managed static provider through MCP", async () => {
-  const directory = await createTestTempDirectory("rea-managed-mcp-");
+  const directory = await createTestTempDirectory("binsight-managed-mcp-");
   const path = join(directory, "fixture.exe");
   const rightPath = join(directory, "fixture-renamed.exe");
   await writeFile(path, buildManagedPeFixture());
@@ -272,7 +272,7 @@ const inspectManagedStaticWorkflow = async (
   });
   expect(inlineEvidence(inspected)).toMatchObject({
     operation: "inspect_managed_artifact",
-    provider: { id: "rea-dotnet-static" },
+    provider: { id: "binsight-dotnet-static" },
     subject: { local_path: path, format: "pe" },
   });
   const members = inlineEvidence(
@@ -286,7 +286,7 @@ const inspectManagedStaticWorkflow = async (
   await outputAssertion.assert("inspect_managed_members", members);
   expect(members).toMatchObject({
     operation: "inspect_managed_members",
-    provider: { id: "rea-dotnet-static" },
+    provider: { id: "binsight-dotnet-static" },
     subject: { local_path: path, format: "pe" },
     normalized_result: {
       identity_scope: { token_identity: "build-local" },
@@ -362,7 +362,7 @@ const verifyManagedComparisonAndReconstruction = async (
   await outputAssertion.assert("compare_managed_members", compared);
   expect(compared).toMatchObject({
     operation: "compare_managed_members",
-    provider: { id: "rea-dotnet-workflows" },
+    provider: { id: "binsight-dotnet-workflows" },
     confidence: "inferred",
     normalized_result: {
       algorithm: { name_matching: "exact-signature-fallback" },
@@ -414,7 +414,7 @@ const verifyImport = async (
   );
   expect(imported).toMatchObject({
     operation: "import_managed_reconstruction",
-    provider: { id: "rea-dotnet-workflows" },
+    provider: { id: "binsight-dotnet-workflows" },
     confidence: "inferred",
     authority: "analyst-inference",
     normalized_result: {

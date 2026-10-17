@@ -263,7 +263,7 @@ it("keeps diagnosis available after merge failure and publishes only complete su
 });
 
 it("rejects successful shard reports with missing or duplicate portable files", async () => {
-  const root = await createTestTempDirectory("rea-ci-report-inventory-");
+  const root = await createTestTempDirectory("binsight-ci-report-inventory-");
   await workflowGit(root, ["init"]);
   await mkdir(join(root, "tests"));
   for (const name of ["first", "second"])
@@ -337,7 +337,7 @@ it("runs the existing onboarding and Python producer guards from their selected 
 });
 
 it("exports portable timing history and removes it on a failed, partial, or invalid rerun", async () => {
-  const root = await createTestTempDirectory("rea-ci-report-");
+  const root = await createTestTempDirectory("binsight-ci-report-");
   const summary = join(root, "summary.md");
   const history = join(root, ".cache/ci-test-history/test-results.json");
   const report = {
@@ -432,7 +432,7 @@ it("exports portable timing history and removes it on a failed, partial, or inva
 });
 
 it("recovers complete module costs from real blob reports without executing tests again", async () => {
-  const root = await createTestTempDirectory("rea-ci-module-timing-");
+  const root = await createTestTempDirectory("binsight-ci-module-timing-");
   const config = join(root, "vitest.config.mjs");
   await writeFile(
     config,
@@ -558,7 +558,7 @@ it("recovers complete module costs from real blob reports without executing test
 });
 
 it("records failed omissions from full reports without treating partial or unhandled outcomes as parity", async () => {
-  const root = await createTestTempDirectory("rea-ci-selection-report-");
+  const root = await createTestTempDirectory("binsight-ci-selection-report-");
   await workflowGit(root, ["init"]);
   const paths = [
     "src/sqlite/provider.test.ts",

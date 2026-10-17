@@ -15,7 +15,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 it.skipIf(process.platform === "win32")(
   "rejects an open_binary FIFO without waiting for a writer",
   async () => {
-    const root = await createTestTempDirectory("rea-open-binary-fifo-");
+    const root = await createTestTempDirectory("binsight-open-binary-fifo-");
     const fifoPath = join(root, "input.bin");
     await promisify(execFile)("mkfifo", [fifoPath]);
     const session = createTestBinarySession(new ArtifactProvider(process.env));

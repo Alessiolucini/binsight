@@ -156,7 +156,10 @@ const cli = async () => {
   return dossier;
 };
 const mcp = async (cliDossier) => {
-  const client = new Client({ name: "rea-real-ida-verifier", version: "1" });
+  const client = new Client({
+    name: "binsight-real-ida-verifier",
+    version: "1",
+  });
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [entry, "mcp"],

@@ -73,7 +73,7 @@ export const registerBundleComparisonTool = (
             undefined,
             BUNDLE_COMPARISON_PROVIDER,
             {
-              predicateType: "rea.bundle-comparison",
+              predicateType: "binsight.bundle-comparison",
               operation: contract.name,
               parameters: {
                 left_bundle_sha256: comparison.left_bundle_sha256,

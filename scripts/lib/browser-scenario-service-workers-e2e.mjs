@@ -222,7 +222,7 @@ export async function verifyScenarioServiceWorkers(endpoint, targetId) {
     await page.goto("about:blank");
 
     // The caller installs a real worker at a different origin, then moves the
-    // selected target away before REA attaches. Its registration must survive.
+    // selected target away before BinSight attaches. Its registration must survive.
     await page.goto(second.origin);
     await page.evaluate(async () => {
       await navigator.serviceWorker.register("/sw.js");
@@ -470,7 +470,7 @@ const verifyPolicyCleanup = async ({
     assert.equal(next.value.browser.cleanup, "disconnected-external");
   }
 
-  await page.addInitScript("globalThis.reaCallerInitScript = 'preserved'");
+  await page.addInitScript("globalThis.binsightCallerInitScript = 'preserved'");
   const policy = new PlaywrightScenarioServiceWorkers(page, endpoint, targetId);
   await policy.initialize();
   const exposure = await page.evaluate(async () => {
@@ -479,7 +479,7 @@ const verifyPolicyCleanup = async ({
       (symbol) => register[symbol],
     );
     const restore = Object.getOwnPropertyNames(globalThis).find((name) =>
-      name.startsWith("rea-restore-"),
+      name.startsWith("binsight-restore-"),
     );
     const denied = globalThis[restore]("not-the-session-secret");
     let blocked = false;
@@ -553,13 +553,13 @@ const verifyPolicyCleanup = async ({
   await page.reload();
   assert.equal(await nativeRegister(), true);
   assert.equal(
-    await page.evaluate(() => globalThis.reaCallerInitScript),
+    await page.evaluate(() => globalThis.binsightCallerInitScript),
     "preserved",
   );
   assert.equal(
     await page.evaluate(() =>
       Object.getOwnPropertyNames(globalThis).some((name) =>
-        name.startsWith("rea-restore-"),
+        name.startsWith("binsight-restore-"),
       ),
     ),
     false,

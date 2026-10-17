@@ -20,7 +20,7 @@ const entryPoint = resolve("scripts/rea.mjs");
 let home: string;
 
 beforeEach(async () => {
-  home = await createTestTempDirectory("rea-update-maintenance-");
+  home = await createTestTempDirectory("binsight-update-maintenance-");
   for (const [name, value] of Object.entries({
     HOME: home,
     USERPROFILE: home,
@@ -68,17 +68,17 @@ const writeSkill = async (content: string): Promise<string> => {
 };
 
 const staleCodex =
-  '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@0.1.0", "mcp"]\n';
+  '[mcp_servers.binsight]\ncommand = "npx"\nargs = ["-y", "binsight@0.1.0", "mcp"]\n';
 const action = {
   id: "configure_client:codex",
   kind: "configure_client",
   label: "Codex",
   target: "/test/.codex/config.toml",
-  detail: "Refresh the pinned REA version",
+  detail: "Refresh the pinned BinSight version",
   external: false,
   operation: "update",
-  backupPath: "/test/.codex/config.toml.rea.backup",
-  commands: ["rea mcp"],
+  backupPath: "/test/.codex/config.toml.binsight.backup",
+  commands: ["binsight mcp"],
 };
 
 describe("OMP integration maintenance", () => {
@@ -86,7 +86,9 @@ describe("OMP integration maintenance", () => {
     const entry = { type: "stdio", command: entryPoint, args: ["mcp"] };
     await writeClient(
       "omp",
-      JSON.stringify({ mcpServers: { rea: { ...entry, enabled: false } } }),
+      JSON.stringify({
+        mcpServers: { binsight: { ...entry, enabled: false } },
+      }),
     );
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env),
@@ -94,8 +96,8 @@ describe("OMP integration maintenance", () => {
     await writeClient(
       "omp",
       JSON.stringify({
-        mcpServers: { rea: { ...entry, enabled: false } },
-        enabledServers: ["rea"],
+        mcpServers: { binsight: { ...entry, enabled: false } },
+        enabledServers: ["binsight"],
       }),
     );
     await expect(
@@ -106,16 +108,16 @@ describe("OMP integration maintenance", () => {
   it("preserves Grok Build disabled_mcp_servers during maintenance planning", async () => {
     // Strict identity: a user-disabled integration must never be selected
     // for maintenance, even with a healthy owned entry underneath.
-    const registration = `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entryPoint)}, "mcp"]\nstartup_timeout_sec = 30\n`;
+    const registration = `[mcp_servers.binsight]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entryPoint)}, "mcp"]\nstartup_timeout_sec = 30\n`;
     const configPath = await writeClient(
       "grok_build",
-      `disabled_mcp_servers = ["rea", "other"]\n${registration}`,
+      `disabled_mcp_servers = ["binsight", "other"]\n${registration}`,
     );
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env),
     ).resolves.toMatchObject({ clients: [] });
     expect(await readFile(configPath, "utf8")).toContain(
-      'disabled_mcp_servers = ["rea", "other"]',
+      'disabled_mcp_servers = ["binsight", "other"]',
     );
     await writeFile(
       configPath,
@@ -134,7 +136,7 @@ describe("maintenance activation and layered configuration", () => {
       JSON.stringify({
         mcp: {
           servers: {
-            rea: { command: entryPoint, args: ["mcp"], enable: false },
+            binsight: { command: entryPoint, args: ["mcp"], enable: false },
           },
         },
       }),
@@ -153,7 +155,7 @@ describe("maintenance activation and layered configuration", () => {
     await writeFile(
       fallbackPath,
       JSON.stringify({
-        mcpServers: { rea: { command: entryPoint, args: ["mcp"] } },
+        mcpServers: { binsight: { command: entryPoint, args: ["mcp"] } },
       }),
     );
 
@@ -168,7 +170,7 @@ describe("maintenance activation and layered configuration", () => {
     await writeFile(
       join(directory, "opencode.json"),
       JSON.stringify({
-        mcp: { rea: { type: "local", command: [entryPoint, "mcp"] } },
+        mcp: { binsight: { type: "local", command: [entryPoint, "mcp"] } },
       }),
     );
     await writeClient("opencode", JSON.stringify({ theme: "user-selected" }));
@@ -178,22 +180,24 @@ describe("maintenance activation and layered configuration", () => {
   });
 });
 
-describe("existing REA integration maintenance", () => {
+describe("existing BinSight integration maintenance", () => {
   it("selects owned registrations while preserving unconfigured, foreign, and disabled choices", async () => {
     await writeClient("codex", staleCodex);
     await writeClient("claude_code", '{"mcpServers":{}}');
     await writeClient(
       "cursor",
-      '{"mcpServers":{"rea":{"command":"foreign-server","args":[]}}}',
+      '{"mcpServers":{"binsight":{"command":"foreign-server","args":[]}}}',
     );
     await writeClient(
       "opencode",
-      '{"mcp":{"rea":{"type":"local","command":["npx","-y","rea-agents@0.1.0","mcp"],"enabled":false}}}',
+      '{"mcp":{"binsight":{"type":"local","command":["npx","-y","binsight@0.1.0","mcp"],"enabled":false}}}',
     );
     await writeClient(
       "vscode",
       JSON.stringify({
-        servers: { rea: { type: "stdio", command: entryPoint, args: ["mcp"] } },
+        servers: {
+          binsight: { type: "stdio", command: entryPoint, args: ["mcp"] },
+        },
       }),
     );
     await expect(
@@ -223,9 +227,9 @@ describe("existing REA integration maintenance", () => {
     });
   });
 
-  it("includes an existing REA skill and leaves files untouched", async () => {
+  it("includes an existing BinSight skill and leaves files untouched", async () => {
     const path = await writeSkill(
-      `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# REA\n`,
+      `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# BinSight\n`,
     );
     const original = await readFile(path, "utf8");
     await expect(
@@ -335,7 +339,7 @@ describe("updated executable maintenance planning", () => {
   it("runs real setup as a noninteractive dry run and creates no new integrations or backups", async () => {
     const configPath = await writeClient("codex", staleCodex);
     const untouched = await writeClient("claude_code", '{"mcpServers":{}}');
-    const skillContent = `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# REA\n`;
+    const skillContent = `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# BinSight\n`;
     const skillPath = await writeSkill(skillContent);
     vi.stubEnv("npm_command", "exec");
     const result = await planIntegrationMaintenance(
@@ -367,10 +371,12 @@ describe("updated executable maintenance planning", () => {
     expect(await readFile(configPath, "utf8")).toBe(staleCodex);
     expect(await readFile(untouched, "utf8")).toBe('{"mcpServers":{}}');
     expect(await readFile(skillPath, "utf8")).toBe(skillContent);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
-      code: "ENOENT",
-    });
-    await expect(access(`${skillPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${configPath}.binsight.backup`)).rejects.toMatchObject(
+      {
+        code: "ENOENT",
+      },
+    );
+    await expect(access(`${skillPath}.binsight.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(
@@ -429,7 +435,7 @@ describe("update subprocess boundaries", () => {
     if (!missing.ok) expect(missing.error).toContain("ENOENT");
   });
 
-  it("verifies the requested package entry rather than PATH's rea", async () => {
+  it("verifies the requested package entry rather than PATH's binsight", async () => {
     const packageRoot = join(home, "package");
     const script = join(packageRoot, "scripts", "rea.mjs");
     await mkdir(dirname(script), { recursive: true });
@@ -456,7 +462,7 @@ describe("Bun global installation update", () => {
     "handles Bun %s with outcome %s using %s global-directory configuration",
     async (bunVersion, status, directoryMode) => {
       // A recording `bun` on PATH crosses the real subprocess boundary without registry access.
-      const root = await createTestTempDirectory("rea-update-bun-");
+      const root = await createTestTempDirectory("binsight-update-bun-");
       const globalDirectory = join(root, "bun", "install", "global");
       const packageRoot = join(
         globalDirectory,
@@ -468,7 +474,7 @@ describe("Bun global installation update", () => {
       await mkdir(join(packageRoot, "scripts"), { recursive: true });
       await writeFile(
         join(globalDirectory, "package.json"),
-        '{"dependencies":{"rea-agents":"3.2.1"}}\n',
+        '{"dependencies":{"binsight":"3.2.1"}}\n',
       );
       await writeFile(versionPath, "3.2.1");
       await writeFile(
@@ -543,7 +549,7 @@ describe("Bun global installation update", () => {
           currentVersion: "3.2.1",
           latestVersion: null,
           reason: "version-check",
-          remediation: `REA updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(bunVersion)}. Upgrade Bun manually, then rerun rea update.`,
+          remediation: `BinSight updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(bunVersion)}. Upgrade Bun manually, then rerun binsight update.`,
         });
         expect(invocations).toEqual([versionInvocation]);
         expect(await readFile(versionPath, "utf8")).toBe("3.2.1");

@@ -160,7 +160,7 @@ it("reports an actionable missing Swift compiler without installing it", async (
   const reader = createDarwinProcessRunTokenReader({
     compiler: {
       kind: "xcrun",
-      executable: join(tmpdir(), "rea-no-such-xcrun"),
+      executable: join(tmpdir(), "binsight-no-such-xcrun"),
     },
   });
   try {
@@ -195,7 +195,7 @@ it.skipIf(process.platform === "win32")(
   "reports the compiler exit code with its diagnostics when preparation fails",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-compiler-failure-test-",
+      "binsight-process-token-compiler-failure-test-",
     );
     const executable = join(directory, "failing-xcrun");
     await writeFile(
@@ -246,7 +246,7 @@ it.skipIf(process.platform === "win32")(
   "reports compiler diagnostics captured before the compilation deadline",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-compiler-timeout-test-",
+      "binsight-process-token-compiler-timeout-test-",
     );
     const executable = join(directory, "hanging-xcrun");
     await writeFile(
@@ -279,7 +279,7 @@ it.skipIf(process.platform === "win32")(
   "reports the stop signal when the compiler dies without an exit code",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-compiler-signal-test-",
+      "binsight-process-token-compiler-signal-test-",
     );
     const executable = join(directory, "segv-xcrun");
     await writeFile(
@@ -310,7 +310,7 @@ it.skipIf(process.platform === "win32")(
   "bounds embedded compiler diagnostics and marks the truncation",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-compiler-verbose-test-",
+      "binsight-process-token-compiler-verbose-test-",
     );
     const executable = join(directory, "verbose-xcrun");
     const diagnostic = "x".repeat(600);
@@ -349,7 +349,7 @@ it
   "ignores unusable inherited Swift module cache: %s",
   async (kind) => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-inherited-cache-test-",
+      "binsight-process-token-inherited-cache-test-",
     );
     const cacheParent = join(directory, "cache-parent");
     if (kind === "file") await writeFile(cacheParent, "not a directory");
@@ -380,10 +380,10 @@ it
 );
 
 it.skipIf(process.platform === "win32")(
-  "uses the compiler-managed module cache instead of rebuilding system modules per REA process",
+  "uses the compiler-managed module cache instead of rebuilding system modules per BinSight process",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-module-cache-test-",
+      "binsight-process-token-module-cache-test-",
     );
     const fakeCompiler = await writeBlockingCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -442,7 +442,7 @@ it.skipIf(process.platform === "win32")(
   "forwards a caller-owned module cache and keeps it after the helper root is removed",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-caller-cache-test-",
+      "binsight-process-token-caller-cache-test-",
     );
     const cachePath = join(directory, "caller", " modules ");
     const fakeCompiler = await writeCacheRecordingCompiler(directory);
@@ -471,7 +471,7 @@ it.skipIf(process.platform === "win32")(
   "selects the caller module cache through REA_DARWIN_MODULE_CACHE_PATH",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-host-cache-test-",
+      "binsight-process-token-host-cache-test-",
     );
     const cachePath = join(directory, "from-environment", "modules");
     const fakeCompiler = await writeCacheRecordingCompiler(directory);
@@ -497,7 +497,7 @@ it.skipIf(process.platform === "win32")(
   "keeps the shared module cache for the system host without the setting",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-host-default-test-",
+      "binsight-process-token-host-default-test-",
     );
     vi.stubEnv("CLANG_MODULE_CACHE_PATH", join(directory, "ambient-cache"));
     const hostEnvironment = { ...process.env };
@@ -521,7 +521,7 @@ it.skipIf(process.platform === "win32")(
   "bypasses xcrun for an explicitly selected Swift compiler and SDK",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-direct-compiler-",
+      "binsight-process-token-direct-compiler-",
     );
     const fakeCompiler = await writeCacheRecordingCompiler(directory);
     const sdkRoot = join(directory, "MacOSX.sdk");
@@ -548,7 +548,7 @@ it.skipIf(process.platform === "win32")(
   "reports the missing SDK prerequisite before starting a direct compiler",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-direct-no-sdk-",
+      "binsight-process-token-direct-no-sdk-",
     );
     const fakeCompiler = await writeCacheRecordingCompiler(directory);
     const host = createSystemProcessOwnershipHost("darwin", {
@@ -574,7 +574,7 @@ it.skipIf(process.platform === "win32")(
   "identifies a missing selected Swift compiler rather than xcrun",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-direct-missing-",
+      "binsight-process-token-direct-missing-",
     );
     const host = createSystemProcessOwnershipHost("darwin", {
       ...process.env,
@@ -603,7 +603,7 @@ it.skipIf(!onDarwin)(
   "compiles the helper against the caller cache with the host compiler",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-real-cache-test-",
+      "binsight-process-token-real-cache-test-",
     );
     const cachePath = join(directory, "caller", "modules");
     const { stdout: compilerPath } = await execFileAsync("/usr/bin/xcrun", [
@@ -641,7 +641,7 @@ it.skipIf(process.platform === "win32")(
   "rethrows compile cancellation, removes its temporary root, and permits retry",
   async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-process-token-abort-test-"),
+      join(tmpdir(), "binsight-process-token-abort-test-"),
     );
     const fakeCompiler = await writeBlockingCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -726,7 +726,7 @@ it.skipIf(process.platform === "win32")(
   "removes cancelled compiler temporaries with the helper root",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-process-token-temporary-test-",
+      "binsight-process-token-temporary-test-",
     );
     const compiler = await writeTemporaryObjectCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -775,7 +775,7 @@ it.skipIf(process.platform === "win32").each(["first", "second"] as const)(
   "keeps shared compilation alive when the %s waiter cancels",
   async (cancelledWaiter) => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-process-token-shared-compile-test-"),
+      join(tmpdir(), "binsight-process-token-shared-compile-test-"),
     );
     const fakeCompiler = await writeBlockingCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -833,7 +833,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "retains a failed compilation cleanup for a later close retry",
   async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-process-token-cleanup-retry-test-"),
+      join(tmpdir(), "binsight-process-token-cleanup-retry-test-"),
     );
     const fakeCompiler = await writeBlockingCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -874,7 +874,7 @@ it.skipIf(process.platform === "win32")(
   "aborts and cleans an active compilation when the reader closes",
   async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-process-token-close-compile-test-"),
+      join(tmpdir(), "binsight-process-token-close-compile-test-"),
     );
     const fakeCompiler = await writeBlockingCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -907,7 +907,7 @@ it.skipIf(process.platform === "win32")(
   "maps cancellation during native preparation before Electron launch",
   async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-electron-token-abort-test-"),
+      join(tmpdir(), "binsight-electron-token-abort-test-"),
     );
     const fakeCompiler = await writeBlockingCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -962,7 +962,7 @@ it.skipIf(process.platform === "win32").each(["baseline", "tokens"] as const)(
   "preserves cancellation through system-host %s inspection",
   async (kind) => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-process-baseline-abort-test-"),
+      join(tmpdir(), "binsight-process-baseline-abort-test-"),
     );
     const fakeCompiler = await writeBlockingIdentityCompiler(directory);
     const host = createSystemProcessOwnershipHost("darwin", process.env, {
@@ -1021,7 +1021,7 @@ it.skipIf(process.platform === "win32")(
   "passes Electron cancellation into capture-local baseline inspection",
   async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-electron-baseline-abort-test-"),
+      join(tmpdir(), "binsight-electron-baseline-abort-test-"),
     );
     const fakeCompiler = await writeBlockingIdentityCompiler(directory);
     const reader = createDarwinProcessRunTokenReader({
@@ -1093,7 +1093,7 @@ it.skipIf(!onDarwin)(
   "parses exact NUL-delimited token records and rejects truncated argv",
   async () => {
     const root = await mkdtemp(
-      join(tmpdir(), "rea-process-token-parser-test-"),
+      join(tmpdir(), "binsight-process-token-parser-test-"),
     );
     const executable = join(root, "parser-test");
     const core = fileURLToPath(
@@ -1179,7 +1179,7 @@ it.skipIf(!onDarwin)(
   "retries a growing process table after ENOMEM and preserves other sysctl errors",
   async () => {
     const root = await mkdtemp(
-      join(tmpdir(), "rea-process-snapshot-retry-test-"),
+      join(tmpdir(), "binsight-process-snapshot-retry-test-"),
     );
     const executable = join(root, "snapshot-probe");
     const core = fileURLToPath(
@@ -1281,7 +1281,9 @@ it.skipIf(!onDarwin)(
 it.skipIf(!onDarwin)(
   "reads owned tokens across executable padding and distinguishes a real empty environment",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-process-token-padding-"));
+    const root = await mkdtemp(
+      join(tmpdir(), "binsight-process-token-padding-"),
+    );
     const host = createSystemProcessOwnershipHost("darwin");
     const children: Awaited<ReturnType<typeof startNodeChild>>[] = [];
     try {
@@ -1371,7 +1373,7 @@ it.skipIf(process.platform === "win32").each([
   "retains original output facts for $name compiler failures",
   async ({ stdout, stderrHex, stderrBytes, truncated }) => {
     const directory = await createTestTempDirectory(
-      "rea-compiler-output-facts-",
+      "binsight-compiler-output-facts-",
     );
     const executable = join(directory, "compiler");
     await writeFile(

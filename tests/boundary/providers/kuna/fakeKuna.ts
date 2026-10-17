@@ -31,7 +31,7 @@ export interface FakeKunaBehavior {
     | "miscounted"
     | "silent"
     | "block-manifest"
-    /** Writes more than REA's 8 MiB export output buffer before its summary. */
+    /** Writes more than BinSight's 8 MiB export output buffer before its summary. */
     | "noisy";
   readonly functions?: readonly FakeKunaFunction[];
   /** Extra `.asm` bytes, for capacity tests. */
@@ -47,7 +47,7 @@ export interface FakeKunaBehavior {
   readonly inventoryDelayMs?: number;
   /** Milliseconds the export takes before writing its files. */
   readonly delayMs?: number;
-  /** `noisy` writes more diagnostics than REA buffers (8 MiB) before the graph. */
+  /** `noisy` writes more diagnostics than BinSight buffers (8 MiB) before the graph. */
   readonly graph?:
     | "ok"
     | "hang"
@@ -79,7 +79,7 @@ export interface FakeKunaBehavior {
 
 /**
  * The fake reads its behavior from `<script>.json` and appends one line per
- * invocation to `<script>.calls`. REA gives Kuna children no PATH, so the
+ * invocation to `<script>.calls`. BinSight gives Kuna children no PATH, so the
  * shebang names this Node binary directly. Output formats follow Kuna 1.833:
  * `functions --json` and the `// Function:` headers of `render_c`.
  */
@@ -112,7 +112,7 @@ if (args[0] === "--version") {
   else {
     if (behavior.stringStderrBytes) process.stderr.write(Buffer.alloc(behavior.stringStderrBytes, 0x78));
     if (!args.includes("--no-xrefs") || args[args.indexOf("--encoding") + 1] !== "all") throw new Error("strings must skip reference analysis and include all supported encodings");
-    const rows = (behavior.stringRows ?? [{ address: 12288, text: "REA fixture prompt" }, { address: 12320, text: "Δelta", encoding: "utf8", terminated: false }]).map((item) => ({ address: item.address, address_hex: "0x" + item.address.toString(16), text: item.text, length: [...item.text].length, byte_length: Buffer.byteLength(item.text, item.encoding === "utf16" ? "utf16le" : "utf8") + (item.terminated === false ? 0 : item.encoding === "utf16" ? 2 : 1), nul_terminated: item.terminated !== false, encoding: item.encoding ?? "ascii", section: ".rodata", xrefs_count: 0, functions: [] }));
+    const rows = (behavior.stringRows ?? [{ address: 12288, text: "BinSight fixture prompt" }, { address: 12320, text: "Δelta", encoding: "utf8", terminated: false }]).map((item) => ({ address: item.address, address_hex: "0x" + item.address.toString(16), text: item.text, length: [...item.text].length, byte_length: Buffer.byteLength(item.text, item.encoding === "utf16" ? "utf16le" : "utf8") + (item.terminated === false ? 0 : item.encoding === "utf16" ? 2 : 1), nul_terminated: item.terminated !== false, encoding: item.encoding ?? "ascii", section: ".rodata", xrefs_count: 0, functions: [] }));
     const document = { binary: args[1], encoding: "all", min_length: 5, filter: null, section: null, termination: "any", scanned: "sections", xrefs: false, count: rows.length + (behavior.strings === "miscounted" ? 1 : 0), strings: rows, padding: "x".repeat(behavior.stringPadding ?? 0) };
     setTimeout(() => process.stdout.write(JSON.stringify(document)), behavior.stringDelayMs ?? 0);
   }
@@ -163,7 +163,7 @@ if (args[0] === "--version") {
     asm += "; --- data ---\n\ndat_3000:  ; 0x3000 = dat_3000\n  00003000: 00\n\ng_table:  ; 0x3010\n  00003010: 01\n" + "x".repeat(behavior.asmPadding ?? 0);
     fs.writeFileSync(path.join(output, stem + ".asm"), asm);
     fs.writeFileSync(path.join(output, "README.md"), "# " + stem + "\n");
-    // Occupy the manifest path so REA's publication write fails.
+    // Occupy the manifest path so BinSight's publication write fails.
     if (mode === "block-manifest") fs.mkdirSync(path.join(output, "..", "manifest.json"));
     const failed = functions.filter((fn) => fn.error !== undefined).length;
     const reported = mode === "miscounted" ? functions.length + 1 : functions.length - failed;

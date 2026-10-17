@@ -28,7 +28,7 @@ it("reports an unconfigured Kuna as a missing optional engine", async () => {
 });
 
 it("publishes the caller's explicit settings once the installation validates", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-");
+  const root = await createTestTempDirectory("binsight-kuna-doctor-");
   const kuna = await writeFakeKuna(root);
   const cache = join(root, "cache");
 
@@ -53,7 +53,7 @@ it("publishes the caller's explicit settings once the installation validates", a
       {
         name: "cache",
         ok: true,
-        detail: `REA creates the Kuna project cache at ${cache} on first use.`,
+        detail: `BinSight creates the Kuna project cache at ${cache} on first use.`,
       },
     ],
   });
@@ -61,7 +61,7 @@ it("publishes the caller's explicit settings once the installation validates", a
 });
 
 it("flags an unverified release without failing the installation", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-version-");
+  const root = await createTestTempDirectory("binsight-kuna-doctor-version-");
   const kuna = await writeFakeKuna(root, {
     version: { stdout: "kuna 1.950\n" },
   });
@@ -76,8 +76,8 @@ it("flags an unverified release without failing the installation", async () => {
   });
 });
 
-it("reports a cache root REA cannot use without creating anything", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-cache-");
+it("reports a cache root BinSight cannot use without creating anything", async () => {
+  const root = await createTestTempDirectory("binsight-kuna-doctor-cache-");
   const kuna = await writeFakeKuna(root);
   const occupied = join(root, "occupied");
   await writeFile(occupied, "not a directory");
@@ -105,8 +105,8 @@ it("reports a cache root REA cannot use without creating anything", async () => 
   });
 });
 
-it("reports a cache root REA cannot create under its nearest existing parent", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-create-");
+it("reports a cache root BinSight cannot create under its nearest existing parent", async () => {
+  const root = await createTestTempDirectory("binsight-kuna-doctor-create-");
   const kuna = await writeFakeKuna(root);
   const readOnly = join(root, "read-only");
   await mkdir(readOnly, { mode: 0o500 });

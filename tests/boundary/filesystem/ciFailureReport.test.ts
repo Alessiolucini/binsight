@@ -52,9 +52,9 @@ const run = (overrides: Partial<CiRun> = {}) =>
     path: ".github/workflows/ci.yml@main",
     head_sha: sha("a"),
     head_branch: "feature",
-    repository: { full_name: "owner/rea" },
+    repository: { full_name: "owner/binsight" },
     pull_requests: [
-      { base: { sha: sha("b"), repo: { full_name: "owner/rea" } } },
+      { base: { sha: sha("b"), repo: { full_name: "owner/binsight" } } },
     ],
     ...overrides,
   });
@@ -66,7 +66,7 @@ const job = (overrides: Partial<CiJob> = {}) => ({
 });
 
 const comparison = (): Parameters<typeof classifyFailure>[0] => ({
-  repository: "owner/rea",
+  repository: "owner/binsight",
   defaultBranch: "main",
   run: run(),
   job: job(),
@@ -137,10 +137,10 @@ it.each([
 );
 
 it("writes informational JSON and Markdown from the supplied manifest using only read API calls", async () => {
-  const directory = await createTestTempDirectory("rea-ci-failure-test-");
+  const directory = await createTestTempDirectory("binsight-ci-failure-test-");
   const calls: string[] = [];
   const manifest = {
-    repository: "owner/rea",
+    repository: "owner/binsight",
     truncation: [],
     coverage: { exhaustive: false },
     runs: [
@@ -187,7 +187,7 @@ it("writes informational JSON and Markdown from the supplied manifest using only
     },
   };
   const report = await reportCiFailures({
-    repository: "owner/rea",
+    repository: "owner/binsight",
     defaultBranch: "main",
     batchManifest: manifest,
     api,
@@ -217,7 +217,7 @@ it.each([
 ] as const)(
   "finds verified main evidence after %s newer PR runs (extra incorrect main hint: %s)",
   async (prCount, incorrectMainHints) => {
-    const directory = await createTestTempDirectory("rea-ci-main-proof-");
+    const directory = await createTestTempDirectory("binsight-ci-main-proof-");
     const mainSha = sha("c");
     const prHeadSha = sha("a");
     const mergeSha = sha("d");
@@ -231,7 +231,7 @@ it.each([
     const prRun = run({
       head_sha: prHeadSha,
       pull_requests: [
-        { base: { sha: mainSha, repo: { full_name: "owner/rea" } } },
+        { base: { sha: mainSha, repo: { full_name: "owner/binsight" } } },
       ],
     });
     const evidence = (sourceSha: string, prHead?: string) => ({
@@ -266,10 +266,10 @@ it.each([
       },
     };
     const result = await reportCiFailures({
-      repository: "owner/rea",
+      repository: "owner/binsight",
       defaultBranch: "main",
       batchManifest: {
-        repository: "owner/rea",
+        repository: "owner/binsight",
         runs: [
           ...(incorrectMainHints
             ? [
@@ -330,7 +330,7 @@ it("proves checkout merge parents in base-then-PR-head order and rejects false i
   const prRun = run({
     head_sha: headSha,
     pull_requests: [
-      { base: { sha: baseSha, repo: { full_name: "owner/rea" } } },
+      { base: { sha: baseSha, repo: { full_name: "owner/binsight" } } },
     ],
   });
   let parents = [baseSha, headSha];
@@ -347,16 +347,16 @@ it("proves checkout merge parents in base-then-PR-head order and rejects false i
   });
   const mergeContext = context(mergeSha, undefined, headSha);
   expect(
-    await api.verifyExecutionSource("owner/rea", prRun, mergeContext),
+    await api.verifyExecutionSource("owner/binsight", prRun, mergeContext),
   ).toBe(true);
-  expect(calls).toEqual([`repos/owner/rea/commits/${mergeSha}`]);
+  expect(calls).toEqual([`repos/owner/binsight/commits/${mergeSha}`]);
 
   parents = [headSha, baseSha];
   expect(
-    await api.verifyExecutionSource("owner/rea", prRun, mergeContext),
+    await api.verifyExecutionSource("owner/binsight", prRun, mergeContext),
   ).toBe(false);
   expect(
-    await api.verifyExecutionSource("owner/rea", prRun, {
+    await api.verifyExecutionSource("owner/binsight", prRun, {
       ...mergeContext,
       prHeadSha: sha("e"),
     }),
@@ -417,7 +417,7 @@ it("rejects artifact redirects that could send the bearer token to a non-HTTPS h
   const calls: string[] = [];
   await expect(
     readStaticCheckArtifact({
-      repository: "owner/rea",
+      repository: "owner/binsight",
       artifactId: 12,
       token: "fixture-token",
       fetchImpl: (async (url: string | URL | Request) => {
@@ -430,6 +430,6 @@ it("rejects artifact redirects that could send the bearer token to a non-HTTPS h
     }),
   ).rejects.toThrow("static_artifact_redirect_invalid");
   expect(calls).toEqual([
-    "https://api.github.com/repos/owner/rea/actions/artifacts/12/zip",
+    "https://api.github.com/repos/owner/binsight/actions/artifacts/12/zip",
   ]);
 });

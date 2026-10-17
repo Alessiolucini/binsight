@@ -26,7 +26,7 @@ describe("reference import native entry failure details", () => {
     "classifies a root behind a blocked parent as an I/O failure",
     async () => {
       const directory = await createTestTempDirectory(
-        "rea-reference-root-permission-",
+        "binsight-reference-root-permission-",
       );
       const parent = join(directory, "blocked-parent");
       const root = join(parent, "source");
@@ -51,7 +51,9 @@ describe("reference import native entry failure details", () => {
   it.skipIf(permissionChecksUnavailable)(
     "retains the actual operating-system reason for an unreadable file",
     async () => {
-      const root = await createTestTempDirectory("rea-import-native-detail-");
+      const root = await createTestTempDirectory(
+        "binsight-import-native-detail-",
+      );
       const path = join(root, "blocked.ts");
       await writeFile(path, "export const value = 1;\n");
       await chmod(path, 0);
@@ -81,7 +83,9 @@ describe("reference import native entry failure details", () => {
   it.skipIf(process.platform === "win32")(
     "retains the unsupported file-type reason without suggesting another OS",
     async () => {
-      const root = await createTestTempDirectory("rea-import-native-fifo-");
+      const root = await createTestTempDirectory(
+        "binsight-import-native-fifo-",
+      );
       await promisify(execFile)("mkfifo", [join(root, "events.pipe")], {
         timeout: 2_000,
       });
@@ -100,7 +104,9 @@ describe("reference import native entry failure details", () => {
   it.skipIf(process.platform === "win32")(
     "excludes secret-patterned paths before failure projection",
     async () => {
-      const root = await createTestTempDirectory("rea-import-native-secret-");
+      const root = await createTestTempDirectory(
+        "binsight-import-native-secret-",
+      );
       await promisify(execFile)("mkfifo", [join(root, "secret-events.pipe")], {
         timeout: 2_000,
       });
@@ -125,7 +131,9 @@ describe("reference import native entry failure details", () => {
   );
 
   it("preserves an ordinary readable source-file control", async () => {
-    const root = await createTestTempDirectory("rea-import-native-readable-");
+    const root = await createTestTempDirectory(
+      "binsight-import-native-readable-",
+    );
     await writeFile(join(root, "main.ts"), "export const value = 1;\n");
     const imported = await importTree(root);
     if (!imported.ok) throw new Error(imported.error.message);
@@ -139,7 +147,7 @@ describe("reference import paths beyond the platform limit", () => {
   it.skipIf(process.platform === "win32")(
     "reports an entry beyond the absolute path limit as an I/O failure",
     async () => {
-      const root = await createTestTempDirectory("rea-import-deep-path-");
+      const root = await createTestTempDirectory("binsight-import-deep-path-");
       await writeFile(join(root, "kept.txt"), "k");
       // Relative creation lets the tree exceed PATH_MAX (1024 on macOS, 4096
       // on Linux) while each 200-byte component stays below NAME_MAX.

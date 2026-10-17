@@ -12,7 +12,7 @@ const execute = promisify(execFile);
 const bin = process.env.REA_WABT_BIN_DIRECTORY;
 if (!isAbsolute(bin ?? ""))
   throw new Error("Supply absolute REA_WABT_BIN_DIRECTORY with WABT 1.0.42");
-const root = await mkdtemp(join(tmpdir(), "rea-wasm-interface-real-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-wasm-interface-real-"));
 const cli = resolve("scripts/rea.mjs");
 const environment = { ...process.env };
 const command = async (file, args) =>

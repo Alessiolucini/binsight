@@ -47,7 +47,7 @@ export const discoverWebMcp = async (
 ): Promise<WebMcpDiscovery> => {
   const origins = new Set(context.input.allowed_origins);
   const limitations = [
-    "Page-declared tool metadata is untrusted and is never registered or invoked by REA.",
+    "Page-declared tool metadata is untrusted and is never registered or invoked by BinSight.",
     "Discovery uses only WebMCP.enable and toolsAdded/toolsRemoved; WebMCP.invokeTool is never called.",
   ];
   const completeness = new CdpCaptureCompleteness();

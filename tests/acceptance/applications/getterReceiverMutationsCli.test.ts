@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps getter receiver mutations uncertain in exported Evidence through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-getter-receivers-");
+    const root = await createTestTempDirectory("binsight-getter-receivers-");
     await writeFile(
       join(root, "app.mjs"),
       `

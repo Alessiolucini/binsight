@@ -11,8 +11,8 @@ import {
 
 const installation = {
   manager: "npm",
-  prefix: "/opt/rea",
-  packageRoot: "/opt/rea/lib/node_modules/rea-agents",
+  prefix: "/opt/binsight",
+  packageRoot: "/opt/binsight/lib/node_modules/binsight",
 } as const;
 
 describe("npm latest release metadata", () => {

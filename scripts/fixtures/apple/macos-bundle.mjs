@@ -119,7 +119,7 @@ const char *core_chain(void) { return sibling_value() == 7 ? chain_variant() : "
   });
   await write(
     join(version, "Resources", "Info.plist"),
-    bundlePlist("com.example.rea.core", "Core", "FMWK"),
+    bundlePlist("com.example.binsight.core", "Core", "FMWK"),
   );
   const service = join(version, "XPCServices", "FwSvc.xpc", "Contents");
   await clang(root, {
@@ -129,7 +129,7 @@ const char *core_chain(void) { return sibling_value() == 7 ? chain_variant() : "
   });
   await write(
     join(service, "Info.plist"),
-    bundlePlist("com.example.rea.core.service", "FwSvc", "XPC!"),
+    bundlePlist("com.example.binsight.core.service", "FwSvc", "XPC!"),
   );
   await symlink("A", join(core, "Versions", "Current"));
   await symlink("Versions/Current/Core", join(core, "Core"));
@@ -183,7 +183,7 @@ int main(void) {
   await rm(gone);
   await write(
     join(contents, "Info.plist"),
-    bundlePlist("com.example.rea.fixture", "MacFixture"),
+    bundlePlist("com.example.binsight.fixture", "MacFixture"),
   );
   return executable;
 };
@@ -208,24 +208,24 @@ int main(void) { return core_chain()[0] == 'b'; }
     output: join(service, "MacOS", "Svc"),
     // An absolute rpath outside the bundle precedes the bundled framework.
     flags: [
-      "-Wl,-rpath,/opt/rea-fixture-absent/lib",
+      "-Wl,-rpath,/opt/binsight-fixture-absent/lib",
       "-Wl,-rpath,@executable_path/../../../../Frameworks",
       coreBinary,
     ],
   });
   await write(
     join(service, "Info.plist"),
-    bundlePlist("com.example.rea.fixture.service", "Svc", "XPC!"),
+    bundlePlist("com.example.binsight.fixture.service", "Svc", "XPC!"),
   );
   await buildNestedBundle(root, {
     bundle: join(contents, "PlugIns", "Ext.appex"),
     executable: "Ext",
-    plist: bundlePlist("com.example.rea.fixture.extension", "Ext", "XPC!"),
+    plist: bundlePlist("com.example.binsight.fixture.extension", "Ext", "XPC!"),
   });
   await buildNestedBundle(root, {
     bundle: join(contents, "Library", "LoginItems", "Login.app"),
     executable: "Login",
-    plist: bundlePlist("com.example.rea.fixture.login", "Login"),
+    plist: bundlePlist("com.example.binsight.fixture.login", "Login"),
   });
 };
 
@@ -238,32 +238,43 @@ const buildLaunchItems = async (root, contents) => {
       contents,
       "Library",
       "LaunchServices",
-      "com.example.rea.helper",
+      "com.example.binsight.helper",
     ),
   });
   await write(
-    join(contents, "Library", "LaunchDaemons", "com.example.rea.helper.plist"),
+    join(
+      contents,
+      "Library",
+      "LaunchDaemons",
+      "com.example.binsight.helper.plist",
+    ),
     plist({
-      Label: "com.example.rea.helper",
-      BundleProgram: "Contents/Library/LaunchServices/com.example.rea.helper",
+      Label: "com.example.binsight.helper",
+      BundleProgram:
+        "Contents/Library/LaunchServices/com.example.binsight.helper",
     }),
   );
   await write(
-    join(contents, "Library", "LaunchAgents", "com.example.rea.agent.plist"),
+    join(
+      contents,
+      "Library",
+      "LaunchAgents",
+      "com.example.binsight.agent.plist",
+    ),
     plist({
-      Label: "com.example.rea.agent",
-      BundleProgram: "Contents/Helpers/rea-tool",
+      Label: "com.example.binsight.agent",
+      BundleProgram: "Contents/Helpers/binsight-tool",
     }),
   );
   await clang(root, {
     name: "tool",
     source: PROGRAM,
-    output: join(contents, "Helpers", "rea-tool"),
+    output: join(contents, "Helpers", "binsight-tool"),
   });
 };
 
 /**
- * Build `MacFixture.app` with every bundle role and dylib-loading shape REA
+ * Build `MacFixture.app` with every bundle role and dylib-loading shape BinSight
  * projects. The main executable prints which `libchain.dylib` copy dyld
  * selected, so callers can compare static resolution with a real load.
  */

@@ -19,7 +19,7 @@ const run = promisify(execFile);
 it.skipIf(process.platform === "win32")(
   "rejects a FIFO replacement without blocking the owner process",
   async () => {
-    const root = await createTestTempDirectory("rea-directory-fifo-");
+    const root = await createTestTempDirectory("binsight-directory-fifo-");
     await writeFile(join(root, "module.js"), "export {}\n");
     const probe = fileURLToPath(
       new URL("../../fixtures/directoryReaderFifoProbe.mjs", import.meta.url),
@@ -33,7 +33,7 @@ it.skipIf(process.platform === "win32")(
     const launch = await spawnOwnedProviderProcess({
       command: process.execPath,
       arguments: [probe, readerModule, root],
-      runId: `rea-fifo-probe-${randomUUID()}`,
+      runId: `binsight-fifo-probe-${randomUUID()}`,
       cwd: tmpdir(),
       hostEnvironment: process.env,
     });
@@ -59,7 +59,9 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "skips unsupported FIFO entries and continues through the directory",
   async () => {
-    const root = await createTestTempDirectory("rea-directory-entry-fifo-");
+    const root = await createTestTempDirectory(
+      "binsight-directory-entry-fifo-",
+    );
     await writeFile(join(root, "module.js"), "export {}\n");
     await run("mkfifo", [join(root, "unsupported.fifo")]);
     const probe = fileURLToPath(
@@ -77,7 +79,7 @@ it.skipIf(process.platform === "win32")(
     const launch = await spawnOwnedProviderProcess({
       command: process.execPath,
       arguments: [probe, readerModule, root],
-      runId: `rea-directory-entry-fifo-${randomUUID()}`,
+      runId: `binsight-directory-entry-fifo-${randomUUID()}`,
       cwd: tmpdir(),
       hostEnvironment: process.env,
     });

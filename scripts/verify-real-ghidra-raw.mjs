@@ -35,7 +35,7 @@ const installation = inspectGhidraInstallation({
 assert.equal(installation.status, "available", JSON.stringify(installation));
 
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-raw-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-raw-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const bytes = Buffer.from("1eff2fe1", "hex"); // ARM little-endian bx lr.
@@ -69,7 +69,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-raw-proof", version: "1" });
+const client = new Client({ name: "binsight-real-raw-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);

@@ -54,7 +54,9 @@ describe.skipIf(process.platform === "win32")(
     cliTest(
       "stops quietly when the reader closes during streamed JSON",
       async ({ processes }) => {
-        const directory = await createTestTempDirectory("rea-closed-stdout-");
+        const directory = await createTestTempDirectory(
+          "binsight-closed-stdout-",
+        );
         const database = join(directory, "rows.db");
         const writer = new DatabaseSync(database);
         writer.exec("CREATE TABLE t (v TEXT)");

@@ -33,7 +33,7 @@ const citationMetrics = (
         item: {
           type: "mcp_tool_call",
           status: "completed",
-          server: "rea",
+          server: "binsight",
           tool,
           arguments: {},
           result,
@@ -56,7 +56,7 @@ describe("Codex agent release evaluation", () => {
     const call = {
       id: "item-tool-1",
       type: "mcp_tool_call",
-      server: "rea",
+      server: "binsight",
       tool: "analyze_javascript_application",
       arguments: { input_path: "/tmp/app" },
     };
@@ -95,7 +95,7 @@ describe("Codex agent release evaluation", () => {
       answerHeuristicsMet: true,
       epistemicCuePresent: true,
     });
-    expect(metrics.reaCalls).toHaveLength(1);
+    expect(metrics.binsightCalls).toHaveLength(1);
   });
 
   it("requires the final answer to cite produced Evidence when requested", () => {
@@ -107,7 +107,7 @@ describe("Codex agent release evaluation", () => {
         item: {
           id: "item-tool",
           type: "mcp_tool_call",
-          server: "rea",
+          server: "binsight",
           tool: "inspect_managed_artifact",
           arguments: { path: "/tmp/app.dll" },
           result: { structuredContent: evidence },
@@ -143,7 +143,7 @@ describe("Codex completed tool call parsing", () => {
           type: "mcp_tool_call",
           id: "same-call",
           status: "in_progress",
-          server: "rea",
+          server: "binsight",
           tool: evidence.operation,
           arguments: {},
         },
@@ -153,7 +153,7 @@ describe("Codex completed tool call parsing", () => {
             id: "same-call",
             type: "mcp_tool_call",
             status: "completed",
-            server: "rea",
+            server: "binsight",
             tool: evidence.operation,
             arguments: {},
             result: { structuredContent: evidence },
@@ -174,7 +174,7 @@ describe("Codex completed tool call parsing", () => {
     expect(metrics).toMatchObject({
       naturalUse: true,
       correctFirstTool: true,
-      reaCalls: [{ id: "same-call" }],
+      binsightCalls: [{ id: "same-call" }],
       evidenceIds: [evidence.evidence_id],
       finalCitesEvidence: true,
       answerHeuristicsMet: true,
@@ -182,7 +182,7 @@ describe("Codex completed tool call parsing", () => {
   });
 
   it.each([
-    { server: "rea", server_name: "other" },
+    { server: "binsight", server_name: "other" },
     { tool: "inspect_managed_artifact", name: "other_tool" },
     { server: 42 },
     { arguments: { value: 1 }, input: { value: 2 } },
@@ -197,7 +197,7 @@ describe("Codex completed tool call parsing", () => {
             item: {
               type: "mcp_tool_call",
               status: "completed",
-              server: "rea",
+              server: "binsight",
               tool: evidence.operation,
               arguments: {},
               result: { structuredContent: evidence },
@@ -230,8 +230,8 @@ describe("Codex completed tool call parsing", () => {
       routed: false,
     },
     {
-      label: "verified REA alias",
-      identity: { server_name: "rea" },
+      label: "verified BinSight alias",
+      identity: { server_name: "binsight" },
       routed: true,
     },
   ])("routes only $label calls", ({ identity, routed }) => {
@@ -257,7 +257,7 @@ describe("Codex completed tool call parsing", () => {
       correctFirstTool: routed,
       firstTool: routed ? "inspect_managed_artifact" : null,
       requiredToolSubsequenceMet: routed,
-      reaCalls: routed ? [{ server: "rea" }] : [],
+      binsightCalls: routed ? [{ server: "binsight" }] : [],
     });
   });
 });
@@ -386,7 +386,7 @@ describe("Codex request accounting", () => {
       item: {
         id,
         type: "mcp_tool_call",
-        server: "rea",
+        server: "binsight",
         tool: "binary_session",
         arguments: {},
       },
@@ -404,7 +404,7 @@ describe("Codex request accounting", () => {
       item: {
         id,
         type: "mcp_tool_call",
-        server: "rea",
+        server: "binsight",
         tool,
         arguments: {},
         status,
@@ -433,7 +433,7 @@ describe("Codex request accounting", () => {
       item: {
         id,
         type: "mcp_tool_call",
-        server: "rea",
+        server: "binsight",
         tool: "inspect_artifact",
         arguments: arguments_,
       },
@@ -459,7 +459,7 @@ describe("Codex agent routing and error evaluation", () => {
           type: "item.completed",
           item: {
             type: "mcp_tool_call",
-            server: "rea",
+            server: "binsight",
             tool: "close_binary",
             arguments: {},
             result: { structured_content: { error: "unrecognized failure" } },
@@ -469,11 +469,14 @@ describe("Codex agent routing and error evaluation", () => {
       "close_binary",
       { requiredToolSubsequence: ["close_binary"] },
     );
-    expect(metrics.reaCalls[0]).toMatchObject({ error: true, errorCode: null });
+    expect(metrics.binsightCalls[0]).toMatchObject({
+      error: true,
+      errorCode: null,
+    });
     expect(metrics.requiredToolSubsequenceMet).toBe(false);
   });
 
-  it("requires no REA call when target selection is missing", () => {
+  it("requires no BinSight call when target selection is missing", () => {
     const events = [
       {
         type: "item.completed",
@@ -493,7 +496,7 @@ describe("Codex agent routing and error evaluation", () => {
             type: "item.completed",
             item: {
               type: "mcp_tool_call",
-              server: "rea",
+              server: "binsight",
               tool: "analyze_javascript_application",
               arguments: { input_path: "/nearby/test-fixture" },
             },
@@ -504,7 +507,7 @@ describe("Codex agent routing and error evaluation", () => {
     ).toBe(false);
   });
 
-  it("counts actual text-only REA errors and SDK-rejected schema inputs once per call", () => {
+  it("counts actual text-only BinSight errors and SDK-rejected schema inputs once per call", () => {
     const source = {
       kind: "retained-evidence",
       evidence_id: `ev_${"a".repeat(64)}`,
@@ -514,7 +517,7 @@ describe("Codex agent routing and error evaluation", () => {
       item: {
         id,
         type: "mcp_tool_call",
-        server: "rea",
+        server: "binsight",
         tool: "inspect_analysis_view",
         arguments: arguments_,
         status: "failed",
@@ -556,7 +559,7 @@ describe("Codex agent routing and error evaluation", () => {
       "inspect_analysis_view",
     );
     expect(metrics.inputValidationFailureCount).toBe(2);
-    expect(metrics.reaCalls.map(({ errorCode }) => errorCode)).toEqual([
+    expect(metrics.binsightCalls.map(({ errorCode }) => errorCode)).toEqual([
       null,
       "invalid_request",
       null,
@@ -575,7 +578,7 @@ describe("Codex agent completion evaluation", () => {
           item: {
             id: "item-tool",
             type: "mcp_tool_call",
-            server: "rea",
+            server: "binsight",
             tool: "analyze_javascript_application",
             arguments: { input_path: "/tmp/app.asar" },
             result: { structuredContent: evidence },
@@ -618,7 +621,7 @@ describe("Codex agent completion evaluation", () => {
         type: "item.completed",
         item: {
           type: "mcp_tool_call",
-          server: "rea",
+          server: "binsight",
           tool: "analyze_javascript_application",
           arguments: {},
         },
@@ -658,7 +661,7 @@ describe("Codex agent completion evaluation", () => {
       const item = {
         id: "item-failed",
         type: "mcp_tool_call",
-        server: "rea",
+        server: "binsight",
         tool: "analyze_javascript_application",
         arguments: { input_path: "/tmp/app.asar" },
         result: { structured_content: { error: { code: "denied" } } },
@@ -674,7 +677,7 @@ describe("Codex agent completion evaluation", () => {
         naturalUse: true,
         correctFirstTool: true,
         evidenceIds: [],
-        reaCalls: [{ error: true }],
+        binsightCalls: [{ error: true }],
       });
     },
   );
@@ -696,7 +699,7 @@ describe("Codex agent workflow evaluation", () => {
       item: {
         id,
         type: "mcp_tool_call",
-        server: "rea",
+        server: "binsight",
         tool,
         arguments: { id },
         result,

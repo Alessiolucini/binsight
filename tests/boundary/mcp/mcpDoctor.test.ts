@@ -38,7 +38,7 @@ describe("production MCP doctor", () => {
         checks: [{ name: "transport", ok: false }],
       },
       meta: {
-        command: "rea mcp doctor",
+        command: "binsight mcp doctor",
         duration: expect.stringMatching(/^\d+ms$/u),
       },
     });
@@ -124,7 +124,7 @@ describe("production MCP doctor", () => {
 
 describe("production MCP doctor probe validation", () => {
   it("rejects a schema-invalid probe while retaining the discovered inventory", async () => {
-    const root = await createTestTempDirectory("rea-mcp-doctor-reply-");
+    const root = await createTestTempDirectory("binsight-mcp-doctor-reply-");
     const snapshotPath = join(root, "reply.json");
     const environment = { PATH: process.env.PATH ?? "" };
     const client = new Client({ name: "doctor-reply-capture", version: "1" });
@@ -284,7 +284,7 @@ describe("production MCP doctor child lifecycle", () => {
   });
 
   it("kills a child that misses the absolute startup deadline", async () => {
-    const root = await createTestTempDirectory("rea-mcp-doctor-");
+    const root = await createTestTempDirectory("binsight-mcp-doctor-");
     const pidPath = join(root, "pid");
     // Keep filesystem/process I/O real. Advance only the deadline timers,
     // after the fixture proves it started and published its PID.
@@ -314,7 +314,7 @@ describe("production MCP doctor child lifecycle", () => {
 });
 
 const runNoisyDoctorChild = async (body: string) => {
-  const root = await createTestTempDirectory("rea-mcp-doctor-stderr-");
+  const root = await createTestTempDirectory("binsight-mcp-doctor-stderr-");
   const scriptPath = join(root, "noisy.mjs");
   await writeFile(scriptPath, body);
   return runProductionMcpDoctor({

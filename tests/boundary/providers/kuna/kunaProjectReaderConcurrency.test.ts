@@ -76,7 +76,7 @@ test.skipIf(process.platform === "win32")(
     const missing = barrier();
     let exports = 0;
     const { cacheRoot, open } = await session(
-      "rea-kuna-reader-eviction-",
+      "binsight-kuna-reader-eviction-",
       {},
       {},
       async (options) => {

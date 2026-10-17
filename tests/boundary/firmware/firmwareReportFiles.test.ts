@@ -16,7 +16,7 @@ it.each([
 ])(
   "rejects complete JSON containing %s without repairing producer bytes",
   async (_name, bytes) => {
-    const root = await createTestTempDirectory("rea-firmware-report-");
+    const root = await createTestTempDirectory("binsight-firmware-report-");
     const path = join(root, "report.json");
     await writeFile(
       path,
@@ -36,7 +36,7 @@ it.each([
 );
 
 it("preserves valid Unicode and a literal replacement character in producer JSON", async () => {
-  const root = await createTestTempDirectory("rea-firmware-report-");
+  const root = await createTestTempDirectory("binsight-firmware-report-");
   const path = join(root, "report.json");
   const report = { description: "固件 🧩 \ufffd", path: "/输入/firmware.bin" };
   await writeFile(path, JSON.stringify(report));
@@ -46,7 +46,7 @@ it("preserves valid Unicode and a literal replacement character in producer JSON
 });
 
 it("orders extracted firmware paths by code point independently of host locale", async () => {
-  const root = await createTestTempDirectory("rea-firmware-inventory-");
+  const root = await createTestTempDirectory("binsight-firmware-inventory-");
   await mkdir(join(root, "Lib"));
   for (const path of ["a.bin", "z.bin", "\u00e4.bin", "B.bin", "Lib/x.bin"])
     await writeFile(join(root, path), "");

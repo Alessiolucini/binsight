@@ -14,7 +14,9 @@ cliTest(
     expect(cached.stdout).toContain(PRODUCT_IDENTITY.packageVersion);
     expect(await readdir(cliCompileCache)).not.toHaveLength(0);
 
-    const selected = await createTestTempDirectory("rea-cli-selected-cache-");
+    const selected = await createTestTempDirectory(
+      "binsight-cli-selected-cache-",
+    );
     const overridden = await cli.run({
       arguments: ["--version"],
       environment: { NODE_COMPILE_CACHE: selected },
@@ -28,8 +30,10 @@ cliTest(
 cliTest(
   "collects requested child coverage without populating the fixture cache",
   async ({ processes }) => {
-    const cache = await createTestTempDirectory("rea-cli-coverage-cache-");
-    const coverage = await createTestTempDirectory("rea-cli-child-coverage-");
+    const cache = await createTestTempDirectory("binsight-cli-coverage-cache-");
+    const coverage = await createTestTempDirectory(
+      "binsight-cli-child-coverage-",
+    );
     const cli = createTestCli(processes, cache);
     const result = await cli.run({
       arguments: ["--version"],
@@ -45,7 +49,7 @@ cliTest(
 );
 
 cliTest("preserves a caller's cold CLI launch", async ({ processes }) => {
-  const cache = await createTestTempDirectory("rea-cli-disabled-cache-");
+  const cache = await createTestTempDirectory("binsight-cli-disabled-cache-");
   const cli = createTestCli(processes, cache);
   const result = await cli.run({
     arguments: ["--version"],

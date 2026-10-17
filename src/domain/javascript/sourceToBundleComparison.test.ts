@@ -621,7 +621,7 @@ const historicalGraph = (
     manifests: [],
     vcs: { kind: "none", head: null, dirty: null },
     provenance: {
-      importer: "rea-test",
+      importer: "binsight-test",
       importer_version: "1",
       caller: "source-to-bundle-test",
     },

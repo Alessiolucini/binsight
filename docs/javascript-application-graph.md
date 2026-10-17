@@ -1,6 +1,6 @@
 # JavaScript Application Graph
 
-JavaScript Application Graph is REA's provider-neutral domain model for
+JavaScript Application Graph is BinSight's provider-neutral domain model for
 connecting shipped application bytes, JavaScript structure, Electron process
 boundaries, passive browser observations, and native add-ons. It is a durable,
 canonical data contract; it is not an extractor or a new CLI/MCP tool.
@@ -12,7 +12,7 @@ I/O, does not evaluate JavaScript, and has no application-specific node kinds.
 
 ## Layer boundary
 
-The graph complements existing REA models instead of replacing them:
+The graph complements existing BinSight models instead of replacing them:
 
 | Existing model               | Responsibility                                                                         | Application Graph use                                      |
 | ---------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
@@ -117,7 +117,7 @@ correspondence is a separately identified cross-layer inference.
 
 Source module links retain their resolution mode. Static imports in `.ts` and
 `.tsx` are `compiler-dependent` when compiler options have not been retained.
-REA compares Node import and require resolution: a shared outcome remains
+BinSight compares Node import and require resolution: a shared outcome remains
 available with a limitation; divergent outcomes remain unavailable with both
 conditional branches and their limitations. This models source relationships,
 not verified emitted code or execution. A declaration file found only through

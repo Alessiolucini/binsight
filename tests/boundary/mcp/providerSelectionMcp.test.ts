@@ -35,7 +35,7 @@ afterEach(async () => {
 
 describe("provider selection over MCP", () => {
   it("keeps open_binary and binary_session binding semantics exact", async () => {
-    directory = await createTestTempDirectory("rea-provider-mcp-");
+    directory = await createTestTempDirectory("binsight-provider-mcp-");
     const target = join(directory, "fixture.hop");
     await writeFile(target, "fixture");
     const starts: string[] = [];
@@ -239,7 +239,7 @@ const structured = (result: CallToolResult): Record<string, unknown> =>
     : z.record(z.string(), z.unknown()).parse(result.structuredContent);
 
 it("retains attributed mixed profile cleanup through registered MCP calls and partial retry", async () => {
-  directory = await createTestTempDirectory("rea-profile-completion-mcp-");
+  directory = await createTestTempDirectory("binsight-profile-completion-mcp-");
   const path = join(directory, "fixture.hop");
   await writeFile(path, "fixture");
   const starts: string[] = [];

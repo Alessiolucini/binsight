@@ -216,7 +216,7 @@ const requireBrowser = (
   browser === undefined
     ? err(
         new AnalysisCapabilityUnavailableError(
-          "rea-cdp-browser",
+          "binsight-cdp-browser",
           operation,
           "browser observation provider is not configured",
         ),

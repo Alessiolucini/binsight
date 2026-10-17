@@ -66,7 +66,7 @@ export async function verifyBrowserRuntime(
     const env = {
       ...process.env,
       REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-provider/hopper",
     };
     const input = { cdp_endpoint: endpoint, target_id: target.target_id };
     const cliListener = await promisify(execFile)(
@@ -155,7 +155,7 @@ export async function verifyBrowserRuntime(
     assert.equal(
       stillOpen.result.value,
       true,
-      "REA must preserve the externally owned page",
+      "BinSight must preserve the externally owned page",
     );
     const location = await action.send("Runtime.evaluate", {
       expression: "location.href",

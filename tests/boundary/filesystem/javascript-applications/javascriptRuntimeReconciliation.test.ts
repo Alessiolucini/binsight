@@ -241,8 +241,8 @@ it("reconciles active Electron as a partial target-only runtime capture", async 
     input,
     createElectronActiveObservationFixtureResult(applicationPath),
     {
-      id: "rea-playwright-electron-active",
-      name: "REA Playwright active Electron observation provider",
+      id: "binsight-playwright-electron-active",
+      name: "BinSight Playwright active Electron observation provider",
       version: "1",
     },
   );
@@ -283,15 +283,15 @@ it("commits complete Electron actions independently from selected arguments", as
           step_id: "open",
           kind: "deep-link",
           delivery: "second-instance",
-          url: "rea-fixture://open/item?token=selected",
+          url: "binsight-fixture://open/item?token=selected",
         },
       ],
     }),
     application_root: fixture,
   });
   const provider = {
-    id: "rea-playwright-electron-active",
-    name: "REA Playwright active Electron observation provider",
+    id: "binsight-playwright-electron-active",
+    name: "BinSight Playwright active Electron observation provider",
     version: "1",
   };
   const first = createElectronActiveEvidence(
@@ -321,7 +321,7 @@ it("commits complete Electron actions independently from selected arguments", as
       step_id: "open",
       kind: "deep-link",
       delivery: "second-instance",
-      url: "rea-fixture://open/item?token=selected",
+      url: "binsight-fixture://open/item?token=selected",
     },
   ]);
   expect(first.parameters.args).toEqual(["--token", "first-secret"]);
@@ -329,8 +329,10 @@ it("commits complete Electron actions independently from selected arguments", as
 
 it("imports an operator-provided cache layer through an explicit file mapping", async () => {
   const application = await applicationFixture();
-  const cache = await createTestTempDirectory("rea-runtime-cache-static-");
-  const runtimeCache = await createTestTempDirectory("rea-runtime-cache-live-");
+  const cache = await createTestTempDirectory("binsight-runtime-cache-static-");
+  const runtimeCache = await createTestTempDirectory(
+    "binsight-runtime-cache-live-",
+  );
   const cacheSource = SOURCE;
   await mkdir(join(cache, "mapped"));
   await Promise.all([
@@ -445,7 +447,7 @@ const reconcileScriptLocation = (
 it.skipIf(process.platform === "win32")(
   "keeps distinct POSIX backslash and slash script locations separate",
   async () => {
-    const root = await createTestTempDirectory("rea-backslash-runtime-");
+    const root = await createTestTempDirectory("binsight-backslash-runtime-");
     const literal = "literal\\name.js";
     await writeFile(join(root, literal), "export const marker = 'literal';\n");
     const application = await analyzeFixture(root);
@@ -462,7 +464,9 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "does not make POSIX literal and slash paths ambiguous, including Windows runtime mappings",
   async () => {
-    const root = await createTestTempDirectory("rea-backslash-runtime-pair-");
+    const root = await createTestTempDirectory(
+      "binsight-backslash-runtime-pair-",
+    );
     const literal = "literal\\name.js";
     await mkdir(join(root, "literal"));
     await writeFile(join(root, literal), "export const marker = 'literal';\n");
@@ -497,7 +501,9 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "preserves URL-prefix path semantics separately from logical artifact names",
   async () => {
-    const root = await createTestTempDirectory("rea-backslash-runtime-url-");
+    const root = await createTestTempDirectory(
+      "binsight-backslash-runtime-url-",
+    );
     await writeFile(
       join(root, "literal\\name.js"),
       "export const marker = 42;\n",
@@ -567,7 +573,7 @@ it.skipIf(process.platform === "win32")(
   "interprets raw loadFile declarations using the captured native path format",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-native-loadfile-declaration-",
+      "binsight-native-loadfile-declaration-",
     );
     await mkdir(join(root, "dist"));
     await writeFile(join(root, "dist", "index.html"), "slash file");
@@ -606,7 +612,9 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32").each(["literal\\dir", "literal%5Cdir"])(
   "maps a runtime root to the exact logical artifact prefix %j",
   async (prefix) => {
-    const root = await createTestTempDirectory("rea-literal-artifact-prefix-");
+    const root = await createTestTempDirectory(
+      "binsight-literal-artifact-prefix-",
+    );
     await mkdir(join(root, prefix));
     await writeFile(
       join(root, prefix, "app.js"),
@@ -636,7 +644,9 @@ it.skipIf(process.platform === "win32").each(["literal\\dir", "literal%5Cdir"])(
 it.skipIf(process.platform === "win32")(
   "uses resolved artifact paths instead of a raw declaration alias",
   async () => {
-    const root = await createTestTempDirectory("rea-resolved-loadfile-alias-");
+    const root = await createTestTempDirectory(
+      "binsight-resolved-loadfile-alias-",
+    );
     const directory = "literal\\dir";
     await mkdir(join(root, directory));
     await writeFile(join(root, directory, "index.html"), "owned target");
@@ -665,7 +675,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("rejects unsafe logical artifact prefixes without decoding literal names", async () => {
-  const root = await createTestTempDirectory("rea-prefix-admission-");
+  const root = await createTestTempDirectory("binsight-prefix-admission-");
   await writeFile(join(root, "app.js"), "export const marker = 42;\n");
   const analysis = await analyzeFixture(root);
   const accepts = (artifact_prefix: string) =>
@@ -699,7 +709,7 @@ it("rejects unsafe logical artifact prefixes without decoding literal names", as
 it.skipIf(process.platform === "win32")(
   "keeps a leading backslash declaration literal only for POSIX captures",
   async () => {
-    const root = await createTestTempDirectory("rea-leading-loadfile-");
+    const root = await createTestTempDirectory("binsight-leading-loadfile-");
     await writeFile(join(root, "\\index.html"), "literal target");
     await writeFile(
       join(root, "main.cjs"),
@@ -729,7 +739,9 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("keeps a raw nested loadFile target application-relative when the producer also resolves a nested decoy", async () => {
-  const root = await createTestTempDirectory("rea-raw-loadfile-ownership-");
+  const root = await createTestTempDirectory(
+    "binsight-raw-loadfile-ownership-",
+  );
   await mkdir(join(root, "dist"));
   await mkdir(join(root, "sub", "dist"), { recursive: true });
   await writeFile(join(root, "dist", "index.html"), "application target");
@@ -757,7 +769,9 @@ it
   .each(["app", "literal\\app", "café", "cafe\u0301"])(
   "maps raw renderer declarations through the logical application prefix %j",
   async (prefix) => {
-    const root = await createTestTempDirectory("rea-prefixed-native-renderer-");
+    const root = await createTestTempDirectory(
+      "binsight-prefixed-native-renderer-",
+    );
     await mkdir(join(root, prefix, "dist"), { recursive: true });
     await writeFile(
       join(root, prefix, "dist", "index.html"),
@@ -794,7 +808,9 @@ it
 );
 
 it("confines raw renderer declarations to the operator-selected artifact prefix", async () => {
-  const root = await createTestTempDirectory("rea-native-prefix-isolation-");
+  const root = await createTestTempDirectory(
+    "binsight-native-prefix-isolation-",
+  );
   for (const app of ["appA", "appB"]) {
     await mkdir(join(root, app, "dist"), { recursive: true });
     await writeFile(join(root, app, "dist", "index.html"), app);
@@ -839,7 +855,9 @@ it("confines raw renderer declarations to the operator-selected artifact prefix"
 });
 
 it("retains uncertainty for overlapping file mappings with distinct application interpretations", async () => {
-  const root = await createTestTempDirectory("rea-overlapping-native-prefix-");
+  const root = await createTestTempDirectory(
+    "binsight-overlapping-native-prefix-",
+  );
   await mkdir(join(root, "app", "dist"), { recursive: true });
   await writeFile(join(root, "app", "dist", "index.html"), "shared target");
   for (const [path, declaration] of [

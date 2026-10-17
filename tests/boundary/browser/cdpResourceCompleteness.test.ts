@@ -438,7 +438,7 @@ describe("resource uncertainty in production MCP registration", () => {
 describe("resource uncertainty in public CLI Evidence", () => {
   it("preserves partial membership while complete inventories still prove removal", async () => {
     const { state, inspect } = await startBrowser();
-    const root = await createTestTempDirectory("rea-resource-comparison-");
+    const root = await createTestTempDirectory("binsight-resource-comparison-");
     const before = join(root, "before.json");
     const after = join(root, "after.json");
     await writeFile(before, JSON.stringify({ inspection: await inspect() }));

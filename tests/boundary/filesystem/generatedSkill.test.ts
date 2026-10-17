@@ -13,7 +13,7 @@ const authored =
   '---\nname: reverse-engineer-anything\nmetadata:\n  version: "33"\n---\n\n# Instructions\n\nInspect the caller-selected artifact.\n';
 
 async function fixture(eol = "\n") {
-  const root = await createTestTempDirectory("rea-generated-skill-");
+  const root = await createTestTempDirectory("binsight-generated-skill-");
   for (const path of [
     "scripts/generate-skill-metadata.mjs",
     "scripts/lib/generated-file.mjs",
@@ -28,7 +28,7 @@ async function fixture(eol = "\n") {
   await writeFile(join(root, "package.json"), '{"type":"module"}\n');
   await writeFile(
     join(root, "dist/identity.js"),
-    'export const PRODUCT_IDENTITY = { packageSpecifier: "rea-agents@latest", registrationPackageSpecifier: "rea-agents@6.2.0" };\n',
+    'export const PRODUCT_IDENTITY = { packageSpecifier: "binsight@latest", registrationPackageSpecifier: "binsight@6.2.0" };\n',
   );
   await writeFile(join(sourceRoot, "SKILL.md"), authored.replaceAll("\n", eol));
   await writeFile(
@@ -121,13 +121,13 @@ it("pins authored `@latest` commands to the packaged version", async () => {
     join(f.sourceRoot, "SKILL.md"),
     authored.replace(
       "Inspect the caller-selected artifact.",
-      "Run `npx -y rea-agents@latest doctor --json` first.",
+      "Run `npx -y binsight@latest doctor --json` first.",
     ),
   );
   await f.generate();
   const generated = await readFile(join(f.outputRoot, "SKILL.md"), "utf8");
-  expect(generated).toContain("npx -y rea-agents@6.2.0 doctor --json");
-  expect(generated).not.toContain("rea-agents@latest");
+  expect(generated).toContain("npx -y binsight@6.2.0 doctor --json");
+  expect(generated).not.toContain("binsight@latest");
   await f.generate("--check");
 });
 

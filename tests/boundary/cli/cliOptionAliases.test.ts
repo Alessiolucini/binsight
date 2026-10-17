@@ -66,12 +66,12 @@ describe("CLI option aliases", () => {
     const cli = createCli({});
     const result = await serve(cli, [
       "inspect-plist",
-      "/nonexistent/REA.app",
+      "/nonexistent/BinSight.app",
       "--relative-path",
       "Contents/Info.plist",
       "--json",
     ]);
     expect(result.stdout).not.toContain("Unknown flag");
-    expect(result.stdout).toContain("/nonexistent/REA.app");
+    expect(result.stdout).toContain("/nonexistent/BinSight.app");
   });
 });

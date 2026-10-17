@@ -39,7 +39,7 @@ import {
   HOPPER_PROVIDER_IDENTITY,
 } from "./HopperProviderCapabilities.js";
 
-/** Concrete analysis provider backed by REA's private Hopper bridge. */
+/** Concrete analysis provider backed by BinSight's private Hopper bridge. */
 export class HopperProvider implements AnalysisProviderCandidate {
   private readonly environment: Readonly<NodeJS.ProcessEnv>;
 
@@ -119,7 +119,7 @@ export class HopperProvider implements AnalysisProviderCandidate {
         status: "unsupported",
         code: "target_kind_unsupported",
         reason:
-          "This Hopper macOS launcher cannot start REA's analysis bridge when opening a saved Hopper database. Open an executable target instead; saved-database analysis is unavailable until Hopper exposes a database launch route that runs the bridge script.",
+          "This Hopper macOS launcher cannot start BinSight's analysis bridge when opening a saved Hopper database. Open an executable target instead; saved-database analysis is unavailable until Hopper exposes a database launch route that runs the bridge script.",
         diagnostics,
       };
     if (target.kind === "database")
@@ -133,7 +133,7 @@ export class HopperProvider implements AnalysisProviderCandidate {
       return {
         status: "unsupported",
         code: "architecture_unsupported",
-        reason: `REA's Hopper adapter does not admit ${
+        reason: `BinSight's Hopper adapter does not admit ${
           target.architecture === "mips"
             ? "MIPS"
             : target.architecture === "riscv"
@@ -288,7 +288,7 @@ export class HopperProvider implements AnalysisProviderCandidate {
           ...(preparedImage === undefined
             ? []
             : [
-                "REA loaded a verified thin Mach-O slice from the original FAT source. Identity and file offsets refer to the original file. The owned temporary image and its Hopper document close together, including on MCP shutdown.",
+                "BinSight loaded a verified thin Mach-O slice from the original FAT source. Identity and file offsets refer to the original file. The owned temporary image and its Hopper document close together, including on MCP shutdown.",
               ]),
           ...(CAPABILITIES.find(
             (descriptor) => descriptor.operation === operation,

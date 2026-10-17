@@ -6,7 +6,7 @@ selected local executable or library. It reads the file without running it and
 requires no Rust installation, active binary target, Hopper, Ghidra, or IDA.
 
 ```bash
-rea inspect-rust-binary /absolute/path/to/application --json
+binsight inspect-rust-binary /absolute/path/to/application --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

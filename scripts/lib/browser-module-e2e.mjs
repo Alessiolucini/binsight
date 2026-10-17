@@ -28,12 +28,12 @@ export async function verifyBrowserModules(
   let primaryError;
   try {
     site = await startBrowserModuleSite();
-    root = await mkdtemp(join(tmpdir(), "rea-browser-modules-"));
+    root = await mkdtemp(join(tmpdir(), "binsight-browser-modules-"));
     const env = {
       ...process.env,
       REA_LOG_LEVEL: "silent",
       REA_BROWSER_EXECUTABLE: executable,
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-provider/hopper",
     };
     const cli = async (...args) => {
       const { stdout } = await promisify(execFile)(

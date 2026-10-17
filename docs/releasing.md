@@ -1,4 +1,4 @@
-# Releasing REA
+# Releasing BinSight
 
 Pushes to main automatically open or refresh a Release Please PR with the next
 version and changelog. Review its migration notes and wait for its current CI
@@ -95,7 +95,7 @@ and checkpoint checks. The contribution inventory is a reviewed snapshot, not
 a signed attestation; the offline checker verifies local range coverage and
 credit consistency, not GitHub's authorship independently.
 
-Before editing the live PR, add `rea:release-notes-finalized` to prevent ordinary
+Before editing the live PR, add `binsight:release-notes-finalized` to prevent ordinary
 main-push proposals from overwriting the editorial notes. Wait for any already
 running proposal to finish. The guard applies to main-push automation; do not
 run manual checkpoint preparation over finalized notes. Remove the label to
@@ -142,7 +142,7 @@ migration notes for the release being prepared. The
 [6.1 to 6.2 migration guide](migration-6.2.md) records that release's changes;
 it is a historical reference, not the compatibility checklist for later releases.
 
-REA uses Release Please's `always-bump-minor` strategy: every release increments
+BinSight uses Release Please's `always-bump-minor` strategy: every release increments
 minor and resets patch, including releases with breaking changes. For example,
 the next release after 6.0.0 is 6.1.0. Version numbers use the SemVer format,
 but a minor increment does not promise backward compatibility. Review the
@@ -303,7 +303,7 @@ tag is an ancestor of main:
 
 ```bash
 git fetch origin main --tags
-git merge-base --is-ancestor rea-agents-5.0.0 origin/main
+git merge-base --is-ancestor binsight-5.0.0 origin/main
 ```
 
 Close the superseded main proposal before merging the synchronization PR.

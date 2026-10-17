@@ -12,7 +12,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps dependency manifests out of application roots and Electron entries through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-application-manifest-");
+    const root = await createTestTempDirectory(
+      "binsight-application-manifest-",
+    );
     const dependency = join(root, "node_modules", "dep");
     const nested = join(root, "a");
     await Promise.all([mkdir(dependency, { recursive: true }), mkdir(nested)]);
@@ -86,7 +88,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest(
   "keeps the artifact root when only dependency manifests are present",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-dependency-only-");
+    const root = await createTestTempDirectory("binsight-dependency-only-");
     const dependency = join(root, "node_modules", "dep");
     await mkdir(dependency, { recursive: true });
     await writeFile(

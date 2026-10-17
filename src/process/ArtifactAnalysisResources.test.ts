@@ -25,7 +25,7 @@ it("projects the specific reason and member evidence for retained cleanup", asyn
     process: producer,
     ownsProcessLifetime: true,
     ownership: {
-      runId: "rea-tshark-run-1",
+      runId: "binsight-tshark-run-1",
       leaderPid: 4242,
       processGroupId: 4242,
     },
@@ -66,7 +66,7 @@ it("projects the specific reason and member evidence for retained cleanup", asyn
     code: "cleanup_incomplete",
     details: {
       resources: [
-        "rea-tshark-run-1",
+        "binsight-tshark-run-1",
         "runtime-root",
         "pid:4242",
         "process-group:4242",

@@ -91,7 +91,7 @@ const cleanupHeldHandle = async (
 };
 
 it("retains invalid UTF-8 diagnostics and the uninstall read owner when close fails", async () => {
-  const home = await createTestTempDirectory("rea-uninstall-utf8-close-");
+  const home = await createTestTempDirectory("binsight-uninstall-utf8-close-");
   const path = join(home, "client.json");
   const original = Buffer.from([0xff]);
   await writeFile(path, original);
@@ -123,7 +123,9 @@ describe("ZCode fallback cleanup ownership", () => {
   it.each(["preflight", "configure"])(
     "retains a failed ZCode fallback close during %s until host cleanup",
     async (operation) => {
-      const home = await createTestTempDirectory("rea-zcode-fallback-close-");
+      const home = await createTestTempDirectory(
+        "binsight-zcode-fallback-close-",
+      );
       const host = systemSetupHost(
         { platform: "linux", homeDirectory: home } as DoctorHost,
         { HOME: home },
@@ -144,8 +146,8 @@ describe("ZCode fallback cleanup ownership", () => {
       try {
         const action =
           operation === "preflight"
-            ? host.inspectClientConfiguration?.(client, {}, ["rea", "mcp"])
-            : host.configureClient(client, {}, ["rea", "mcp"]);
+            ? host.inspectClientConfiguration?.(client, {}, ["binsight", "mcp"])
+            : host.configureClient(client, {}, ["binsight", "mcp"]);
         if (action === undefined) throw new Error("setup preflight missing");
         await expect(action).rejects.toMatchObject({
           _tag: "ConfigurationError",
@@ -174,7 +176,7 @@ describe("setup client configuration cleanup ownership", () => {
     "stops configuration and retains the %s read owner until host close",
     async (encoding, original) => {
       const { host, client } = await preparedVsCodeSetupHost(
-        "rea-setup-config-close-",
+        "binsight-setup-config-close-",
       );
       await writeFile(client.configPath, original);
 
@@ -189,14 +191,14 @@ describe("setup client configuration cleanup ownership", () => {
           host,
           [client],
           {},
-          ["rea", "mcp"],
+          ["binsight", "mcp"],
         )
           .then((detectedClients) =>
             configureDetectedClients({
               host,
               detectedClients,
               providerEnvironment: {},
-              command: ["rea", "mcp"],
+              command: ["binsight", "mcp"],
               clients: {},
               appliedActions: [],
             }),
@@ -236,7 +238,7 @@ describe("setup client configuration cleanup ownership", () => {
 
   it("waits for an admitted configuration read and rejects later admissions", async () => {
     const { host, client } = await preparedVsCodeSetupHost(
-      "rea-setup-config-inflight-",
+      "binsight-setup-config-inflight-",
     );
     await writeFile(client.configPath, '{"servers": {}}\n');
 
@@ -265,7 +267,7 @@ describe("setup client configuration cleanup ownership", () => {
     let hostCloseFinished = false;
     let alignment: Promise<boolean> | undefined;
     try {
-      alignment = host.clientNeedsConfigure(client, {}, ["rea", "mcp"]);
+      alignment = host.clientNeedsConfigure(client, {}, ["binsight", "mcp"]);
       await readStarted;
 
       const close = host.close;
@@ -276,7 +278,7 @@ describe("setup client configuration cleanup ownership", () => {
       });
 
       const lateAdmission = await host
-        .clientNeedsConfigure(client, {}, ["rea", "mcp"])
+        .clientNeedsConfigure(client, {}, ["binsight", "mcp"])
         .then(
           () => undefined,
           (cause: unknown) => cause,

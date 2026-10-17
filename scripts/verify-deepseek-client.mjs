@@ -20,7 +20,7 @@ assert(process.platform !== "win32", "Native Windows coverage is unverified.");
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
 const command = process.env.REA_VERIFY_DEEPSEEK_COMMAND ?? "dsh";
-const lab = await mkdtemp(join(tmpdir(), "rea-deepseek-client-"));
+const lab = await mkdtemp(join(tmpdir(), "binsight-deepseek-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -89,9 +89,9 @@ const patches = (text) =>
   });
 const withoutRea = (text) =>
   patches(text).flatMap((op) => {
-    if (op.id === "rea-mcp") return [];
+    if (op.id === "binsight-mcp") return [];
     if (!Array.isArray(op.insert)) return [op];
-    const insert = op.insert.filter((entry) => entry.id !== "rea-mcp");
+    const insert = op.insert.filter((entry) => entry.id !== "binsight-mcp");
     return insert.length === 0 ? [] : [{ ...op, insert }];
   });
 
@@ -142,13 +142,13 @@ const fixture = await createOpenAiModelFixture({
   onRequest: async ({ body, tools, requestIndex }) => {
     // Harness generates a session title in a separate, tool-free model request.
     if (tools.length === 0)
-      return { role: "assistant", content: "REA validation" };
+      return { role: "assistant", content: "BinSight validation" };
     assert(
       ++mainRequests <= 4,
       "Harness did not complete the bounded fixture workflow.",
     );
-    const rea = tools.filter((tool) => tool.name.startsWith("mcp__rea__"));
-    const observedCatalog = rea
+    const binsight = tools.filter((tool) => tool.name.startsWith("mcp__rea__"));
+    const observedCatalog = binsight
       .map((tool) => tool.name.slice("mcp__rea__".length))
       .sort();
     assert.deepEqual(
@@ -157,7 +157,7 @@ const fixture = await createOpenAiModelFixture({
     );
     if (catalog === undefined) {
       catalog = observedCatalog;
-      for (const tool of rea) {
+      for (const tool of binsight) {
         assert(
           ajv.validateSchema(tool.parameters),
           `${tool.name}: ${ajv.errorsText(ajv.errors)}`,
@@ -255,7 +255,7 @@ try {
 - id: llm-pi-ai
   config:
     providers:
-      rea-fixture:
+      binsight-fixture:
         apiKeyEnv: OPENAI_API_KEY
         api: openai-completions
         baseURL: ${fixture.baseUrl}
@@ -264,17 +264,17 @@ try {
           mode: normal
           maxRetries: 0
         models:
-          - id: rea-client-fixture
+          - id: binsight-client-fixture
             contextWindow: 1000000
 - id: agent-default-model
   config:
-    provider: rea-fixture
-    model: rea-client-fixture
+    provider: binsight-fixture
+    model: binsight-client-fixture
 - insert:
-    - id: rea-mcp
+    - id: binsight-mcp
       name: '@deepseek-ai/dsh-mcp-client'
       config:
-        serverName: rea
+        serverName: binsight
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -301,11 +301,14 @@ try {
     ),
   );
   assert.equal(await readFile(configPath, "utf8"), original);
-  assert.equal(await pathExists(`${configPath}.rea.backup`), false);
+  assert.equal(await pathExists(`${configPath}.binsight.backup`), false);
   lifecycle.push("dry-run");
   const setup = await runRea(["setup", "--client", "dsh", "--yes"], "setup");
   assert.equal(setup.status, "ready");
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const configured = await readFile(configPath, "utf8");
   assert.deepEqual(withoutRea(configured), withoutRea(original));
   assert(configured.includes("!!js process.cwd()"));
@@ -321,7 +324,10 @@ try {
   );
   assert.deepEqual(repeated.appliedActions, []);
   assert.equal(await readFile(configPath, "utf8"), configured);
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   lifecycle.push("idempotent-setup");
   const doctor = await runRea(
     ["doctor", "--client", "dsh", "--skill"],
@@ -335,7 +341,9 @@ try {
       "--profile",
       "headless",
       "--json",
-      mode === "chat" ? "Say hello briefly." : `Use REA to analyze ${target}.`,
+      mode === "chat"
+        ? "Say hello briefly."
+        : `Use BinSight to analyze ${target}.`,
     ],
     {
       env: environment,

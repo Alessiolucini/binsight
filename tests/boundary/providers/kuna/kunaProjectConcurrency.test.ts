@@ -69,7 +69,7 @@ const barrier = () => {
 };
 
 const fixture = async (maxBytes = 64 * 1024 ** 2) => {
-  const root = await createTestTempDirectory("rea-kuna-concurrency-");
+  const root = await createTestTempDirectory("binsight-kuna-concurrency-");
   const kuna = await writeFakeKuna(root, {
     delayMs: 300,
     asmPadding: 400 * 1024,

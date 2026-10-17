@@ -12,12 +12,14 @@ import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 
 const execute = promisify(execFile);
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
-const root = await realpath(await mkdtemp(join(tmpdir(), "rea-inspector-")));
+const root = await realpath(
+  await mkdtemp(join(tmpdir(), "binsight-inspector-")),
+);
 const environment = {
   ...process.env,
 };
 const client = new Client({
-  name: "rea-inspector-conformance",
+  name: "binsight-inspector-conformance",
   version: "1.0.0",
 });
 const transport = new StdioClientTransport({
@@ -117,7 +119,7 @@ async function verifyTarget(child, targetPath, name) {
     "--json",
   ]);
   assert.equal(observed.operation, "observe_javascript_runtime");
-  assert.equal(observed.provider.id, "rea-v8-inspector");
+  assert.equal(observed.provider.id, "binsight-v8-inspector");
   const mcpObservation = await runMcp("observe_javascript_runtime", {
     inspector_endpoint: endpoint,
     target_id: raw.id,

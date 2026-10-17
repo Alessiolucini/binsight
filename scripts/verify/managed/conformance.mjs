@@ -33,7 +33,9 @@ import {
 } from "../../lib/verifier-run.mjs";
 
 const verifierRun = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-managed-conformance-"));
+const workspace = await mkdtemp(
+  join(tmpdir(), "binsight-managed-conformance-"),
+);
 let completionReportInput;
 let finalReport;
 const {

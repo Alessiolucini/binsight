@@ -25,7 +25,7 @@ export type JadxLauncher = (
   options: OwnedProviderProcessSpawnOptions,
 ) => Promise<SpawnedOwnedProviderProcess>;
 
-/** SDK-framed stdio with REA-owned process cleanup rather than an unowned child. */
+/** SDK-framed stdio with BinSight-owned process cleanup rather than an unowned child. */
 export class JadxMcpTransport implements Transport {
   onclose: Transport["onclose"];
   onerror: Transport["onerror"];

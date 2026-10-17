@@ -37,7 +37,7 @@ assert(
   "Usage: verify-gemini-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-gemini-client-"));
+const lab = await mkdtemp(join(tmpdir(), "binsight-gemini-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -132,7 +132,7 @@ for (const args of [
     result.stdout,
   );
 }
-assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+assert.equal(await readFile(`${configPath}.binsight.backup`, "utf8"), original);
 const configured = await readFile(configPath, "utf8");
 assert.deepEqual(JSON.parse(configured).mcpServers.other, {
   command: "unrelated-server",
@@ -151,7 +151,7 @@ const repeated = await exec(
 );
 assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
 assert.equal(await readFile(configPath, "utf8"), configured);
-assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+assert.equal(await readFile(`${configPath}.binsight.backup`, "utf8"), original);
 assert(
   (await readFile(skillPath, "utf8")).includes(
     "name: reverse-engineer-anything",
@@ -244,7 +244,7 @@ const fixture = await createGeminiModelFixture({
     const analysis = tools.find((t) =>
       t.name.endsWith("analyze_javascript_application"),
     );
-    assert(analysis, "Gemini must expose the REA analysis tool");
+    assert(analysis, "Gemini must expose the BinSight analysis tool");
     const prefix = analysis.name.slice(
       0,
       -"analyze_javascript_application".length,
@@ -256,7 +256,7 @@ const fixture = await createGeminiModelFixture({
         .map((t) => t.name)
         .sort(),
       expected,
-      "Gemini must forward the complete REA tool catalog",
+      "Gemini must forward the complete BinSight tool catalog",
     );
     catalogSize = expected.length;
     if (schemasChecked === 0) {
@@ -353,7 +353,10 @@ const fixture = await createGeminiModelFixture({
         },
       ];
     }
-    assert(skillLoaded, "Gemini must load the installed personal REA skill");
+    assert(
+      skillLoaded,
+      "Gemini must load the installed personal BinSight skill",
+    );
     return [
       {
         functionCall: {
@@ -373,13 +376,13 @@ try {
       "--approval-mode",
       mode === "chat" ? "default" : "yolo",
       "--allowed-mcp-server-names",
-      "rea",
+      "binsight",
       "--output-format",
       "stream-json",
       "-p",
       mode === "chat"
         ? "Say hello briefly."
-        : `Use REA to analyze the JavaScript directory ${target}. Report the result.`,
+        : `Use BinSight to analyze the JavaScript directory ${target}. Report the result.`,
     ]),
     {
       env: {

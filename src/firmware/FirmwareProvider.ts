@@ -321,7 +321,7 @@ export class FirmwareProvider implements FirmwareAnalysisPort {
         this.#files,
         signal,
       );
-      root = await PrivateRuntimeRoot.create({ prefix: "rea-firmware-" });
+      root = await PrivateRuntimeRoot.create({ prefix: "binsight-firmware-" });
       const ownedRoot = root;
       const ownedRootLease = new AnalysisCleanupLease(() => ownedRoot.close());
       rootLease = ownedRootLease;

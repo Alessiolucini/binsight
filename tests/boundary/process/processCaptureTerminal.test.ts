@@ -10,7 +10,7 @@ import { parseProcessScenario } from "../../../src/domain/process/processScenari
 itWithCaptureCapability(
   "captures one command's terminal output, selected files, and owned cleanup",
   async () => {
-    const root = await createTestTempDirectory("rea-process-capture-");
+    const root = await createTestTempDirectory("binsight-process-capture-");
     const script = join(root, "task.mjs");
     await writeFile(
       script,

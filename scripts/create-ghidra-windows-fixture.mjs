@@ -238,7 +238,7 @@ for (const architecture of WINDOWS_GHIDRA_FIXTURE_ARCHITECTURES) {
       bytes.writeUInt32LE(0x1140, 0x28c);
       bytes.writeUInt16LE(0, 0x290);
       bytes.writeUInt16LE(1, 0x292);
-      bytes.write("rea-fixture.dll\0", 0x300, "binary");
+      bytes.write("binsight-fixture.dll\0", 0x300, "binary");
       bytes.write("fixture_caller\0", 0x320, "binary");
       bytes.write("fixture_return42\0", 0x340, "binary");
     }

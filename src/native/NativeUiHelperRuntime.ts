@@ -24,7 +24,7 @@ export const createNativeUiHelperRuntime = (
   let executable: string | undefined;
   const invoke: NativeUiHelper = async (parameters, signal) => {
     if (executable === undefined) {
-      root = await mkdtemp(join(tmpdir(), "rea-native-ui-"));
+      root = await mkdtemp(join(tmpdir(), "binsight-native-ui-"));
       const output = join(root, "observer");
       const main = join(root, "main.swift");
       await symlink(

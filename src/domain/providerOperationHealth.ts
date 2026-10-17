@@ -8,7 +8,7 @@ export const PROVIDER_OPERATION_STATES = [
   "unknown",
 ] as const;
 
-/** Operational state REA can support with evidence, or unknown. */
+/** Operational state BinSight can support with evidence, or unknown. */
 export type ProviderOperationState = (typeof PROVIDER_OPERATION_STATES)[number];
 
 /** States a Hopper process failure can establish. */

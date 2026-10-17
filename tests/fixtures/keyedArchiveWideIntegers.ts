@@ -61,7 +61,7 @@ const archiveBytes = (): Buffer => {
 };
 
 export const keyedArchiveWideIntegerFixture = async () => {
-  const root = await createTestTempDirectory("rea-keyed-wide-integers-");
+  const root = await createTestTempDirectory("binsight-keyed-wide-integers-");
   const path = join(root, "archive.bin");
   const bytes = archiveBytes();
   await writeFile(path, bytes);

@@ -53,9 +53,9 @@ const parseStaticLayer = (
     evidence,
     {
       operation: "analyze_javascript_application",
-      predicate: "rea.javascript-application-analysis",
-      providerId: "rea-javascript-application",
-      providerName: "REA JavaScript application analyzer",
+      predicate: "binsight.javascript-application-analysis",
+      providerId: "binsight-javascript-application",
+      providerName: "BinSight JavaScript application analyzer",
       providerVersion: "1",
       authority: "shipped-artifact",
       confidence: "derived",

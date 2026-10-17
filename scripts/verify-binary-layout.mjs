@@ -55,7 +55,7 @@ for (const command of ["gcc", "ld", "strip", "/usr/bin/prlimit", strace]) {
 const entrypoint =
   process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const root = await PrivateRuntimeRoot.create({
-  prefix: "rea-layout-verifier-",
+  prefix: "binsight-layout-verifier-",
 });
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
@@ -1125,7 +1125,7 @@ try {
   const brokenPython = join(root.path, "broken-configured-python");
   await writeFile(
     brokenPython,
-    "#!/rea-missing-configured-python-interpreter\n",
+    "#!/binsight-missing-configured-python-interpreter\n",
     { mode: 0o700 },
   );
   const unmarkedLaunchers = [];

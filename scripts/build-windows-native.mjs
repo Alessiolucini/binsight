@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const nodeVersion = "22.19.0";
 const compiler = "x86_64-w64-mingw32-g++";
-const cache = join(homedir(), ".cache", "rea-windows-native");
+const cache = join(homedir(), ".cache", "binsight-windows-native");
 const inspectionFixture = process.argv[2] === "--inspection-fixture";
 if (process.argv.length > 3 || (process.argv.length > 2 && !inspectionFixture))
   throw new Error("Unknown Windows native build argument");

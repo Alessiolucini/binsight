@@ -11,7 +11,7 @@ import {
   type TestProcesses,
 } from "../process/processFixture.js";
 
-/** Caller-controlled values for one compiled REA CLI invocation. */
+/** Caller-controlled values for one compiled BinSight CLI invocation. */
 export interface CliInvocation {
   readonly arguments: readonly string[];
   readonly cwd?: string;
@@ -20,12 +20,12 @@ export interface CliInvocation {
   readonly timeoutMs?: number;
 }
 
-/** Normalized result from the compiled REA CLI. */
+/** Normalized result from the compiled BinSight CLI. */
 export interface CliResult extends ProcessResult {
   readonly json: unknown | undefined;
 }
 
-/** Compiled REA CLI driver owned by one test. */
+/** Compiled BinSight CLI driver owned by one test. */
 export interface TestCli {
   run(invocation: CliInvocation): Promise<CliResult>;
 }
@@ -97,7 +97,9 @@ export const cliTest = processTest.extend<{
   cliCompileCache: [
     // oxlint-disable-next-line no-empty-pattern -- Vitest parses fixture dependencies from object destructuring.
     async ({}, use) => {
-      const workspace = await createTestWorkspace("rea-cli-compile-cache-");
+      const workspace = await createTestWorkspace(
+        "binsight-cli-compile-cache-",
+      );
       try {
         await use(workspace.path("node-compile"));
       } finally {

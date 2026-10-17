@@ -25,7 +25,7 @@ describe("compiled Windows reference-source import", () => {
     cliTest.runIf(process.platform === "win32")(
       `readable root, ${scenario.fullOutput ? "full-output" : "JSON"}, logging ${String(scenario.logging)}`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-reference-host-");
+        const root = await createTestTempDirectory("binsight-reference-host-");
         const source = join(root, "source.js");
         const bytes = "export const answer = 42;\n";
         await writeFile(source, bytes);
@@ -78,7 +78,7 @@ describe("compiled reference-source import preflight failures", () => {
       `${scenario.rootKind} root, ${scenario.fullOutput ? "full-output" : "JSON"}, logging ${String(scenario.logging)}`,
       async ({ cli }) => {
         const directory = await createTestTempDirectory(
-          "rea-reference-cli-status-",
+          "binsight-reference-cli-status-",
         );
         // Exercise JSON escaping on POSIX too; Windows paths already need it.
         const root = join(
@@ -156,7 +156,7 @@ describe("compiled reference-source import preflight failures", () => {
     "classifies a blocked parent directory as an execution failure",
     async ({ cli }) => {
       const directory = await createTestTempDirectory(
-        "rea-reference-cli-blocked-root-",
+        "binsight-reference-cli-blocked-root-",
       );
       const parent = join(directory, "blocked-parent");
       const root = join(parent, "input");

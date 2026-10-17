@@ -23,7 +23,7 @@ import { waitForProviderProcessReady } from "../../fixtures/providerProcess.js";
 const command = (script: string) => ({
   command: process.execPath,
   arguments: ["-e", script],
-  runId: `rea-owned-command-test-${randomUUID()}`,
+  runId: `binsight-owned-command-test-${randomUUID()}`,
 });
 
 // Output/exit cases start with a prepared inspector; startup deadline cases
@@ -278,7 +278,7 @@ it("marks an output collection error when the process itself exits zero", async 
 it.skipIf(process.platform === "win32")(
   "sweeps detached run-token descendants and preserves a pre-existing unrelated process",
   async () => {
-    const runId = `rea-owned-descendant-test-${randomUUID()}`;
+    const runId = `binsight-owned-descendant-test-${randomUUID()}`;
     const unrelated = await spawnOwnedProviderProcess({
       command: process.execPath,
       arguments: ["-e", "setInterval(() => undefined, 1000)"],

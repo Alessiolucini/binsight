@@ -38,7 +38,7 @@ export const sourceMapReference = (
 };
 
 const extractor = (operation: string) => ({
-  name: "rea-test-fixture",
+  name: "binsight-test-fixture",
   version: "1.0.0",
   operation,
   executable_sha256: null,

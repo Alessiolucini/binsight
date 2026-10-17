@@ -19,7 +19,7 @@ For attached browsers, `block` rejects captures when the selected page or its
 frames are controlled by a service worker or already have a registration,
 including after navigation. Existing caller registrations are never removed.
 Navigation can run destination code before a newly discovered worker is rejected;
-that rejection does not roll back browser effects. REA removes its owned
+that rejection does not roll back browser effects. BinSight removes its owned
 future-document scripts, restores live frame methods, then disconnects.
 Add secret declarations, storage seeds, and additional artifact or event
 capture only when needed. Action, secret, and storage counts are not capped.
@@ -46,11 +46,11 @@ already-installed Chrome-family browser and the URL with your running fixture:
 ```
 
 ```bash
-rea capture-browser-scenario ./browser-scenario.json --json > browser-capture.json
+binsight capture-browser-scenario ./browser-scenario.json --json > browser-capture.json
 ```
 
 The default capture includes the final URL. Select DOM, screenshots, or events
-only when they help answer the question. REA launches and cleans up the browser
+only when they help answer the question. BinSight launches and cleans up the browser
 profile for this request; it does not start your fixture server or install a
 browser. A schema-valid scenario does not prove that the executable or target
 is available on the host.
@@ -100,17 +100,17 @@ Save it as `browser-search.json` and run it the same way as the minimal
 example:
 
 ```bash
-rea capture-browser-scenario ./browser-search.json --json > browser-search-capture.json
+binsight capture-browser-scenario ./browser-search.json --json > browser-search-capture.json
 ```
 
 Through MCP, pass the same object as the `capture_browser_scenario` arguments.
 The final step's DOM and accessibility artifacts retain the page state at that
-capture time inline. REA still launches and cleans up the browser profile.
+capture time inline. BinSight still launches and cleans up the browser profile.
 
 The click's `timeout_ms` covers the click action. A non-navigating `fetch` or
 delayed render can finish later, so use `wait_for` to observe a page-specific
 ready condition before final capture. A page that updates synchronously can
-omit that wait. REA does not infer application readiness from capture selection.
+omit that wait. BinSight does not infer application readiness from capture selection.
 
 Choose captures by the question being asked:
 
@@ -129,7 +129,7 @@ Choose captures by the question being asked:
   logged. Select only the event families you need.
 
 Capture states are reported per artifact. An artifact you did not request is
-`not_requested`, which means REA did not look, not that the page had nothing
+`not_requested`, which means BinSight did not look, not that the page had nothing
 to show. A step's `completeness` of `complete` covers only the sections that
 were requested. A URL-only capture can be `complete` and still be unable to
 answer a question about rendered content, so add the relevant artifact and run
@@ -146,7 +146,7 @@ confirms that an attached external browser remains alive.
 
 Keeping that browser alive does not guarantee its emulation state survives.
 Chromium can clear caller-owned `navigator.platform` emulation when a page CDP
-session disconnects, including sessions that sent no emulation commands. REA
+session disconnects, including sessions that sent no emulation commands. BinSight
 cannot snapshot the other client's complete user-agent/client-hint settings and
 does not replay a partial reconstruction. Use launch mode to keep this effect
 inside a provider-owned browser, or have the external owning client reapply its
@@ -217,7 +217,7 @@ event, 16 MiB estimated allocation across retained events, 1,024 network
 transactions, 64 KiB of body bytes per transaction phase, 1 MiB estimated
 allocation for body redaction/base64, 1 MiB for retained header values, and
 1 MiB for network metadata. The same limits are included in the capture
-Evidence. Playwright materializes response bodies before REA can inspect their
+Evidence. Playwright materializes response bodies before BinSight can inspect their
 byte length; `max_network_body_bytes` bounds subsequent retained copies and
 does not bound the browser API read itself. A body that exceeds its selected
 limit has an explicit `body-size-limit` or `body-allocation-limit` unavailable
@@ -233,7 +233,7 @@ when the currently available event budget already rejects the body.
 Concurrent reads may each pass that check before their events are retained;
 their retained-copy work is bounded by 16 times the selected per-body
 allocation limit. The Playwright response Buffer itself is materialized before
-REA can apply that limit. Requested artifacts and retained events are returned
+BinSight can apply that limit. Requested artifacts and retained events are returned
 inline within the declared limits.
 Attach-mode captures also declare the unavoidable pre-attach event gap.
 
@@ -249,7 +249,7 @@ and are omitted; attach coverage remains incomplete.
 Playwright reports new popup Pages after their first navigation has committed.
 It buffers early console messages and page errors, but the pinned API cannot
 recover every earlier frame, worker, WebSocket, or download event. If one of
-those families is selected and a popup is discovered, REA reports the family gap
+those families is selected and a popup is discovered, BinSight reports the family gap
 in `limitations`, marks `events` missing, and disables equality eligibility.
 Later events remain available; no initial navigation is synthesized from the
 popup's current URL.
@@ -259,7 +259,7 @@ actions, and capture behavior. Origin filters and environment-variable names
 are included when the scenario needs them.
 Launch owns a temporary profile; connect mode disconnects from the selected
 external browser without closing it. The request itself defines the operation;
-there is no additional REA grant step. The browser and host still enforce their
+there is no additional BinSight grant step. The browser and host still enforce their
 own access and process rules.
 
 ## Network evidence

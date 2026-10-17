@@ -179,7 +179,7 @@ const emptyClient = (identity: ProviderIdentity): AnalysisClient => ({
 
 const emptyProviderIdentity = (): ProviderIdentity => ({
   id: "composite:none",
-  name: "REA composite analysis provider",
+  name: "BinSight composite analysis provider",
   version: null,
 });
 

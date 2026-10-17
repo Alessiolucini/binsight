@@ -26,7 +26,7 @@ export const observedSemanticEvidence = (
           value: { kind: "source-range", source: file.path, ...location },
         },
   extractor: {
-    name: "rea-javascript-semantic-analysis",
+    name: "binsight-javascript-semantic-analysis",
     version: "1",
     operation: "analyze_javascript_application",
     executable_sha256: null,
@@ -82,7 +82,7 @@ export const unavailableSemanticRootEvidence = (
     detail: "No admitted JavaScript source produced semantic IR.",
   },
   extractor: {
-    name: "rea-javascript-semantic-analysis",
+    name: "binsight-javascript-semantic-analysis",
     version: "1",
     operation: "analyze_javascript_application",
     executable_sha256: null,

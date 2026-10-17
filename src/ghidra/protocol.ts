@@ -21,7 +21,7 @@ const responseSchema = z.discriminatedUnion("ok", [
   }),
 ]);
 
-/** Validated response emitted by REA's packaged Ghidra script. */
+/** Validated response emitted by BinSight's packaged Ghidra script. */
 export type GhidraBridgeResponse = z.infer<typeof responseSchema>;
 
 /** Expected operation failure returned by the authenticated Java bridge. */

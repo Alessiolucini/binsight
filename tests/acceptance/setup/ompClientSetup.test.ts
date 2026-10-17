@@ -19,7 +19,9 @@ for (const [variable, profile] of [
   cliTest(
     `OMP rejects invalid ${variable} ${profile} without writing a fallback`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-omp-invalid-profile-");
+      const home = await createTestTempDirectory(
+        "binsight-omp-invalid-profile-",
+      );
       const agent = join(home, "selected agent");
       const config = join(agent, "mcp.json");
       const original = '{"mcpServers":{"other":{"command":"other-server"}}}\n';
@@ -53,7 +55,7 @@ for (const [variable, profile] of [
       }
       expect(await readFile(config, "utf8")).toBe(original);
       for (const path of [
-        config + ".rea.backup",
+        config + ".binsight.backup",
         join(home, ".omp", "agent"),
         join(home, ".agents", "skills"),
       ])
@@ -90,7 +92,7 @@ for (const [variable, profile] of [
 cliTest(
   "OMP explicit default selection overrides an invalid legacy profile",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-omp-default-profile-");
+    const home = await createTestTempDirectory("binsight-omp-default-profile-");
     const agent = join(home, "agent");
     const result = await cli.run({
       arguments: ["setup", "--client", "omp", "--yes", "--json"],
@@ -107,6 +109,6 @@ cliTest(
     expect(result.json).toMatchObject({ status: "ready" });
     expect(
       JSON.parse(await readFile(join(agent, "mcp.json"), "utf8")),
-    ).toHaveProperty("mcpServers.rea");
+    ).toHaveProperty("mcpServers.binsight");
   },
 );

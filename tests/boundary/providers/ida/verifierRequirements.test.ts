@@ -19,7 +19,9 @@ it.each([
 ])(
   "enforces native switching requirements for $protocol with $flags",
   async ({ protocol, flags, required }) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-ida-verifier-options-"));
+    const root = await mkdtemp(
+      join(tmpdir(), "binsight-ida-verifier-options-"),
+    );
     try {
       const config = join(root, "ida.json");
       await writeFile(

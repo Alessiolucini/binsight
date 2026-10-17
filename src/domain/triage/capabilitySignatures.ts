@@ -1,5 +1,5 @@
 /**
- * REA-authored, versioned taxonomy mapping imported API names to coarse
+ * BinSight-authored, versioned taxonomy mapping imported API names to coarse
  * capability classes. Entries describe what an import is *consistent with*;
  * they are inferences over observed imports, never a behavioral verdict. The
  * API lists are factual, well-documented platform symbols from public SDK

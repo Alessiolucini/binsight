@@ -19,7 +19,7 @@ afterEach(async () => {
 
 describe("setup with configured but unavailable providers", () => {
   it("preserves Hopper settings and makes the second setup perform no writes", async () => {
-    const root = await createTestTempDirectory("rea-setup-unavailable-");
+    const root = await createTestTempDirectory("binsight-setup-unavailable-");
     roots.push(root);
     const client = supportedClients(root, "darwin", {}).find(
       (candidate) => candidate.name === "cursor",
@@ -77,10 +77,10 @@ describe("setup with configured but unavailable providers", () => {
     const configured = await readFile(client.configPath, "utf8");
     expect(JSON.parse(configured)).toMatchObject({
       theme: "dark",
-      mcpServers: { rea: { env: environment } },
+      mcpServers: { binsight: { env: environment } },
     });
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.binsight.backup`, "utf8"),
     ).resolves.toBe(original);
 
     const second = await runSetup(selected, createHost());
@@ -89,7 +89,7 @@ describe("setup with configured but unavailable providers", () => {
     expect(second.appliedActions).toEqual([]);
     await expect(readFile(client.configPath, "utf8")).resolves.toBe(configured);
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.binsight.backup`, "utf8"),
     ).resolves.toBe(original);
   });
 });

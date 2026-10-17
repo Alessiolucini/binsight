@@ -23,7 +23,7 @@ with tarfile.open(fileobj=buffer, mode="w", format=tarfile.USTAR_FORMAT) as arch
         info.mtime = 0
         archive.addfile(info, io.BytesIO(data))
 compressed = gzip.compress(buffer.getvalue(), mtime=0)
-image = b"REA firmware fixture\n".ljust(64, b"\xff") + compressed + b"\x00" * 128
+image = b"BinSight firmware fixture\n".ljust(64, b"\xff") + compressed + b"\x00" * 128
 (root / "firmware.bin").write_bytes(image)
 (root / "oracle.json").write_text(json.dumps({
     "generator": "Python tarfile USTAR + gzip; host cc; no target execution",

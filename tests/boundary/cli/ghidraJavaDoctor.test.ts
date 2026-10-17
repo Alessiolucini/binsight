@@ -12,7 +12,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform)).for([
 ] as const)(
   "preserves the %s Java prerequisite result through doctor",
   async ([failure, classification, code], { cli }) => {
-    const root = await createTestTempDirectory("rea-java-doctor-");
+    const root = await createTestTempDirectory("binsight-java-doctor-");
     const jdk = join(root, "jdk");
     const install = join(root, "ghidra");
     const platform = process.platform === "darwin" ? "mac" : "linux";

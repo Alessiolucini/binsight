@@ -105,7 +105,7 @@ export async function verifyHopperBoundaryContracts(
       );
       assert.equal(await call("current_document"), activeDocument);
     }
-    for (const label of [undefined, "", "REA boundary bookmark 测试"]) {
+    for (const label of [undefined, "", "BinSight boundary bookmark 测试"]) {
       assert.equal(
         await call("set_bookmark", {
           address,
@@ -132,13 +132,13 @@ export async function verifyHopperBoundaryContracts(
       ["set_comment", "comment"],
       ["set_inline_comment", "inline_comment"],
     ]) {
-      const comment = "REA boundary comment 测试";
+      const comment = "BinSight boundary comment 测试";
       assert.equal(await call(setter, { address, comment }), true);
       assert.equal(await call(getter, { address }), comment);
       assert.equal(await call(setter, { address, comment: "" }), true);
       assert.equal(await call(getter, { address }), null);
     }
-    const inline = "REA inline\nsecond line";
+    const inline = "BinSight inline\nsecond line";
     const exact = await call("set_inline_comment", {
       address,
       comment: inline,

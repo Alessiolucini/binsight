@@ -51,7 +51,9 @@ afterEach(() => {
 });
 
 const fixture = async (outcome: "decoded" | "failed" = "decoded") => {
-  const workspace = await createTestWorkspace("rea-pwntools-finalization-");
+  const workspace = await createTestWorkspace(
+    "binsight-pwntools-finalization-",
+  );
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("selected.elf");
   await writeFile(path, Buffer.alloc(128));

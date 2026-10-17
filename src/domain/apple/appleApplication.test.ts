@@ -114,7 +114,7 @@ const inventoryEvidence = (
       sha256: rootSha,
       format: rootFormat,
     },
-    { id: "rea-artifact-graph", name: "fixture", version: "1" },
+    { id: "binsight-artifact-graph", name: "fixture", version: "1" },
     {
       operation: "inventory_artifact",
       parameters: {},

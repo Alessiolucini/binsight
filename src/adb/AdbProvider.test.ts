@@ -1682,7 +1682,7 @@ exit 1`,
     local_path: join(root, "bugreport test.zip"),
     bytes: 15,
     sha256: digest,
-    adb_reported_path: expect.stringContaining(".rea-bugreport-"),
+    adb_reported_path: expect.stringContaining(".binsight-bugreport-"),
   });
 });
 

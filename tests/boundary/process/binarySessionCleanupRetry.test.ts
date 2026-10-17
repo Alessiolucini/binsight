@@ -22,7 +22,7 @@ const createShortLeaseDirectory = async (): Promise<string> => {
   // A redirected TMPDIR can exceed macOS's Unix socket path limit once
   // Hopper appends its lease key. Remove only an empty directory after the
   // owning client has closed; recursive removal could hide a retained lease.
-  const directory = await mkdtemp("/tmp/rea-hl-");
+  const directory = await mkdtemp("/tmp/binsight-hl-");
   onTestFinished(async () => {
     await rmdir(directory);
     await expect(access(directory)).rejects.toMatchObject({ code: "ENOENT" });

@@ -63,7 +63,7 @@ const recordUnknownHistory = async (client: Client): Promise<void> => {
 it.each(["switch", "restart"] as const)(
   "preserves investigation records through failed target %s and cleanup retries",
   async (transition) => {
-    const root = await createTestTempDirectory("rea-mcp-switch-evidence-");
+    const root = await createTestTempDirectory("binsight-mcp-switch-evidence-");
     const first = join(root, "first.hop");
     const second = join(root, "second.hop");
     await writeFile(first, "first source-owned target");

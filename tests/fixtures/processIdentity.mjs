@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { setTimeout } from "node:timers/promises";
 
-// Read the producer's own kernel identity independently of REA's sampler.
+// Read the producer's own kernel identity independently of BinSight's sampler.
 const stat = await readFile("/proc/self/stat", "utf8");
 const fields = stat
   .slice(stat.lastIndexOf(")") + 2)

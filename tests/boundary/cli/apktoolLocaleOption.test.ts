@@ -26,7 +26,7 @@ const invoke = async (argv: readonly string[]) => {
       );
     },
   };
-  const cli = Cli.create("rea", { sync: false });
+  const cli = Cli.create("binsight", { sync: false });
   registerApktoolCommands(cli, pino({ level: "silent" }), {}, provider);
   presentOmittableDefaults(cli);
 

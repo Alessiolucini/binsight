@@ -18,7 +18,9 @@ it.each([
   async (_label, machine, cliFlags, architecture) => {
     const bytes = buildManagedPeFixture({ cliFlags, readyToRun: true });
     bytes.writeUInt16LE(machine, bytes.readUInt32LE(0x3c) + 4);
-    const directory = await createTestTempDirectory("rea-managed-os-machine-");
+    const directory = await createTestTempDirectory(
+      "binsight-managed-os-machine-",
+    );
     const path = join(directory, "fixture.dll");
     await writeFile(path, bytes);
     const parsed = await parseBinaryTarget(path);

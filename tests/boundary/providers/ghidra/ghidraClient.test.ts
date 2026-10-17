@@ -266,7 +266,7 @@ describe("GhidraClient captured source snapshot", () => {
   });
 
   it("hashes complete private snapshots with bounded chunks and abortable reads", async () => {
-    const root = await createTestTempDirectory("rea-ghidra-hash-");
+    const root = await createTestTempDirectory("binsight-ghidra-hash-");
     const source = join(root, "firmware.bin");
     const bytes = Buffer.alloc(512 * 1024 + 3, 0xa5);
     const sha256 = createHash("sha256").update(bytes).digest("hex");
@@ -535,7 +535,7 @@ it.skipIf(process.platform === "win32")(
   "retains a failed socket-root cleanup owner and the original startup error",
   async () => {
     const parent = join(
-      await createTestTempDirectory("rea-ghidra-socket-retry-"),
+      await createTestTempDirectory("binsight-ghidra-socket-retry-"),
       "long-".repeat(20),
     );
     await mkdir(parent);
@@ -548,7 +548,9 @@ it.skipIf(process.platform === "win32")(
       .mockImplementation(async (options) => {
         const root = await originalCreate.call(
           PrivateRuntimeRoot,
-          options?.prefix === "rea-ghidra-" ? { ...options, parent } : options,
+          options?.prefix === "binsight-ghidra-"
+            ? { ...options, parent }
+            : options,
         );
         roots.add(root);
         return root;
@@ -558,7 +560,7 @@ it.skipIf(process.platform === "win32")(
       .mockImplementation(async function (this: PrivateRuntimeRoot) {
         if (
           !allowCleanup &&
-          basename(this.path).startsWith("rea-ghidra-socket-")
+          basename(this.path).startsWith("binsight-ghidra-socket-")
         )
           throw new Error("Socket root cleanup denied");
         await originalClose.call(this);
@@ -583,7 +585,7 @@ it.skipIf(process.platform === "win32")(
       });
       if (first.ok) throw new Error("Expected retained cleanup");
       const socketRoot = [...roots].find(({ path }) =>
-        basename(path).startsWith("rea-ghidra-socket-"),
+        basename(path).startsWith("binsight-ghidra-socket-"),
       );
       if (socketRoot === undefined)
         throw new Error("Expected a separate socket root");
@@ -1472,7 +1474,7 @@ describe.skipIf(process.platform === "win32")(
     ] as const)(
       "retains the original process and runtime roots after %s until cleanup succeeds",
       async (failureMode, cancelAfterSpawn, expectedKind) => {
-        const root = await createTestTempDirectory("rea-ghidra-rollback-");
+        const root = await createTestTempDirectory("binsight-ghidra-rollback-");
         const java = join(root, "jdk", "bin", "java");
         await mkdir(join(root, "jdk", "bin"), { recursive: true });
         await writeFile(
@@ -1490,7 +1492,7 @@ describe.skipIf(process.platform === "win32")(
           javaHome: join(root, "jdk"),
           analyzeHeadlessPath: "/unused/ghidra/support/analyzeHeadless",
           configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
-          bridgeScriptPath: "/unused/rea/ReaGhidraBridge.java",
+          bridgeScriptPath: "/unused/binsight/ReaGhidraBridge.java",
           spawnProcess: async ({ runId }) => {
             const spawned = spawn(
               process.execPath,

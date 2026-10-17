@@ -22,7 +22,7 @@ const exec = promisify(execFile);
 
 const captureViaCli = async (scenario: Record<string, unknown>) => {
   const scenarioPath = join(
-    await createTestTempDirectory("rea-fs-scenario-"),
+    await createTestTempDirectory("binsight-fs-scenario-"),
     "scenario.json",
   );
   await writeFile(scenarioPath, JSON.stringify(scenario));
@@ -92,7 +92,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
     if (example === undefined)
       throw new Error("Missing report capture example");
     const scenario = parseProcessScenario(JSON.parse(example));
-    const root = await createTestTempDirectory("rea-full-report-adapter-");
+    const root = await createTestTempDirectory("binsight-full-report-adapter-");
     const evidence = await (adapter === "cli" ? captureViaCli : captureViaMcp)({
       ...scenario,
       executable: process.execPath,
@@ -131,7 +131,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
   async (adapter) => {
     const runCapture = adapter === "cli" ? captureViaCli : captureViaMcp;
     for (const shortfall of [0, 1]) {
-      const root = await createTestTempDirectory("rea-report-cumulative-");
+      const root = await createTestTempDirectory("binsight-report-cumulative-");
       const periodic = Buffer.from('{"status":"running"}');
       const final = Buffer.from('{"status":"complete"}');
       await writeFile(join(root, "periodic.json"), periodic);
@@ -187,7 +187,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "reports unknown absence instead of deletion in truncated %s capture Evidence",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-fs-coverage-adapter-");
+    const root = await createTestTempDirectory("binsight-fs-coverage-adapter-");
     await writeFile(join(root, "z.txt"), "unchanged");
     const scenario = {
       executable: process.execPath,
@@ -226,7 +226,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "reports unknown content after a same-size rewrite without digests through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-fs-content-adapter-");
+    const root = await createTestTempDirectory("binsight-fs-content-adapter-");
     const file = join(root, "changed.txt");
     await writeFile(file, "before");
     const scenario = {
@@ -276,9 +276,9 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 it.skipIf(CAPTURE_SKIP_REASON || process.platform === "win32")(
   "keeps unfollowed descendant absence unknown through MCP Evidence and comparison",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-symlink-adapter-");
+    const root = await createTestTempDirectory("binsight-fs-symlink-adapter-");
     const target = await createTestTempDirectory(
-      "rea-fs-symlink-adapter-target-",
+      "binsight-fs-symlink-adapter-target-",
     );
     await mkdir(join(root, "subtree"));
     await writeFile(join(root, "subtree", "z.txt"), "unchanged");

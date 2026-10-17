@@ -159,7 +159,7 @@ const outcome = (result: { readonly stdout: string }): Outcome =>
   JSON.parse(result.stdout.trim().split("\n").at(-1) ?? "") as Outcome;
 
 const earlyExit = async () => {
-  const root = await createTestTempDirectory("rea-launch-rejections-");
+  const root = await createTestTempDirectory("binsight-launch-rejections-");
   const executable = join(root, "exits-immediately");
   await mkdir(join(root, "app"));
   await writeFile(executable, "#!/bin/sh\nexit 0\n");

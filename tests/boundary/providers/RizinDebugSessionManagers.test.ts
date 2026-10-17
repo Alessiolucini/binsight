@@ -28,7 +28,7 @@ describe.skipIf(process.platform === "win32")(
     });
 
     it("uses an absolute target path and waits for Rizin's completion marker", async () => {
-      directory = await mkdtemp(join(tmpdir(), "rea-rizin-manager-"));
+      directory = await mkdtemp(join(tmpdir(), "binsight-rizin-manager-"));
       const provider = join(directory, "fake-rizin.mjs");
       const argsFile = join(directory, "args.json");
       await writeFile(
@@ -99,7 +99,7 @@ process.stdin.on("data", (chunk) => {
     });
 
     it("stops and invalidates a Rizin session after its completion-marker timeout", async () => {
-      directory = await mkdtemp(join(tmpdir(), "rea-rizin-timeout-"));
+      directory = await mkdtemp(join(tmpdir(), "binsight-rizin-timeout-"));
       const provider = join(directory, "fake-rizin-stall.mjs");
       await writeFile(
         provider,
@@ -162,7 +162,9 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "stops Rizin when empty unsolicited NUL frames exhaust the bounded queue",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-empty-frames-"));
+    const directory = await mkdtemp(
+      join(tmpdir(), "binsight-rizin-empty-frames-"),
+    );
     const provider = join(directory, "fake-rizin-empty.mjs");
     const manager = createRizinTestManager({
       REA_RIZIN_COMMAND: provider,

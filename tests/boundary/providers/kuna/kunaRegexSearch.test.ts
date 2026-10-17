@@ -18,7 +18,7 @@ it.each([
   "bounds $operation regex $mode and settles its worker",
   async ({ mode, operation }) => {
     const { kuna, target, cacheRoot, profile } = await session(
-      "rea-kuna-regex-",
+      "binsight-kuna-regex-",
       {
         stringRows: [
           { text: `${"a".repeat(40)}!`, address: 4096 },

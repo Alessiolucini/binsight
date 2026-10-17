@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "./temporaryDirectory.js";
 
 /** Inert XML with producer-equivalent key spellings and unchanged ordinary data. */
 export const keyedArchivePrototypeKeyFixture = async () => {
-  const directory = await createTestTempDirectory("rea-keyed-xml-keys-");
+  const directory = await createTestTempDirectory("binsight-keyed-xml-keys-");
   const path = join(directory, "archive.plist");
   const bytes = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
@@ -51,7 +51,7 @@ export const expectKeyedArchivePrototypeKeys = (
     },
   });
   expect(result.limitations).toContain(
-    "2 dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+    "2 dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
   );
   expect(JSON.stringify(result)).not.toContain("omitted outer value");
   expect(JSON.stringify(result)).not.toContain("omitted nested value");

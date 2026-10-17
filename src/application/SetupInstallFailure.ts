@@ -89,13 +89,13 @@ const packageManagerRemediation = (
   failure: LinuxPackageInstallFailure | undefined,
 ): string => {
   if (failure === undefined)
-    return "Allow the system package-manager operation or install the planned Hopper package and Linux runtime dependencies, then rerun rea setup.";
+    return "Allow the system package-manager operation or install the planned Hopper package and Linux runtime dependencies, then rerun binsight setup.";
   const status =
     failure.exitCode === null ? "no exit status" : `exit ${failure.exitCode}`;
   const excerpt = packageOutputExcerpt(failure);
   const observed =
     excerpt === "" ? "no output was captured." : `its output: ${excerpt}`;
-  return `The system package-manager command failed (${failure.command}; ${status}); ${observed} Resolve the reported problem, grant the authorization the command needs, or install the planned Hopper package and Linux runtime dependencies manually, then rerun rea setup.`;
+  return `The system package-manager command failed (${failure.command}; ${status}); ${observed} Resolve the reported problem, grant the authorization the command needs, or install the planned Hopper package and Linux runtime dependencies manually, then rerun binsight setup.`;
 };
 
 /** Map provider installer failures to stable setup codes and safe recovery. */
@@ -109,14 +109,14 @@ export const setupInstallFailure = (
       return {
         status: "failed",
         code: "unsupported_host",
-        remediation: "Use a supported host, then rerun rea setup.",
+        remediation: "Use a supported host, then rerun binsight setup.",
       };
     case "integrity":
       return {
         status: "failed",
         code: "integrity_mismatch",
         remediation:
-          "The Hopper download failed integrity verification. Retry setup; if it repeats, update REA before installing.",
+          "The Hopper download failed integrity verification. Retry setup; if it repeats, update BinSight before installing.",
       };
     case "authorization_or_package_manager":
       return {
@@ -129,49 +129,49 @@ export const setupInstallFailure = (
         status: "failed",
         code: "launcher_missing",
         remediation:
-          "The package operation completed but Hopper is not runnable. Run rea doctor and repair the reported launcher issue.",
+          "The package operation completed but Hopper is not runnable. Run binsight doctor and repair the reported launcher issue.",
       };
     case "runtime_dependencies":
       return {
         status: "failed",
         code: "runtime_dependency_unavailable",
         remediation:
-          "Hopper was installed but required shared libraries are missing. Rerun rea setup, then apply the hopper-demo-runtime remediation from rea doctor.",
+          "Hopper was installed but required shared libraries are missing. Rerun binsight setup, then apply the hopper-demo-runtime remediation from binsight doctor.",
       };
     case "unsupported_hopper_build":
       return {
         status: "failed",
         code: "unsupported_hopper_build",
         remediation:
-          "The installed Hopper launcher does not match the authenticated vendor package. Check HOPPER_LAUNCHER_PATH and reinstall the official Hopper demo through rea setup.",
+          "The installed Hopper launcher does not match the authenticated vendor package. Check HOPPER_LAUNCHER_PATH and reinstall the official Hopper demo through binsight setup.",
       };
     case "cancelled":
       return {
         status: "failed",
         code: "setup_cancelled",
         remediation:
-          "Setup was cancelled before Hopper was installed. Rerun rea setup when ready.",
+          "Setup was cancelled before Hopper was installed. Rerun binsight setup when ready.",
       };
     case "destination_exists":
       return {
         status: "failed",
         code: "destination_exists",
         remediation:
-          "The Hopper installation destination already exists and was not replaced. Reuse the existing installation or move it aside, then rerun rea setup.",
+          "The Hopper installation destination already exists and was not replaced. Reuse the existing installation or move it aside, then rerun binsight setup.",
       };
     case "mount":
       return {
         status: "failed",
         code: "mount_failed",
         remediation:
-          "The verified Hopper disk image could not be mounted. Eject any stale Hopper image, check local disk access, then rerun rea setup.",
+          "The verified Hopper disk image could not be mounted. Eject any stale Hopper image, check local disk access, then rerun binsight setup.",
       };
     case "bundle":
       return {
         status: "failed",
         code: "bundle_invalid",
         remediation:
-          "The mounted package did not contain the expected Hopper application bundle. Retry setup; if it repeats, update REA before installing.",
+          "The mounted package did not contain the expected Hopper application bundle. Retry setup; if it repeats, update BinSight before installing.",
       };
     case "publisher_verification_failed":
       return {
@@ -180,14 +180,14 @@ export const setupInstallFailure = (
         remediation:
           platform === "linux"
             ? `The Hopper package signature did not verify under the pinned primary PGP fingerprint ${HOPPER_LINUX_PRIMARY_FINGERPRINT}; the package manager was not run. Download the official package and retry setup.`
-            : `The mounted Hopper application is not signed by the publisher REA pins (${HOPPER_PUBLISHER.bundleIdentifier}, Apple team ${HOPPER_PUBLISHER.teamIdentifier}); nothing was copied or launched. Install Hopper yourself and set HOPPER_LAUNCHER_PATH to its launcher, then rerun rea setup.`,
+            : `The mounted Hopper application is not signed by the publisher BinSight pins (${HOPPER_PUBLISHER.bundleIdentifier}, Apple team ${HOPPER_PUBLISHER.teamIdentifier}); nothing was copied or launched. Install Hopper yourself and set HOPPER_LAUNCHER_PATH to its launcher, then rerun binsight setup.`,
       };
     case "verification_unavailable":
       return {
         status: "failed",
         code: "publisher_verification_failed",
         remediation:
-          "REA could not authenticate or retain the signed Hopper package. Check vendor access, native package inspection tools and caller-owned cache permissions, then retry setup.",
+          "BinSight could not authenticate or retain the signed Hopper package. Check vendor access, native package inspection tools and caller-owned cache permissions, then retry setup.",
       };
     case "cleanup_failed":
       return {
@@ -201,14 +201,14 @@ export const setupInstallFailure = (
         status: "failed",
         code: "copy_failed",
         remediation:
-          "The verified Hopper application could not be copied to the installation destination. Check destination permissions and free space, then rerun rea setup.",
+          "The verified Hopper application could not be copied to the installation destination. Check destination permissions and free space, then rerun binsight setup.",
       };
     default:
       return {
         status: "failed",
         code: "download_failed",
         remediation:
-          "REA could not download or unpack the official Hopper package. Check network and filesystem access, then retry setup.",
+          "BinSight could not download or unpack the official Hopper package. Check network and filesystem access, then retry setup.",
       };
   }
 };

@@ -32,7 +32,7 @@ describe("JavaScript semantic analysis: calls 1", () => {
 
   it("links exact local calls to parameters, returns, and closure captures", () => {
     const ir = analyzeJavaScriptSemantics(`
-      const prefix = "rea";
+      const prefix = "binsight";
       function render(value, { mode }) {
         return prefix + value + mode;
       }

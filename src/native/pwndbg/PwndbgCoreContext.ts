@@ -163,7 +163,7 @@ export const inspectPwndbgCore = async ({
           requestPath,
         ],
         cwd: stage,
-        runId: `rea-recorded-core-debugger-${randomUUID()}`,
+        runId: `binsight-recorded-core-debugger-${randomUUID()}`,
         hostEnvironment: {
           ...environment,
           PWNDBG_NO_AUTOUPDATE: "1",

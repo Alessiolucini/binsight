@@ -23,7 +23,7 @@ export const failedConfigurationMessage = (
     return result.backupPath === undefined
       ? `Agent configuration rollback failed at ${result.failure.path}: ${result.failure.detail}; the failed first-run file may remain. Remove or repair it before rerunning setup.`
       : `Agent configuration rollback failed at ${result.failure.path}: ${result.failure.detail}. Inspect the preserved backup at ${result.backupPath} and restore the intended configuration, then rerun setup.`;
-  return "Agent configuration could not be verified after writing. Repair the configuration file or restore its `.rea.backup`, then rerun setup.";
+  return "Agent configuration could not be verified after writing. Repair the configuration file or restore its `.binsight.backup`, then rerun setup.";
 };
 
 /** Configure every detected agent and report the first failed transaction. */

@@ -29,17 +29,12 @@ const README_LINK_DRIFT_MUTATIONS = [
     "(../installation.md#supported-agents)",
     "(../installation.md#missing-agents)",
   ],
-  ["https://rea.tools/zh-CN/guides/", "https://rea.tools/zh-CN/missing/"],
-  ["https://rea.tools/zh-CN/guides/", "https://rea.tools/zh-TW/guides/"],
   [
-    "https://rea.tools/zh-CN/guides/",
-    "https://rea.tools/zh-CN/guides/?other=1",
+    "(../installation.md#mcp-registry)",
+    "(../installation.md#missing-registry)",
   ],
-  [
-    'src="../assets/rea-hopper-analysis.png"',
-    'src="../assets/missing-hopper.png"',
-  ],
-  ['href="https://discord.gg/GkcryMnJDM"', 'href="https://discord.gg/missing"'],
+  ["(../static-intelligence.md)", "(../missing-intelligence.md)"],
+  ["(https://github.com/morluto/rea)", "(https://github.com/morluto/missing)"],
 ] as const;
 
 const seedReadmeFactFixture = async (directory: string) => {
@@ -63,7 +58,7 @@ afterEach(async () => {
 
 describe("translated README facts", () => {
   it("keeps translated readmes linked to canonical setup and tool details", async () => {
-    const directory = await createTestTempDirectory("rea-readme-facts-");
+    const directory = await createTestTempDirectory("binsight-readme-facts-");
     temporaryRoots.push(directory);
     await seedReadmeFactFixture(directory);
     const translatedPath = join(directory, "docs/readme/README_zh.md");

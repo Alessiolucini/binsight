@@ -13,7 +13,7 @@ import { analysisProviderSelectorSchema } from "./providerSelection.js";
 const snapshotPathSchema = localPathStringSchema
   .refine(isAbsolute, {
     message:
-      "snapshot_path must be an absolute local filesystem path (for example /tmp/rea/analysis.json or C:\\rea\\analysis.json)",
+      "snapshot_path must be an absolute local filesystem path (for example /tmp/binsight/analysis.json or C:\\binsight\\analysis.json)",
   })
   .describe(
     "Absolute local filesystem path for the analysis snapshot; relative paths are rejected.",

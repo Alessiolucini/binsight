@@ -18,7 +18,9 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "reports established property flags only for $0 attributes",
       async ([, attributes, atomicity, readonly, facet], { cli }) => {
-        const directory = await createTestTempDirectory("rea-objc-property-");
+        const directory = await createTestTempDirectory(
+          "binsight-objc-property-",
+        );
         const path = join(directory, "fixture.bin");
         await writeFile(path, machoWithPropertyAttributes(attributes));
         const output = await cli.run({
@@ -79,7 +81,9 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "retains the valid sibling of a property with $0",
       async ([, layout, kept, location], { cli }) => {
-        const directory = await createTestTempDirectory("rea-objc-property-");
+        const directory = await createTestTempDirectory(
+          "binsight-objc-property-",
+        );
         const path = join(directory, "fixture.bin");
         await writeFile(path, machoWithPropertyAttributes("Tq,N", layout));
         const output = await cli.run({
@@ -124,7 +128,7 @@ describe.skipIf(process.platform !== "darwin")(
       "preserves explicit selection %j",
       async ([options, configured, exitCode, reason], { cli }) => {
         const directory = await createTestTempDirectory(
-          "rea-dispatch-provider-choice-",
+          "binsight-dispatch-provider-choice-",
         );
         const path = join(directory, "fixture.bin");
         await writeFile(path, machoWithPropertyAttributes("Tq,N"));

@@ -336,7 +336,7 @@ it("wraps verification in derived workflow Evidence", () => {
   if (!evidence.ok) throw evidence.error;
   expect(evidence.value).toMatchObject({
     operation: "verify_managed_native_boundaries",
-    provider: { id: "rea-dotnet-workflows" },
+    provider: { id: "binsight-dotnet-workflows" },
     confidence: "inferred",
     authority: "analyst-inference",
     normalized_result: {

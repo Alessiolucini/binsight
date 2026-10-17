@@ -87,7 +87,7 @@ export const inspectElectronPage = async (
         limitations: [
           ...report.data.limitations,
           partial.cleanup === "transport-closed"
-            ? "REA closed its CDP transport; this does not imply target shutdown."
+            ? "BinSight closed its CDP transport; this does not imply target shutdown."
             : "CDP transport cleanup remains incomplete.",
         ],
       } satisfies ElectronPageInspection;
@@ -127,7 +127,7 @@ const requireProvider = (
   provider === undefined
     ? err(
         new AnalysisCapabilityUnavailableError(
-          "rea-cdp-electron",
+          "binsight-cdp-electron",
           operation,
           "Electron observation provider is not configured",
         ),

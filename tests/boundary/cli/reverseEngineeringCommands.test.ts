@@ -39,7 +39,7 @@ const observation = (completionStatus: "complete" | "unknown") =>
     undefined,
     { id: "gnu.objdump", name: "GNU objdump", version: null },
     {
-      predicateType: "rea.reverse-engineering.command-observation",
+      predicateType: "binsight.reverse-engineering.command-observation",
       operation: "inspect_with_objdump",
       parameters: { operation: "file_headers" },
       result: { completion_status: completionStatus },
@@ -341,7 +341,7 @@ it("parses the Rizin inferior TTY as an option and passes it to the manager", as
     undefined,
     { id: "rizin.debugger", name: "Rizin debugger", version: null },
     {
-      predicateType: "rea.debugger.command-observation",
+      predicateType: "binsight.debugger.command-observation",
       operation: "rizin_debug_command",
       parameters: {
         session_id: "session-1",
@@ -396,7 +396,10 @@ it("parses the Rizin inferior TTY as an option and passes it to the manager", as
     expect.any(AbortSignal),
   );
 
-  const parserCli = Cli.create("rea-test", { version: "1.0.0", sync: false });
+  const parserCli = Cli.create("binsight-test", {
+    version: "1.0.0",
+    sync: false,
+  });
   registerReverseEngineeringCommands(
     parserCli as unknown as CliInstance,
     pino({ enabled: false }),

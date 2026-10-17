@@ -39,7 +39,7 @@ const sources = {
     'export { readFile } from "node:fs"; export * from "node:path";\n',
 };
 it("preserves recovered diagnostics and file evidence through filesystem import", async () => {
-  const root = await createTestTempDirectory("rea-reference-recovery-");
+  const root = await createTestTempDirectory("binsight-reference-recovery-");
   await mkdir(join(root, "src"));
   await Promise.all(
     Object.entries(sources).map(([path, source]) =>

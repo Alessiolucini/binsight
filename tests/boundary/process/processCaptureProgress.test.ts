@@ -237,7 +237,7 @@ const connectProgressClient = async (
 itWithCaptureCapability(
   "keeps capture Evidence on stdout and live status on stderr for a sparse child",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-sparse-", {
+    const scenario = await writeScenario("binsight-process-progress-sparse-", {
       executable: process.execPath,
       arguments: childScript(
         "process.stdout.write('SPARSE_CHILD_STARTED\\n'); setTimeout(() => process.stdout.write('SPARSE_CHILD_DONE\\n'), 1600);",
@@ -252,7 +252,7 @@ itWithCaptureCapability(
     const recorded = parseProcessCapture(evidence.normalized_result);
     expect(evidence).toMatchObject({
       operation: "capture_process_scenario",
-      predicate_type: "rea.process-capture",
+      predicate_type: "binsight.process-capture",
     });
     expect(recorded.frames.map(({ data }) => data).join("")).toContain(
       "SPARSE_CHILD_STARTED",
@@ -286,7 +286,7 @@ itWithCaptureCapability(
   "reports unknown resource cleanup when temporary-root preparation fails",
   async () => {
     const scenario = await writeScenario(
-      "rea-process-progress-prepare-failed-",
+      "binsight-process-progress-prepare-failed-",
       {
         executable: process.execPath,
         arguments: childScript("process.stdout.write('ready\\n')"),
@@ -294,7 +294,9 @@ itWithCaptureCapability(
       },
     );
     const missingTempRoot = join(
-      await createTestTempDirectory("rea-process-progress-missing-tmpdir-"),
+      await createTestTempDirectory(
+        "binsight-process-progress-missing-tmpdir-",
+      ),
       "missing",
     );
     const capture = await runCaptureCli(scenario, {
@@ -323,7 +325,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "bounds stderr progress while a busy child emits many output chunks",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-busy-", {
+    const scenario = await writeScenario("binsight-process-progress-busy-", {
       executable: process.execPath,
       arguments: childScript(
         "let count = 0; const timer = setInterval(() => { process.stdout.write('BUSY_CHILD_LINE\\n'); count += 1; if (count >= 50) clearInterval(timer); }, 12);",
@@ -363,7 +365,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "reports timeout cleanup on stderr without changing Evidence shape",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-timeout-", {
+    const scenario = await writeScenario("binsight-process-progress-timeout-", {
       executable: process.execPath,
       arguments: childScript("setInterval(() => undefined, 1000);"),
       timeout_ms: 700,
@@ -392,7 +394,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "reports cleanup status on stderr when capture is cancelled",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-cancel-", {
+    const scenario = await writeScenario("binsight-process-progress-cancel-", {
       executable: process.execPath,
       arguments: childScript("setInterval(() => undefined, 1000);"),
       timeout_ms: 15_000,

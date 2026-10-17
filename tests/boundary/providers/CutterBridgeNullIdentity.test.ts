@@ -55,12 +55,12 @@ const bridgeServer = (
         unknown
       >;
       input = input.slice(newline + 1);
-      if (frame.kind === "rea-auth-v2") {
+      if (frame.kind === "binsight-auth-v2") {
         clientNonce = String(frame.nonce);
         serverNonce =
           connectionOrdinal.toString(16).padStart(16, "0") + "d".repeat(48);
         connection.write(
-          `${JSON.stringify({ session_id: SESSION_ID, nonce: serverNonce, proof: createHmac("sha256", TOKEN).update(`rea-cutter-server-v2:${SESSION_ID}:${clientNonce}:${serverNonce}`).digest("hex") })}\n`,
+          `${JSON.stringify({ session_id: SESSION_ID, nonce: serverNonce, proof: createHmac("sha256", TOKEN).update(`binsight-cutter-server-v2:${SESSION_ID}:${clientNonce}:${serverNonce}`).digest("hex") })}\n`,
         );
         return;
       }
@@ -68,7 +68,7 @@ const bridgeServer = (
       const request = JSON.parse(requestBytes) as Record<string, unknown>;
       const expected = createHmac("sha256", TOKEN)
         .update(
-          `rea-cutter-client-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${requestBytes}`,
+          `binsight-cutter-client-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${requestBytes}`,
         )
         .digest("hex");
       if (frame.proof !== expected) {
@@ -102,7 +102,7 @@ const bridgeServer = (
       );
       const proof = createHmac("sha256", TOKEN)
         .update(
-          `rea-cutter-response-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${response}`,
+          `binsight-cutter-response-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${response}`,
         )
         .digest("hex");
       connection.end(`${JSON.stringify({ response, proof })}\n`);
@@ -148,7 +148,7 @@ const writeDescriptor = async (port: number): Promise<void> => {
 };
 
 it("preserves a live Cutter status that explicitly has no active document", async () => {
-  directory = await mkdtemp(join(tmpdir(), "rea-cutter-null-status-"));
+  directory = await mkdtemp(join(tmpdir(), "binsight-cutter-null-status-"));
   server = bridgeServer(null, 2);
   await writeDescriptor(await listen(server));
 
@@ -162,7 +162,7 @@ it("preserves a live Cutter status that explicitly has no active document", asyn
 });
 
 it("preserves a null active document returned after a Cutter command", async () => {
-  directory = await mkdtemp(join(tmpdir(), "rea-cutter-null-command-"));
+  directory = await mkdtemp(join(tmpdir(), "binsight-cutter-null-command-"));
   server = bridgeServer(null, 2);
   await writeDescriptor(await listen(server));
 

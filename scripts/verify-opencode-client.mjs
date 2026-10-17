@@ -31,7 +31,7 @@ assert(
   "REA_VERIFY_OPENCODE_CONFIG_FORMAT must be json or jsonc",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-opencode-client-"));
+const lab = await mkdtemp(join(tmpdir(), "binsight-opencode-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -124,25 +124,25 @@ const fixture = await createOpenAiModelFixture({
   onRequest: async ({ body, tools, requestIndex }) => {
     // Native session-title requests do not execute the analyst's workflow.
     if (tools.length === 0)
-      return { role: "assistant", content: "REA fixture title" };
+      return { role: "assistant", content: "BinSight fixture title" };
     const analysis = tools.find((t) =>
       t.name.endsWith("analyze_javascript_application"),
     );
-    assert(analysis, "OpenCode must expose the REA analysis tool");
+    assert(analysis, "OpenCode must expose the BinSight analysis tool");
     const prefix = analysis.name.slice(
       0,
       -"analyze_javascript_application".length,
     );
     const expected = TOOL_CONTRACTS.map((t) => prefix + t.name).sort();
-    const reaTools = tools.filter((t) => expected.includes(t.name));
+    const binsightTools = tools.filter((t) => expected.includes(t.name));
     assert.deepEqual(
-      reaTools.map((t) => t.name).sort(),
+      binsightTools.map((t) => t.name).sort(),
       expected,
-      "OpenCode must forward the complete REA catalog",
+      "OpenCode must forward the complete BinSight catalog",
     );
     catalogSize = expected.length;
     if (schemasChecked === 0) {
-      for (const tool of reaTools) {
+      for (const tool of binsightTools) {
         assert(
           tool.parameters,
           `${tool.name}: missing advertised input schema`,
@@ -218,7 +218,10 @@ const fixture = await createOpenAiModelFixture({
       skillRequested = true;
       return call(skill.name, { name: "reverse-engineer-anything" });
     }
-    assert(skillLoaded, "OpenCode must load the installed personal REA skill");
+    assert(
+      skillLoaded,
+      "OpenCode must load the installed personal BinSight skill",
+    );
     return call(analysis.name, { input_path: target, format: "directory" });
   },
 });
@@ -230,13 +233,13 @@ const original =
       skills: { paths: [join(account, ".agents", "skills")] },
       permission: { "*": "allow" },
       provider: {
-        "rea-fixture": {
+        "binsight-fixture": {
           npm: "@ai-sdk/openai-compatible",
-          name: "REA local model fixture",
+          name: "BinSight local model fixture",
           options: { baseURL: fixture.baseUrl, apiKey: "local-fixture-key" },
           models: {
-            "rea-client-fixture": {
-              name: "REA fixture",
+            "binsight-client-fixture": {
+              name: "BinSight fixture",
               tool_call: true,
               limit: { context: 1_000_000, output: 4096 },
             },
@@ -285,7 +288,10 @@ try {
       }
     }
   }
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const configured = await readFile(configPath, "utf8");
   assert(configured.includes("unrelated-server"));
   if (configFormat === "jsonc")
@@ -304,7 +310,10 @@ try {
   );
   assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
   assert.equal(await readFile(configPath, "utf8"), configured);
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const installedSkill = await readFile(
     join(skillDirectory, "SKILL.md"),
     "utf8",
@@ -328,10 +337,10 @@ try {
       "--format",
       "json",
       "--model",
-      "rea-fixture/rea-client-fixture",
+      "binsight-fixture/binsight-client-fixture",
       mode === "chat"
         ? "Say hello briefly."
-        : `Use REA to analyze the JavaScript directory ${target}. Report the result.`,
+        : `Use BinSight to analyze the JavaScript directory ${target}. Report the result.`,
     ],
     {
       env: environment,

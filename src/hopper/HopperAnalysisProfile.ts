@@ -133,7 +133,7 @@ export const hopperLoaderArgsForTarget = (
       new AnalysisCapabilityUnavailableError(
         "hopper",
         "resolve_analysis_profile",
-        `REA's Hopper adapter does not admit ${HOPPER_DECLINED_ARCHITECTURE_LABELS[architecture]} targets. Select a verified Ghidra ${HOPPER_DECLINED_ARCHITECTURE_LABELS[architecture]} profile instead.`,
+        `BinSight's Hopper adapter does not admit ${HOPPER_DECLINED_ARCHITECTURE_LABELS[architecture]} targets. Select a verified Ghidra ${HOPPER_DECLINED_ARCHITECTURE_LABELS[architecture]} profile instead.`,
       ),
     );
   const flag = hopperArchitectureFlag(architecture);

@@ -263,7 +263,7 @@ it("starts source feedback before build and requires both groups without waiving
 });
 
 it("records the actual static task graph with explicit source identity and no ambient environment", async () => {
-  const directory = await createTestTempDirectory("rea-ci-context-");
+  const directory = await createTestTempDirectory("binsight-ci-context-");
   const context = await recordStaticTaskContext({ outputDirectory: directory });
   const head = await execute("git", ["rev-parse", "HEAD"]);
   expect(context.sourceSha).toBe(head.stdout.trim());
@@ -373,7 +373,7 @@ it("merges source and built reports exactly once using the workflow's shard matr
         ),
     ]),
   );
-  const root = await createTestTempDirectory("rea-ci-group-merge-");
+  const root = await createTestTempDirectory("binsight-ci-group-merge-");
   const config = join(root, "vitest.config.mjs");
   await writeFile(
     config,

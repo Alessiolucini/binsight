@@ -54,7 +54,7 @@ afterEach(() => {
 
 /** Real native archives and cryptography; substitute only the test publisher identity. */
 const fixture = async (family: "deb" | "arch" = "deb") => {
-  const directory = await createTestTempDirectory("rea-linux-publisher-");
+  const directory = await createTestTempDirectory("binsight-linux-publisher-");
   const packageRoot = join(directory, "package-root");
   const launcher = join(packageRoot, "opt/hopper/bin/Hopper");
   await mkdir(join(packageRoot, "opt/hopper/bin"), { recursive: true });
@@ -131,7 +131,10 @@ it.each([undefined, "", "/selected/cache", "relative/cache"])(
     else
       expect(selected).toEqual({
         ok: true,
-        value: join(setting || "/caller/home/.cache", "rea/hopper-releases"),
+        value: join(
+          setting || "/caller/home/.cache",
+          "binsight/hopper-releases",
+        ),
       });
   },
 );
@@ -854,7 +857,7 @@ portableTar(
 
 it("retries a launcher hash descriptor after a transient close failure", async () => {
   const launcher = join(
-    await createTestTempDirectory("rea-linux-publisher-hash-"),
+    await createTestTempDirectory("binsight-linux-publisher-hash-"),
     "Hopper",
   );
   const bytes = Buffer.from("fixture launcher bytes");
@@ -979,7 +982,7 @@ linux(
       });
       await expect(retryLinuxHopperPublisherCleanup()).rejects.toMatchObject({
         cleanup: {
-          resources: [expect.stringContaining("rea-hopper-publisher-")],
+          resources: [expect.stringContaining("binsight-hopper-publisher-")],
         },
       });
     } finally {

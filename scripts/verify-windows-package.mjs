@@ -29,7 +29,7 @@ import { completeVerifierRun, createVerifierRun } from "./lib/verifier-run.mjs";
 const exec = promisify(execFile);
 const verifierRun = createVerifierRun();
 const root = process.cwd();
-const workspace = await mkdtemp(join(tmpdir(), "rea-windows-package-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-windows-package-"));
 const prefix = join(workspace, "prefix");
 let report;
 
@@ -73,13 +73,7 @@ try {
     ["install", "--no-package-lock", "--no-save", "--prefix", prefix, tarball],
     { cwd: workspace, windowsHide: true },
   );
-  const entry = join(
-    prefix,
-    "node_modules",
-    "rea-agents",
-    "scripts",
-    "rea.mjs",
-  );
+  const entry = join(prefix, "node_modules", "binsight", "scripts", "rea.mjs");
   const environment = {
     ...process.env,
     REA_ANALYSIS_PROVIDER: "auto",
@@ -101,7 +95,10 @@ try {
     env: environment,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-windows-package", version: "1.0.0" });
+  const client = new Client({
+    name: "binsight-windows-package",
+    version: "1.0.0",
+  });
   let toolCount = 0;
   try {
     await client.connect(server);
@@ -171,10 +168,10 @@ try {
     const config = parseJsonc(text);
     const registration =
       id === "opencode"
-        ? config.mcp?.rea
+        ? config.mcp?.binsight
         : id === "vscode"
-          ? config.servers?.rea
-          : config.mcpServers?.rea;
+          ? config.servers?.binsight
+          : config.mcpServers?.binsight;
     const actualCommand =
       id === "opencode"
         ? registration?.command
@@ -223,8 +220,8 @@ try {
     prefix,
     packageRoot:
       process.platform === "win32"
-        ? join(prefix, "node_modules", "rea-agents")
-        : join(prefix, "lib", "node_modules", "rea-agents"),
+        ? join(prefix, "node_modules", "binsight")
+        : join(prefix, "lib", "node_modules", "binsight"),
     tarball,
     workspace,
     environment,

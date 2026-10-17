@@ -68,7 +68,9 @@ const typedPackageFiles = {
 };
 
 const expectNativeModuleControls = async (root: string): Promise<void> => {
-  const emitted = await createTestTempDirectory("rea-import-equals-output-");
+  const emitted = await createTestTempDirectory(
+    "binsight-import-equals-output-",
+  );
   await writeFixtureFiles(emitted, typedPackageFiles);
   await execute(
     process.execPath,
@@ -328,7 +330,7 @@ const expectImportEqualsRelationships = (
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains unbound CommonJS semantic relationships through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-unbound-requires-");
+    const root = await createTestTempDirectory("binsight-unbound-requires-");
     const lines = [
       'require("./dependency.cjs");',
       'void require("./dependency.cjs");',

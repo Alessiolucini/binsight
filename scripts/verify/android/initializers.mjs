@@ -80,7 +80,7 @@ export const verifyAndroidInitializers = async ({
     stderr += chunk.toString();
   });
   const client = new Client({
-    name: "rea-real-android-initializers",
+    name: "binsight-real-android-initializers",
     version: "1",
   });
   try {

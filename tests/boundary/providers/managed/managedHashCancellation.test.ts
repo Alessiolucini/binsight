@@ -21,7 +21,9 @@ it.each([
 ])(
   "cancels a cached managed source hash and recovers its exact owner (close denied: $denyClose, reason: $reasonKind)",
   async ({ denyClose, reasonKind }) => {
-    const directory = await createTestTempDirectory("rea-managed-hash-cancel-");
+    const directory = await createTestTempDirectory(
+      "binsight-managed-hash-cancel-",
+    );
     const path = join(directory, "fixture.exe");
     await writeFile(
       path,
@@ -131,7 +133,7 @@ it.each([
 
 it("preserves an independent read failure when cancellation races with it", async () => {
   const directory = await createTestTempDirectory(
-    "rea-managed-hash-read-failure-",
+    "binsight-managed-hash-read-failure-",
   );
   const path = join(directory, "fixture.exe");
   await writeFile(path, buildManagedPeFixture());

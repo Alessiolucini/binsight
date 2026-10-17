@@ -50,7 +50,7 @@ final class NativeAotTypeMetadata {
             result.add("diagnostics", report.get("diagnostics").deepCopy());
             JsonArray limitations = new JsonArray();
             limitations.add("Type identities and relationships are recovered by upstream heuristics. Original source names and custom field layouts are not recovered.");
-            limitations.add("Method prototypes are inferred, not original signatures. REA preserves pre-recovery calling conventions and the loaded compiler default for new functions.");
+            limitations.add("Method prototypes are inferred, not original signatures. BinSight preserves pre-recovery calling conventions and the loaded compiler default for new functions.");
             limitations.add("Rehydrated metadata bytes are derived analysis-memory content; their original file offsets and runtime behavior remain unknown.");
             limitations.add("Verified workflow: .NET 8.0.22 NativeAOT RTR 9.1, Linux x64 ELF / Windows x64 PE on Linux; other runtime layouts and hosts are unverified.");
             result.add("limitations", limitations);

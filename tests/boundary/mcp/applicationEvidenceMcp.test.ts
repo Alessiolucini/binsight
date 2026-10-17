@@ -211,7 +211,7 @@ async function runInlineWorkflowScenarios(
         root_sha256: SOURCE_TO_BUNDLE_COMPARISON_EXAMPLE.reference.root_sha256,
         inventory_state: "complete",
       },
-      scoring: { algorithm: "rea-source-to-bundle-signals" },
+      scoring: { algorithm: "binsight-source-to-bundle-signals" },
       summary: { unchanged: 0, modified: 0, removed: 1, unknown: 0 },
       items: [
         {

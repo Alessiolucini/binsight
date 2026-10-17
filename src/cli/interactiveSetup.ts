@@ -38,7 +38,7 @@ export const confirmInteractiveSetup = async (
   context?: SetupConfirmationContext,
 ): Promise<SetupConfirmationDecision> => {
   if (context?.stage === "select" || context === undefined) {
-    intro("REA setup", promptStreams);
+    intro("BinSight setup", promptStreams);
     writeLine(
       "│  Understand local apps and binaries from your terminal or agent.",
     );
@@ -84,7 +84,7 @@ export const renderSetupProgress = (event: SetupProgressEvent): void => {
 
 /** Show the resolved dry-run plan to a human at an interactive terminal. */
 export const renderSetupDryRun = (actions: readonly SetupAction[]): void => {
-  intro("REA setup plan", promptStreams);
+  intro("BinSight setup plan", promptStreams);
   renderPreflight(actions);
   outro("Dry run complete. No changes were made.", promptStreams);
 };
@@ -102,8 +102,8 @@ export const renderInteractiveSetupResult = (
     renderReadyCapabilities(result, readyClients, environment);
     outro(
       changedClients.length === 0
-        ? "REA is ready for local app analysis."
-        : `Restart ${changedClients.join(", ")} to load REA.`,
+        ? "BinSight is ready for local app analysis."
+        : `Restart ${changedClients.join(", ")} to load BinSight.`,
       promptStreams,
     );
     return;
@@ -138,7 +138,7 @@ const selectSetupActions = async (
     else {
       const included = await confirm({
         ...promptStreams,
-        message: "Install the guided REA skill for CLI use?",
+        message: "Install the guided BinSight skill for CLI use?",
         initialValue: false,
         vertical: accessible,
       });
@@ -162,7 +162,7 @@ const selectSetupActions = async (
 
 const clientHint = (state: SetupClientState): string =>
   state.configured
-    ? "REA already configured · selected from existing configuration"
+    ? "BinSight already configured · selected from existing configuration"
     : state.status === "invalid"
       ? "Existing configuration needs repair before setup"
       : state.detected
@@ -176,7 +176,7 @@ const selectClients = async (
   if (states.length === 0) return [];
   const selection = await multiselect({
     ...promptStreams,
-    message: "Which agents should use REA?",
+    message: "Which agents should use BinSight?",
     options: states.map((state) => ({
       value: state.client.name,
       label: clientDisplayNames.get(state.client.name) ?? state.client.name,
@@ -234,7 +234,7 @@ const renderKeyboardHelp = (accessible: boolean): void => {
 
 const cliInvocation = (environment: Readonly<NodeJS.ProcessEnv>): string => {
   const runner = invokingPackageRunner(environment);
-  return runner === undefined ? "rea" : `${runner} rea-agents`;
+  return runner === undefined ? "binsight" : `${runner} binsight`;
 };
 
 const renderReadyCapabilities = (
@@ -302,7 +302,7 @@ const renderPreflight = (actions: readonly SetupAction[]): void => {
   }
   writeLine("│");
   writeLine(
-    "│  REA will preserve unrelated configuration and will not install or upgrade Node.js, npm, Homebrew, Java, or Ghidra.",
+    "│  BinSight will preserve unrelated configuration and will not install or upgrade Node.js, npm, Homebrew, Java, or Ghidra.",
   );
 };
 

@@ -10,7 +10,7 @@ import { analysisViewResultSchema } from "../../../src/domain/analysisView/analy
 cliTest(
   "retains constant window preferences and inferred source provenance through CLI, MCP and fact views",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-window-options-");
+    const root = await createTestTempDirectory("binsight-window-options-");
     await writeFixtureFiles(root, {
       "main.js": [
         'throw new Error("Static input must never execute");',

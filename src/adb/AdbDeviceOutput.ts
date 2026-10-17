@@ -1,5 +1,5 @@
 /**
- * Parsers for the exact adb and Package Manager output formats REA consumes.
+ * Parsers for the exact adb and Package Manager output formats BinSight consumes.
  *
  * Each parser preserves what the tool actually printed: unparseable lines are
  * retained rather than silently dropped, and derived classifications carry

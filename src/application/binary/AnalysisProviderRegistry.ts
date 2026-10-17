@@ -198,7 +198,7 @@ export class AnalysisProviderRegistry {
         "provider profile files",
       );
       const failure = new ProviderCleanupError(
-        "rea",
+        "binsight",
         cleanup.resources,
         { reason: cleanup.reason },
         { cause },
@@ -220,7 +220,7 @@ export class AnalysisProviderRegistry {
     if (distinct.length === 1) return err(distinct[0]!);
     return err(
       new ProviderCleanupError(
-        "rea",
+        "binsight",
         [...new Set(distinct.flatMap((failure) => failure.cleanupResources))],
         { reason: distinct.map((failure) => failure.message).join("; ") },
         { cause: new AggregateError(distinct) },
@@ -688,7 +688,7 @@ const profileSelectionFailure = (
           ...options,
           cause: primary.error.cause,
         })
-      : new ProviderAdapterError("rea", "resolve_analysis_profile", {
+      : new ProviderAdapterError("binsight", "resolve_analysis_profile", {
           ...options,
           userMessage: projectAnalysisError(primary.error).message,
           cause: new AggregateError(

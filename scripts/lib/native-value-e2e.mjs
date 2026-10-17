@@ -22,7 +22,7 @@ const environment = () => ({
     : { NODE_OPTIONS: process.env.NODE_OPTIONS }),
   REA_LOG_LEVEL: "silent",
   REA_ANALYSIS_PROVIDER: "ghidra",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
   ...(process.env.GHIDRA_INSTALL_DIR === undefined
     ? {}
     : { GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR }),
@@ -90,7 +90,9 @@ export async function verifyNativeValueE2e(
   globalAddress,
   { entrypoint = defaultEntrypoint } = {},
 ) {
-  const workspace = await mkdtemp(join(tmpdir(), "rea-native-values-e2e-"));
+  const workspace = await mkdtemp(
+    join(tmpdir(), "binsight-native-values-e2e-"),
+  );
   const runtime = join(
     workspace,
     `runtime${process.platform === "win32" ? "" : " with spaces"}-${"x".repeat(100)}`,
@@ -138,11 +140,11 @@ async function verifyNativeValueAdapters(
   );
   const evidence = parseEvidence(JSON.parse(stdout));
   assert.equal(evidence.operation, "trace_native_values");
-  assert.equal(evidence.provider.id, "rea-workflow");
+  assert.equal(evidence.provider.id, "binsight-workflow");
   const workflowProfile = analysisProfileSchema.parse(
     evidence.analysis_profile,
   );
-  assert.equal(workflowProfile.provider.id, "rea-workflow");
+  assert.equal(workflowProfile.provider.id, "binsight-workflow");
   const upstreamProfile = analysisProfileSchema.parse(
     workflowProfile.parameters.upstream_analysis_profile,
   );
@@ -197,7 +199,7 @@ async function verifyNativeValueAdapters(
     assert.notEqual(result.isError, true, JSON.stringify(result));
     const mcpEvidence = parseEvidence(result.structuredContent);
     assert.equal(mcpEvidence.operation, "trace_native_values");
-    assert.equal(mcpEvidence.provider.id, "rea-workflow");
+    assert.equal(mcpEvidence.provider.id, "binsight-workflow");
     assert.deepEqual(mcpEvidence.analysis_profile, workflowProfile);
     const mcpGraph = verifyGraph(
       result.structuredContent?.normalized_result,
@@ -307,7 +309,7 @@ async function verifyNativeValueAdapters(
     );
     assert.deepEqual(
       (await readdir(env.TMPDIR)).filter((name) =>
-        name.startsWith("rea-ghidra-"),
+        name.startsWith("binsight-ghidra-"),
       ),
       [],
       "Ghidra left runtime files after close",

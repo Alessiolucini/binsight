@@ -32,7 +32,7 @@ export class PwntoolsRecordedCrashProvider
     launcher?: PwntoolsLauncher,
     createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-recorded-crash-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "binsight-recorded-crash-" }),
   ) {
     super(
       {

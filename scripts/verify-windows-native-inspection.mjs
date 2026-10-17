@@ -23,7 +23,9 @@ const root = resolve(process.argv[2] ?? ".");
 const artifact = resolve(
   process.argv[3] ?? ".cache/windows-native-inspection-fixture",
 );
-const workspace = await mkdtemp(join(tmpdir(), "rea-inspection-conformance-"));
+const workspace = await mkdtemp(
+  join(tmpdir(), "binsight-inspection-conformance-"),
+);
 try {
   // Isolate the fixture from the packaged production artifact and loader cache.
   await mkdir(join(workspace, "dist", "windows"), { recursive: true });
@@ -65,7 +67,7 @@ const creation=mode.startsWith('create-');
 const native=creation?createRequire(import.meta.url)(${JSON.stringify(join(workspace, "native", "windows", "build", "rea-windows-x64.node"))}):null;
 if(creation){
  let failure;
- try{native.call('runtime_create',[temp,'rea-native-created-'])}catch(error){failure=error}
+ try{native.call('runtime_create',[temp,'binsight-native-created-'])}catch(error){failure=error}
  assert.ok(failure instanceof Error,'runtime_create unexpectedly passed injected post-create validation failure');
  assert.equal(failure.constraint,'Read private DACL by handle failed');
  assert.equal(failure.win32Code,5);
@@ -96,7 +98,7 @@ if(mode==='retry'){
  assert.equal(statSync(path,{bigint:true}).ino,replacement.ino);
  assert.equal(systemWindowsNativeAuthority(),second);
 } else if(mode==='create-retry') {
- const second=native.call('runtime_create',[temp,'rea-native-created-retry-']);
+ const second=native.call('runtime_create',[temp,'binsight-native-created-retry-']);
  assert.equal(existsSync(renamed),false);
  assert.equal(readFileSync(sentinel,'utf8'),'unrelated replacement');
  native.call('runtime_close',[second.handle]);

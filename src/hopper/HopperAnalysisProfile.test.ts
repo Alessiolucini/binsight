@@ -31,7 +31,9 @@ it("routes physical universal Mach-O containers through Hopper's FAT loader", ()
 });
 
 it("prepares a verified thin arm64e slice for a FAT32 system container", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-profile-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-profile-",
+  );
   const writeUInt32 = (buffer: Buffer, offset: number, value: number): void => {
     buffer.writeUInt32BE(value, offset);
   };

@@ -47,7 +47,7 @@ const inspectArchive = async (path: string) => {
 };
 
 it("keeps valid JVM classes from being classified as Mach-O while identifying FAT controls", async () => {
-  const directory = await createTestTempDirectory("rea-jvm-inventory-");
+  const directory = await createTestTempDirectory("binsight-jvm-inventory-");
   const javaEntries = [
     ["Hello.class", javaClassFile()],
     ["pkg/Big.class", javaClassFile(4000)],

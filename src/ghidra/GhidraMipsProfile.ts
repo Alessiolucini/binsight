@@ -241,14 +241,14 @@ export const ghidraMipsSoftFloatFailure = (
       ? "The Ghidra session did not report the committed MIPS soft-float prototype."
       : "The Ghidra session reported MIPS soft-float storage that the profile did not commit.";
 
-/** Keep REA's soft-float prototype distinct from Ghidra's hard-float o32 model. */
+/** Keep BinSight's soft-float prototype distinct from Ghidra's hard-float o32 model. */
 export const ghidraMipsSoftFloatLimitations = (
   expected: boolean,
   report?: GhidraMipsSoftFloatReport,
 ): readonly string[] =>
   expected
     ? [
-        "Soft-float o32: Ghidra's MIPS32 compiler specifications model hard-float o32 only. After analysis REA installs a program-specific `__rea_soft_float` prototype, derived from the default o32 model without its floating-point registers and rules, and assigns it to every function, external function and function-pointer definition whose declared types use float or double, so those values keep their types and use integer registers and stack slots.",
+        "Soft-float o32: Ghidra's MIPS32 compiler specifications model hard-float o32 only. After analysis BinSight installs a program-specific `__rea_soft_float` prototype, derived from the default o32 model without its floating-point registers and rules, and assigns it to every function, external function and function-pointer definition whose declared types use float or double, so those values keep their types and use integer registers and stack slots.",
         ...(report === undefined
           ? []
           : [

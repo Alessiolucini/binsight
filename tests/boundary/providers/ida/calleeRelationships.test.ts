@@ -96,7 +96,7 @@ it("shows the callee edges of an ARM64 procedure in the call graph", async () =>
       },
       limitations: expect.arrayContaining([
         expect.stringContaining(
-          "Provider version identifies the REA IDA adapter.",
+          "Provider version identifies the BinSight IDA adapter.",
         ),
       ]),
     });

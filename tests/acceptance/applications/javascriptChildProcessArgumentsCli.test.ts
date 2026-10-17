@@ -10,7 +10,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps child argv counts unknown after spread through %s",
   async (surface, { cli, processes }) => {
-    const root = await createTestTempDirectory("rea-child-argv-");
+    const root = await createTestTempDirectory("binsight-child-argv-");
     await writeFixtureFiles(root, {
       "entry.mjs": [
         'import { spawn, execFile, fork } from "node:child_process";',

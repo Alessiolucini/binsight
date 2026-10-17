@@ -14,7 +14,7 @@ const environment = {
 } as const;
 
 const fixtureApp = async () => {
-  const directory = await createTestTempDirectory("rea-analyze-app-path-");
+  const directory = await createTestTempDirectory("binsight-analyze-app-path-");
   const contents = join(directory, "Sample.app", "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
   await writeFile(

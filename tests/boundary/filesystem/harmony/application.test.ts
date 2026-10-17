@@ -39,7 +39,7 @@ const stageHapEntries = [
 describe("HarmonyOS application projection", () => {
   it("projects deterministic Stage HAP components and explicit bridge hypotheses", async () => {
     const path = await writeApplicationZip(
-      "rea-harmony-",
+      "binsight-harmony-",
       "Fixture.hap",
       stageHapEntries,
     );
@@ -88,7 +88,7 @@ describe("HarmonyOS application projection", () => {
 
   it("projects App Pack children by path without recursive inventory", async () => {
     const entryHap = await writeApplicationZip(
-      "rea-harmony-entry-",
+      "binsight-harmony-entry-",
       "entry.hap",
       [
         { path: "module.json", content: '{"module":{}}' },
@@ -96,18 +96,25 @@ describe("HarmonyOS application projection", () => {
       ],
     );
     const featureHsp = await writeApplicationZip(
-      "rea-harmony-feature-",
+      "binsight-harmony-feature-",
       "feature.hsp",
       [{ path: "module.json", content: '{"module":{}}' }],
     );
-    const path = await writeApplicationZip("rea-harmony-app-", "Bundle.app", [
-      { path: "pack.info", content: '{"packages":[]}' },
-      { path: "entry.hap", content: new Uint8Array(await readFile(entryHap)) },
-      {
-        path: "feature.hsp",
-        content: new Uint8Array(await readFile(featureHsp)),
-      },
-    ]);
+    const path = await writeApplicationZip(
+      "binsight-harmony-app-",
+      "Bundle.app",
+      [
+        { path: "pack.info", content: '{"packages":[]}' },
+        {
+          path: "entry.hap",
+          content: new Uint8Array(await readFile(entryHap)),
+        },
+        {
+          path: "feature.hsp",
+          content: new Uint8Array(await readFile(featureHsp)),
+        },
+      ],
+    );
     const inventory = await inventoryApplicationPackage(path);
     expect(inventory.subject?.format).toBe("app-pack");
     const projection = requireDeterministicProjection(
@@ -132,17 +139,21 @@ describe("HarmonyOS application projection", () => {
 describe("HarmonyOS packaging boundaries", () => {
   it("keeps a nested .app ZIP member inside an IPA out of the App Pack classification", async () => {
     const nested = await writeApplicationZip(
-      "rea-harmony-nested-",
+      "binsight-harmony-nested-",
       "Nested.app",
       [{ path: "inner.txt", content: "not an app pack" }],
     );
-    const path = await writeApplicationZip("rea-harmony-ipa-", "Fixture.ipa", [
-      { path: "Payload/App.app/Info.plist", content: "plist" },
-      {
-        path: "Payload/Nested.app",
-        content: new Uint8Array(await readFile(nested)),
-      },
-    ]);
+    const path = await writeApplicationZip(
+      "binsight-harmony-ipa-",
+      "Fixture.ipa",
+      [
+        { path: "Payload/App.app/Info.plist", content: "plist" },
+        {
+          path: "Payload/Nested.app",
+          content: new Uint8Array(await readFile(nested)),
+        },
+      ],
+    );
     const inventory = await inventoryApplicationPackage(path);
     expect(inventory.subject?.format).toBe("ipa");
     const occurrences = (
@@ -160,16 +171,20 @@ describe("HarmonyOS packaging boundaries", () => {
   });
 
   it("claims the FA model only from config.json", async () => {
-    const path = await writeApplicationZip("rea-harmony-fa-", "Legacy.hap", [
-      { path: "config.json", content: '{"app":{}}' },
-      { path: "assets/js/default.js", content: "legacy();" },
-      { path: "assets/entry/resources.index", content: "resource index" },
-      {
-        path: "assets/entry/resources/base/element/strings.json",
-        content: "{}",
-      },
-      { path: "assets/feature/resources/rawfile/icon.png", content: "image" },
-    ]);
+    const path = await writeApplicationZip(
+      "binsight-harmony-fa-",
+      "Legacy.hap",
+      [
+        { path: "config.json", content: '{"app":{}}' },
+        { path: "assets/js/default.js", content: "legacy();" },
+        { path: "assets/entry/resources.index", content: "resource index" },
+        {
+          path: "assets/entry/resources/base/element/strings.json",
+          content: "{}",
+        },
+        { path: "assets/feature/resources/rawfile/icon.png", content: "image" },
+      ],
+    );
     const inventory = await inventoryApplicationPackage(path);
     const result = projectHarmonyApplicationEvidence({
       inventory_evidence: [inventory],
@@ -188,7 +203,7 @@ describe("HarmonyOS packaging boundaries", () => {
 
   it("rejects non-HarmonyOS inventory Evidence", async () => {
     const inventory = await createNonApplicationZipInventory(
-      "rea-harmony-invalid-",
+      "binsight-harmony-invalid-",
     );
     expect(
       projectHarmonyApplicationEvidence({ inventory_evidence: [inventory] }),
@@ -199,7 +214,7 @@ describe("HarmonyOS packaging boundaries", () => {
   });
 
   it("keeps HTTP Archive .har files out of the HarmonyOS classification", async () => {
-    const root = await createTestTempDirectory("rea-harmony-http-har-");
+    const root = await createTestTempDirectory("binsight-harmony-http-har-");
     const path = join(root, "capture.har");
     await writeFile(
       path,
@@ -216,7 +231,7 @@ describe("HarmonyOS packaging boundaries", () => {
 describe("HarmonyOS inventory coverage", () => {
   it("retains complete traversal and case-collision limits in the application projection", async () => {
     const path = await writeApplicationZip(
-      "rea-harmony-case-collision-",
+      "binsight-harmony-case-collision-",
       "Fixture.hap",
       [
         { path: "module.json", content: '{"module":{}}' },
@@ -247,7 +262,7 @@ describe("HarmonyOS inventory coverage", () => {
     async (format) => {
       const suffix = format === "app-pack" ? "app" : format;
       const path = await writeApplicationZip(
-        "rea-package-family-",
+        "binsight-package-family-",
         `Fixture.${suffix}`,
         [{ path: "module.json", content: "{}" }],
       );
@@ -269,7 +284,7 @@ describe("HarmonyOS inventory coverage", () => {
   );
 
   it("preserves unavailable encrypted component paths and qualifies absence", async () => {
-    const root = await createTestTempDirectory("rea-harmony-encrypted-");
+    const root = await createTestTempDirectory("binsight-harmony-encrypted-");
     const path = join(root, "Locked.hap");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("module.json", new TextReader("{}"));

@@ -14,7 +14,7 @@ import {
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const connectImportSession = async () => {
-  const root = await createTestTempDirectory("rea-mcp-import-lifecycle-");
+  const root = await createTestTempDirectory("binsight-mcp-import-lifecycle-");
   const session = createTestBinarySession(() => {
     throw new Error("Evidence import must not start a binary provider");
   });

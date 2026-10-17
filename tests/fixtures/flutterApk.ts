@@ -9,7 +9,7 @@ export const createFlutterApk = async (
   name: string,
   files: ReadonlyArray<{ readonly path: string; readonly bytes: Buffer }>,
 ): Promise<string> => {
-  const root = await createTestTempDirectory("rea-flutter-");
+  const root = await createTestTempDirectory("binsight-flutter-");
   const writer = new ZipWriter(new Uint8ArrayWriter(), {
     useWebWorkers: false,
   });

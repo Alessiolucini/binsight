@@ -159,7 +159,7 @@ export class EvmoleInterfaceProvider implements EvmInterfacePort {
     readonly launcher?: Launcher,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-evm-interface-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "binsight-evm-interface-" }),
   ) {}
 
   /** Bind recovered interface candidates to both original carrier and decoded byte identity. */
@@ -302,7 +302,7 @@ export class EvmoleInterfaceProvider implements EvmInterfacePort {
           ],
           cwd: root.path,
           expectedCommand: null,
-          runId: `rea-evm-interface-${randomUUID()}`,
+          runId: `binsight-evm-interface-${randomUUID()}`,
           hostEnvironment: environment,
         },
         {

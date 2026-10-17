@@ -1,24 +1,24 @@
 ---
 name: reverse-engineer-anything
-description: Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.
+description: Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with BinSight. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip BinSight for ordinary source-repository architecture analysis.
 metadata:
   version: "42"
 ---
 
-# REA
+# BinSight
 
-Use REA when a claim depends on a shipped binary or package, decompilation,
+Use BinSight when a claim depends on a shipped binary or package, decompilation,
 passive application runtime evidence, or comparison with
 behavior not established by available source. For ordinary analysis of a
-complete source repository, use normal repository tools and do not run REA
+complete source repository, use normal repository tools and do not run BinSight
 readiness or provider commands.
 
 ## Connect only when needed
 
-Installing this skill supplies instructions; it does not register the REA MCP
+Installing this skill supplies instructions; it does not register the BinSight MCP
 server, install analysis engines, or add tools to an already-running agent.
 
-If REA tools are available and their registration is not known to be stale,
+If BinSight tools are available and their registration is not known to be stale,
 proceed directly to the target. Do not run diagnostics or setup before every
 investigation. Use the connected server's actual tool list and input schemas;
 a skill installed from repository main may describe capabilities absent from
@@ -31,9 +31,9 @@ Diagnose the observed blocker, continue useful supported work, and resume the
 original task after repair. Client approval, shell PATH, registration and engine
 availability have different remedies; avoid repeating setup for all of them.
 
-1. Diagnose without changing REA or client configuration. `npx` may download
+1. Diagnose without changing BinSight or client configuration. `npx` may download
    the package and write to npm's cache. For Codex, run
-   `npx -y rea-agents@latest doctor --client codex --json`. Substitute the current
+   `npx -y binsight@latest doctor --client codex --json`. Substitute the current
    supported client: `claude_code`, `claude_desktop`, `codex`, `cursor`,
    `gemini_cli`, `windsurf`, `devin`, `opencode`, `antigravity`, `copilot_cli`,
    `commandcode`, `vscode`, `grok_build`, `omp`, or `grok_bot`. `grok_bot` has no local
@@ -47,38 +47,38 @@ availability have different remedies; avoid repeating setup for all of them.
    that provider: static JavaScript inspection needs neither Hopper nor Ghidra,
    and Android inspection has separate bring-your-own JADX/Java prerequisites.
 3. For a configuration repair, prepare the read-only plan:
-   `npx -y rea-agents@latest setup --client codex --dry-run --json`.
+   `npx -y binsight@latest setup --client codex --dry-run --json`.
    Use the current client's ID, show its exact proposed paths, backups, and
    changes, and obtain approval before setup writes configuration or installs
    Hopper. Setup normally installs the matching bundled skill too; include that
    replacement in the reviewed plan. After approval, apply the same scope with
-   `npx -y rea-agents@latest setup --client codex --yes`. Add `--install-hopper`
+   `npx -y binsight@latest setup --client codex --yes`. Add `--install-hopper`
    only if that separate installation was needed and explicitly approved.
-4. Restart/reconnect the affected agent. Verify that REA tools actually appear
+4. Restart/reconnect the affected agent. Verify that BinSight tools actually appear
    in the session, then resume the original investigation. If they remain
    absent, inspect the client's MCP launch error rather than repeating setup.
 
-REA setup never installs or upgrades Node.js, npm, Homebrew, Java, Ghidra, IDA,
+BinSight setup never installs or upgrades Node.js, npm, Homebrew, Java, Ghidra, IDA,
 JADX, Kuna, Binwalk, or Unblob. Use existing prerequisites; do not install unrelated
 software to repair
 MCP registration. For an unsupported client, use manual stdio registration
-with a version-pinned `rea-agents` package or continue through the CLI.
+with a version-pinned `binsight` package or continue through the CLI.
 
 A concrete CLI fallback for an operator-supplied JavaScript tree or ASAR is:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y binsight@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 No MCP registration or native engine is required. Read the returned Evidence,
 graph, limitations, and unknowns with the same care as an MCP result; the CLI
 returns the Evidence record directly. This fallback does not establish that
 MCP is configured. Native CLI tasks still require their selected engine.
-Prefer an existing `rea` CLI. When none is installed and REA package acquisition
-is within the authorized scope, use `npx -y rea-agents@latest` in its place.
+Prefer an existing `binsight` CLI. When none is installed and BinSight package acquisition
+is within the authorized scope, use `npx -y binsight@latest` in its place.
 Configuration repair starts with a read-only setup plan; show paths, backups and
 skill replacement before applying authorized changes. Preserve existing approval
-and target-execution boundaries. REA setup never installs or upgrades unrelated
+and target-execution boundaries. BinSight setup never installs or upgrades unrelated
 software, including Node.js, npm, Homebrew, Java, Ghidra, IDA, JADX, Kuna, Binwalk or Unblob.
 
 ## Route the target first
@@ -275,11 +275,11 @@ analysis-profile digest or canonical procedure address. Select its returned
 Evidence ID for the next view instead of requesting the complete bundle.
 `retention: "complete-record"` means the whole record is stored; native
 value-flow truncation and unknown metadata remain separate. For an exported
-portable bundle, use `rea inspect-evidence-bundle` with JSON containing `path`,
+portable bundle, use `binsight inspect-evidence-bundle` with JSON containing `path`,
 `detail: "summary"` and the same `filters`. Reading that file still requires
 validating its full contents within the local memory budget.
 
-A client can also truncate a successful tool result without a REA transport
+A client can also truncate a successful tool result without a BinSight transport
 error. Treat that preview as incomplete; use the retained parent ID for smaller
 views or export when the full record is needed. Do not parse the preview as
 canonical JSON or repeat the producer. For JavaScript, read the
@@ -293,7 +293,7 @@ that static analysis observed execution. Runtime requests execute the declared
 target and lifecycle; do not broaden the target or action beyond those fields.
 
 Within the user's requested investigation, call available analysis tools
-directly. REA does not require permission grants or per-call approval flags.
+directly. BinSight does not require permission grants or per-call approval flags.
 The agent client can independently require approval. Follow the declared request
 scope and the host's actual access requirements; use the recovery guide for an
 observed client-policy rejection.
@@ -305,7 +305,7 @@ For requests that span multiple features or subsystems, use a staged workflow:
 1. Turn the request into a checklist of questions and the evidence each answer
    needs. Resolve target identity and constraints from the conversation and
    workspace before asking for information again.
-2. Inspect the current REA session, artifact identity, saved analysis database,
+2. Inspect the current BinSight session, artifact identity, saved analysis database,
    bookmarks, and prior evidence. Reuse matching state; do not open duplicate
    sessions or repeat identical analysis.
 3. Start with the smallest useful overview or inventory. Follow each question

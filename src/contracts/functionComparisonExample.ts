@@ -48,8 +48,8 @@ const observe = (digit: string, text: string) =>
       format: "mach-o",
     },
     {
-      id: "rea-workflow",
-      name: "REA composed investigation workflow",
+      id: "binsight-workflow",
+      name: "BinSight composed investigation workflow",
       version: "1",
     },
     {

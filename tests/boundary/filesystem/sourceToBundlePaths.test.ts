@@ -14,7 +14,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("keeps literal hash characters in historical/current filesystem paths", async () => {
-  const root = await createTestTempDirectory("rea-source-path-");
+  const root = await createTestTempDirectory("binsight-source-path-");
   const previous = join(root, "previous");
   const current = join(root, "current");
   await Promise.all([mkdir(previous), mkdir(current)]);
@@ -49,7 +49,7 @@ it("keeps literal hash characters in historical/current filesystem paths", async
 });
 
 it("matches source-map originals named relative to the map", async () => {
-  const root = await createTestTempDirectory("rea-source-map-parent-");
+  const root = await createTestTempDirectory("binsight-source-map-parent-");
   const previous = join(root, "previous");
   const current = join(root, "current");
   await Promise.all([
@@ -192,7 +192,7 @@ it.each([
         `/${expected}`,
       );
     }
-    const root = await createTestTempDirectory("rea-nested-map-");
+    const root = await createTestTempDirectory("binsight-nested-map-");
     const previous = join(root, "previous");
     const current = join(root, "current");
     await Promise.all([
@@ -250,7 +250,7 @@ it.each([
 );
 
 it("retains every map location when identical map artifacts merge", async () => {
-  const root = await createTestTempDirectory("rea-source-map-merged-");
+  const root = await createTestTempDirectory("binsight-source-map-merged-");
   const previous = join(root, "previous");
   const current = join(root, "current");
   const map = JSON.stringify({
@@ -310,7 +310,7 @@ it("retains every map location when identical map artifacts merge", async () => 
 });
 
 it("keeps leaf source roots distinct after indexed maps are serialized", async () => {
-  const root = await createTestTempDirectory("rea-source-map-leaf-roots-");
+  const root = await createTestTempDirectory("binsight-source-map-leaf-roots-");
   const previous = join(root, "previous");
   const current = join(root, "current");
   await mkdir(join(current, "maps"), { recursive: true });
@@ -406,7 +406,7 @@ it.each([
 ])(
   "projects source references from $source only when they name a file",
   async ({ source, hasPath }) => {
-    const root = await createTestTempDirectory("rea-source-map-uri-");
+    const root = await createTestTempDirectory("binsight-source-map-uri-");
     const previous = join(root, "previous");
     const current = join(root, "current");
     await Promise.all([
@@ -448,7 +448,7 @@ it.each([
 it.each(["#original.js", "?version.js", "?version.js#original.js"])(
   "uses the relative URL pathname rather than a literal %s filename",
   async (suffix) => {
-    const root = await createTestTempDirectory("rea-source-map-suffix-");
+    const root = await createTestTempDirectory("binsight-source-map-suffix-");
     const previous = join(root, "previous");
     const current = join(root, "current");
     await Promise.all([
@@ -506,7 +506,7 @@ it.each([
 ])(
   "preserves the literal UNC filesystem name $filename without selecting a URL decoy",
   async ({ filename, decoyFilename }) => {
-    const root = await createTestTempDirectory("rea-source-map-unc-");
+    const root = await createTestTempDirectory("binsight-source-map-unc-");
     const previous = join(root, "previous");
     const current = join(root, "current");
     const source = `\\\\server\\share\\src\\${filename}`;
@@ -573,7 +573,7 @@ it.each([
 ])(
   "declines source references without a trustworthy file path: $source",
   async ({ source, historicalPath }) => {
-    const root = await createTestTempDirectory("rea-source-map-empty-");
+    const root = await createTestTempDirectory("binsight-source-map-empty-");
     const previous = join(root, "previous");
     const current = join(root, "current");
     await Promise.all([
@@ -609,7 +609,7 @@ it.each([
 );
 
 it("resolves parent segments against a nested source map's directory", async () => {
-  const root = await createTestTempDirectory("rea-source-map-nested-");
+  const root = await createTestTempDirectory("binsight-source-map-nested-");
   const previous = join(root, "previous");
   const current = join(root, "current");
   await Promise.all([
@@ -658,7 +658,9 @@ it("resolves parent segments against a nested source map's directory", async () 
 });
 
 it("rejects static application Evidence whose subject path disagrees with its result", async () => {
-  const root = await createTestTempDirectory("rea-application-subject-path-");
+  const root = await createTestTempDirectory(
+    "binsight-application-subject-path-",
+  );
   const analyzed = await analyzeJavaScriptApplication({ input_path: root });
   if (!analyzed.ok) throw analyzed.error;
   const subject = analyzed.value.subject;
@@ -711,7 +713,9 @@ const compareTrees = async (previous: string, current: string) => {
 it.skipIf(process.platform === "win32")(
   "does not promote a POSIX literal backslash name to a different historical slash path",
   async () => {
-    const root = await createTestTempDirectory("rea-backslash-source-match-");
+    const root = await createTestTempDirectory(
+      "binsight-backslash-source-match-",
+    );
     const previous = join(root, "previous");
     const current = join(root, "current");
     await mkdir(join(previous, "literal"), { recursive: true });
@@ -743,7 +747,9 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "resolves source-map declarations from literal artifact base $mapPath",
   async ({ mapPath, expected }) => {
-    const root = await createTestTempDirectory("rea-backslash-source-map-");
+    const root = await createTestTempDirectory(
+      "binsight-backslash-source-map-",
+    );
     const previous = join(root, "previous");
     const current = join(root, "current");
     await mkdir(previous);

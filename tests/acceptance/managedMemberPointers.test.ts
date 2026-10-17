@@ -13,7 +13,9 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "CLI and stdio MCP retain physical member identities through reordered pointers",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-member-pointers-");
+    const root = await createTestTempDirectory(
+      "binsight-managed-member-pointers-",
+    );
     const path = join(root, "reordered.dll");
     const bytes = buildManagedMemberPointerFixture();
     const sha256 = createHash("sha256").update(bytes).digest("hex");

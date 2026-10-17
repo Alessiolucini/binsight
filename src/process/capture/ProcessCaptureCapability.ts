@@ -34,16 +34,16 @@ export const processCaptureProbeFailureReason = (cause: unknown): string => {
     code === "MODULE_NOT_FOUND" ||
     /cannot find module|cannot find package/iu.test(diagnostic)
   )
-    return `the native PTY module is missing (${diagnostic}); reinstall REA for this host with optional dependencies enabled (for a source checkout, run npm ci)`;
+    return `the native PTY module is missing (${diagnostic}); reinstall BinSight for this host with optional dependencies enabled (for a source checkout, run npm ci)`;
   if (
     /NODE_MODULE_VERSION|compiled against a different Node\.js version|module version mismatch/iu.test(
       diagnostic,
     )
   )
-    return `the native PTY module is incompatible with this Node.js runtime (${diagnostic}); reinstall REA for this host and active Node.js version with optional dependencies enabled (for a source checkout, run npm ci after selecting that Node.js version)`;
+    return `the native PTY module is incompatible with this Node.js runtime (${diagnostic}); reinstall BinSight for this host and active Node.js version with optional dependencies enabled (for a source checkout, run npm ci after selecting that Node.js version)`;
   if (code === "ERR_DLOPEN_FAILED")
-    return `the native PTY library failed to load (${diagnostic}); check the loader error, then reinstall REA for this host with optional dependencies enabled (for a source checkout, run npm ci)`;
-  return `the native PTY probe failed (${diagnostic}); check the reported operating-system or process-startup error and reinstall REA for this host with optional dependencies enabled if the native binary is missing`;
+    return `the native PTY library failed to load (${diagnostic}); check the loader error, then reinstall BinSight for this host with optional dependencies enabled (for a source checkout, run npm ci)`;
+  return `the native PTY probe failed (${diagnostic}); check the reported operating-system or process-startup error and reinstall BinSight for this host with optional dependencies enabled if the native binary is missing`;
 };
 
 /** Probe the actual native PTY seam instead of inferring support from the OS name. */

@@ -15,7 +15,7 @@ const analyzeFailure = async (input: Record<string, unknown>) => {
 };
 
 const application = async () => {
-  const root = await createTestTempDirectory("rea-javascript-selection-");
+  const root = await createTestTempDirectory("binsight-javascript-selection-");
   const directory = join(root, "app");
   await mkdir(directory);
   await writeFile(join(directory, "index.js"), "module.exports = 1;\n");

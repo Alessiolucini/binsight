@@ -50,7 +50,7 @@ export function parsePowerPcReadelf(text) {
   };
 }
 
-/** Independent reader is a bounded test prerequisite, never an REA provider. */
+/** Independent reader is a bounded test prerequisite, never an BinSight provider. */
 export async function inspectPowerPcReadelf(path) {
   const command = process.env.REA_PPC_READELF ?? "readelf";
   const options = {

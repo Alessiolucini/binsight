@@ -189,7 +189,7 @@ describe("native macOS provider discovery", () => {
 
 describe("native command output collection", () => {
   it("retries discovery and resamples the executable after its tool path is replaced", async () => {
-    directory = await createTestTempDirectory("rea-native-tool-identity-");
+    directory = await createTestTempDirectory("binsight-native-tool-identity-");
     const executable = join(directory, "fixture-tool");
     const source = (value: string): string =>
       `#!/bin/sh\nprintf '%s\\n' '${value}'\n`;
@@ -732,7 +732,7 @@ describe("native macOS provider inspection", () => {
   });
 
   it("supports architectures, signatures, plists, and ordered demangling", async () => {
-    directory = await createTestTempDirectory("rea-native-");
+    directory = await createTestTempDirectory("binsight-native-");
     const app = join(directory, "Fixture.app");
     const executable = join(app, "Contents/MacOS/Fixture");
     await mkdir(join(app, "Contents/MacOS"), { recursive: true });
@@ -782,7 +782,7 @@ describe("native macOS provider inspection", () => {
 
 describe("native macOS provider raw results", () => {
   it("records command provenance once, in the normalized result", async () => {
-    directory = await createTestTempDirectory("rea-native-");
+    directory = await createTestTempDirectory("binsight-native-");
     const app = join(directory, "Fixture.app");
     const executable = join(app, "Contents/MacOS/Fixture");
     await mkdir(join(app, "Contents/MacOS"), { recursive: true });
@@ -819,7 +819,7 @@ describe("native macOS provider raw results", () => {
 
 describe("native plist defaults for iOS-style bundles", () => {
   it("defaults to the Info.plist the bundle program was resolved from", async () => {
-    directory = await createTestTempDirectory("rea-native-flat-");
+    directory = await createTestTempDirectory("binsight-native-flat-");
     const app = join(directory, "Flat.app");
     const executable = join(app, "Flat");
     await mkdir(app, { recursive: true });
@@ -858,7 +858,9 @@ class PrototypeEntitlementsRunner extends FixtureRunner {
 
 describe("native signature entitlements", () => {
   it("reports entitlement entries keyed __proto__ that the result omits", async () => {
-    directory = await createTestTempDirectory("rea-signature-entitlements-");
+    directory = await createTestTempDirectory(
+      "binsight-signature-entitlements-",
+    );
     const executable = join(directory, "fixture");
     await writeFile(executable, "fixture");
     const client = new NativeMacOSProvider(
@@ -874,7 +876,7 @@ describe("native signature entitlements", () => {
       entitlements: { "com.apple.security.app-sandbox": true },
     });
     expect(signature.value.limitations).toContain(
-      "Entitlements: 1 dictionary entry keyed __proto__ was omitted because REA results cannot represent that key.",
+      "Entitlements: 1 dictionary entry keyed __proto__ was omitted because BinSight results cannot represent that key.",
     );
   });
 });
@@ -896,7 +898,7 @@ class VerboseCodeSignFailureRunner extends FixtureRunner {
 
 describe("native signature failure diagnostics", () => {
   it("bounds accepted nonzero codesign output once it becomes a failure", async () => {
-    directory = await createTestTempDirectory("rea-signature-failure-");
+    directory = await createTestTempDirectory("binsight-signature-failure-");
     const executable = join(directory, "fixture");
     await writeFile(executable, "fixture");
     const client = new NativeMacOSProvider(
@@ -918,7 +920,7 @@ describe("native signature failure diagnostics", () => {
 
 describe("native dispatch metadata error results", () => {
   it("preserves tagged cancellation and integrity failures", async () => {
-    directory = await createTestTempDirectory("rea-dispatch-errors-");
+    directory = await createTestTempDirectory("binsight-dispatch-errors-");
     const targetPath = join(directory, "fixture.macho");
     await writeFile(targetPath, "bound target bytes");
     const client = new NativeMacOSProvider(

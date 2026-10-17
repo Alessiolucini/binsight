@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-/** Source-owned case/target labels; no REA or Ghidra result defines this oracle. */
+/** Source-owned case/target labels; no BinSight or Ghidra result defines this oracle. */
 export const SWITCH_FIXTURES = [
   {
     name: "dense",
@@ -46,7 +46,7 @@ export function buildSwitchSource() {
     );
     return `__attribute__((noinline, used)) int rea_switch_${fixture.name}(${fixture.selector_type ?? "int"} selector) {\nswitch (selector) {\n${blocks.join("\n")}\n}\n}`;
   });
-  // Constant calls preserve every function without executing imported targets in REA.
+  // Constant calls preserve every function without executing imported targets in BinSight.
   return `${functions.join("\n\n")}\nint main(int argc, char **argv) { (void)argv; return ${SWITCH_FIXTURES.map(({ name }) => `rea_switch_${name}(argc)`).join(" ^ ")}; }\n`;
 }
 

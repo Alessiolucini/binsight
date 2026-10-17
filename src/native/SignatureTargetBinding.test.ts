@@ -43,7 +43,7 @@ const createTarget = async (
   bytes: string,
   digest = bytes,
 ): Promise<BinaryTarget> => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-signature-target-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-signature-target-"));
   targets.push(directory);
   const path = join(directory, "target.bin");
   await writeFile(path, bytes);
@@ -58,7 +58,7 @@ const createTarget = async (
 };
 
 const createRoot = async (failedAttempts = 0) => {
-  const path = await mkdtemp(join(tmpdir(), "rea-signature-root-"));
+  const path = await mkdtemp(join(tmpdir(), "binsight-signature-root-"));
   roots.push(path);
   let attempts = 0;
   return {
@@ -99,7 +99,9 @@ it("returns a retained cleanup failure when the next call cannot retry its root"
   const target = await createTarget("observed", "expected");
   const resources = new ArtifactResourceScope();
   const createFailingRoot = async () => {
-    const path = await mkdtemp(join(tmpdir(), "rea-signature-root-sticky-"));
+    const path = await mkdtemp(
+      join(tmpdir(), "binsight-signature-root-sticky-"),
+    );
     roots.push(path);
     return {
       path,

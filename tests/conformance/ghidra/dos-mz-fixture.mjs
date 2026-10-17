@@ -22,7 +22,7 @@ export function buildDosMzFixture() {
   // Conditional JZ to a separated terminal block, else RET. A conditional edge
   // keeps the tail in entry rather than creating an unconditional tail-call thunk.
   // A RET after DOS exit bounds static analysis even without interrupt semantics.
-  // REA never executes this code.
+  // BinSight never executes this code.
   bytes.set(
     [
       0xb8, 0x34, 0x12, 0xe8, 0x1a, 0x00, 0x9a, 0x00, 0x00, 0x04, 0x00, 0x74,

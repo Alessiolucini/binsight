@@ -98,7 +98,7 @@ const assertAdditionalQlogFacets = async (
 };
 
 it("pages original trace-scoped facts after source deletion without conflating selected events or identical stream IDs", async () => {
-  const root = await createTestTempDirectory("rea-qlog-pages-");
+  const root = await createTestTempDirectory("binsight-qlog-pages-");
   const path = join(root, "input.qlog");
   const source = JSON.parse(
     qlog([
@@ -243,7 +243,7 @@ runtimeTest.runIf(!hasMemoryBound)(
   "refuses qlog when this runtime cannot enforce a decoder memory bound",
   async () => {
     const { call } = await connectLocalToolsMcp();
-    const root = await createTestTempDirectory("rea-qlog-unbounded-");
+    const root = await createTestTempDirectory("binsight-qlog-unbounded-");
     const path = join(root, "input.qlog");
     await writeFile(path, qlog([event]));
     expect(
@@ -258,7 +258,7 @@ runtimeTest.runIf(!hasMemoryBound)(
 );
 
 it("runs built CLI and real stdio SDK with exact evidence parity, selection, retained references and strict schemas", async () => {
-  const root = await createTestTempDirectory("rea-qlog-public-");
+  const root = await createTestTempDirectory("binsight-qlog-public-");
   const path = join(root, "input.qlog");
   await writeFile(
     path,
@@ -345,7 +345,7 @@ it("runs built CLI and real stdio SDK with exact evidence parity, selection, ret
 }, 60_000);
 
 it("fails whole-capture validation before selection and survives malformed, unsupported and oversized qlog", async () => {
-  const root = await createTestTempDirectory("rea-qlog-errors-");
+  const root = await createTestTempDirectory("binsight-qlog-errors-");
   const path = join(root, "input.qlog");
   const { call, client } = await connectLocalToolsMcp();
   for (const [text, code] of [
@@ -411,7 +411,7 @@ it("fails whole-capture validation before selection and survives malformed, unsu
 runtimeTest.skipIf(process.versions.bun !== undefined || !hasMemoryBound)(
   "contains actual qlog decoder heap exhaustion and keeps MCP usable",
   async () => {
-    const root = await createTestTempDirectory("rea-qlog-capacity-");
+    const root = await createTestTempDirectory("binsight-qlog-capacity-");
     const path = join(root, "dense.qlog");
     const dense = qlog(Array<unknown>(100_000).fill(event));
     expect(Buffer.byteLength(dense)).toBeLessThan(

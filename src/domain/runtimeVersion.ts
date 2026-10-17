@@ -7,11 +7,11 @@ export const SUPPORTED_NODE_VERSION_RANGE = "^22.19.0 || ^24.11.0 || >=26.0.0";
 export const SUPPORTED_NODE_VERSION_PROSE =
   "Node.js 22.x (>=22.19), 24.x (>=24.11), or 26+";
 
-/** Return whether a Node.js version satisfies REA's tested runtime families. */
+/** Return whether a Node.js version satisfies BinSight's tested runtime families. */
 export const supportsNodeVersion = (version: string): boolean =>
   satisfies(version, SUPPORTED_NODE_VERSION_RANGE);
 
-/** JavaScript runtime executing REA. Bun also reports a Node.js compatibility version. */
+/** JavaScript runtime executing BinSight. Bun also reports a Node.js compatibility version. */
 export type JavaScriptRuntime =
   | { readonly id: "node"; readonly version: string }
   | {

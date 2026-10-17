@@ -20,7 +20,7 @@ import { parseMcpToolError } from "../fixtures/mcpToolError.js";
 cliTest(
   "bounds overlapping ELF scans through CLI and keeps MCP responsive",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-go-overlap-");
+    const root = await createTestTempDirectory("binsight-go-overlap-");
     const path = join(root, "overlapping.elf");
     await writeFile(path, createGoOverlappingElfFixture());
     const result = await cli.run({
@@ -50,7 +50,7 @@ cliTest(
 cliTest(
   "retains later-load sectionless ELF evidence through public CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-go-split-elf-");
+    const root = await createTestTempDirectory("binsight-go-split-elf-");
     const { client, call } = await connectLocalToolsMcp();
     const infos = [];
     for (const sectionless of [false, true]) {
@@ -80,7 +80,9 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
   cliTest.skipIf(expectedErrno === "ELOOP" && process.platform === "win32")(
     `reports native ${expectedErrno} path failure as invalid selected-path input through the public Go CLI`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-go-cli-path-failure-");
+      const root = await createTestTempDirectory(
+        "binsight-go-cli-path-failure-",
+      );
       const { path, errno } = await createGoBinaryPathFailureFixture(
         root,
         expectedErrno,
@@ -112,7 +114,7 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
 cliTest(
   "preserves invalid embedded Go text bytes through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-go-cli-byte-strings-");
+    const root = await createTestTempDirectory("binsight-go-cli-byte-strings-");
     const path = join(root, "byte-strings.elf");
     const fixture = createGoBinaryByteStringFixture();
     await writeFile(path, fixture.bytes);
@@ -133,7 +135,7 @@ for (const fixture of createGoBinaryDiagnosticFixtures()) {
   cliTest(
     `reports ${fixture.code} for ${fixture.name} through the public Go CLI`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-go-cli-mz-");
+      const root = await createTestTempDirectory("binsight-go-cli-mz-");
       const path = join(root, `${fixture.name}.exe`);
       await writeFile(path, fixture.bytes);
       const result = await cli.run({
@@ -154,7 +156,7 @@ for (const fixture of createGoBinaryDiagnosticFixtures()) {
 cliTest(
   "reports a readable unsupported carrier through the public Go CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-go-cli-");
+    const root = await createTestTempDirectory("binsight-go-cli-");
     const path = join(root, "text.bin");
     await writeFile(path, "This is not an executable container.");
     const result = await cli.run({
@@ -173,7 +175,7 @@ for (const format of ["elf", "pe", "macho"] as const) {
     cliTest(
       `inspects authored ${format} ${encoding} build metadata through the compiled CLI`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-go-cli-");
+        const root = await createTestTempDirectory("binsight-go-cli-");
         const fixture = createGoBinaryFixture({ format, encoding });
         const path = join(root, "application.bin");
         await writeFile(path, fixture.bytes);
@@ -245,7 +247,7 @@ for (const format of ["elf", "pe", "macho"] as const) {
 }
 
 cliTest("preserves MIPS identity in Go CLI Evidence", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-go-cli-mips-");
+  const root = await createTestTempDirectory("binsight-go-cli-mips-");
   const fixture = createGoBinaryFixture();
   fixture.bytes.writeUInt16LE(8, 18); // ELF EM_MIPS.
   const path = join(root, "application.elf");
@@ -268,7 +270,7 @@ cliTest("preserves MIPS identity in Go CLI Evidence", async ({ cli }) => {
 cliTest(
   "reports missing build information as unknown and preserves unsupported carriers distinctly",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-go-cli-");
+    const root = await createTestTempDirectory("binsight-go-cli-");
     const path = join(root, "metadata-free.elf");
     await writeFile(path, createGoBinaryFixture({ omitBuildInfo: true }).bytes);
     const result = await cli.run({
@@ -292,7 +294,7 @@ cliTest(
       "path\texample.com/tool/cmd/tool\n" +
       "build\t-compiler=gc\n" +
       "build\tGOOS=linux\n";
-    const root = await createTestTempDirectory("rea-go-gopath-cli-");
+    const root = await createTestTempDirectory("binsight-go-gopath-cli-");
     const path = join(root, "application.elf");
     await writeFile(path, createGoBinaryFixture({ moduleText }).bytes);
     const result = await cli.run({

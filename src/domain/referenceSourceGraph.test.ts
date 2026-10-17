@@ -99,7 +99,7 @@ const graphInput = (): HistoricalSourceGraphInput => ({
   languages: ["TypeScript"],
   manifests: [],
   vcs: { kind: "git", head: HASH_A, dirty: false },
-  provenance: { importer: "rea", importer_version: "1", caller: "test" },
+  provenance: { importer: "binsight", importer_version: "1", caller: "test" },
   limitations: [],
 });
 

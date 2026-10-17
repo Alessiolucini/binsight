@@ -65,7 +65,7 @@ const incomplete: ProcessCleanupFailure = {
   unverified: [{ pid: 456, diagnostic: "controlled observation unavailable" }],
 };
 const fixture = async (rollback: () => Promise<ProcessCleanupFailure>) => {
-  const root = await createTestTempDirectory("rea-launch-rollback-");
+  const root = await createTestTempDirectory("binsight-launch-rollback-");
   const launcher = new GhidraHeadlessLauncher({
     configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
     environment: {},

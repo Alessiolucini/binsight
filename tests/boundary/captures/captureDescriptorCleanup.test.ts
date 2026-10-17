@@ -37,7 +37,9 @@ it
   ])(
   "retains failed %s descriptors and retries them before further acquisition and shutdown",
   async (member) => {
-    const directory = await createTestTempDirectory("rea-capture-descriptor-");
+    const directory = await createTestTempDirectory(
+      "binsight-capture-descriptor-",
+    );
     const path = join(directory, "recording.pcap");
     const command = join(directory, "tshark.mjs");
     const limiter = join(directory, "limiter");

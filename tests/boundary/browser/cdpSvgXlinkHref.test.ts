@@ -84,7 +84,7 @@ it.skipIf(chromeExecutable === undefined)(
   async ({ processes }) => {
     const executable = chromeExecutable;
     if (executable === undefined) return;
-    const profile = await createTestTempDirectory("rea-svg-xlink-");
+    const profile = await createTestTempDirectory("binsight-svg-xlink-");
     const server = createServer((_request, response) => {
       response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
       response.end(pageHtml);
@@ -277,7 +277,7 @@ for (const { format, page, contentType, nodeNames, link, destinations } of [
     async ({ processes }) => {
       const executable = chromeExecutable;
       if (executable === undefined) return;
-      const profile = await createTestTempDirectory("rea-svg-xhtml-");
+      const profile = await createTestTempDirectory("binsight-svg-xhtml-");
       const server = createServer((_request, response) => {
         response.writeHead(200, {
           "content-type": `${contentType}; charset=utf-8`,

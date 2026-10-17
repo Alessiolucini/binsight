@@ -178,7 +178,7 @@ const deriveProcessCandidate = (
 ): void => {
   if (
     evidence.operation !== "capture_process_scenario" ||
-    evidence.predicate_type !== "rea.process-capture"
+    evidence.predicate_type !== "binsight.process-capture"
   )
     return;
   try {
@@ -382,7 +382,7 @@ const reviewedEvidenceState = (
 ): ReconstructionObligation["authority_references"][number]["state"] => {
   if (
     evidence.operation === "capture_process_scenario" &&
-    evidence.predicate_type === "rea.process-capture" &&
+    evidence.predicate_type === "binsight.process-capture" &&
     evidence.confidence === "observed"
   )
     return "observed";

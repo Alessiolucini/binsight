@@ -54,7 +54,7 @@ afterEach(async () => {
 });
 
 const fixtureRoot = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-cdp-script-metadata-");
+  const root = await createTestTempDirectory("binsight-cdp-script-metadata-");
   resources.push(() => rm(root, { force: true, recursive: true }));
   await Promise.all([
     writeFile(join(root, "index.html"), "<html></html>"),

@@ -13,7 +13,7 @@ import { systemUninstallHost } from "../../../src/application/Uninstall.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("accepts a literal UTF-8 replacement character without changing its value", async () => {
-  const root = await createTestTempDirectory("rea-client-config-utf8-");
+  const root = await createTestTempDirectory("binsight-client-config-utf8-");
   const configPath = join(root, "config.json");
   const original = Buffer.concat([
     Buffer.from('{"label":"'),
@@ -24,63 +24,69 @@ it("accepts a literal UTF-8 replacement character without changing its value", a
   const result = await configureClientConfiguration(
     { name: "cursor", format: "json", configPath },
     {},
-    ["rea", "mcp"],
+    ["binsight", "mcp"],
   );
   expect(result.status).toBe("configured");
-  expect(await readFile(`${configPath}.rea.backup`)).toEqual(original);
+  expect(await readFile(`${configPath}.binsight.backup`)).toEqual(original);
   expect(JSON.parse(await readFile(configPath, "utf8")).label).toBe("\uFFFD");
 });
 
 it("previews and creates a current recovery backup while preserving the first backup", async () => {
-  const root = await createTestTempDirectory("rea-client-current-recovery-");
+  const root = await createTestTempDirectory(
+    "binsight-client-current-recovery-",
+  );
   const configPath = join(root, "config.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   const client = { name: "cursor", format: "json", configPath } as const;
   await writeFile(configPath, currentOriginal);
-  await writeFile(`${configPath}.rea.backup`, firstOriginal);
+  await writeFile(`${configPath}.binsight.backup`, firstOriginal);
 
-  const recoveryPath = `${configPath}.rea.backup.${createHash("sha256")
+  const recoveryPath = `${configPath}.binsight.backup.${createHash("sha256")
     .update(currentOriginal, "utf8")
     .digest("hex")}.recovery`;
-  expect(await inspectClientConfiguration(client, {}, ["rea", "mcp"])).toEqual({
+  expect(
+    await inspectClientConfiguration(client, {}, ["binsight", "mcp"]),
+  ).toEqual({
     status: "update",
     backupPath: recoveryPath,
   });
 
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
   ).toEqual({ status: "configured", backupPath: recoveryPath });
-  expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
     firstOriginal,
   );
   expect(await readFile(recoveryPath, "utf8")).toBe(currentOriginal);
 });
 
 it("blocks configuration when the planned content-addressed backup is occupied", async () => {
-  const root = await createTestTempDirectory("rea-client-recovery-conflict-");
+  const root = await createTestTempDirectory(
+    "binsight-client-recovery-conflict-",
+  );
   const configPath = join(root, "config.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   const client = { name: "cursor", format: "json", configPath } as const;
   await writeFile(configPath, currentOriginal);
-  await writeFile(`${configPath}.rea.backup`, firstOriginal);
-  const recoveryPath = `${configPath}.rea.backup.${createHash("sha256")
+  await writeFile(`${configPath}.binsight.backup`, firstOriginal);
+  const recoveryPath = `${configPath}.binsight.backup.${createHash("sha256")
     .update(currentOriginal, "utf8")
     .digest("hex")}.recovery`;
   await writeFile(recoveryPath, "occupied by other data");
 
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+    await inspectClientConfiguration(client, {}, ["binsight", "mcp"]),
   ).toMatchObject({
     status: "invalid",
     remediation: expect.stringContaining(recoveryPath),
   });
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
   ).toEqual({ status: "failed", reason: "backup" });
   expect(await readFile(configPath, "utf8")).toBe(currentOriginal);
-  expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
     firstOriginal,
   );
   expect(await readFile(recoveryPath, "utf8")).toBe("occupied by other data");
@@ -93,7 +99,7 @@ describe("client configuration write failures", () => {
   ] as const)(
     "classifies a denied %s write as a write failure",
     async (format, configure) => {
-      const root = await createTestTempDirectory("rea-client-unwritable-");
+      const root = await createTestTempDirectory("binsight-client-unwritable-");
       await chmod(root, 0o500);
       try {
         expect(
@@ -113,23 +119,25 @@ describe("client configuration write failures", () => {
 describe("TOML client configuration comparison", () => {
   it("replaces a registration containing a non-finite TOML float and preserves unrelated settings", async () => {
     const value = "-inf";
-    const root = await createTestTempDirectory("rea-client-toml-");
+    const root = await createTestTempDirectory("binsight-client-toml-");
     const configPath = join(root, "config.toml");
-    const original = `unrelated = ${value}\n[mcp_servers.rea]\ncommand = "old"\nstartup_timeout_sec = ${value}\n`;
+    const original = `unrelated = ${value}\n[mcp_servers.binsight]\ncommand = "old"\nstartup_timeout_sec = ${value}\n`;
     await writeFile(configPath, original);
     const client = { name: "codex", format: "toml", configPath } as const;
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
     ).toEqual({
       status: "configured",
-      backupPath: `${configPath}.rea.backup`,
+      backupPath: `${configPath}.binsight.backup`,
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
     expect(await readFile(configPath, "utf8")).toContain(
       `unrelated = ${value}`,
     );
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
     ).toEqual({
       status: "unchanged",
     });
@@ -140,13 +148,13 @@ const unrelatedToml = [
   "# Keep this explanation.",
   'notify = ["a", "b"]',
   "literal = 'C:\\demo\\path'",
-  'disabled_mcp_servers = ["rea", "other"] # Not a Codex registration.',
+  'disabled_mcp_servers = ["binsight", "other"] # Not a Codex registration.',
   "",
 ].join("\n");
 
 const unrelatedServer = [
   "# Keep the other server.",
-  '[mcp_servers."rea.env"]',
+  '[mcp_servers."binsight.env"]',
   "command = 'other'",
   "",
 ].join("\n");
@@ -155,7 +163,7 @@ const unrelatedValues = (text: string) => {
   const document = parseToml(text);
   const servers = document.mcp_servers;
   if (typeof servers === "object" && servers !== null) {
-    Reflect.deleteProperty(servers, "rea");
+    Reflect.deleteProperty(servers, "binsight");
     if (Object.keys(servers).length === 0) delete document.mcp_servers;
   }
   return document;
@@ -170,17 +178,17 @@ describe("Codex configuration text preservation", () => {
     },
     {
       name: "quoted tables and nested environment",
-      original: `${unrelatedToml}[mcp_servers."rea"]\ncommand = "old"\n[mcp_servers.rea.env]\nOLD = "value"\n${unrelatedServer}`,
+      original: `${unrelatedToml}[mcp_servers."binsight"]\ncommand = "old"\n[mcp_servers.binsight.env]\nOLD = "value"\n${unrelatedServer}`,
       preserved: [unrelatedToml, unrelatedServer],
     },
     {
       name: "dotted registration keys",
-      original: `${unrelatedToml}mcp_servers.rea.command = "old"\n${unrelatedServer}`,
+      original: `${unrelatedToml}mcp_servers.binsight.command = "old"\n${unrelatedServer}`,
       preserved: [unrelatedToml, unrelatedServer],
     },
     {
       name: "inline server table",
-      original: `${unrelatedToml}mcp_servers = { rea = { command = "old" }, other = { command = 'other' } } # Shared table.\n`,
+      original: `${unrelatedToml}mcp_servers = { binsight = { command = "old" }, other = { command = 'other' } } # Shared table.\n`,
       preserved: [
         unrelatedToml,
         "other = { command = 'other' }",
@@ -190,13 +198,13 @@ describe("Codex configuration text preservation", () => {
     {
       name: "BOM, CRLF, and multiline text resembling a registration",
       original:
-        `\uFEFF${unrelatedToml}banner = '''\n[mcp_servers.rea]\n# This is string content.\n'''\n`.replaceAll(
+        `\uFEFF${unrelatedToml}banner = '''\n[mcp_servers.binsight]\n# This is string content.\n'''\n`.replaceAll(
           "\n",
           "\r\n",
         ),
       preserved: [
         unrelatedToml.replaceAll("\n", "\r\n"),
-        "banner = '''\r\n[mcp_servers.rea]\r\n# This is string content.\r\n'''",
+        "banner = '''\r\n[mcp_servers.binsight]\r\n# This is string content.\r\n'''",
       ],
     },
     {
@@ -207,13 +215,13 @@ describe("Codex configuration text preservation", () => {
   ])(
     "preserves unrelated text through $name setup and uninstall",
     async ({ original, preserved }) => {
-      const root = await createTestTempDirectory("rea-codex-preserve-");
+      const root = await createTestTempDirectory("binsight-codex-preserve-");
       const configPath = join(root, "config.toml");
       const client = { name: "codex", format: "toml", configPath } as const;
       await writeFile(configPath, original);
 
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
       ).toMatchObject({ status: "configured" });
       const configured = await readFile(configPath, "utf8");
       for (const text of preserved) expect(configured).toContain(text);
@@ -222,7 +230,7 @@ describe("Codex configuration text preservation", () => {
         original.startsWith("\uFEFF"),
       );
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
       ).toEqual({ status: "unchanged" });
       expect(await readFile(configPath, "utf8")).toBe(configured);
 
@@ -232,43 +240,49 @@ describe("Codex configuration text preservation", () => {
       const removed = await readFile(configPath, "utf8");
       for (const text of preserved) expect(removed).toContain(text);
       expect(unrelatedValues(removed)).toEqual(unrelatedValues(original));
-      expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+      expect(parseToml(removed)).not.toHaveProperty("mcp_servers.binsight");
       expect(removed.startsWith("\uFEFF")).toBe(original.startsWith("\uFEFF"));
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
+        original,
+      );
     },
   );
 
   it("retains the first backup after uninstall and a later setup", async () => {
-    const root = await createTestTempDirectory("rea-codex-backup-");
+    const root = await createTestTempDirectory("binsight-codex-backup-");
     const configPath = join(root, "config.toml");
     const client = { name: "codex", format: "toml", configPath } as const;
     const original = 'notify = ["a", "b"]\n';
     await writeFile(configPath, original);
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]);
+    await configureClientConfiguration(client, {}, ["binsight", "mcp"]);
     expect((await systemUninstallHost(root).removeClient(client)).status).toBe(
       "removed",
     );
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
+    await configureClientConfiguration(client, {}, ["binsight", "mcp"]);
+    expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
   });
 
   it("refuses malformed Codex TOML unchanged without creating a backup", async () => {
-    const root = await createTestTempDirectory("rea-codex-malformed-");
+    const root = await createTestTempDirectory("binsight-codex-malformed-");
     const configPath = join(root, "config.toml");
     const client = { name: "codex", format: "toml", configPath } as const;
     const original =
-      "# Keep this explanation.\n[mcp_servers.rea]\ncommand = [broken\n";
+      "# Keep this explanation.\n[mcp_servers.binsight]\ncommand = [broken\n";
     await writeFile(configPath, original);
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
     expect((await systemUninstallHost(root).removeClient(client)).status).toBe(
       "failed",
     );
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.binsight.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 });

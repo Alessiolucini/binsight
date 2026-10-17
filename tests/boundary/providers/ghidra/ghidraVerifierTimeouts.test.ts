@@ -64,7 +64,7 @@ describe("Ghidra verifier timeout ownership", () => {
       "REA_GHIDRA_STARTUP_TIMEOUT_MS",
       String(MAX_TIMER_DELAY_MS - FILE_OFFSET_OPERATION_TIMEOUT_MS + 1),
     );
-    const absentTarget = join(tmpdir(), `rea-absent-${randomUUID()}`);
+    const absentTarget = join(tmpdir(), `binsight-absent-${randomUUID()}`);
     await expect(
       verifyGhidraFileOffsets(absentTarget, "absent", "0x0"),
     ).rejects.toThrow(

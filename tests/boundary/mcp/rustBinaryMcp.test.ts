@@ -32,7 +32,7 @@ mcpTest(
         readOnlyHint: false,
         idempotentHint: true,
       });
-      const root = await createTestTempDirectory("rea-rust-mcp-");
+      const root = await createTestTempDirectory("binsight-rust-mcp-");
       const path = join(root, "sample.elf");
       await writeFile(path, createRustImage({ format: "elf" }));
       const response = await client.callTool({
@@ -96,7 +96,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-rust-mcp-");
+      const root = await createTestTempDirectory("binsight-rust-mcp-");
       const path = join(root, "many-hashes.elf");
       await writeFile(path, createRustHashOverflowImage());
       const response = await client.callTool({

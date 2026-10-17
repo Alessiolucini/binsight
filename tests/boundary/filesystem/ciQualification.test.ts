@@ -20,7 +20,7 @@ const requiredScript = fileURLToPath(
 );
 const now = Date.now();
 const validSha = "a".repeat(40);
-const repository = "example/rea";
+const repository = "example/binsight";
 
 function artifact(overrides: Record<string, unknown> = {}) {
   return {
@@ -59,7 +59,7 @@ async function admissionFixture(
   candidateRun: Record<string, unknown> = run(),
   options: { apiError?: boolean; malformed?: boolean; force?: boolean } = {},
 ) {
-  const directory = await createTestTempDirectory("rea-ci-qualification-");
+  const directory = await createTestTempDirectory("binsight-ci-qualification-");
   const bin = join(directory, "bin");
   await mkdir(bin);
   const fixturePath = join(directory, "api.json");
@@ -238,7 +238,7 @@ async function requiredRun(
   changes: Record<string, string>,
   overrides: { failed?: string; runAttempt?: string; event?: string } = {},
 ) {
-  const directory = await createTestTempDirectory("rea-ci-receipt-");
+  const directory = await createTestTempDirectory("binsight-ci-receipt-");
   await workflowGit(directory, ["init", "--initial-branch=main"]);
   await writeFile(join(directory, "fixture.txt"), "qualified source\n");
   await workflowGit(directory, ["add", "."]);

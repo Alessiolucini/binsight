@@ -439,7 +439,7 @@ describe("MCP compact input schema canonical enforcement", () => {
     const inputSchema = {
       "~standard": {
         ...registration.inputSchema["~standard"],
-        vendor: "rea-application",
+        vendor: "binsight-application",
         validate: (value: unknown) => ({ value }),
       },
     };

@@ -125,7 +125,7 @@ it.each([
 ])(
   "opens a headerless %s image when architecture and entry are supplied",
   async (architecture, entryPoint, canonical, bytes) => {
-    const root = await createTestTempDirectory("rea-raw-mcp-");
+    const root = await createTestTempDirectory("binsight-raw-mcp-");
     const path = join(root, "ecu.bin");
     await writeFile(path, Buffer.from(bytes, "hex"));
     const { client } = await connect();
@@ -155,7 +155,7 @@ it.each([
 ])(
   "rejects an unaligned %s entry before selecting or starting a provider",
   async (architecture, bytes, entryPoint, reason) => {
-    const root = await createTestTempDirectory("rea-raw-mcp-alignment-");
+    const root = await createTestTempDirectory("binsight-raw-mcp-alignment-");
     const path = join(root, "image.bin");
     await writeFile(path, Buffer.from(bytes, "hex"));
     const { client, session } = await connect({
@@ -183,7 +183,7 @@ it.each([
 );
 
 it("rejects raw-binary open requests that omit architecture", async () => {
-  const root = await createTestTempDirectory("rea-raw-mcp-missing-");
+  const root = await createTestTempDirectory("binsight-raw-mcp-missing-");
   const path = join(root, "ecu.bin");
   await writeFile(path, Buffer.from("1eff2fe1", "hex"));
   const { client } = await connect();
@@ -195,7 +195,7 @@ it("rejects raw-binary open requests that omit architecture", async () => {
 });
 
 it("reuses a canonical raw entry and replaces the session when the entry changes", async () => {
-  const root = await createTestTempDirectory("rea-raw-mcp-reopen-");
+  const root = await createTestTempDirectory("binsight-raw-mcp-reopen-");
   const path = join(root, "ecu.bin");
   await writeFile(path, Buffer.from("1eff2fe1", "hex"));
   const fixture = createCacheProvider([]);
@@ -302,7 +302,9 @@ it("reuses a canonical raw entry and replaces the session when the entry changes
 it.skipIf(process.platform !== "win32")(
   "does not replay a saved read after switching to a Windows junction",
   async () => {
-    const root = await createTestTempDirectory("rea-raw-mcp-linked-reopen-");
+    const root = await createTestTempDirectory(
+      "binsight-raw-mcp-linked-reopen-",
+    );
     const actual = join(root, "actual");
     const linked = join(root, "linked");
     await mkdir(actual);
@@ -365,7 +367,9 @@ it.skipIf(process.platform !== "win32")(
 it.skipIf(process.platform !== "win32")(
   "reuses saved reads after a fixture admits a noncanonical Windows path",
   async () => {
-    const root = await createTestTempDirectory("rea-raw-mcp-admitted-path-");
+    const root = await createTestTempDirectory(
+      "binsight-raw-mcp-admitted-path-",
+    );
     const actual = join(root, "actual");
     const linked = join(root, "linked");
     await mkdir(actual);

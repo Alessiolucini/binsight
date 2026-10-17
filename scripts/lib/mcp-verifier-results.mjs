@@ -16,7 +16,7 @@ export const mcpTextValue = (result) => {
 
 const jsonValue = (result) => JSON.parse(mcpTextValue(result));
 
-/** Sort canonical contract names using REA's code-point ordering. */
+/** Sort canonical contract names using BinSight's code-point ordering. */
 export const sortVerifierNames = (names) =>
   [...names].sort(compareUnicodeCodePoints);
 

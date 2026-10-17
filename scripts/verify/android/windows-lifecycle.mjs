@@ -50,7 +50,9 @@ async function verifyJavaSelection(environment) {
     environment,
     "inspect_android_package",
   );
-  const root = await mkdtemp(join(tmpdir(), "rea-windows-java-selection-"));
+  const root = await mkdtemp(
+    join(tmpdir(), "binsight-windows-java-selection-"),
+  );
   const alias = join(root, "JDK 路径 with spaces");
   const pathEnvironment = Object.fromEntries(
     Object.entries(environment).filter(
@@ -96,7 +98,7 @@ async function verifyMcp({ entrypoint, environment, path, repository }, mode) {
     stderr = (stderr + chunk.toString()).slice(-65536);
   });
   const client = new Client({
-    name: `rea-windows-android-${mode}`,
+    name: `binsight-windows-android-${mode}`,
     version: "1",
   });
   let observer;
@@ -240,7 +242,7 @@ function observeJava(ownerPid) {
     $java=$null; $deadline=[DateTime]::UtcNow.AddSeconds(45)
     try {
       while ([DateTime]::UtcNow -lt $deadline) {
-        if ($owner.HasExited) { throw 'REA owner exited before Java acquisition' }
+        if ($owner.HasExited) { throw 'BinSight owner exited before Java acquisition' }
         $rows=Get-CimInstance Win32_Process -Filter 'ParentProcessId = ${ownerPid}'
         foreach ($row in $rows) {
           if ($row.Name -eq 'java.exe' -and $row.CommandLine -like '*ReaJadxBridge.java*') {
@@ -323,7 +325,7 @@ function observeJava(ownerPid) {
 
 async function runtimeRoots() {
   return (await readdir(tmpdir())).filter((name) =>
-    name.startsWith("rea-android-"),
+    name.startsWith("binsight-android-"),
   );
 }
 

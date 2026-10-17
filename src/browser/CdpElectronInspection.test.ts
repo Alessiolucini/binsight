@@ -29,7 +29,7 @@ describe("Electron frame capture", () => {
   it.each([7, undefined])(
     "classifies a malformed child frame ID as unavailable: %s",
     async (childId) => {
-      const root = await mkdtemp(join(tmpdir(), "rea-electron-frame-"));
+      const root = await mkdtemp(join(tmpdir(), "binsight-electron-frame-"));
       temporary.push(root);
       const main = join(root, "index.html");
       const child = join(root, "child.html");
@@ -70,7 +70,9 @@ describe("Electron frame capture", () => {
   );
 
   it("preserves script records across context teardown and ID reuse", async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-electron-script-frame-"));
+    const root = await mkdtemp(
+      join(tmpdir(), "binsight-electron-script-frame-"),
+    );
     temporary.push(root);
     const scriptPath = join(root, "app.js");
     await writeFile(scriptPath, "export const app = true;");

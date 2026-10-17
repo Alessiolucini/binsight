@@ -355,7 +355,7 @@ export const registerSessionTools = (
       result.status === "rejected" ? [result.reason] : [],
     );
     if (failures.length > 0)
-      throw new AggregateError(failures, "REA session cleanup failed");
+      throw new AggregateError(failures, "BinSight session cleanup failed");
   };
   const previousOnclose = server.server.onclose;
   server.server.onclose = () => {

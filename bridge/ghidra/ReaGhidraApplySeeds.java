@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * Apply caller-declared analysis seeds before default auto-analysis.
  *
- * The single argument is REA's canonical seed snapshot: one
+ * The single argument is BinSight's canonical seed snapshot: one
  * {@code 0x<hex>\t(function|code|label)[\tname]} line per seed. Code seeds are
  * applied after functions (highest address first), then labels. The outcome is stored as a
  * program property that the bridge reports during its handshake.
  */
 public final class ReaGhidraApplySeeds extends GhidraScript {
-    static final String REPORT_OPTION = "REA analysis seeds";
+    static final String REPORT_OPTION = "BinSight analysis seeds";
 
     private record Seed(Address address, String kind, String name) {}
 
@@ -31,11 +31,11 @@ public final class ReaGhidraApplySeeds extends GhidraScript {
     public void run() throws Exception {
         String[] args = getScriptArgs();
         if (args.length != 1) {
-            throw new IllegalArgumentException("REA seed script requires exactly one seed file");
+            throw new IllegalArgumentException("BinSight seed script requires exactly one seed file");
         }
         Path path = Path.of(args[0]);
         if (!Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) {
-            throw new IllegalArgumentException("REA seed file is not a regular file");
+            throw new IllegalArgumentException("BinSight seed file is not a regular file");
         }
         byte[] bytes = Files.readAllBytes(path);
         String sha256 = HexFormat.of().formatHex(
@@ -47,7 +47,7 @@ public final class ReaGhidraApplySeeds extends GhidraScript {
             if (line.isEmpty()) continue;
             String[] fields = line.split("\t", -1);
             if (fields.length < 2 || fields.length > 3 || !fields[0].startsWith("0x")) {
-                throw new IllegalArgumentException("REA seed snapshot is malformed");
+                throw new IllegalArgumentException("BinSight seed snapshot is malformed");
             }
             Address address;
             try {
@@ -86,7 +86,7 @@ public final class ReaGhidraApplySeeds extends GhidraScript {
                         if (decoded(seed.address())) codeDecoded++;
                         else {
                             codeFailed++;
-                            if (logged++ < 20) println("REA seed failed: code " + seed.address() + " " + why(seed.address()));
+                            if (logged++ < 20) println("BinSight seed failed: code " + seed.address() + " " + why(seed.address()));
                         }
                     }
                     case "function" -> {
@@ -101,7 +101,7 @@ public final class ReaGhidraApplySeeds extends GhidraScript {
                             functionCreated++;
                         } else {
                             functionFailed++;
-                            if (logged++ < 20) println("REA seed failed: function " + seed.address() + " " + why(seed.address()));
+                            if (logged++ < 20) println("BinSight seed failed: function " + seed.address() + " " + why(seed.address()));
                         }
                     }
                     default -> {
@@ -115,7 +115,7 @@ public final class ReaGhidraApplySeeds extends GhidraScript {
                 }
             }
         }
-        String report = "{\"format\":\"rea-ghidra-seeds-v1\",\"sha256\":\"" + sha256 + "\"" +
+        String report = "{\"format\":\"binsight-ghidra-seeds-v1\",\"sha256\":\"" + sha256 + "\"" +
             ",\"entries\":" + seeds.size() +
             ",\"function_created\":" + functionCreated +
             ",\"function_existing\":" + functionExisting +
@@ -126,7 +126,7 @@ public final class ReaGhidraApplySeeds extends GhidraScript {
             ",\"label_failed\":" + labelFailed +
             ",\"unmapped\":" + unmapped + "}";
         currentProgram.getOptions(Program.PROGRAM_INFO).setString(REPORT_OPTION, report);
-        println("REA seeds applied: " + report);
+        println("BinSight seeds applied: " + report);
     }
 
     private String why(Address address) {

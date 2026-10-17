@@ -53,7 +53,7 @@ Program and section declarations must agree; duplicate, conflicting, truncated
 or out-of-file records are rejected. Stripped section tables and section-only
 records are supported. Extended table numbering is explicitly unsupported.
 GNU `SHT_GNU_ATTRIBUTES` sections are located by numeric section type; section
-names never control detection. REA reads at most 4096 payload bytes and parses
+names never control detection. BinSight reads at most 4096 payload bytes and parses
 format version `A`, the `gnu` vendor's file-scope `Tag_GNU_MIPS_ABI_FP` (4) and
 `Tag_GNU_MIPS_ABI_MSA` (8) only. Unknown vendors, scopes or tags, repeated
 declarations, malformed lengths, and out-of-file or oversized payloads remain
@@ -63,13 +63,13 @@ format](https://sourceware.org/binutils/docs/as/Object-Attributes-v1.html) and
 [GNU MIPS tag definitions](https://sourceware.org/binutils/docs/as/GNU-Object-Attributes.html)
 are the format references. The MSA tag describes the vector
 argument ABI, while the ABI flags ASE field describes instruction-set
-extensions; REA does not treat those as interchangeable. The 128-bit MSA
+extensions; BinSight does not treat those as interchangeable. The 128-bit MSA
 argument ABI and unknown nonzero MSA values remain unsupported. Without a
 separate ABI flags record, FP attribute values are admitted only when absent,
 `ANY` (0), double precision (1), or FPXX (5), the values covered by the
 recordless profile. Parsed values are retained in the MIPS analysis profile.
 For carved ELFs whose section table extends
-beyond the captured file, REA examines every complete captured section header
+beyond the captured file, BinSight examines every complete captured section header
 and records the unavailable headers as a limitation. The provider refuses an
 incomplete ABI declaration inspection even when a program-header ABI record is
 valid, because an unavailable section header could carry an unsupported or
@@ -102,7 +102,7 @@ section relocation tables (including `--emit-relocs` output) remain unsupported.
 Symbol-bearing REL32,
 other relocation types, RELA and PLT declarations remain unsupported. A real
 negative control shows that Ghidra can normalize a symbol-bearing MIPS16 function
-pointer to an even address, losing the source mode tag. REA refuses that shape
+pointer to an even address, losing the source mode tag. BinSight refuses that shape
 rather than rewriting the source or silently repairing the analysis result.
 
 The profile pins the endian-matched `MIPS:<LE|BE>:32:default` processor and default
@@ -163,7 +163,7 @@ registers the code never writes and drop the real dataflow. That applies to
 functions, external functions and indirect calls through typed function
 pointers alike.
 
-For soft-float targets REA commits
+For soft-float targets BinSight commits
 `mips_soft_float_storage: o32-soft-float-prototype-v1` in the analysis profile
 and runs `ReaGhidraMipsSoftFloat.java` after auto-analysis. The script encodes
 the program's own default o32 prototype, removes its floating-point parameter
@@ -177,7 +177,7 @@ function, and to every function-pointer definition, whose declared types use
 
 The script fails, and writes no report, if the derived prototype still places a
 float in an FPU register or any reassigned function does. It records the
-function and definition counts last; REA requires that report exactly when the
+function and definition counts last; BinSight requires that report exactly when the
 profile commits the policy and refuses the session otherwise, before serving any
 operation. Session Evidence carries the policy and counts as limitations.
 Callables without typed float signatures keep Ghidra's default prototype, under
@@ -203,15 +203,15 @@ usually soft-float and therefore also use the soft-float storage policy.
 With a caller-installed Ghidra and compatible JDK on a supported Linux/macOS host:
 
 ```bash
-rea analyze /absolute/path/to/mips.elf --provider ghidra --json
-rea function /absolute/path/to/mips.elf function_name --provider ghidra --json
+binsight analyze /absolute/path/to/mips.elf --provider ghidra --json
+binsight function /absolute/path/to/mips.elf function_name --provider ghidra --json
 ```
 
 MCP uses the existing tools, including `open_binary` with an absolute path and
 `provider_id: "ghidra"`. No MIPS-specific tool catalog or emulator is introduced.
 Inspect instructions, caller relationships and data alongside pseudocode. In
 particular, delay-slot semantics are supplied by Ghidra, not reconstructed by
-REA's ELF parser.
+BinSight's ELF parser.
 
 ## Verification
 
@@ -223,7 +223,7 @@ optional cross-target lane requires a caller-supplied Clang with MIPS targets,
 LLD, GNU `readelf`, Ghidra and its compatible JDK; ordinary host-native checks
 do not acquire these tools. `REA_MIPS_CLANG` selects Clang and
 `REA_MIPS_READELF` selects GNU readelf (for example `greadelf` on macOS).
-These are test-time prerequisites, not REA runtime providers.
+These are test-time prerequisites, not BinSight runtime providers.
 
 ```bash
 GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra npm run verify:ghidra:mips
@@ -232,7 +232,7 @@ GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra npm run verify:ghidra:mips
 The lane compiles both byte orders with hard-float and soft-float ABIs and never
 executes the targets. GNU readelf
 independently supplies header/ABI facts and symbol addresses, compared with the
-production REA target resolver before provider startup. Its version, bounded
+production BinSight target resolver before provider startup. Its version, bounded
 command output and selected tool path are retained in the verification report.
 The parser deliberately recognizes only this fixture's GNU output, rejecting
 missing, ambiguous or unexpected fields rather than substituting defaults.
@@ -242,7 +242,7 @@ specification and loaded-file hashes. The source-owned `mips-probe.S` supplies
 fixed ADDIU and conditional-branch encodings: verification checks bytes, length,
 immediate and direct destination, independent of decompiler variable names.
 Global and string bytes are checked at independently reported symbol addresses.
-ELF load-image results retain observations even though REA's independent
+ELF load-image results retain observations even though BinSight's independent
 load-image comparison currently covers DOS, not ELF; this lane checks those
 observations and does not relabel the upstream result as verified.
 

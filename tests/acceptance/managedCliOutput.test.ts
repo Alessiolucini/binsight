@@ -10,7 +10,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "managed CLI retains metadata and CIL after repeated local constructor owner lookups",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-row-lookup-");
+    const root = await createTestTempDirectory("binsight-managed-row-lookup-");
     const path = join(root, "local-attributes.dll");
     await writeFile(
       path,
@@ -76,7 +76,9 @@ cliTest(
 cliTest(
   "managed CLI separates .NET Standard API targets from runtime evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-runtime-family-");
+    const root = await createTestTempDirectory(
+      "binsight-managed-runtime-family-",
+    );
     for (const [name, targetFramework, readyToRun, runtimeFamily] of [
       ["standard", ".NETStandard,Version=v2.0", false, "unknown"],
       ["core", ".NETCoreApp,Version=v8.0", false, "modern-dotnet"],
@@ -126,7 +128,7 @@ cliTest(
 cliTest(
   "managed CLI preserves evidence, filters, envelopes, and bounded token counts",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-cli-output-");
+    const root = await createTestTempDirectory("binsight-managed-cli-output-");
     const path = join(root, "fixture.dll");
     await writeFile(path, buildManagedPeFixture());
     const argv = ["inspect-managed-members", path, "--json"];
@@ -134,7 +136,7 @@ cliTest(
     expect(result.exitCode).toBe(0);
     expect(result.json).toMatchObject({
       operation: "inspect_managed_members",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "binsight-dotnet-static" },
       subject: { local_path: path },
       normalized_result: {
         methods: [expect.objectContaining({ token: expect.any(String) })],
@@ -180,7 +182,7 @@ cliTest(
 cliTest(
   "managed CLI rejects repeated or empty type selections as invalid input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-cli-types-");
+    const root = await createTestTempDirectory("binsight-managed-cli-types-");
     const path = join(root, "fixture.dll");
     await writeFile(path, buildManagedPeFixture());
     for (const [types, message] of [
@@ -212,7 +214,9 @@ cliTest(
 cliTest(
   "managed CLI bounds CIL claims by section virtual ranges",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-virtual-size-");
+    const root = await createTestTempDirectory(
+      "binsight-managed-virtual-size-",
+    );
     for (const virtualSectionSize of [0, 0x800, 0x801, 0x802]) {
       // The two-byte tiny method starts at RVA 0x2800. Its header alone fits
       // at size 0x801, and its full CIL fits exactly at size 0x802.
@@ -262,7 +266,9 @@ cliTest(
 cliTest(
   "managed CLI distinguishes raw padding from overlapping virtual sections",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-section-identity-");
+    const root = await createTestTempDirectory(
+      "binsight-managed-section-identity-",
+    );
     for (const virtualSectionSize of [0x800, 0x900]) {
       const bytes = buildManagedPeFixture({ virtualSectionSize });
       const coff = bytes.readUInt32LE(0x3c) + 4;
@@ -311,7 +317,9 @@ cliTest(
 cliTest(
   "managed CLI reports a section table past EOF as invalid input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-cli-sections-");
+    const root = await createTestTempDirectory(
+      "binsight-managed-cli-sections-",
+    );
     const path = join(root, "fixture.dll");
     const bytes = buildManagedPeFixture();
     const pe = bytes.readUInt32LE(0x3c);

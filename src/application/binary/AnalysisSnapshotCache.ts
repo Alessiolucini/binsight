@@ -312,7 +312,7 @@ export class AnalysisSnapshotCache {
       analysisProfile: structuredClone(profile),
       limitations: [
         ...cached.execution.limitations,
-        "Loaded from a local REA analysis snapshot; this call did not re-run the provider.",
+        "Loaded from a local BinSight analysis snapshot; this call did not re-run the provider.",
       ],
       ...(cached.execution.relationship_coverage === null &&
       RELATIONSHIP_OPERATIONS.has(operation)

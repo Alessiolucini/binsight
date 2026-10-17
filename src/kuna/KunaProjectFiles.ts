@@ -5,7 +5,7 @@ import { err, ok, type Result } from "../domain/result.js";
 /**
  * One function block in a `kuna decompile-project` `.c` file. The span covers
  * its `// Function:` header through the blank line that ends the block, which
- * is how REA serves one function without reading the whole file.
+ * is how BinSight serves one function without reading the whole file.
  */
 export interface KunaProjectFunction {
   readonly name: string;

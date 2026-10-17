@@ -119,7 +119,9 @@ describe("Electron option keys in reconstructed application graphs", () => {
       ({ kind }) => kind === "electron-utility",
     );
     expect(utilities).toHaveLength(1);
-    expect(utilities[0]?.observations[0]).toMatchObject({
+    expect(
+      utilities[0]?.observations.find(({ label }) => label === "./worker.js"),
+    ).toMatchObject({
       label: "./worker.js",
       properties: { service_name: null, module_path: "./worker.js" },
       evidence: { coverage: { status: "partial" } },
@@ -162,7 +164,7 @@ const windowPreloadNodes = (result: Reconstruction) =>
   );
 
 const reconstructSource = async (source: string): Promise<Reconstruction> => {
-  const root = await createTestTempDirectory("rea-electron-option-keys-");
+  const root = await createTestTempDirectory("binsight-electron-option-keys-");
   await Promise.all([
     writeFile(
       join(root, "package.json"),

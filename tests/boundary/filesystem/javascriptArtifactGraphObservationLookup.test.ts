@@ -16,7 +16,7 @@ import type {
 } from "../../../src/application/javascript/JavaScriptArtifactAnalysisTypes.js";
 
 it("uses the first structured observation when paths repeat", async () => {
-  const root = await createTestTempDirectory("rea-artifact-graph-index-");
+  const root = await createTestTempDirectory("binsight-artifact-graph-index-");
   await Promise.all([
     writeFile(join(root, "package.json"), JSON.stringify({ name: "fixture" })),
     writeFile(join(root, "data.json"), JSON.stringify({ actual: true })),

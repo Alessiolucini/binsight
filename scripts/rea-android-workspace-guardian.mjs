@@ -9,8 +9,11 @@ if (process.platform !== "win32" || process.argv.length !== 3)
   );
 
 // This process owns the native directory handle. Detached process creation
-// keeps it alive when the REA owner is terminated without running JS cleanup.
-const runtime = WindowsPrivateRuntime.create(process.argv[2], "rea-android-");
+// keeps it alive when the BinSight owner is terminated without running JS cleanup.
+const runtime = WindowsPrivateRuntime.create(
+  process.argv[2],
+  "binsight-android-",
+);
 const ready = await new Promise((resolve) => {
   process.stdout.once("error", () => resolve(false));
   process.stdout.write(

@@ -11,13 +11,13 @@ observation complement that analysis when they answer a specific question.
 Choose an installed provider from [setup](installation.md#hopper). For Ghidra:
 
 ```bash
-rea inspect /absolute/path/to/program --provider ghidra --json
-rea search /absolute/path/to/program entry --kind procedures --provider ghidra --json
+binsight inspect /absolute/path/to/program --provider ghidra --json
+binsight search /absolute/path/to/program entry --kind procedures --provider ghidra --json
 ```
 
 Select an exact name or address from the returned inventory, then use it with
-`rea function PATH PROCEDURE --provider ghidra --json` for a function dossier,
-`rea instructions` for assembly, or `rea decompile` for pseudocode. Do not assume
+`binsight function PATH PROCEDURE --provider ghidra --json` for a function dossier,
+`binsight instructions` for assembly, or `binsight decompile` for pseudocode. Do not assume
 that every target names its entry function `entry`. MCP uses `open_binary` and
 focused tools such as `list_procedures` and `analyze_function` on the same session.
 
@@ -36,9 +36,9 @@ focused tools such as `list_procedures` and `analyze_function` on the same sessi
 `xrefs` accepts `--address=<name-or-address>`. `search` accepts `--pattern=<text>`
 and `trace` accepts `--query=<text>`. These alternatives preserve names and text
 that begin with a dash, including Objective-C names such as
-`rea function ./app '--procedure=-[REAWidget delegate]' --provider hopper --format json`.
+`binsight function ./app '--procedure=-[REAWidget delegate]' --provider hopper --format json`.
 Use the equals form when the value resembles a CLI flag, for example
-`rea trace ./app --query=--help --provider hopper --format json`.
+`binsight trace ./app --query=--help --provider hopper --format json`.
 The existing positional forms remain available. Missing selectors and conflicting
 positional/named values fail before analysis starts; identical selections agree.
 
@@ -71,11 +71,11 @@ The reference collector's semantics participate in the analysis profile, so
 older snapshots cannot replay the former incomplete results under this profile.
 
 Ghidra regex searches use Java Pattern semantics. If compiling or matching a
-pattern exhausts the engine's stack, REA returns a resource constraint and
+pattern exhausts the engine's stack, BinSight returns a resource constraint and
 preserves the active database and annotations. Retry in literal mode or simplify
 the regex; successful literal searches retain complete matching strings.
 Cancelling an active request terminates the ephemeral database and discards its
-annotations. REA retains the selected target and imports the original artifact
+annotations. BinSight retains the selected target and imports the original artifact
 again on the next Ghidra query.
 
 Opening the same target and profile again retains the live database, including
@@ -98,10 +98,10 @@ nonregular replacement reports `artifact_changed`. Source copying is cancellable
 and never replaces an existing private snapshot.
 
 ```bash
-rea inspect-native-instruction <binary> <address> --provider ghidra
-rea resolve-native-call-targets <binary> <call-site> --provider ghidra
-rea inspect-native-data-type <binary> --type /MyStruct --provider ghidra
-rea inspect-native-data-type <binary> --address <typed-data-address> --provider ghidra
+binsight inspect-native-instruction <binary> <address> --provider ghidra
+binsight resolve-native-call-targets <binary> <call-site> --provider ghidra
+binsight inspect-native-data-type <binary> --type /MyStruct --provider ghidra
+binsight inspect-native-data-type <binary> --address <typed-data-address> --provider ghidra
 ```
 
 Instruction facts include bytes, length, decoder text, ordered register/scalar/
@@ -145,7 +145,7 @@ inspection does not change function extents or prove a calling convention.
 The analysis profile commits this decoder behavior. Snapshots from the earlier
 profile produce a profile mismatch rather than replaying the former generic
 terminal result. The old snapshot's `evidence_bundle` remains valid retained
-Evidence: copy that object to a separate JSON file and use `rea evidence-import`
+Evidence: copy that object to a separate JSON file and use `binsight evidence-import`
 to validate it. Run analysis without the old snapshot and save a fresh one
 under the current profile. Other providers and older captures may omit the
 classification evidence field.
@@ -193,7 +193,7 @@ requires exact final readback. New bookmarks must point into mapped memory;
 existing legacy bookmarks outside it can still be removed.
 String results read each native typed object's complete bytes, retain the original
 provider display in `provider_value`, and report its encoding, byte length, and
-termination. `encoding_status: inferred` distinguishes REA's decoding from an
+termination. `encoding_status: inferred` distinguishes BinSight's decoding from an
 observed source encoding. Hopper can split long literals into adjacent
 unterminated objects; search matches each object's decoded bytes independently.
 Undecodable objects retain native display text with `decoding.available: false`
@@ -207,7 +207,7 @@ leaving the Hopper API available. Literal mode retains Unicode casefold matching
 
 ## Bounded static traces
 
-`trace_native_ui_action` / `rea trace-native-ui-action <target> <seed>` accepts
+`trace_native_ui_action` / `binsight trace-native-ui-action <target> <seed>` accepts
 one authored selector/object ID, native symbol or exact function address. It
 joins UI wiring to uniquely matched class/selector implementations and follows
 bounded typed call references. Direct references, resolved indirect references,
@@ -216,7 +216,7 @@ sites remain distinct. A static route does not establish runtime reachability.
 Swift/closure dispatch requires resolved static references; unavailable ABI
 forms remain unknown.
 
-`trace_native_values` / `rea trace-native-values <binary> <procedure> --provider
+`trace_native_values` / `binsight trace-native-values <binary> <procedure> --provider
  ghidra` composes high-p-code def-use graphs across statically resolved calls.
 Logical CALL arguments bind to recovered parameter ordinals; recovered RETURN
 values bind to CALL outputs. These edges are decompiler-derived. Constants,
@@ -299,18 +299,18 @@ stream failure, and output exhaustion retain the captured output, exit details,
 and cleanup outcome in the error result. Truncated output is never parsed as a
 complete observation.
 
-- `trace_dylib_resolution` / `rea trace-dylib-resolution <app-or-mach-o>`
+- `trace_dylib_resolution` / `binsight trace-dylib-resolution <app-or-mach-o>`
   parses Mach-O load commands in TypeScript and follows dyld's path expansion
   for every executable in an app bundle, or for one Mach-O within its directory.
   It reports each `@rpath`, `@loader_path` and `@executable_path` candidate with
   its outcome. Paths outside the analyzed root, including shared-cache system
   libraries, stay undetermined. See
   [Apple application analysis](apple-application-analysis.md#dylib-load-resolution).
-- `inspect_asset_catalog` / `rea inspect-asset-catalog <app>` reads compiled
+- `inspect_asset_catalog` / `binsight inspect-asset-catalog <app>` reads compiled
   `Assets.car` metadata through macOS `assetutil --info`. Catalog digests, raw
   rendition fields, pagination and exact UI resource-name matches are returned.
   Image extraction and undocumented rendition interpretation are unsupported.
-- `inspect_keyed_archive` / `rea inspect-keyed-archive <plist>` reads XML or
+- `inspect_keyed_archive` / `binsight inspect-keyed-archive <plist>` reads XML or
   binary Foundation keyed archives without instantiating classes. For an active
   app, provide its relative archive path as the second CLI argument or MCP
   `path`. Results retain original `$objects` indices, named `$top` roots,
@@ -320,10 +320,10 @@ complete observation.
   UID 0 cannot distinguish conditional nil from ordinary nil. Limits are
   64 MiB of input, 200,000 objects/references and 128 nesting levels.
   XML dictionary entries decoded as `__proto__` are omitted with an explicit
-  count because REA results cannot represent that key. XML tag whitespace and
+  count because BinSight results cannot represent that key. XML tag whitespace and
   comments do not change that handling. Other values and the original archive
   digest are preserved; key interpretation follows the pinned plist decoder.
-- `decode_interface_builder` / `rea decode-interface-builder <app>` reads
+- `decode_interface_builder` / `binsight decode-interface-builder <app>` reads
   compiled storyboard and nib resources into objects, outlets, actions,
   connections and controller/class names. A full app graph is often several
   megabytes (XLD.app: 6.7 MB, about 2M tokens, which also exceeds the default
@@ -360,7 +360,7 @@ complete observation.
   explicitly partial `archive_decode` facet; previously decoded documents and
   their identities remain available.
 - `inspect_native_dispatch_metadata` /
-  `rea inspect-native-dispatch-metadata <app-or-binary>` prefers a validated macOS Mach-O byte reader. It decodes
+  `binsight inspect-native-dispatch-metadata <app-or-binary>` prefers a validated macOS Mach-O byte reader. It decodes
   64-bit little-endian Objective-C class/metaclass records, superclass pointers,
   absolute/relative method entries, ivar offsets/sizes/alignment and protocol
   declarations. It also decodes simple Swift conformances, static synchronous
@@ -417,20 +417,20 @@ unique geometry match; ambiguity fails closed.
 decrement scrolling and text-value entry, or bounded waits. No global event
 injection is used. Unsupported AX actions fail explicitly. The result preserves
 ordered before/after captures and gaps; an action may have occurred before a
-post-action capture fails. Application state is left as-is; REA does not attempt
+post-action capture fails. Application state is left as-is; BinSight does not attempt
 to restore it.
 
 Scenarios accept caller-selected action lists and accessibility node counts.
 Individual waits cannot exceed the operation's 180-second deadline, and the
 complete scenario result has a 64 MiB output budget. Screenshots are scaled to
-at most 2,048 pixels and captured only for the selected window. REA compiles one
+at most 2,048 pixels and captured only for the selected window. BinSight compiles one
 owned helper per scenario, removes its temporary compiler cache and stops its
 helper on cancellation. It does not launch or own the selected application. UI
 actions may change application data or trigger network activity.
 
 ## Native call observation
 
-`observe_native_calls` / `rea observe-native-calls <app-or-mach-o> <input-json>`
+`observe_native_calls` / `binsight observe-native-calls <app-or-mach-o> <input-json>`
 launches the active Mach-O as a new, owned process under LLDB. It stops at
 caller-selected entries, records them and continues:
 
@@ -439,7 +439,7 @@ caller-selected entries, records them and continues:
   instance or class methods.
 
 ```sh
-rea observe-native-calls /Applications/Example.app '{"breakpoints":[{"kind":"objc-method","class_name":"NSURLSession","selector":"dataTaskWithRequest:completionHandler:"},{"kind":"function","name":"open","module":"libsystem_kernel.dylib"}],"duration_ms":5000,"backtrace_frames":4}' --json
+binsight observe-native-calls /Applications/Example.app '{"breakpoints":[{"kind":"objc-method","class_name":"NSURLSession","selector":"dataTaskWithRequest:completionHandler:"},{"kind":"function","name":"open","module":"libsystem_kernel.dylib"}],"duration_ms":5000,"backtrace_frames":4}' --json
 ```
 
 Each event is an observation: thread, image, symbol, load and file address,
@@ -447,12 +447,12 @@ the raw integer argument registers, optional caller frames and, for an
 Objective-C method, the selector read from `_cmd` and the receiver's dynamic
 class. Breakpoints stop at the symbol itself, so the registers hold the ABI
 arguments. The receiver class comes from LLDB's Objective-C runtime reader
-without running target code; no expression is evaluated, and REA never
+without running target code; no expression is evaluated, and BinSight never
 attaches to a process it did not launch.
 
 The run ends when the process exits, `max_events` entries are recorded,
 `duration_ms` elapses, or the aggregate trace resource budget is exhausted.
-Bounded termination reports partial coverage. REA checks process termination
+Bounded termination reports partial coverage. BinSight checks process termination
 using a launch-time OS start identity; if ownership or cleanup cannot be
 verified, the result or error preserves that uncertainty. The result reports:
 Launch errors keep the fact that LLDB created a process separate from whether
@@ -508,7 +508,7 @@ is present. A denied trace reports the `debugger-attach-denied` reason.
 
 ## Provider and verification boundaries
 
-Install a Ghidra 12.1.x release and the 64-bit full JDK it declares, then configure REA to
+Install a Ghidra 12.1.x release and the 64-bit full JDK it declares, then configure BinSight to
 use them. Ghidra analysis supports Linux x64/arm64 and macOS x64/arm64; each installation requires
 the matching native decompiler. Experimental Windows x64 P0 admits native
 x86, x86-64, ARMNT (Thumb-2) and ARM64 PE applications and DLLs, plus explicitly selected
@@ -523,7 +523,7 @@ without changing executable bytes. Annotation text must contain no NUL or
 unpaired Unicode surrogate; a rejection identifies the field and UTF-16 index
 and leaves every annotation unchanged. CRLF, supplementary Unicode characters,
 and combining characters are preserved. Windows P0 remains read-only. Ghidra has no
-GUI authority, and REA never falls back automatically to Hopper.
+GUI authority, and BinSight never falls back automatically to Hopper.
 `set_address_name` and `set_addresses_names` give Ghidra sessions the same
 compact naming results as Hopper: a local function entry renames that function,
 and any other mapped address, such as a global, receives a new or renamed primary
@@ -615,7 +615,7 @@ Use `search_bytes` after opening a target with Ghidra to locate a known constant
 or instruction sequence. For example, `{"pattern":"48 8B ?? ?? 89","limit":100}`
 returns ordered addresses with segments, source file offsets and containing
 procedures. The CLI equivalent is
-`rea search-bytes ./program '48 8B ?? ?? 89' --provider ghidra`.
+`binsight search-bytes ./program '48 8B ?? ?? 89' --provider ghidra`.
 Use `start`/`end` to constrain the inclusive address window, and continue with
 `next_cursor` until `complete` is true. Inspect `searched` for page coverage and
 skipped uninitialized blocks. A missing match does not establish absence from

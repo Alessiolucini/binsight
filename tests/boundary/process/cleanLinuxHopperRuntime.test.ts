@@ -28,7 +28,7 @@ it.runIf(process.platform === "linux").each([
 ] as const)(
   "observes an unreaped %s without signaling or reaping it",
   async (name, refusal) => {
-    const directory = await createTestTempDirectory("rea-runtime-zombie-");
+    const directory = await createTestTempDirectory("binsight-runtime-zombie-");
     const procRoot = join(directory, "proc");
     await mkdir(procRoot);
     const executable = join(directory, name);
@@ -94,7 +94,9 @@ finally:
 it.runIf(process.platform === "linux")(
   "does not treat runtime names in another process's arguments as a runtime",
   async () => {
-    const directory = await createTestTempDirectory("rea-runtime-arguments-");
+    const directory = await createTestTempDirectory(
+      "binsight-runtime-arguments-",
+    );
     const procRoot = join(directory, "proc");
     await mkdir(procRoot);
     const observer = new URL(
@@ -132,7 +134,9 @@ it.runIf(process.platform === "linux")(
 it.runIf(process.platform === "linux")(
   "distinguishes an ordinary Node script with the helper's filename",
   async () => {
-    const directory = await createTestTempDirectory("rea-runtime-arguments-");
+    const directory = await createTestTempDirectory(
+      "binsight-runtime-arguments-",
+    );
     const procRoot = join(directory, "proc");
     await mkdir(procRoot);
     const script = join(directory, "hopper-demo-x11.py");
@@ -272,7 +276,9 @@ it.runIf(process.platform === "linux").each([
     const runId = randomUUID();
     const childCode =
       "process.title = 'Xvfb'; setInterval(() => {}, 1000); process.send('ready');";
-    const directory = await createTestTempDirectory("rea-clean-runtime-test-");
+    const directory = await createTestTempDirectory(
+      "binsight-clean-runtime-test-",
+    );
     const procRoot = join(directory, "proc");
     await mkdir(procRoot);
     const launcher = join(directory, "Hopper");

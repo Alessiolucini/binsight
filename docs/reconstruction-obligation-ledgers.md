@@ -5,7 +5,7 @@ into a deterministic list of reconstruction claims. The same workflow
 is available as:
 
 - MCP tool: `build_reconstruction_obligation_ledger`
-- CLI command: `rea build-reconstruction-obligation-ledger`
+- CLI command: `binsight build-reconstruction-obligation-ledger`
 
 The ledger is conservative by design. Static Application Graph facts create
 candidate obligations; they do not prove runtime or process behavior. A required
@@ -24,7 +24,7 @@ returns an `unknown` ledger with zero obligations; absence of source Evidence
 never claims closure:
 
 ```sh
-rea build-reconstruction-obligation-ledger \
+binsight build-reconstruction-obligation-ledger \
   '{
     "evidence_bundle": {
       "artifacts": [],
@@ -68,7 +68,7 @@ sample Evidence ID with an authenticated review record already present in
     "artifact_sha256": null,
     "application_node_id": null,
     "semantic_node_id": null,
-    "location": "rea --unknown-option"
+    "location": "binsight --unknown-option"
   },
   "required": true,
   "required_case_kinds": ["positive", "negative", "malformed"],

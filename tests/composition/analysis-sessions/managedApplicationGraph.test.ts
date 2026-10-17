@@ -82,8 +82,8 @@ describe("managed application graph projection", () => {
     const parsed = parseEvidence(evidence.value);
     expect(parsed).toMatchObject({
       operation: "project_managed_application_graph",
-      predicate_type: "rea.managed-application-graph",
-      provider: { id: "rea-dotnet-workflows" },
+      predicate_type: "binsight.managed-application-graph",
+      provider: { id: "binsight-dotnet-workflows" },
       confidence: "inferred",
       authority: "analyst-inference",
       evidence_links: [

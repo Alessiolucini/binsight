@@ -639,7 +639,9 @@ export const openPlaywrightScenarioBrowser = async (
       options.retainCleanup,
     );
 
-  const profilePath = await mkdtemp(join(tmpdir(), "rea-browser-scenario-"));
+  const profilePath = await mkdtemp(
+    join(tmpdir(), "binsight-browser-scenario-"),
+  );
   let context: BrowserContext;
   try {
     await chmod(profilePath, 0o700);

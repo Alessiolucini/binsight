@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const createCallbackFixture = async () => {
-  const root = await createTestTempDirectory("rea-callback-targets-");
+  const root = await createTestTempDirectory("binsight-callback-targets-");
   const file = join(root, "app.mjs");
   await writeFile(
     file,

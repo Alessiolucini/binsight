@@ -1,9 +1,9 @@
 # Apktool resource decoding
 
-REA decodes Android resource tables and the binary manifest through the
+BinSight decodes Android resource tables and the binary manifest through the
 caller's Apktool launcher. This completes the static triad for Android
 targets: Java/Kotlin sources through the JADX family, engine-grade
-decompilation through JEB, and resources through this family. REA never
+decompilation through JEB, and resources through this family. BinSight never
 installs Apktool or a Java runtime.
 
 ## Supply tools
@@ -17,7 +17,7 @@ launcher can find. Select the launcher through the environment:
 export REA_APKTOOL_COMMAND=/absolute/path/apktool
 ```
 
-Readiness is `rea inspect-apktool-client`: it runs `apktool --version` and
+Readiness is `binsight inspect-apktool-client`: it runs `apktool --version` and
 reports the resolved launcher, its selection source, and its version. A
 missing launcher reports `capability_unavailable` with the
 `REA_APKTOOL_COMMAND` remediation rather than attempting an installation.
@@ -28,17 +28,17 @@ On Windows, a `.bat` or `.cmd` launcher (such as Chocolatey's `apktool.bat`)
 runs through an explicit `cmd.exe /d /s /c` call. That call has no AutoRun,
 no delayed expansion, and quotes every argument. A launcher path that
 contains `"`, `%`, `^`, `!`, `&`, `|`, `<` or `>` is reported as
-`not_configured` instead of being passed to `cmd.exe`. If REA's temporary
+`not_configured` instead of being passed to `cmd.exe`. If BinSight's temporary
 decode paths contain those characters, decoding through a batch launcher
 reports `capability_unavailable`.
 
 ## Answer an analyst question
 
 ```sh
-rea inspect-apktool-client
-rea decode-android-resources /targets/Example.apk
-rea decode-android-resources /targets/Example.apk --locale de
-rea decode-android-resources /targets/Example.apk --no-strings
+binsight inspect-apktool-client
+binsight decode-android-resources /targets/Example.apk
+binsight decode-android-resources /targets/Example.apk --locale de
+binsight decode-android-resources /targets/Example.apk --no-strings
 ```
 
 Equivalent MCP methods are `inspect_apktool_client` and

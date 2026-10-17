@@ -33,7 +33,7 @@ cliTest.for([
 ])(
   "DSH CLI uses Harness path semantics through setup, doctor and uninstall for $label",
   async ({ harness, agents, dshRoot, agentsRoot }, { cli }) => {
-    const root = await createTestTempDirectory("rea-dsh-paths-");
+    const root = await createTestTempDirectory("binsight-dsh-paths-");
     const home = join(root, "home");
     const cwd = join(root, "workspace");
     const config = join(root, dshRoot, "cordis.patch.yml");
@@ -81,8 +81,8 @@ cliTest.for([
     });
     const text = await readFile(config, "utf8");
     expect(text).toContain("# caller patch");
-    expect(text).toContain("rea-mcp");
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(text).toContain("binsight-mcp");
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
     expect(await readFile(skill, "utf8")).toContain(
       "name: reverse-engineer-anything",
     );
@@ -108,7 +108,7 @@ cliTest.for([
     expect(parse(await readFile(config, "utf8"))).toEqual([
       { insert: [{ id: "caller", name: "caller-plugin" }] },
     ]);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
@@ -116,7 +116,7 @@ cliTest.for([
 cliTest(
   "DSH CLI previews, approves, repairs, launches MCP, repeats and uninstalls while preserving caller YAML",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-dsh-lifecycle-");
+    const home = await createTestTempDirectory("binsight-dsh-lifecycle-");
     const profile = join(home, "selected harness");
     const config = join(profile, "cordis.patch.yml");
     const skill = join(
@@ -126,19 +126,19 @@ cliTest(
     await mkdir(profile);
     const original = `# caller home patch
 - insert:
-    - id: rea-mcp
+    - id: binsight-mcp
       name: '@deepseek-ai/dsh-mcp-client'
-      config: {serverName: rea, transport: stdio, command: stale, args: [mcp]}
+      config: {serverName: binsight, transport: stdio, command: stale, args: [mcp]}
 - holder: &op
     insert:
       - id: unrelated
         name: caller-plugin
         disabled: true
         config: {cwd: !!js process.cwd()}
-      - id: rea-mcp
+      - id: binsight-mcp
         name: '@deepseek-ai/dsh-mcp-client'
         config:
-          serverName: rea
+          serverName: binsight
           transport: stdio
           command: stale
           args: [mcp]
@@ -167,7 +167,7 @@ cliTest(
       ]),
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.binsight.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     const unapproved = await run(["setup", "--client", "dsh"]);
@@ -201,7 +201,7 @@ cliTest(
         config: { cwd: { __jsExpr: "process.cwd()" } },
       },
     ]);
-    expect(rows.filter(({ id }) => id === "rea-mcp")).toHaveLength(1);
+    expect(rows.filter(({ id }) => id === "binsight-mcp")).toHaveLength(1);
     const registration = z
       .object({
         command: z.string(),
@@ -209,7 +209,7 @@ cliTest(
         cwd: z.unknown(),
         env: z.unknown(),
       })
-      .parse(rows.find(({ id }) => id === "rea-mcp")?.config);
+      .parse(rows.find(({ id }) => id === "binsight-mcp")?.config);
     expect(registration.cwd).toEqual({ __jsExpr: "process.cwd()" });
     expect(registration.env).toMatchObject({
       REA_LOG_LEVEL: { __jsExpr: "process.env.REA_LOG_LEVEL" },
@@ -232,7 +232,7 @@ cliTest(
       plannedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(text);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
     const removed = await run(["uninstall"]);
     expect(removed.exitCode).toBe(0);
     expect(removed.json).toMatchObject({
@@ -247,7 +247,7 @@ cliTest(
     expect(
       remaining.flatMap((patch) => patch.insert ?? []).map(({ id }) => id),
     ).toEqual(["unrelated"]);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
@@ -289,7 +289,9 @@ async function verifyGeneratedLauncher(
 cliTest.for(["null", "caller-value", "[caller-value]"])(
   "DSH CLI refuses to edit config %s and plain uninstall removes its owned row",
   async (configValue, { cli }) => {
-    const home = await createTestTempDirectory("rea-dsh-malformed-config-");
+    const home = await createTestTempDirectory(
+      "binsight-dsh-malformed-config-",
+    );
     const profile = join(home, ".dsh");
     const config = join(profile, "cordis.patch.yml");
     await mkdir(profile);
@@ -297,7 +299,7 @@ cliTest.for(["null", "caller-value", "[caller-value]"])(
 - insert:
     - id: other
       name: caller-plugin
-    - id: rea-mcp
+    - id: binsight-mcp
       name: '@deepseek-ai/dsh-mcp-client'
       config: ${configValue}
 `;
@@ -316,7 +318,7 @@ cliTest.for(["null", "caller-value", "[caller-value]"])(
       remediation: expect.stringContaining("config: Use a literal mapping"),
     });
     expect(await readFile(config, "utf8")).toBe(initial);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.binsight.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     const removed = await run(["uninstall"]);
@@ -332,7 +334,7 @@ cliTest.for(["null", "caller-value", "[caller-value]"])(
     expect(parse(remaining)).toEqual([
       { insert: [{ id: "other", name: "caller-plugin" }] },
     ]);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(initial);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(initial);
   },
 );
 
@@ -343,9 +345,9 @@ cliTest.for([
   insert:
     - id: other
       name: caller-plugin
-    - id: rea-mcp
+    - id: binsight-mcp
       name: '@deepseek-ai/dsh-mcp-client'
-      config: {serverName: rea, transport: stdio, command: stale, args: [mcp]}
+      config: {serverName: binsight, transport: stdio, command: stale, args: [mcp]}
 `,
     remediation: "group with unknown activity",
     removal: "removed",
@@ -359,7 +361,7 @@ cliTest.for([
 ])(
   "DSH CLI rejects setup and preserves ownership for $label",
   async ({ patch, remediation, removal }, { cli }) => {
-    const home = await createTestTempDirectory("rea-dsh-ownership-");
+    const home = await createTestTempDirectory("binsight-dsh-ownership-");
     const profile = join(home, ".dsh");
     const config = join(profile, "cordis.patch.yml");
     await mkdir(profile);
@@ -378,7 +380,7 @@ cliTest.for([
       remediation: expect.stringContaining(remediation),
     });
     expect(await readFile(config, "utf8")).toBe(patch);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.binsight.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     const uninstall = await run(["uninstall"]);
@@ -393,12 +395,14 @@ cliTest.for([
       expect(parse(await readFile(config, "utf8"))).toEqual([
         { id: "tools", insert: [{ id: "other", name: "caller-plugin" }] },
       ]);
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(patch);
+      expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(patch);
     } else {
       expect(await readFile(config, "utf8")).toBe(patch);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
-        code: "ENOENT",
-      });
+      await expect(readFile(`${config}.binsight.backup`)).rejects.toMatchObject(
+        {
+          code: "ENOENT",
+        },
+      );
     }
   },
 );

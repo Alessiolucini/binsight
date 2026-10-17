@@ -70,7 +70,9 @@ const fixture = async (
   member: "database" | "WAL" | "journal" | "reply",
   invalidate = false,
 ) => {
-  const workspace = await createTestWorkspace("rea-sqlite-descriptor-cleanup-");
+  const workspace = await createTestWorkspace(
+    "binsight-sqlite-descriptor-cleanup-",
+  );
   const database = createSqliteDatabaseFixture(workspace.root, true);
   const path =
     member === "database"
@@ -142,7 +144,7 @@ const serveInspection = async (
   vi.mocked(createSqliteDatabaseService).mockReturnValue(
     new SqliteDatabaseService(provider),
   );
-  const cli = Cli.create("rea-sqlite-cleanup-test", { sync: false });
+  const cli = Cli.create("binsight-sqlite-cleanup-test", { sync: false });
   registerSqliteCommands(cli, silentLogger, {});
   let stdout = "";
   await cli.serve(["inspect-sqlite-database", path, "--json"], {

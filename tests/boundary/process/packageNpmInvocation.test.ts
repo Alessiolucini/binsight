@@ -9,7 +9,7 @@ import { expect, it } from "vitest";
 const execute = promisify(execFile);
 
 it("runs the caller-selected npm entry through Node without rewriting its inputs", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-npm-invocation-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-npm-invocation-"));
   try {
     const npmEntry = join(root, "selected npm entry.mjs");
     await writeFile(
@@ -47,7 +47,7 @@ const windowsIt = process.platform === "win32" ? it : it.skip;
 windowsIt(
   "uses the npm entry adjacent to Node when none is selected",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-adjacent-npm-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-adjacent-npm-"));
     try {
       const node = join(root, "node.exe");
       const npmEntry = join(root, "node_modules/npm/bin/npm-cli.js");

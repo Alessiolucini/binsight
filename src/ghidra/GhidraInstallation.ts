@@ -155,7 +155,7 @@ const assessNativeDecompiler = (
   return {
     status: "incompatible",
     detail: `${path} reports ${observed}, but ${platform}/${architecture} requires ${expected}`,
-    remediation: `Provide an executable Ghidra/Features/Decompiler/os/${nativeDirectory ?? "<platform>"}/${executable} built for ${expected}, or its build/os equivalent. REA does not build or install native tools.`,
+    remediation: `Provide an executable Ghidra/Features/Decompiler/os/${nativeDirectory ?? "<platform>"}/${executable} built for ${expected}, or its build/os equivalent. BinSight does not build or install native tools.`,
   };
 };
 
@@ -540,7 +540,7 @@ const installationChecks = ({
 ];
 
 /**
- * REA's configuration parser, and so the MCP server and analysis, accept only
+ * BinSight's configuration parser, and so the MCP server and analysis, accept only
  * absolute paths; a relative one that happens to resolve here must not pass.
  */
 const configurationCheck = (
@@ -569,7 +569,7 @@ const configurationCheck = (
     passed: false,
     code: "not_configured",
     detail: `${settings} must be absolute`,
-    remediation: `Set ${settings} to ${relative.length === 1 ? "an absolute path" : "absolute paths"}. REA's analysis and MCP server reject relative paths even when they resolve from the current directory.`,
+    remediation: `Set ${settings} to ${relative.length === 1 ? "an absolute path" : "absolute paths"}. BinSight's analysis and MCP server reject relative paths even when they resolve from the current directory.`,
   });
 };
 
@@ -714,7 +714,7 @@ const nativeDecompilerCheck = ({
           osArch === undefined
             ? "The Java probe did not report os.arch; the JVM-selected native decompiler directory is unknown and cannot be matched to the validated host directory"
             : `JVM reports unrecognized os.arch=${osArch}; its selected native decompiler directory is unknown and cannot be matched to the validated host directory`,
-        remediation: `Point JAVA_HOME at a JDK whose reported architecture maps to the validated Ghidra decompiler (${validatedDirectory ?? "unsupported host"}). REA does not build or install native tools.`,
+        remediation: `Point JAVA_HOME at a JDK whose reported architecture maps to the validated Ghidra decompiler (${validatedDirectory ?? "unsupported host"}). BinSight does not build or install native tools.`,
       });
     if (
       validatedDirectory !== undefined &&
@@ -726,7 +726,7 @@ const nativeDecompilerCheck = ({
         passed: false,
         code: "executable_missing",
         detail: `JVM reports os.arch=${osArch}, so Ghidra selects its native decompiler from os/${selectedDirectory}, but the validated decompiler targets ${validatedDirectory} (host ${platform}/${architecture})`,
-        remediation: `Point JAVA_HOME at a JDK whose architecture matches the built decompiler (${validatedDirectory}). REA does not build or install native tools.`,
+        remediation: `Point JAVA_HOME at a JDK whose architecture matches the built decompiler (${validatedDirectory}). BinSight does not build or install native tools.`,
       });
     if (osName === undefined)
       return installationCheck({
@@ -735,7 +735,7 @@ const nativeDecompilerCheck = ({
         code: "executable_missing",
         detail:
           "The Java probe did not report os.name; the JVM-selected native decompiler OS directory is unknown and cannot be matched to the validated host platform",
-        remediation: `Point JAVA_HOME at a JDK whose reported operating system matches the host platform (${platform}). REA does not build or install native tools.`,
+        remediation: `Point JAVA_HOME at a JDK whose reported operating system matches the host platform (${platform}). BinSight does not build or install native tools.`,
       });
     if (!jvmOsNameMatchesPlatform(platform, osName) && path !== null)
       return installationCheck({
@@ -743,7 +743,7 @@ const nativeDecompilerCheck = ({
         passed: false,
         code: "executable_missing",
         detail: `JVM reports os.name=${osName}, which does not match the validated host platform ${platform} (host ${platform}/${architecture})`,
-        remediation: `Point JAVA_HOME at a JDK whose reported operating system matches the host platform (${platform}). REA does not build or install native tools.`,
+        remediation: `Point JAVA_HOME at a JDK whose reported operating system matches the host platform (${platform}). BinSight does not build or install native tools.`,
       });
   }
   return installationCheck({
@@ -756,7 +756,7 @@ const nativeDecompilerCheck = ({
     remediation:
       compatibility?.status === "incompatible"
         ? compatibility.remediation
-        : `Provide an executable Ghidra/Features/Decompiler/os/${NATIVE_PLATFORMS[platform]?.[architecture] ?? "<platform>"}/${platform === "win32" ? "decompile.exe" : "decompile"}, or its build/os equivalent. REA does not build or install native tools.`,
+        : `Provide an executable Ghidra/Features/Decompiler/os/${NATIVE_PLATFORMS[platform]?.[architecture] ?? "<platform>"}/${platform === "win32" ? "decompile.exe" : "decompile"}, or its build/os equivalent. BinSight does not build or install native tools.`,
   });
 };
 
@@ -815,7 +815,7 @@ const versionCheck = (
       parseError == null
         ? ghidraVersionDetail(raw)
         : `application.properties could not be parsed: ${parseError}`,
-    remediation: `Install a Ghidra ${ghidraReleaseLine()} release (verified with ${SUPPORTED_GHIDRA_VERSION}), or update REA for another Ghidra line.`,
+    remediation: `Install a Ghidra ${ghidraReleaseLine()} release (verified with ${SUPPORTED_GHIDRA_VERSION}), or update BinSight for another Ghidra line.`,
   });
 };
 
@@ -876,7 +876,7 @@ const javaRemediation = (
   if (requirement.unresolved !== null)
     return `The Ghidra installation's Java bounds could not be read (${requirement.unresolved}). Install a 64-bit full JDK inside the declared application.java.min and application.java.max.`;
   return configuredHome === undefined
-    ? `Select ${range} on PATH, or set JAVA_HOME to its installation root before starting REA.${platform === "darwin" ? " Homebrew OpenJDK can be keg-only: set JAVA_HOME to the selected formula's libexec/openjdk.jdk/Contents/Home (for example /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home or /usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home). The installed JDK must satisfy the declared Ghidra Java bounds." : ""}`
+    ? `Select ${range} on PATH, or set JAVA_HOME to its installation root before starting BinSight.${platform === "darwin" ? " Homebrew OpenJDK can be keg-only: set JAVA_HOME to the selected formula's libexec/openjdk.jdk/Contents/Home (for example /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home or /usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home). The installed JDK must satisfy the declared Ghidra Java bounds." : ""}`
     : `Update JAVA_HOME to the root of ${range} installation.`;
 };
 

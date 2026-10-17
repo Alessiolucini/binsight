@@ -14,7 +14,7 @@ const readVcs = (root: string, signal?: AbortSignal) =>
   });
 
 it("reads a linked worktree's own branch and detached HEAD through shared Git refs", async () => {
-  const root = await createTestTempDirectory("rea-reference-worktree-");
+  const root = await createTestTempDirectory("binsight-reference-worktree-");
   const repository = join(root, "repository");
   await mkdir(repository);
   const git = (...args: string[]) =>
@@ -23,7 +23,7 @@ it("reads a linked worktree's own branch and detached HEAD through shared Git re
   const commit = () =>
     git(
       "-c",
-      "user.name=REA fixture",
+      "user.name=BinSight fixture",
       "-c",
       "user.email=fixture@example.invalid",
       "-c",
@@ -41,7 +41,7 @@ it("reads a linked worktree's own branch and detached HEAD through shared Git re
     "git",
     [
       "-c",
-      "user.name=REA fixture",
+      "user.name=BinSight fixture",
       "-c",
       "user.email=fixture@example.invalid",
       "-c",
@@ -112,7 +112,7 @@ it("reads a linked worktree's own branch and detached HEAD through shared Git re
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "keeps unreadable loose refs unknown instead of falling back to packed refs",
   async () => {
-    const root = await createTestTempDirectory("rea-reference-loose-ref-");
+    const root = await createTestTempDirectory("binsight-reference-loose-ref-");
     const gitdir = join(root, ".git");
     const looseRef = join(gitdir, "refs", "heads", "main");
     await mkdir(join(gitdir, "refs", "heads"), { recursive: true });

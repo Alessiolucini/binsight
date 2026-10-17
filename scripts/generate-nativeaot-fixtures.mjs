@@ -51,7 +51,7 @@ const run = (command, args) => {
 const dotnet = process.env.REA_NATIVEAOT_DOTNET ?? "dotnet";
 if (run(dotnet, ["--version"]).trim() !== "8.0.416")
   throw new Error(
-    "NativeAOT fixtures require existing .NET SDK 8.0.416; REA does not install SDKs.",
+    "NativeAOT fixtures require existing .NET SDK 8.0.416; BinSight does not install SDKs.",
   );
 if (process.platform === "linux") {
   run(process.env.REA_NATIVEAOT_STRIP ?? "strip", ["--version"]);

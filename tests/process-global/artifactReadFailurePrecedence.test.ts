@@ -86,7 +86,9 @@ afterEach(async () => {
 });
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-artifact-read-precedence-");
+  const root = await createTestTempDirectory(
+    "binsight-artifact-read-precedence-",
+  );
   const tree = await SafeOutputTree.create(join(root, "output"));
   trees.push(tree);
   const bytes = Buffer.from("durable readback bytes");
@@ -157,7 +159,7 @@ it.each(["idle", "active", "read-failure"])(
   "preserves unpacked ASAR cancellation and exact descriptor ownership: %s",
   async (stage) => {
     const root = await createTestTempDirectory(
-      "rea-asar-unpacked-read-cancel-",
+      "binsight-asar-unpacked-read-cancel-",
     );
     const input = join(root, "input");
     const archive = join(root, "fixture.asar");

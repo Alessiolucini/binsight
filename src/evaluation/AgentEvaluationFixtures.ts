@@ -559,8 +559,8 @@ export const agentFixtureAnswerInstructions = (scenarioId: string): string => {
   return [
     "For this benchmark, return only one JSON object, without Markdown fences or surrounding prose.",
     'The exact shape is {"claims": [{"id": string, "value": JSON value, "evidence_id": string, "confidence": string, "authority": string}]}.',
-    "Include exactly one claim per ID below, without additional fields or claims. Infer values only from REA tool results; do not read target files directly.",
-    "Each evidence_id must identify the successful REA result that supports its claim. Copy confidence and authority from that result's Evidence envelope.",
+    "Include exactly one claim per ID below, without additional fields or claims. Infer values only from BinSight tool results; do not read target files directly.",
+    "Each evidence_id must identify the successful BinSight result that supports its claim. Copy confidence and authority from that result's Evidence envelope.",
     ...descriptions,
   ].join("\n");
 };

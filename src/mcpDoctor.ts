@@ -21,7 +21,7 @@ const OUTPUT_FORMATS = ["toon", "json", "yaml", "md", "jsonl"] as const;
 type OutputFormat = (typeof OUTPUT_FORMATS)[number];
 
 /**
- * Canonical `rea mcp doctor` options. This schema is the single source of
+ * Canonical `binsight mcp doctor` options. This schema is the single source of
  * truth: the argument parser accepts exactly these options (plus the `-h`
  * alias below) and the help renderer lists them. Keep them in sync by
  * changing this schema, not either consumer.
@@ -35,7 +35,7 @@ const MCP_DOCTOR_OPTIONS = z.object({
 
 const MCP_DOCTOR_ALIAS = { help: "h" } as const;
 
-const MCP_DOCTOR_COMMAND = "rea mcp doctor";
+const MCP_DOCTOR_COMMAND = "binsight mcp doctor";
 const MCP_DOCTOR_DESCRIPTION = "Validate MCP server startup and tool listing";
 
 /** Help flags derived from `MCP_DOCTOR_OPTIONS` plus its alias. */
@@ -98,7 +98,7 @@ export const runProductionMcpDoctor = async (options: McpDoctorOptions) => {
     stderr: "pipe",
   });
   transport.stderr?.on("data", stderr.append);
-  const client = new Client({ name: "rea-mcp-doctor", version: "1" });
+  const client = new Client({ name: "binsight-mcp-doctor", version: "1" });
   let result: ProductionMcpDoctorResult;
   let cleanupFailure: { readonly cause: unknown } | undefined;
   try {
@@ -281,7 +281,7 @@ const inspectProductionMcpSession = async (
 };
 
 /**
- * Dispatcher entry for `rea mcp doctor`, kept separate from Incur MCP setup.
+ * Dispatcher entry for `binsight mcp doctor`, kept separate from Incur MCP setup.
  * @public
  */
 export const runProductionMcpDoctorCli = async (
@@ -383,7 +383,7 @@ const parseIdentityToolResult = (
 };
 
 /**
- * Parsed `rea mcp doctor` arguments, including a help request. The `help`
+ * Parsed `binsight mcp doctor` arguments, including a help request. The `help`
  * variant is the only success-independent early return; every other accepted
  * flag is an output selector declared in `MCP_DOCTOR_OPTIONS`.
  */

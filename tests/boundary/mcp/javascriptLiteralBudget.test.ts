@@ -51,7 +51,7 @@ for (const scenario of [
   cliTest(
     `preserves normalized string-byte coverage for ${scenario.name}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-literal-budget-");
+      const root = await createTestTempDirectory("binsight-literal-budget-");
       const path = join(root, "main.js");
       const source =
         "bare" in scenario

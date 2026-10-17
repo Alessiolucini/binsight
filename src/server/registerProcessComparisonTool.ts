@@ -33,7 +33,7 @@ import { runAdmittedToolOperation } from "./admittedToolOperation.js";
 
 const PROCESS_CAPTURE_EVIDENCE = {
   operation: "capture_process_scenario",
-  predicate: "rea.process-capture",
+  predicate: "binsight.process-capture",
 } as const;
 
 const sourceLocations = (
@@ -145,7 +145,7 @@ export const registerProcessComparisonTool = (
             return server.delivery.toCallToolResult(computed, contract);
           const comparison = computed.value;
           const evidence = createEvidence(undefined, PROCESS_PROVIDER, {
-            predicateType: "rea.process-comparison",
+            predicateType: "binsight.process-comparison",
             operation: contract.name,
             parameters: {
               left_evidence_id: leftRecord.evidence_id,

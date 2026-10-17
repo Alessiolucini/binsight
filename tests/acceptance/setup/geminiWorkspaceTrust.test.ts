@@ -9,7 +9,9 @@ const setupArguments = ["setup", "--client", "gemini_cli", "--yes", "--json"];
 const doctorArguments = ["doctor", "--client", "gemini_cli", "--json"];
 
 const geminiWorkspace = async (cli: TestCli) => {
-  const home = await createTestTempDirectory("rea-gemini-workspace-trust-");
+  const home = await createTestTempDirectory(
+    "binsight-gemini-workspace-trust-",
+  );
   const project = join(home, "project");
   const workspace = join(project, ".gemini/settings.json");
   const user = join(home, ".gemini/settings.json");
@@ -138,14 +140,14 @@ for (const scenario of [
       expect(await readFile(fixture.workspace)).toEqual(malformed);
       expect(await readFile(fixture.user)).toEqual(fixture.originalUser);
       await expect(
-        access(`${fixture.workspace}.rea.backup`),
+        access(`${fixture.workspace}.binsight.backup`),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });
 
       if (scenario.name === "an explicitly untrusted workspace") {
         const excluded = Buffer.from(
-          JSON.stringify({ mcp: { excluded: ["rea"] } }),
+          JSON.stringify({ mcp: { excluded: ["binsight"] } }),
         );
         await writeFile(fixture.workspace, excluded);
         const excludedSetup = await fixture.run(setupArguments);
@@ -179,7 +181,7 @@ cliTest(
         diagnostic: "Invalid JSON/JSONC",
       },
       {
-        text: JSON.stringify({ mcp: { excluded: ["rea"] } }),
+        text: JSON.stringify({ mcp: { excluded: ["binsight"] } }),
         state: "stale",
         diagnostic: "mcp.excluded",
       },
@@ -211,7 +213,7 @@ cliTest(
       expect(await readFile(fixture.workspace)).toEqual(original);
       expect(await readFile(fixture.user)).toEqual(fixture.originalUser);
       await expect(
-        access(`${fixture.workspace}.rea.backup`),
+        access(`${fixture.workspace}.binsight.backup`),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });

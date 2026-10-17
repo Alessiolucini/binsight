@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("DOS COM admission", () => {
   it("requires explicit interpretation even when a DOS COM uses a misleading suffix", async () => {
-    const directory = await createTestTempDirectory("rea-com-target-");
+    const directory = await createTestTempDirectory("binsight-com-target-");
     const path = join(directory, "fixture.js");
     const bytes = Buffer.from("b83412c3", "hex");
     await writeFile(path, bytes);
@@ -32,7 +32,7 @@ describe("DOS COM admission", () => {
     expect(detected.ok && detected.value.format).not.toBe("dos-com");
   });
   it.each([0, 0xff01])("rejects invalid file extent %i", async (length) => {
-    const directory = await createTestTempDirectory("rea-com-target-");
+    const directory = await createTestTempDirectory("binsight-com-target-");
     const path = join(directory, "fixture.com");
     await writeFile(path, Buffer.alloc(length));
     expect(
@@ -44,7 +44,7 @@ describe("DOS COM admission", () => {
     ).toMatchObject({ ok: false, error: { _tag: "BinaryTargetError" } });
   });
   it.each([1, 0xff00])("admits the actual file extent %i", async (length) => {
-    const directory = await createTestTempDirectory("rea-com-target-");
+    const directory = await createTestTempDirectory("binsight-com-target-");
     const path = join(directory, "fixture.com");
     const bytes = Buffer.alloc(length, 0xc3);
     await writeFile(path, bytes);
@@ -62,7 +62,7 @@ describe("DOS COM admission", () => {
     expect(await readFile(path)).toEqual(bytes);
   });
   it("rejects contradictory target kind", async () => {
-    const directory = await createTestTempDirectory("rea-com-target-");
+    const directory = await createTestTempDirectory("binsight-com-target-");
     const path = join(directory, "fixture.com");
     await writeFile(path, Buffer.from("c3", "hex"));
     expect(

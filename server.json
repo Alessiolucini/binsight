@@ -1,11 +1,11 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.morluto/rea",
-  "title": "REA",
-  "description": "Reverse engineer anything from your terminal or agent with one CLI and MCP server.",
-  "websiteUrl": "https://github.com/morluto/rea",
+  "name": "io.github.alessiolucini/binsight",
+  "title": "BinSight",
+  "description": "The AI X-ray for any file: what is it, what does it hide, what changed. Static reverse-engineering intelligence via CLI and MCP. Built on REA.",
+  "websiteUrl": "https://github.com/Alessiolucini/binsight",
   "repository": {
-    "url": "https://github.com/morluto/rea",
+    "url": "https://github.com/Alessiolucini/binsight",
     "source": "github"
   },
   "version": "6.5.0",
@@ -13,7 +13,7 @@
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
-      "identifier": "rea-agents",
+      "identifier": "binsight",
       "version": "6.5.0",
       "runtimeHint": "npx",
       "transport": {

@@ -11,7 +11,7 @@ import type { CaptureState } from "./V8InspectorProvider.js";
 
 let root: string;
 beforeAll(async () => {
-  root = await mkdtemp(join(tmpdir(), "rea-inspector-projection-"));
+  root = await mkdtemp(join(tmpdir(), "binsight-inspector-projection-"));
 });
 afterAll(async () => {
   if (root !== undefined) await rm(root, { recursive: true, force: true });

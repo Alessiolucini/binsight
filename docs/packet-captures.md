@@ -14,7 +14,7 @@ an enforced address-space limit:
 
 ```sh
 export REA_TSHARK_COMMAND=/absolute/path/to/tshark
-rea inspect-packet-capture /artifacts/device.pcapng \
+binsight inspect-packet-capture /artifacts/device.pcapng \
   --fields ip.addr --fields udp.port --fields data.data \
   --display_filter 'udp' --format json
 ```
@@ -130,7 +130,7 @@ The verifier generates its own Ethernet/IPv4/UDP/DNS and Bluetooth HCI PCAPs.
 It exercises real compiled CLI/MCP parity, advertised schemas, repeated/missing
 fields, filtering, decode-as, both pass modes, a packet limit before matching
 frames, Evidence persistence, failure diagnostics, source identity and cleanup.
-An optional positional REA entrypoint verifies an installed package.
+An optional positional BinSight entrypoint verifies an installed package.
 
 The real-tool lane requires Linux and TShark 4.x. A separate kernel-limit
 regression checks the inherited soft/hard limits and verifies an oversized
@@ -151,9 +151,9 @@ failed cleanup remains owned and can be retried.
 registration glossary before selecting fields for capture inspection:
 
 ```sh
-rea inspect-packet-fields --query usb
-rea inspect-packet-fields --kind fields --protocol usb --query idVendor
-rea inspect-packet-fields --kind fields --protocol udp --all
+binsight inspect-packet-fields --query usb
+binsight inspect-packet-fields --kind fields --protocol usb --query idVendor
+binsight inspect-packet-fields --kind fields --protocol udp --all
 ```
 
 `kind` defaults to `protocols`; `fields` selects field definitions. `protocol`

@@ -79,7 +79,9 @@ describe("inert XML declaration examples in Interface Builder archives", () => {
   it.each(inertDeclarations)(
     "retains $kind and archive provenance through bundle decoding",
     async ({ xml, title }) => {
-      const root = await createTestTempDirectory("rea-ib-inert-declaration-");
+      const root = await createTestTempDirectory(
+        "binsight-ib-inert-declaration-",
+      );
       const bundle = join(root, "Example.app");
       await mkdir(bundle);
       const bytes = Buffer.from(xml);

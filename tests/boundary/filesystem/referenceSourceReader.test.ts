@@ -10,7 +10,7 @@ import { readReferenceSource } from "../../support/referenceSourceResourceScope.
 
 describe("readReferenceSource entries", () => {
   it("returns explicit entries in canonical code-point path order", async () => {
-    const root = await createTestTempDirectory("rea-reference-");
+    const root = await createTestTempDirectory("binsight-reference-");
     await mkdir(join(root, "nested"));
     await writeFile(join(root, "z.js"), "z");
     await writeFile(join(root, "a.js"), "a");
@@ -43,8 +43,8 @@ describe("readReferenceSource entries", () => {
   });
 
   it("reports physical external symlink targets without following them", async () => {
-    const root = await createTestTempDirectory("rea-reference-");
-    const outside = await createTestTempDirectory("rea-outside-");
+    const root = await createTestTempDirectory("binsight-reference-");
+    const outside = await createTestTempDirectory("binsight-outside-");
     await writeFile(join(outside, "secret"), "secret");
     await writeFile(join(root, "local"), "local");
     await symlink("local", join(root, "internal"));
@@ -91,7 +91,9 @@ describe("readReferenceSource entries", () => {
   });
 
   it("marks a symlink changed when its path is replaced during target observation", async () => {
-    const root = await createTestTempDirectory("rea-reference-symlink-race-");
+    const root = await createTestTempDirectory(
+      "binsight-reference-symlink-race-",
+    );
     const link = join(root, "source-link");
     await symlink("original-target", link);
     const expected = await lstat(link, { bigint: true });
@@ -124,7 +126,7 @@ describe("readReferenceSource entries", () => {
   });
 
   it("reads a source file larger than the former 16 MiB ceiling", async () => {
-    const root = await createTestTempDirectory("rea-reference-large-");
+    const root = await createTestTempDirectory("binsight-reference-large-");
     const size = 16 * 1024 * 1024 + 1;
     await writeFile(join(root, "large.bin"), Buffer.alloc(size, 0x61));
 
@@ -143,7 +145,7 @@ describe("readReferenceSource entries", () => {
   });
 
   it("traverses source directories deeper than the former depth ceiling", async () => {
-    const root = await createTestTempDirectory("rea-reference-deep-");
+    const root = await createTestTempDirectory("binsight-reference-deep-");
     const segments = Array.from({ length: 40 }, (_, index) => `d${index}`);
     const directory = join(root, ...segments);
     await mkdir(directory, { recursive: true });
@@ -162,7 +164,7 @@ describe("readReferenceSource entries", () => {
 
 describe("readReferenceSource failures and exclusions", () => {
   it("applies exclusions to normalized paths after no-follow type inspection", async () => {
-    const root = await createTestTempDirectory("rea-reference-");
+    const root = await createTestTempDirectory("binsight-reference-");
     await mkdir(join(root, "ignored"));
     await writeFile(join(root, "ignored", "secret"), "secret");
     await writeFile(join(root, "kept"), "kept");
@@ -187,7 +189,7 @@ describe("readReferenceSource failures and exclusions", () => {
   });
 
   it("sanitizes exclusion callback failures", async () => {
-    const root = await createTestTempDirectory("rea-reference-");
+    const root = await createTestTempDirectory("binsight-reference-");
     await writeFile(join(root, "file"), "value");
     const result = await readReferenceSource(root, {
       shouldExclude: () => {
@@ -211,7 +213,7 @@ describe("readReferenceSource failures and exclusions", () => {
   });
 
   it("keeps selected-root paths in actionable filesystem errors", async () => {
-    const missing = join(tmpdir(), "rea-secret-root-that-does-not-exist");
+    const missing = join(tmpdir(), "binsight-secret-root-that-does-not-exist");
     const result = await readReferenceSource(missing);
 
     expect(result.ok).toBe(false);

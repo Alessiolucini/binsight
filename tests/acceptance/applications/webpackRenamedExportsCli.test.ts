@@ -11,7 +11,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "reports Webpack exports attached to renamed factory parameters",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-webpack-renamed-exports-");
+    const root = await createTestTempDirectory(
+      "binsight-webpack-renamed-exports-",
+    );
     await mkdir(join(root, "src"));
     await writeFile(
       join(root, "src", "chunk.js"),

@@ -9,7 +9,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves empty ESM import names on local re-export origins through %s",
   async (surface, { cli, processes }) => {
-    const root = await createTestTempDirectory("rea-empty-import-name-");
+    const root = await createTestTempDirectory("binsight-empty-import-name-");
     const modulePath = join(root, "module.mjs");
     const appPath = join(root, "app.mjs");
     await writeFile(

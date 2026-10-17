@@ -44,7 +44,7 @@ beforeEach(() => {
 it.each(["completion", "cancellation"])(
   "waits for admitted PE parsing through %s before closing",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-pe-parsing-lifetime-");
+    const root = await createTestTempDirectory("binsight-pe-parsing-lifetime-");
     const path = join(root, "image.exe");
     await writeFile(path, peResourceFixture().bytes);
     const provider = new PeResourcesProvider();

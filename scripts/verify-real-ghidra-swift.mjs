@@ -44,7 +44,7 @@ try {
     { cause },
   );
 }
-const root = await mkdtemp(join(tmpdir(), "rea-ghidra-swift-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-ghidra-swift-"));
 const client = new Client({ name: "ghidra-swift-verifier", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,

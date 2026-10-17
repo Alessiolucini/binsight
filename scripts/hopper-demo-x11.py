@@ -424,7 +424,7 @@ def mount_private_x11() -> None:
                 "tmpfs",
                 "-o",
                 "mode=1777,nosuid,nodev",
-                "rea-x11",
+                "binsight-x11",
                 str(X11_SOCKET_DIRECTORY),
             ],
             check=False,
@@ -645,7 +645,7 @@ def start_xvfb(
 
 
 def run_probe(args: argparse.Namespace) -> dict[str, object]:
-    with tempfile.TemporaryDirectory(prefix="rea-x11-probe-", dir="/tmp") as root:
+    with tempfile.TemporaryDirectory(prefix="binsight-x11-probe-", dir="/tmp") as root:
         xvfb, _, _, capture = start_xvfb(Path(root), args)
         try:
             stop_process(xvfb)
@@ -713,7 +713,7 @@ def run_launch(args: argparse.Namespace) -> int:
                 "XDG_SESSION_TYPE": "x11",
             }
         )
-        # Children must not consume or retain REA's lifetime pipe.
+        # Children must not consume or retain BinSight's lifetime pipe.
         child = subprocess.Popen(
             command, env=hopper_environment, stdin=subprocess.DEVNULL
         )

@@ -49,7 +49,7 @@ const goMcpTest = mcpTest.extend<{
 mcpTest(
   "retains MIPS identity and in-flight Go inspection in the saved session snapshot",
   async ({ mcp }) => {
-    const root = await createTestTempDirectory("rea-go-mcp-close-");
+    const root = await createTestTempDirectory("binsight-go-mcp-close-");
     const path = join(root, "application");
     const snapshotPath = join(root, "analysis.json");
     const fixture = createGoBinaryFixture({ bits: 32, byteOrder: "big" });
@@ -123,7 +123,9 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
   goMcpTest.skipIf(expectedErrno === "ELOOP" && process.platform === "win32")(
     `reports native ${expectedErrno} path failure as invalid selected-path input through Go MCP`,
     async ({ go: { client } }) => {
-      const root = await createTestTempDirectory("rea-go-mcp-path-failure-");
+      const root = await createTestTempDirectory(
+        "binsight-go-mcp-path-failure-",
+      );
       const { path, errno } = await createGoBinaryPathFailureFixture(
         root,
         expectedErrno,
@@ -156,7 +158,7 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
 goMcpTest(
   "preserves invalid embedded Go text bytes through MCP",
   async ({ go: { client, session } }) => {
-    const root = await createTestTempDirectory("rea-go-mcp-byte-strings-");
+    const root = await createTestTempDirectory("binsight-go-mcp-byte-strings-");
     const path = join(root, "byte-strings.elf");
     const fixture = createGoBinaryByteStringFixture();
     await writeFile(path, fixture.bytes);
@@ -178,7 +180,7 @@ goMcpTest(
 goMcpTest(
   "distinguishes unsupported MZ carriers from malformed PE through MCP",
   async ({ go: { client } }) => {
-    const root = await createTestTempDirectory("rea-go-mcp-mz-");
+    const root = await createTestTempDirectory("binsight-go-mcp-mz-");
     for (const fixture of createGoBinaryDiagnosticFixtures()) {
       const path = join(root, `${fixture.name}.exe`);
       await writeFile(path, fixture.bytes);
@@ -241,7 +243,7 @@ goMcpTest(
       idempotentHint: true,
       openWorldHint: false,
     });
-    const root = await createTestTempDirectory("rea-go-mcp-");
+    const root = await createTestTempDirectory("binsight-go-mcp-");
     const path = join(root, "application");
     const fixture = createGoBinaryFixture({
       moduleText: "path\texample.com/tool\nnew-record\tfuture\n",

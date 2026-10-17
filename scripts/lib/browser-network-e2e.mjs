@@ -67,7 +67,7 @@ export async function verifyBrowserNetworkEvidence(
       ...process.env,
       REA_LOG_LEVEL: "silent",
       REA_NETWORK_FIXTURE_SECRET: networkFixtureSecret,
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-provider/hopper",
     };
     const { stdout } = await promisify(execFile)(
       process.execPath,

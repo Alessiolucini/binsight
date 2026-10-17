@@ -7,7 +7,7 @@ import { elf } from "../../../src/domain/binaryTarget.fixture.js";
 /**
  * A headless IDA supervisor that completes the MCP handshake and then leaves
  * every tool call unanswered, as an `idb_open` still running auto-analysis
- * would. It exits when REA closes its input.
+ * would. It exits when BinSight closes its input.
  */
 const UNRESPONSIVE_SUPERVISOR = `import { createInterface } from "node:readline";
 const tools = ["idb_open", "idb_list", "idb_close", "server_health", "list_funcs",
@@ -80,7 +80,7 @@ describe("headless IDA timeout through the one-shot CLI", () => {
                   state: "unverified",
                   sessions: [
                     {
-                      session_id: expect.stringMatching(/^rea-/),
+                      session_id: expect.stringMatching(/^binsight-/),
                       backend: "worker",
                       owned: null,
                       input_path: null,

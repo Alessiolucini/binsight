@@ -1,6 +1,6 @@
 # Apple Application Inventory Projection
 
-REA can project one or more authenticated `inventory_artifact` Evidence records
+BinSight can project one or more authenticated `inventory_artifact` Evidence records
 for the same IPA, macOS `.app` directory, ZIP, or DMG into an Apple application
 inventory. The projection is execution-free: it reports exact paths, content
 hashes, detected formats, bundle anatomy, runtime-family hints, and path-based
@@ -18,7 +18,7 @@ decode language metadata. A bridge basis is inferred from the native path and
 repeated for each paired script, rather than proving a particular binding.
 
 ```sh
-rea project-apple-application-graph '{"inventory_evidence":[<inventory_artifact Evidence>]}'
+binsight project-apple-application-graph '{"inventory_evidence":[<inventory_artifact Evidence>]}'
 ```
 
 ```json
@@ -149,8 +149,8 @@ privileged helpers, and helper tools) is a separate process root with its own
 `@executable_path`.
 
 ```sh
-rea trace-dylib-resolution MyApp.app --json
-rea trace-dylib-resolution MyApp.app --root Contents/MacOS/MyApp --architecture arm64 --json
+binsight trace-dylib-resolution MyApp.app --json
+binsight trace-dylib-resolution MyApp.app --root Contents/MacOS/MyApp --architecture arm64 --json
 ```
 
 ```json
@@ -199,7 +199,7 @@ edges say that they apply only if the conditional image loads.
 
 Absolute install names such as `/usr/lib/libSystem.B.dylib` are
 `outside-target`. On macOS 11 and later most of them live in the dyld shared
-cache rather than on disk, so REA does not check them against the host.
+cache rather than on disk, so BinSight does not check them against the host.
 
 `findings` are derived, not observed:
 
@@ -217,7 +217,7 @@ cache rather than on disk, so REA does not check them against the host.
 
 Empty dyld settings have different consumers. Modern dyld appends a slash and
 image name to ordinary and fallback directory entries, so an empty entry can
-search `/child.dylib` or `/Foo.framework/Foo`. REA retains uncertainty for those
+search `/child.dylib` or `/Foo.framework/Foo`. BinSight retains uncertainty for those
 unchecked paths; an empty fallback does not preempt an ordinary-search hit.
 Empty versioned-directory lists do not scan a directory, and empty suffixes
 only repeat the original candidate, so they do not add search uncertainty.

@@ -149,7 +149,7 @@ it("records capture disagreement as a contradicted unknown", async () => {
   });
   const captureEvidence = (capture: typeof left) =>
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "binsight.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: jsonValueSchema.parse(capture),

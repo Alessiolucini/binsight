@@ -117,7 +117,7 @@ it("projects a published file receipt alongside retained cleanup failure", () =>
       published: { path: "/tmp/evidence.json", bytes: 42 },
       cleanup: {
         reason: "staging directory is still owned",
-        resources: ["/tmp/.rea-write-abc"],
+        resources: ["/tmp/.binsight-write-abc"],
       },
       cause: new Error("cleanup incomplete"),
     }),
@@ -136,7 +136,7 @@ it("projects a published file receipt alongside retained cleanup failure", () =>
       published: true,
       published_path: "/tmp/evidence.json",
       bytes: 42,
-      resources: ["/tmp/.rea-write-abc"],
+      resources: ["/tmp/.binsight-write-abc"],
     },
   });
   expect(analysisErrorProjectionSchema.safeParse(projected).success).toBe(true);
@@ -470,18 +470,18 @@ describe("analysis error projection: Hopper provider failures", () => {
     );
   });
 
-  it("identifies the REA session that already owns a Hopper target", () => {
+  it("identifies the BinSight session that already owns a Hopper target", () => {
     const error = new HopperStartError({
       ownerRunId: "session-owner",
       userMessage:
-        "This Hopper target is already open in REA session session-owner. Use that REA session or close it before opening this target again.",
+        "This Hopper target is already open in BinSight session session-owner. Use that BinSight session or close it before opening this target again.",
     });
     expect(projectAnalysisError(error)).toMatchObject({
       category: "unavailable",
       message: expect.stringContaining("session-owner"),
       remediation: {
         action: expect.stringContaining(
-          "Use the active REA session session-owner",
+          "Use the active BinSight session session-owner",
         ),
       },
     });
@@ -519,7 +519,7 @@ describe("analysis error projection: detached provider diagnostics", () => {
     "preserves detached, actionable diagnostics for %s errors",
     (kind) => {
       const diagnostics = {
-        runtime_root: "/tmp/rea-ghidra-fixture",
+        runtime_root: "/tmp/binsight-ghidra-fixture",
         profile_digest: "a".repeat(64),
         exit_code: 1,
       };
@@ -774,7 +774,9 @@ describe("analysis error projection: operational diagnostics", () => {
         exit_code: 7,
       },
     });
-    expect(exited.message).not.toContain("Run `rea doctor`, then try again.");
+    expect(exited.message).not.toContain(
+      "Run `binsight doctor`, then try again.",
+    );
     expect(exited.remediation.action).toContain("Restart the owned provider");
 
     const unknown = projectAnalysisError(

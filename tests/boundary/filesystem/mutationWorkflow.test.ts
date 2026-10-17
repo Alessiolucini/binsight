@@ -124,7 +124,9 @@ it("fails a successful sweep when either required report is absent or empty", as
     ),
   );
   for (const state of ["missing", "empty-json", "empty-html", "complete"]) {
-    const directory = await createTestTempDirectory("rea-mutation-reports-");
+    const directory = await createTestTempDirectory(
+      "binsight-mutation-reports-",
+    );
     const base = join(directory, "reports", "reverse-tools");
     await mkdir(join(directory, "reports"));
     if (state !== "missing") {

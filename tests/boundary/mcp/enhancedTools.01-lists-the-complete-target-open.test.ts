@@ -124,7 +124,7 @@ const fixturePort = (): AnalysisOperationPort => ({
             graph: {
               target_sha256: "a".repeat(64),
               provider: {
-                id: "rea-artifact-graph",
+                id: "binsight-artifact-graph",
                 version: "1",
                 tool_version: "fixture",
               },

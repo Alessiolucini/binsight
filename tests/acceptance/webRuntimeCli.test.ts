@@ -15,7 +15,7 @@ const entrypoint = fileURLToPath(
 const environment = () => ({
   ...process.env,
   REA_LOG_LEVEL: "silent",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-provider/hopper",
 });
 
 it("runs the compiled public listener command through its default native CDP composition", async () => {

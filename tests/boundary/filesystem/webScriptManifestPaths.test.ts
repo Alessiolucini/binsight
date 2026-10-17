@@ -8,7 +8,7 @@ import { webModuleArtifactsFixture } from "../../fixtures/webModuleTrace.js";
 
 const materialize = async () => {
   const root = join(
-    await createTestTempDirectory("rea-script-manifest-path-"),
+    await createTestTempDirectory("binsight-script-manifest-path-"),
     "export with spaces",
   );
   const artifact = webModuleArtifactsFixture();

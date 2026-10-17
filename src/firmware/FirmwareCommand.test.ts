@@ -33,7 +33,7 @@ test("names the host and tool requirement of an unconfigured engine", async () =
 });
 
 it("rejects a directory configured as the firmware engine executable", async () => {
-  const root = await createTestTempDirectory("rea-firmware-command-");
+  const root = await createTestTempDirectory("binsight-firmware-command-");
   const command = join(root, "binwalk");
   const limiter = await executableFixture(root, "prlimit");
   await mkdir(command);
@@ -55,7 +55,7 @@ it("rejects a directory configured as the firmware engine executable", async () 
 });
 
 it("classifies an unusable firmware engine as an unavailable capability", async () => {
-  const root = await createTestTempDirectory("rea-firmware-command-");
+  const root = await createTestTempDirectory("binsight-firmware-command-");
   const command = join(root, "binwalk");
   const limiter = await executableFixture(root, "prlimit");
   await writeFile(command, "not executable", { mode: 0o600 });
@@ -77,7 +77,7 @@ it("classifies an unusable firmware engine as an unavailable capability", async 
 });
 
 it("rejects a directory configured as the resource limiter executable", async () => {
-  const root = await createTestTempDirectory("rea-firmware-limiter-");
+  const root = await createTestTempDirectory("binsight-firmware-limiter-");
   const command = await executableFixture(root, "binwalk");
   const limiter = join(root, "prlimit");
   await mkdir(limiter);

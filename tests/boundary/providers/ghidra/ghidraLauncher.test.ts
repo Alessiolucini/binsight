@@ -175,7 +175,10 @@ describe("Ghidra headless launcher", () => {
       ghidraLogPath: "/tmp/ghidra.log",
       scriptLogPath: "/tmp/script.log",
     });
-    expect(arguments_.slice(0, 2)).toEqual(["/tmp/project", "rea-project"]);
+    expect(arguments_.slice(0, 2)).toEqual([
+      "/tmp/project",
+      "binsight-project",
+    ]);
     expectOptions(arguments_, [
       ["-import", "/tmp/target"],
       ["-log", "/tmp/ghidra.log"],
@@ -393,7 +396,7 @@ describe("Ghidra disabled analyzers", () => {
   it("keeps the invocation byte-identical without an override", () => {
     expect(ghidraHeadlessArguments(base)).toEqual([
       "/tmp/project",
-      "rea-project",
+      "binsight-project",
       "-import",
       "/tmp/target",
       "-readOnly",
@@ -443,10 +446,10 @@ describe("Ghidra Windows launcher", () => {
       analyzeHeadlessPath:
         "C:\\Program Files\\Ghidra 12.1.4\\support\\analyzeHeadless.bat",
       arguments: [
-        "C:\\REA Runtime\\project",
-        "rea-project",
+        "C:\\BinSight Runtime\\project",
+        "binsight-project",
         "-import",
-        "C:\\REA Runtime\\target.exe",
+        "C:\\BinSight Runtime\\target.exe",
       ],
       comSpec: "C:\\Windows\\System32\\cmd.exe",
     });
@@ -459,7 +462,7 @@ describe("Ghidra Windows launcher", () => {
         "/v:off",
         "/s",
         "/c",
-        '""C:\\Program Files\\Ghidra 12.1.4\\support\\analyzeHeadless.bat" "C:\\REA Runtime\\project" "rea-project" "-import" "C:\\REA Runtime\\target.exe""',
+        '""C:\\Program Files\\Ghidra 12.1.4\\support\\analyzeHeadless.bat" "C:\\BinSight Runtime\\project" "binsight-project" "-import" "C:\\BinSight Runtime\\target.exe""',
       ],
     });
   });
@@ -487,7 +490,7 @@ describe("Ghidra Windows launcher runtime", () => {
     .each(["ghidra_12.1.4_PUBLIC", "ghidra_12.1.2_DEV"])(
     "prepares the inspected release directory through the Windows runtime (%s)",
     async (release) => {
-      const parent = await createTestTempDirectory("rea-launch-config-");
+      const parent = await createTestTempDirectory("binsight-launch-config-");
       const installRoot = join(parent, "renamed-install");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
@@ -542,7 +545,7 @@ describe("Ghidra Windows launcher runtime", () => {
       vi.stubEnv("JAVA_TOOL_OPTIONS", "-Duser.home=/unapproved/home");
       vi.stubEnv("JDK_JAVA_OPTIONS", "-XX:MaxRAMPercentage=99");
       vi.stubEnv("_JAVA_OPTIONS", "-Xmx99G");
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("binsight-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       const runtimeRoot = runtime.path;

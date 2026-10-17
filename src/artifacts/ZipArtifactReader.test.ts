@@ -57,7 +57,9 @@ const enumerate = async (reader: ZipArtifactReader): Promise<number> => {
 
 describe("ZipArtifactReader decompression budget", () => {
   it("refuses an archive whose entries declare more than its size can justify", async () => {
-    const directory = await createTestTempDirectory("rea-zip-budget-bomb-");
+    const directory = await createTestTempDirectory(
+      "binsight-zip-budget-bomb-",
+    );
     // A ~160-byte archive cannot declare 2 GiB of members without being a bomb.
     const path = await writeZipWithDeclaredSize(directory, [2_147_483_647]);
     const reader = new ZipArtifactReader(path, "zip");
@@ -72,7 +74,9 @@ describe("ZipArtifactReader decompression budget", () => {
   });
 
   it("charges all declarations in one traversal before yielding an over-budget member", async () => {
-    const directory = await createTestTempDirectory("rea-zip-budget-total-");
+    const directory = await createTestTempDirectory(
+      "binsight-zip-budget-total-",
+    );
     const half = MINIMUM_ARTIFACT_DECOMPRESSION_BYTES / 2;
     const path = await writeZipWithDeclaredSize(directory, [half, half + 1]);
     const reader = new ZipArtifactReader(path, "zip");
@@ -88,7 +92,7 @@ describe("ZipArtifactReader decompression budget", () => {
 
   it("keeps repeated and interleaved metadata traversals independently charged", async () => {
     const directory = await createTestTempDirectory(
-      "rea-zip-budget-iterators-",
+      "binsight-zip-budget-iterators-",
     );
     const path = await writeZipWithDeclaredSize(directory, [
       MINIMUM_ARTIFACT_DECOMPRESSION_BYTES / 2,
@@ -112,7 +116,9 @@ describe("ZipArtifactReader decompression budget", () => {
   });
 
   it("streams a valid small member through open", async () => {
-    const directory = await createTestTempDirectory("rea-zip-budget-valid-");
+    const directory = await createTestTempDirectory(
+      "binsight-zip-budget-valid-",
+    );
     const path = join(directory, "valid.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("member.bin", new TextReader("valid member bytes"));
@@ -133,7 +139,9 @@ describe("ZipArtifactReader decompression budget", () => {
   });
 
   it("rejects under-declared member output before delivering its complete actual bytes", async () => {
-    const directory = await createTestTempDirectory("rea-zip-underdeclared-");
+    const directory = await createTestTempDirectory(
+      "binsight-zip-underdeclared-",
+    );
     const path = join(directory, "underdeclared.zip");
     const content = new Uint8Array(128 * 1024);
     const writer = new ZipWriter(new Uint8ArrayWriter());

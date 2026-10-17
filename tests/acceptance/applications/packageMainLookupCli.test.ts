@@ -22,7 +22,7 @@ const cases = [
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "matches Node package main interpretation through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-main-");
+    const root = await createTestTempDirectory("binsight-package-main-");
     const files: Record<string, string> = {
       "package.json": JSON.stringify({ type: "commonjs" }),
       "entry.cjs": cases
@@ -74,7 +74,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves loader-specific package main probes and finalization through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-main-path-");
+    const root = await createTestTempDirectory("binsight-package-main-path-");
     const packages = [
       {
         name: "dot-slash-main",
@@ -231,7 +231,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
     const names = mains.map((_, index) => `root-main-${index}`);
     const requires = names.map((name) => `require("${name}")`);
     for (const rootIndex of ["index.js", "index.json", null]) {
-      const root = await createTestTempDirectory("rea-package-main-root-");
+      const root = await createTestTempDirectory("binsight-package-main-root-");
       const importOptions =
         rootIndex === "index.json" ? ', { with: { type: "json" } }' : "";
       const imports = names.map(

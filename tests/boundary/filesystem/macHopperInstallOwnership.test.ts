@@ -27,7 +27,9 @@ afterEach(async () => {
 });
 
 const temporaryRoot = async (): Promise<string> => {
-  const root = await mkdtemp(join(tmpdir(), "rea-hopper-owned-stage-test-"));
+  const root = await mkdtemp(
+    join(tmpdir(), "binsight-hopper-owned-stage-test-"),
+  );
   roots.push(root);
   return root;
 };
@@ -38,7 +40,7 @@ const bundleFiles = (
 ): MacHopperBundleInstallOperations => ({
   async createStagingRoot(parent) {
     await mkdir(parent, { recursive: true });
-    const root = await mkdtemp(join(parent, ".rea-hopper-stage-"));
+    const root = await mkdtemp(join(parent, ".binsight-hopper-stage-"));
     captureRoot?.(root, (await stat(root)).mode & 0o777);
     return root;
   },
@@ -115,7 +117,7 @@ describe("macOS Hopper staging isolation", () => {
     const root = await temporaryRoot();
     const applications = join(root, "Applications");
     const destination = join(applications, "Hopper Disassembler.app");
-    const oldStage = `${destination}.rea-stage`;
+    const oldStage = `${destination}.binsight-stage`;
     const oldPrevious = `${oldStage}-previous`;
     await Promise.all([
       writeBundle(oldStage, "user stage sentinel"),

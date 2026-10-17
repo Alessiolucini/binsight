@@ -18,7 +18,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["root", "references"] as const)(
   "rejects a linked skill %s during planning before configuring a client",
   async (kind, { cli }) => {
-    const directory = await createTestTempDirectory("rea-skill-preflight-");
+    const directory = await createTestTempDirectory(
+      "binsight-skill-preflight-",
+    );
     const selected = join(
       directory,
       ".claude/skills/reverse-engineer-anything",
@@ -81,7 +83,9 @@ cliTest.for(["root", "references"] as const)(
 cliTest(
   "setup refuses a linked skill while allowing registration-only setup",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-linked-skill-cli-");
+    const directory = await createTestTempDirectory(
+      "binsight-linked-skill-cli-",
+    );
     const managed = join(directory, "managed");
     const selected = join(
       directory,
@@ -142,7 +146,9 @@ cliTest(
 cliTest(
   "uninstall reports retained references and preserves their ownership manifest",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-skill-retained-cli-");
+    const directory = await createTestTempDirectory(
+      "binsight-skill-retained-cli-",
+    );
     const selected = join(
       directory,
       ".claude/skills/reverse-engineer-anything",
@@ -188,7 +194,7 @@ cliTest(
 cliTest(
   "skill-only setup verifies its selected client copy on install, rerun and repair",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-selected-skill-");
+    const directory = await createTestTempDirectory("binsight-selected-skill-");
     const selected = join(
       directory,
       ".claude/skills/reverse-engineer-anything",
@@ -294,7 +300,9 @@ cliTest(
 cliTest(
   "setup keeps registration and skill readiness selections independent",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-independent-skill-");
+    const directory = await createTestTempDirectory(
+      "binsight-independent-skill-",
+    );
     const result = await cli.run({
       arguments: [
         "setup",

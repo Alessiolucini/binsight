@@ -13,7 +13,7 @@ import type { CliInstance } from "./types.js";
 import { withCommandCancellation } from "./commandCancellation.js";
 import { absoluteCallerPath } from "../filesystem/callerPath.js";
 
-const PROVIDER_ID = "rea-static-triage";
+const PROVIDER_ID = "binsight-static-triage";
 
 /** CLI command name and one-line help for each single-path triage operation. */
 const SINGLE_PATH_COMMANDS: Readonly<
@@ -184,7 +184,7 @@ export const registerTriageCommands = (
                 { signal },
               ),
             service,
-            "rea-compare-binaries",
+            "binsight-compare-binaries",
             "compare_binaries",
             undefined,
             signal,

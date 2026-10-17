@@ -49,7 +49,7 @@ describe.skipIf(process.platform !== "darwin")(
         `does not read ${facts} from the file name`,
         async ({ cli, processes }) => {
           const directory = await createTestTempDirectory(
-            "rea-native-cli-echo-",
+            "binsight-native-cli-echo-",
           );
           const fixture = join(directory, "fat-fixture");
           const compiled = await processes.run(

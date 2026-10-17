@@ -53,14 +53,16 @@ const failCloseUntilAllowed = (
 };
 
 const createPackedRefRepository = async () => {
-  const root = await createTestTempDirectory("rea-reference-packed-owner-");
+  const root = await createTestTempDirectory(
+    "binsight-reference-packed-owner-",
+  );
   await execFileOutput("git", ["init", "--initial-branch=main"], { cwd: root });
   await writeFile(join(root, "main.ts"), "export const value = 1;\n");
   await execFileOutput(
     "git",
     [
       "-c",
-      "user.name=REA fixture",
+      "user.name=BinSight fixture",
       "-c",
       "user.email=fixture@example.invalid",
       "-c",
@@ -88,7 +90,9 @@ const createPackedRefRepository = async () => {
 };
 
 it("retains failed .gitignore cleanup under the caller's scope", async () => {
-  const root = await createTestTempDirectory("rea-reference-ignore-owner-");
+  const root = await createTestTempDirectory(
+    "binsight-reference-ignore-owner-",
+  );
   const path = join(root, ".gitignore");
   await writeFile(path, "generated/\n");
   const resources = new ArtifactResourceScope();
@@ -124,7 +128,7 @@ it("retains failed .gitignore cleanup under the caller's scope", async () => {
 });
 
 it("preserves Git metadata cleanup failure and the completed source read", async () => {
-  const root = await createTestTempDirectory("rea-reference-head-owner-");
+  const root = await createTestTempDirectory("binsight-reference-head-owner-");
   const repository = join(root, "repository");
   const sourceRoot = join(root, "source");
   await Promise.all([mkdir(repository), mkdir(sourceRoot)]);

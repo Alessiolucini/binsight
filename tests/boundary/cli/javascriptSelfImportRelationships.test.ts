@@ -20,7 +20,7 @@ cliTest(
   "keeps missing same-container package manifests unavailable until restored",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-missing-package-manifests-",
+      "binsight-missing-package-manifests-",
     );
     const sourceRoot = join(root, "source");
     const archive = join(root, "app.asar");
@@ -105,7 +105,7 @@ cliTest(
 cliTest(
   "resolves ESM specifiers containing whitespace using URL text semantics",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-esm-whitespace-path-");
+    const root = await createTestTempDirectory("binsight-esm-whitespace-path-");
     const rawSpecifier = "./feature\tname.js";
     const encodedSpecifier = "./feature%09name.js";
     await writeFixtureFiles(root, {
@@ -174,7 +174,9 @@ cliTest(
 cliTest(
   "resolves emitted module imports without substituting Electron runtime paths",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-typescript-runtime-paths-");
+    const root = await createTestTempDirectory(
+      "binsight-typescript-runtime-paths-",
+    );
     await writeFixtureFiles(root, {
       "package.json": JSON.stringify({ main: "main.ts" }),
       "main.ts": `import { BrowserWindow, utilityProcess } from "electron";
@@ -246,7 +248,7 @@ cliTest(
 cliTest(
   "returns literal self-import evidence while preserving sibling imports and self-re-exports",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-self-import-");
+    const root = await createTestTempDirectory("binsight-self-import-");
     await writeFixtureFiles(root, {
       "a.js":
         'import "./a.js";\nexport const value = 1;\nexport { value as forwarded } from "./a.js";\n',
@@ -309,7 +311,7 @@ cliTest(
 cliTest(
   "discloses CommonJS and TypeScript self-imports including emitted-name rewrites",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-self-require-");
+    const root = await createTestTempDirectory("binsight-self-require-");
     await writeFixtureFiles(root, {
       "c.cjs": 'const self = require("./c.cjs");\nmodule.exports = self;\n',
       "util.ts":

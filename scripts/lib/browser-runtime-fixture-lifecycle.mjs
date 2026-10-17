@@ -17,7 +17,7 @@ import { requireOrdinaryWindowsVerifierCaller } from "./windows-ordinary-user-ve
 /** Launch the synthetic fixture browser and await CDP in its own verified process group. */
 export async function startRuntimeFixtureBrowser(executable, origin) {
   await requireOrdinaryWindowsVerifierCaller();
-  const profile = await mkdtemp(join(tmpdir(), "rea-real-web-runtime-"));
+  const profile = await mkdtemp(join(tmpdir(), "binsight-real-web-runtime-"));
   let owned;
   try {
     owned = await spawnOwnedProviderProcess({
@@ -110,7 +110,7 @@ async function stopOwnedBrowser(owned, profile) {
           "inspect_web_page",
           signal,
         );
-        // This browser belongs to the verifier; public REA operations never close it.
+        // This browser belongs to the verifier; public BinSight operations never close it.
         await connection.send("Browser.close", {}, undefined, signal);
       } catch {
         if (child.exitCode === null && child.signalCode === null)

@@ -63,7 +63,7 @@ export async function verifyHopperWorkflows(call, invalid, procedure) {
   });
   assert.deepEqual(missingPhrase.matches, []);
   assert.deepEqual(missingPhrase.references, []);
-  const phrase = "REA boundary phrase";
+  const phrase = "BinSight boundary phrase";
   try {
     await call("set_address_name", { address, name: phrase });
     const traced = await call("trace_feature", { query: phrase });

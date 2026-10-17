@@ -15,7 +15,7 @@ export const writeJavaScriptArtifactFixture = async (
       join(root, "package.json"),
       JSON.stringify(
         {
-          name: "rea-javascript-fixture",
+          name: "binsight-javascript-fixture",
           version: "1.0.0",
           main: "main.js",
           renderer: "./renderer/index.html",
@@ -148,7 +148,7 @@ const writeVersionFixture = async (
     writeFile(
       join(root, "package.json"),
       JSON.stringify({
-        name: "rea-version-comparison-fixture",
+        name: "binsight-version-comparison-fixture",
         version,
         main: "./main.js",
         renderer: "./renderer/index.html",

@@ -43,7 +43,7 @@ import {
 const it = test.skipIf(process.platform === "win32");
 
 it("discovers configuration without probing and admits only verified targets", async () => {
-  const root = await createTestTempDirectory("rea-kuna-discovery-");
+  const root = await createTestTempDirectory("binsight-kuna-discovery-");
   const kuna = await writeFakeKuna(root);
   const configured = new KunaProvider({ REA_KUNA_COMMAND: kuna });
 
@@ -101,7 +101,7 @@ it("discovers configuration without probing and admits only verified targets", a
 });
 
 it("waits for an aborted pre-session hash before retrying its late close owner", async () => {
-  const fixture = await session("rea-kuna-profile-hash-owner-");
+  const fixture = await session("binsight-kuna-profile-hash-owner-");
   const binary = composeBinarySession(
     new AnalysisProviderRegistry([fixture.provider], "kuna"),
   );
@@ -178,7 +178,7 @@ it("waits for an aborted pre-session hash before retrying its late close owner",
 });
 
 it("commits the observed Kuna release and digest to the analysis profile", async () => {
-  const { profile } = await session("rea-kuna-profile-");
+  const { profile } = await session("binsight-kuna-profile-");
 
   expect(profile).toMatchObject({
     provider: { id: "kuna", name: "Kuna", version: "1.833" },
@@ -194,7 +194,7 @@ it("commits the observed Kuna release and digest to the analysis profile", async
 
 it("lists the selected document without starting target analysis", async () => {
   const { kuna, target, cacheRoot, open } = await session(
-    "rea-kuna-document-metadata-",
+    "binsight-kuna-document-metadata-",
     { project: "hang" },
   );
   const client = open();
@@ -210,7 +210,7 @@ it("lists the selected document without starting target analysis", async () => {
 });
 
 it("answers a cold request from one function, then serves the finished export", async () => {
-  const { kuna, cacheRoot, open } = await session("rea-kuna-cold-", {
+  const { kuna, cacheRoot, open } = await session("binsight-kuna-cold-", {
     delayMs: 300,
   });
   const client = open();
@@ -277,7 +277,7 @@ it("answers a cold request from one function, then serves the finished export", 
 
 it("verifies a warm export once for concurrent first requests on a fresh server", async () => {
   const { kuna, target, cacheRoot, profile, open } = await session(
-    "rea-kuna-warm-concurrent-",
+    "binsight-kuna-warm-concurrent-",
   );
   const builder = open();
   await run(builder, "procedure_assembly", { procedure: "main" });
@@ -306,7 +306,7 @@ it("verifies a warm export once for concurrent first requests on a fresh server"
 });
 
 it("lists, searches and resolves procedures from Kuna's inventory", async () => {
-  const { open } = await session("rea-kuna-inventory-");
+  const { open } = await session("binsight-kuna-inventory-");
   const client = open();
 
   expect((await run(client, "list_procedures")).result).toEqual([
@@ -333,7 +333,7 @@ it("lists, searches and resolves procedures from Kuna's inventory", async () => 
 });
 
 it("rejects a name that identifies several entries", async () => {
-  const { open } = await session("rea-kuna-ambiguous-", {
+  const { open } = await session("binsight-kuna-ambiguous-", {
     functions: [
       { name: "init", addr: "0x1000" },
       { name: "init", addr: "0x1040" },
@@ -354,7 +354,7 @@ it("rejects a name that identifies several entries", async () => {
 });
 
 it("names function entries and the data Kuna's export labels", async () => {
-  const { open } = await session("rea-kuna-names-");
+  const { open } = await session("binsight-kuna-names-");
   const client = open();
 
   expect(
@@ -373,7 +373,7 @@ it("names function entries and the data Kuna's export labels", async () => {
 });
 
 it("reports a failed function and an import slot as unavailable text, not errors", async () => {
-  const { open } = await session("rea-kuna-unavailable-");
+  const { open } = await session("binsight-kuna-unavailable-");
   const client = open();
   await run(client, "procedure_assembly", { procedure: "main" });
 
@@ -398,7 +398,7 @@ it("reports a failed function and an import slot as unavailable text, not errors
 });
 
 it("builds a dossier with text and call relationships, leaving unsupported facets unavailable", async () => {
-  const { open } = await session("rea-kuna-dossier-");
+  const { open } = await session("binsight-kuna-dossier-");
   const client = open();
 
   const dossier = await run(client, "analyze_function", { procedure: "main" });
@@ -463,7 +463,7 @@ it("builds a dossier with text and call relationships, leaving unsupported facet
 });
 
 it("rejects oversized cached text before buffering while retaining its full export", async () => {
-  const { cacheRoot, open } = await session("rea-kuna-text-capacity-", {
+  const { cacheRoot, open } = await session("binsight-kuna-text-capacity-", {
     functions: [{ name: "main", addr: "0x1000" }],
     cPadding: KUNA_FUNCTION_TEXT_BYTES,
   });
@@ -494,7 +494,7 @@ it("rejects oversized cached text before buffering while retaining its full expo
 });
 
 it("keeps answering pseudocode one function at a time when the export fails", async () => {
-  const { open } = await session("rea-kuna-export-failed-", {
+  const { open } = await session("binsight-kuna-export-failed-", {
     project: "exit-failure",
   });
   const client = open();
@@ -520,7 +520,9 @@ it("keeps answering pseudocode one function at a time when the export fails", as
 });
 
 it("stops waiting for the export when the caller cancels, without abandoning it", async () => {
-  const { open } = await session("rea-kuna-wait-cancel-", { delayMs: 1500 });
+  const { open } = await session("binsight-kuna-wait-cancel-", {
+    delayMs: 1500,
+  });
   const client = open();
   const caller = new AbortController();
 
@@ -542,7 +544,7 @@ it("stops waiting for the export when the caller cancels, without abandoning it"
 });
 
 it("stops the export it alone wanted before reporting itself closed", async () => {
-  const { kuna, cacheRoot, open } = await session("rea-kuna-close-", {
+  const { kuna, cacheRoot, open } = await session("binsight-kuna-close-", {
     project: "hang",
   });
   const client = open();
@@ -566,7 +568,7 @@ it("stops the export it alone wanted before reporting itself closed", async () =
 it.each([false, true])(
   "drains an active single-function request before close (caller signal: %s)",
   async (withCallerSignal) => {
-    const { kuna, open } = await session("rea-kuna-close-active-", {
+    const { kuna, open } = await session("binsight-kuna-close-active-", {
       project: "hang",
       decompile: "hang",
     });
@@ -603,7 +605,7 @@ it.each([false, true])(
 );
 
 it("refuses another document, an unsupported operation and a replaced executable", async () => {
-  const { kuna, open } = await session("rea-kuna-refusals-");
+  const { kuna, open } = await session("binsight-kuna-refusals-");
   const client = open();
 
   expect(
@@ -638,7 +640,7 @@ it("refuses another document, an unsupported operation and a replaced executable
 it("retains an active request's workspace when close cannot prove its stop", async () => {
   const unproven = unprovenCleanupLauncher("decompile");
   const { kuna, open } = await session(
-    "rea-kuna-close-active-unproven-",
+    "binsight-kuna-close-active-unproven-",
     { project: "hang", decompile: "hang" },
     {},
     unproven.launcher,
@@ -682,7 +684,7 @@ it("retains an active request's workspace when close cannot prove its stop", asy
 it("keeps reporting a failed close and succeeds once a retry proves the stop", async () => {
   const unproven = unprovenCleanupLauncher("decompile");
   const { open } = await session(
-    "rea-kuna-close-retry-",
+    "binsight-kuna-close-retry-",
     { project: "hang", decompile: "hang" },
     { REA_KUNA_TIMEOUT_MS: "300" },
     unproven.launcher,
@@ -708,7 +710,7 @@ it("keeps reporting a failed close and succeeds once a retry proves the stop", a
 it("reports an abandoned export's unproven cleanup from close", async () => {
   const unproven = unprovenCleanupLauncher("decompile-project");
   const { kuna, open } = await session(
-    "rea-kuna-close-export-",
+    "binsight-kuna-close-export-",
     { project: "hang" },
     {},
     unproven.launcher,
@@ -740,7 +742,7 @@ it("retries the abandoned export's file cleanup before reporting close success",
     };
   };
   const { kuna, cacheRoot, open } = await session(
-    "rea-kuna-close-export-files-",
+    "binsight-kuna-close-export-files-",
     { project: "hang" },
     {},
     launcher,
@@ -768,7 +770,7 @@ it("retries the abandoned export's file cleanup before reporting close success",
 });
 
 it("refuses to launch an executable replaced after the target was opened", async () => {
-  const { kuna, open } = await session("rea-kuna-swapped-", {
+  const { kuna, open } = await session("binsight-kuna-swapped-", {
     project: "exit-failure",
   });
   const client = open();
@@ -790,7 +792,7 @@ it("refuses to launch an executable replaced after the target was opened", async
 });
 
 it("recovers when another server evicts the export this session adopted", async () => {
-  const { cacheRoot, open } = await session("rea-kuna-evicted-");
+  const { cacheRoot, open } = await session("binsight-kuna-evicted-");
   const client = open();
   await run(client, "procedure_assembly", { procedure: "main" });
   const [key] = await readdir(join(cacheRoot, "projects"));
@@ -816,7 +818,7 @@ it("recovers when another server evicts the export this session adopted", async 
 });
 
 it("reports a failed export as failed rather than building", async () => {
-  const { open } = await session("rea-kuna-failed-state-", {
+  const { open } = await session("binsight-kuna-failed-state-", {
     project: "exit-failure",
   });
   const client = open();
@@ -840,7 +842,7 @@ it.each([
     behavior: { project: "hang" } as const,
     environment: { REA_KUNA_PROJECT_TIMEOUT_MS: "300" },
     cause: "AnalysisTimeoutError",
-    next: "To retry, set REA_KUNA_PROJECT_TIMEOUT_MS above 300 ms or raise REA_KUNA_JOBS in the environment that starts REA. REA reads Kuna settings when it starts, so restart REA, then reopen the target.",
+    next: "To retry, set REA_KUNA_PROJECT_TIMEOUT_MS above 300 ms or raise REA_KUNA_JOBS in the environment that starts BinSight. BinSight reads Kuna settings when it starts, so restart BinSight, then reopen the target.",
     details: {
       timeout_ms: 300,
       captured_output: { truncated: expect.any(Boolean) },
@@ -859,7 +861,7 @@ it.each([
     behavior: { asmPadding: 2 * 1024 ** 2 },
     environment: { REA_KUNA_CACHE_MAX_BYTES: String(1024 ** 2) },
     cause: "AnalysisResourceConstraintError",
-    next: "Raise REA_KUNA_CACHE_MAX_BYTES above the export size, or analyze this target with another provider. REA reads Kuna settings when it starts, so restart REA, then reopen the target.",
+    next: "Raise REA_KUNA_CACHE_MAX_BYTES above the export size, or analyze this target with another provider. BinSight reads Kuna settings when it starts, so restart BinSight, then reopen the target.",
     details: {
       resource: "capacity",
       reported_limits: {
@@ -874,7 +876,7 @@ it.each([
     behavior: { project: "noisy" } as const,
     environment: {},
     cause: "AnalysisResourceConstraintError",
-    next: "REA buffers at most 8388608 bytes of kuna decompile-project output, so repeating this request for this target fails the same way. Use another provider for it.",
+    next: "BinSight buffers at most 8388608 bytes of kuna decompile-project output, so repeating this request for this target fails the same way. Use another provider for it.",
     details: {
       resource: "memory",
       reported_limits: { output_limit_bytes: 8 * 1024 ** 2 },
@@ -884,7 +886,7 @@ it.each([
   "reports a failed export as not retryable in its session ($name)",
   async ({ behavior, environment, cause, next, details }) => {
     const { open } = await session(
-      "rea-kuna-export-unavailable-",
+      "binsight-kuna-export-unavailable-",
       behavior,
       environment,
     );
@@ -927,7 +929,7 @@ it.each([
 );
 
 it("lets one caller stop waiting for the shared inventory without failing another", async () => {
-  const { open } = await session("rea-kuna-shared-inventory-", {
+  const { open } = await session("binsight-kuna-shared-inventory-", {
     inventoryDelayMs: 700,
   });
   const client = open();
@@ -953,10 +955,10 @@ it("lets one caller stop waiting for the shared inventory without failing anothe
 });
 
 it("leaves no private copy behind when workspace setup fails", async () => {
-  const { target, open } = await session("rea-kuna-workspace-leak-", {
+  const { target, open } = await session("binsight-kuna-workspace-leak-", {
     project: "hang",
   });
-  const runtime = await createTestTempDirectory("rea-kuna-runtime-");
+  const runtime = await createTestTempDirectory("binsight-kuna-runtime-");
   const previous = process.env.TMPDIR;
   process.env.TMPDIR = runtime;
   try {

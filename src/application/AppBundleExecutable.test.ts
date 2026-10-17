@@ -8,7 +8,7 @@ import { resolveAppBundleExecutable } from "./AppBundleExecutable.js";
 
 describe("app bundle Info.plist magic", () => {
   it("does not decode a high-bit fold of bplist as a binary Info.plist", async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-bplist-fold-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-bplist-fold-"));
     try {
       const bundle = join(root, "Fixture.app");
       const plistPath = join(bundle, "Contents", "Info.plist");
@@ -35,7 +35,7 @@ describe("app bundle Info.plist magic", () => {
 
 describe("app bundle program directory containment", () => {
   it("rejects an escaping programs directory before resolving its child", async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-app-programs-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-app-programs-"));
     try {
       const bundle = join(root, "Fixture.app");
       const programs = join(bundle, "Contents", "MacOS");

@@ -24,7 +24,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest.for(["\n", "\r\n"])(
       "does not read signature fields from the file name codesign echoes (%j)",
       async (newline, { cli }) => {
-        const directory = await createTestTempDirectory("rea-signature-");
+        const directory = await createTestTempDirectory("binsight-signature-");
         const forged = "Developer ID Application: Example (ABCDE12345)";
         const program = await adHocProgram(
           directory,

@@ -37,7 +37,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 afterEach(() => vi.restoreAllMocks());
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-adb-input-owner-");
+  const root = await createTestTempDirectory("binsight-adb-input-owner-");
   const binary = join(root, "adb");
   const source = join(root, "payload.bin");
   const bytes = Buffer.from("immutable payload");
@@ -105,7 +105,7 @@ test("retains failed snapshot cleanup ownership and retries it on close", async 
       "node:fs/promises",
     );
   vi.mocked(rm).mockImplementationOnce(async (path, options) => {
-    if (basename(String(path)).startsWith("rea-adb-input-"))
+    if (basename(String(path)).startsWith("binsight-adb-input-"))
       throw new Error("snapshot cleanup denied");
     return actualFs.rm(path, options);
   });
@@ -146,7 +146,9 @@ test("closes retained snapshot handles before removing their runtime root", asyn
   let snapshotHandleOpen = false;
   const closeAttempts = new Map<string, number>();
   let rootClosedWithHandleOpen = false;
-  const runtime = await PrivateRuntimeRoot.create({ prefix: "rea-adb-order-" });
+  const runtime = await PrivateRuntimeRoot.create({
+    prefix: "binsight-adb-order-",
+  });
   runtimePath = runtime.path;
   const provider = new AdbProvider({
     environment: { REA_ADB_PATH: join(f.root, "adb") },
@@ -207,7 +209,7 @@ test("retries the same retained snapshot owner before removing its root", async 
       "node:fs/promises",
     );
   const runtime = await PrivateRuntimeRoot.create({
-    prefix: "rea-adb-persistent-order-",
+    prefix: "binsight-adb-persistent-order-",
   });
   const snapshotPath = join(runtime.path, basename(f.source));
   const rawHandles = new Map<
@@ -622,7 +624,7 @@ test.each([false, true])(
         "node:fs/promises",
       );
     vi.mocked(rm).mockImplementationOnce(async (path, options) => {
-      if (basename(String(path)).startsWith("rea-adb-input-")) {
+      if (basename(String(path)).startsWith("binsight-adb-input-")) {
         controller.abort(abortReason);
         if (failCleanup) throw new Error("snapshot cleanup denied");
       }
@@ -678,7 +680,7 @@ test("cancels after the input snapshot copy and before contacting the device", a
     const handle = await actualFs.open(path, ...args);
     if (
       String(path).endsWith("payload.bin") &&
-      basename(dirname(String(path))).startsWith("rea-adb-input-")
+      basename(dirname(String(path))).startsWith("binsight-adb-input-")
     ) {
       const sync = handle.sync.bind(handle);
       handle.sync = async () => {
@@ -712,7 +714,7 @@ test("reports input snapshot capacity failures before contacting the device", as
   vi.mocked(open).mockImplementation(async (path, ...args) => {
     if (
       String(path).endsWith("payload.bin") &&
-      basename(dirname(String(path))).startsWith("rea-adb-input-")
+      basename(dirname(String(path))).startsWith("binsight-adb-input-")
     )
       throw capacityFailure;
     return actualFs.open(path, ...args);

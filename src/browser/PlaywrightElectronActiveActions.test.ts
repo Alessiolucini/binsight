@@ -66,7 +66,7 @@ it("parses window, renderer, and deep-link actions for agents", () => {
         step_id: "deep-link",
         kind: "deep-link",
         delivery: "second-instance",
-        url: "rea-fixture://open/item",
+        url: "binsight-fixture://open/item",
       },
     ],
   });
@@ -84,7 +84,7 @@ it("parses window, renderer, and deep-link actions for agents", () => {
       step_id: "deep-link",
       kind: "deep-link",
       delivery: "second-instance",
-      url: "rea-fixture://open/item",
+      url: "binsight-fixture://open/item",
     },
   ]);
 });
@@ -109,7 +109,7 @@ it("rejects non-absolute deep-link values", () => {
 
 it("keeps long Electron arguments and deep-link URLs intact", () => {
   const longArgument = "x".repeat(5_000);
-  const longUrl = `rea-fixture://open/${"item".repeat(2_000)}`;
+  const longUrl = `binsight-fixture://open/${"item".repeat(2_000)}`;
   const longStepId = "step".repeat(100);
   const input = electronActiveObservationInputSchema.parse({
     executable_path: "/opt/electron",
@@ -313,7 +313,7 @@ it("runs an untargeted deep-link without requiring a BrowserWindow", async () =>
         step_id: "open-deep-link",
         kind: "deep-link",
         delivery: "second-instance",
-        url: "rea-fixture://open/item",
+        url: "binsight-fixture://open/item",
       },
     ],
   });

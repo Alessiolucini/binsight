@@ -87,7 +87,7 @@ const environment = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   REA_LOG_LEVEL: "silent",
   REA_ANALYSIS_PROVIDER: "auto",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -133,7 +133,7 @@ const ownedCommand = async (command, arguments_, timeoutMs = 60_000) => {
         arguments: arguments_,
         cwd: temporary.path,
         env: environment,
-        runId: `rea-native-handoff-${randomUUID()}`,
+        runId: `binsight-native-handoff-${randomUUID()}`,
         expectedCommand: command === process.execPath ? process.execPath : null,
         sweepTokenOwnedProcesses: true,
       },
@@ -314,7 +314,7 @@ try {
   let cliParity = null;
   if (values["cli-parity"]) {
     temporary = await PrivateRuntimeRoot.create({
-      prefix: "rea-native-handoff-verifier-",
+      prefix: "binsight-native-handoff-verifier-",
     });
     const bundlePath = join(temporary.path, "bundle.json");
     const exported = await client.callTool({
@@ -381,7 +381,7 @@ try {
   let tokenCosts = null;
   if (values["tokenizer-python"]) {
     temporary ??= await PrivateRuntimeRoot.create({
-      prefix: "rea-native-handoff-verifier-",
+      prefix: "binsight-native-handoff-verifier-",
     });
     const input = join(temporary.path, "token-input.json");
     await writeFile(

@@ -11,7 +11,7 @@ import {
 } from "./lib/windows-owned-command.mjs";
 
 const [, , lockName, ...command] = process.argv;
-const lockRoot = resolve(process.cwd(), ".cache", "rea-command-locks");
+const lockRoot = resolve(process.cwd(), ".cache", "binsight-command-locks");
 const signalExitCodes = { SIGINT: 130, SIGTERM: 143 };
 
 let database;

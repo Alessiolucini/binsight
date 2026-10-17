@@ -245,7 +245,7 @@ describe("Linux private display selection", () => {
     ] as const) {
       const result = spawnSync(
         "/usr/bin/python3",
-        [helperPath, "--probe", option, "/rea/missing-executable"],
+        [helperPath, "--probe", option, "/binsight/missing-executable"],
         { encoding: "utf8" },
       );
       expect(result.status).toBe(79);

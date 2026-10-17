@@ -118,7 +118,7 @@ const installationHost: GhidraInstallationHost = {
 // Only installation discovery and the Java bridge are simulated. Requests use
 // the production client, real child/socket and public MCP session routing.
 const connectGhidra = async () => {
-  const directory = await createTestTempDirectory("rea-ghidra-reopen-");
+  const directory = await createTestTempDirectory("binsight-ghidra-reopen-");
   const target = join(directory, "target.elf");
   const source = elf(2, 1, 62);
   await writeFile(target, source);

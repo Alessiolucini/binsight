@@ -73,7 +73,7 @@ export const createGeminiModelFixture = async ({ directory, onRequest }) => {
           candidatesTokenCount: 20,
           totalTokenCount: 120,
         },
-        modelVersion: "local-rea-fixture",
+        modelVersion: "local-binsight-fixture",
       };
       if (path.endsWith(":streamGenerateContent")) {
         response.setHeader("Content-Type", "text/event-stream");

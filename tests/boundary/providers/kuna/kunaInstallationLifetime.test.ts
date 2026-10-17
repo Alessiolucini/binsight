@@ -79,7 +79,9 @@ it
   .each(["hash-close", "shebang-read"] as const)(
   "keeps installation cleanup waiting for its active phase when cancelled during %s",
   async (phase) => {
-    const root = await createTestTempDirectory("rea-kuna-inspection-lifetime-");
+    const root = await createTestTempDirectory(
+      "binsight-kuna-inspection-lifetime-",
+    );
     const executable = await writeFakeKuna(root);
     const scope = new ArtifactResourceScope();
     const fileCloseResources: FileCloseResourceOwner = {

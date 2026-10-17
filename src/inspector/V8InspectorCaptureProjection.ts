@@ -29,7 +29,7 @@ export const createInspectorExclusionCounts = (): Record<
 export const describeInspectorTargetLimitations = (
   attachmentStateUnknown = false,
 ): string[] => [
-  "REA attaches to an already-running exact target and never launches, resumes, evaluates, pauses, or mutates it.",
+  "BinSight attaches to an already-running exact target and never launches, resumes, evaluates, pauses, or mutates it.",
   "Only Runtime.enable and Debugger.enable are sent; source text, object values, EventEmitter activity, and Electron IPC are not inspected.",
   "The selected endpoint and target ID authorize observation; discovery file locations can remain unresolved and do not prove filesystem identity.",
   "Node discovery reports a best-effort pathname rather than an encoded file URL; lossy Windows paths and ambiguous underscores are preserved without guessing a file path.",

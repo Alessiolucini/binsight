@@ -22,7 +22,7 @@ const capture = async (
 ) => {
   if (adapter === "cli") {
     const path = join(
-      await createTestTempDirectory("rea-truncation-scenario-"),
+      await createTestTempDirectory("binsight-truncation-scenario-"),
       "scenario.json",
     );
     await writeFile(path, JSON.stringify(scenario));
@@ -65,7 +65,7 @@ const capture = async (
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "localizes rendered-state expansion exhaustion through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-rendered-budget-");
+    const root = await createTestTempDirectory("binsight-rendered-budget-");
     // CSI REP expands a small raw burst into a full screen, so rendered
     // exhaustion does not depend on how the PTY batches output chunks.
     const output = "x\u001b[79b".repeat(24);
@@ -156,7 +156,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "distinguishes raw chunk omission and filesystem exhaustion through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-raw-files-budget-");
+    const root = await createTestTempDirectory("binsight-raw-files-budget-");
     await writeFile(join(root, "a.txt"), "abc");
     await writeFile(join(root, "b.txt"), "12345678");
     const result = await capture(adapter, {
@@ -213,7 +213,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "keeps terminal facts comparable when only file digests are omitted through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-hash-budget-");
+    const root = await createTestTempDirectory("binsight-hash-budget-");
     await writeFile(join(root, "a.txt"), "abc");
     await writeFile(join(root, "b.txt"), "12345678");
     await writeFile(join(root, "c.txt"), "z");
@@ -263,7 +263,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "reports process sample-limit exhaustion without erasing other dimensions through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-process-budget-");
+    const root = await createTestTempDirectory("binsight-process-budget-");
     const result = await capture(adapter, {
       executable: process.execPath,
       working_directory: root,

@@ -127,7 +127,7 @@ export const captureCdpScreenshot = async (
     completeness: new CdpCaptureCompleteness().snapshot(),
     limitations: [
       "The screenshot contains the visible viewport, including on-screen content.",
-      "REA does not scroll, evaluate JavaScript, or capture beyond the current viewport.",
+      "BinSight does not scroll, evaluate JavaScript, or capture beyond the current viewport.",
     ],
   };
 };

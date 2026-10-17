@@ -1,8 +1,8 @@
 # ADB device inspection and acquisition
 
-REA inspects connected Android devices, reads device state, and transfers
+BinSight inspects connected Android devices, reads device state, and transfers
 files and packages through the caller's `adb` binary. Emulators, USB
-devices, and network devices participate alike: REA neither starts nor
+devices, and network devices participate alike: BinSight neither starts nor
 manages them and never installs platform tools. Every operation composes a
 fixed adb argument vector — caller values occupy positional arguments only
 and are quoted when adb forwards them to the device shell.
@@ -21,8 +21,8 @@ through the environment:
 export REA_ADB_PATH=/absolute/path/to/adb
 ```
 
-REA never installs the Android SDK, an emulator, or a system image.
-Readiness is `rea inspect-adb-client`: it runs `adb version` and reports the
+BinSight never installs the Android SDK, an emulator, or a system image.
+Readiness is `binsight inspect-adb-client`: it runs `adb version` and reports the
 resolved binary, its version, and where it was selected from. A missing
 binary reports `capability_unavailable` with the `REA_ADB_PATH` remediation
 rather than attempting an installation.
@@ -34,45 +34,45 @@ serial is reachable. Device state is checked by each device operation.
 
 ```sh
 # Device identity
-rea inspect-adb-client
-rea list-adb-devices
-rea inspect-adb-device emulator-5554
-rea inspect-adb-display emulator-5554
-rea list-adb-features emulator-5554
-rea list-adb-services emulator-5554
+binsight inspect-adb-client
+binsight list-adb-devices
+binsight inspect-adb-device emulator-5554
+binsight inspect-adb-display emulator-5554
+binsight list-adb-features emulator-5554
+binsight list-adb-services emulator-5554
 
 # Find and acquire an app (the easy-get flow)
-rea resolve-adb-packages emulator-5554 whatsapp
-rea list-adb-packages emulator-5554 --scope third_party
-rea inspect-adb-package emulator-5554 com.whatsapp
-rea pull-adb-package emulator-5554 com.whatsapp --output-directory /tmp/acq
-rea inspect-android-package /tmp/acq/com.whatsapp/base.apk
+binsight resolve-adb-packages emulator-5554 whatsapp
+binsight list-adb-packages emulator-5554 --scope third_party
+binsight inspect-adb-package emulator-5554 com.whatsapp
+binsight pull-adb-package emulator-5554 com.whatsapp --output-directory /tmp/acq
+binsight inspect-android-package /tmp/acq/com.whatsapp/base.apk
 
 # Device state and files
-rea list-adb-processes emulator-5554
-rea inspect-adb-window emulator-5554
-rea read-adb-setting emulator-5554 global adb_enabled
-rea read-adb-logcat emulator-5554 --count 200
-rea list-adb-directory emulator-5554 /data/data/com.whatsapp
-rea pull-adb-file emulator-5554 /data/local/tmp/notes.txt --output-directory /tmp/acq
-rea push-adb-file emulator-5554 /tools/frida-server /data/local/tmp/frida-server
-rea capture-adb-screen emulator-5554 --output-directory /tmp/shots
-rea collect-adb-bugreport emulator-5554 --output-directory /tmp/bugs
+binsight list-adb-processes emulator-5554
+binsight inspect-adb-window emulator-5554
+binsight read-adb-setting emulator-5554 global adb_enabled
+binsight read-adb-logcat emulator-5554 --count 200
+binsight list-adb-directory emulator-5554 /data/data/com.whatsapp
+binsight pull-adb-file emulator-5554 /data/local/tmp/notes.txt --output-directory /tmp/acq
+binsight push-adb-file emulator-5554 /tools/frida-server /data/local/tmp/frida-server
+binsight capture-adb-screen emulator-5554 --output-directory /tmp/shots
+binsight collect-adb-bugreport emulator-5554 --output-directory /tmp/bugs
 
 # Package lifecycle and dynamic analysis (device-mutating)
-rea install-adb-package emulator-5554 /tmp/app.apk --replace
-rea start-adb-app emulator-5554 com.example.app
-rea read-adb-logcat emulator-5554 --pid 12345
-rea start-adb-activity emulator-5554 android.intent.action.VIEW --data-uri https://example.com
-rea stop-adb-app emulator-5554 com.example.app
-rea uninstall-adb-package emulator-5554 com.example.app
+binsight install-adb-package emulator-5554 /tmp/app.apk --replace
+binsight start-adb-app emulator-5554 com.example.app
+binsight read-adb-logcat emulator-5554 --pid 12345
+binsight start-adb-activity emulator-5554 android.intent.action.VIEW --data-uri https://example.com
+binsight stop-adb-app emulator-5554 com.example.app
+binsight uninstall-adb-package emulator-5554 com.example.app
 ```
 
 Equivalent MCP methods use the snake_case names (`list_adb_devices`,
 `pull_adb_package`, `resolve_adb_packages`, …). Device operations take
 `serial` exactly as `adb devices` reports it. The pulled APK set feeds the
 existing analysis families directly, for example
-`rea inspect-android-package /tmp/acq/<package>/base.apk`.
+`binsight inspect-android-package /tmp/acq/<package>/base.apk`.
 
 ## Operations
 
@@ -105,7 +105,7 @@ existing analysis families directly, for example
 
 For `install_adb_package`, `replace_requested` records whether `-r` was sent.
 The `replaced` result is `null`: the successful install response does not say
-whether the package was installed fresh or replaced, and REA does not query the
+whether the package was installed fresh or replaced, and BinSight does not query the
 device first. The install verdict and host APK digest remain available.
 
 Push and install consume a private snapshot of the selected local input. The
@@ -127,7 +127,7 @@ and during shutdown.
 - **Device paths are not host paths.** `base_apk_device_path` values live on
   the device filesystem. Only pulls and captures produce host-local paths,
   each paired with byte size and SHA-256 digest. A pulled file's host name is
-  the device path's final POSIX segment. REA preserves the original device
+  the device path's final POSIX segment. BinSight preserves the original device
   path and filename; a missing final segment or `.`/`..` is refused before
   output creation. Windows hosts follow [Windows filename rules](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file),
   while POSIX hosts retain valid POSIX filenames such as names with spaces or

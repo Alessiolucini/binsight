@@ -136,7 +136,7 @@ it("retains the page inspection when bundle cleanup is cancelled", async () => {
 });
 
 it("closes an Electron inspection session when cleanup is cancelled", async () => {
-  const root = await createTestTempDirectory("rea-electron-cancel-");
+  const root = await createTestTempDirectory("binsight-electron-cancel-");
   const page = join(root, "index.html");
   await writeFile(page, "<main>fixture</main>");
   const browser = await startFakeCdpBrowser({
@@ -189,7 +189,7 @@ it("closes an Electron inspection session when cleanup is cancelled", async () =
 });
 
 it("classifies cancellation that arrives during final Electron detach", async () => {
-  const root = await createTestTempDirectory("rea-electron-final-detach-");
+  const root = await createTestTempDirectory("binsight-electron-final-detach-");
   const page = join(root, "index.html");
   await writeFile(page, "<main>completed fixture</main>");
   const controller = new AbortController();
@@ -250,7 +250,7 @@ it.each(
 )(
   "resolves $kind $outcome inspection and cleanup composition after confirmed socket retry",
   async ({ kind, outcome }) => {
-    const root = await createTestTempDirectory("rea-cdp-cleanup-binding-");
+    const root = await createTestTempDirectory("binsight-cdp-cleanup-binding-");
     const page = join(root, "index.html");
     await writeFile(page, "<main>completed fixture</main>");
     const browser = await startFakeCdpBrowser({

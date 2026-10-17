@@ -14,7 +14,7 @@ const diagnostics = { stdout: "", stderr: "", truncated: false };
 it.each(["pre-aborted", "aborted-during-probe"] as const)(
   "cancellation wins over debugger path failures: %s",
   async (scenario) => {
-    const workspace = await createTestWorkspace("rea-pwndbg-cancel-");
+    const workspace = await createTestWorkspace("binsight-pwndbg-cancel-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const controller = new AbortController();
     const gdb = join(workspace.root, "missing-gdb");

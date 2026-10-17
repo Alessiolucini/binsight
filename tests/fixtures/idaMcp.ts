@@ -17,7 +17,7 @@ export const createIdaTarget = async (
     architecture,
   ],
 ) => {
-  const root = await mkdtemp(join(tmpdir(), "rea-ida-test-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-ida-test-"));
   const path = join(root, "target.elf");
   const bytes = elf(2, 1, ELF_MACHINE[architecture]);
   await writeFile(path, bytes);

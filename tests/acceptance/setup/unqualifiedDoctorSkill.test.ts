@@ -9,7 +9,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "unqualified doctor checks the installed managed skill and preserves its files",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-unqualified-doctor-skill-");
+    const home = await createTestTempDirectory(
+      "binsight-unqualified-doctor-skill-",
+    );
     const skill = join(
       home,
       ".claude/skills/reverse-engineer-anything/SKILL.md",
@@ -106,7 +108,7 @@ cliTest(
     }
 
     const emptyHome = await createTestTempDirectory(
-      "rea-unqualified-doctor-empty-",
+      "binsight-unqualified-doctor-empty-",
     );
     for (const arguments_ of [
       ["doctor", "--skill"],
@@ -125,7 +127,7 @@ cliTest(
     }
 
     const foreignHome = await createTestTempDirectory(
-      "rea-unqualified-doctor-foreign-skill-",
+      "binsight-unqualified-doctor-foreign-skill-",
     );
     const foreignSkill = join(
       foreignHome,

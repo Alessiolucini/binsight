@@ -10,7 +10,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("distinguishes computed require member values from literal members in source evidence", async () => {
-  const root = await createTestTempDirectory("rea-reference-require-members-");
+  const root = await createTestTempDirectory(
+    "binsight-reference-require-members-",
+  );
   const literalCallees = [
     "require",
     "require.resolve",

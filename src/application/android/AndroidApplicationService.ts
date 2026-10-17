@@ -19,7 +19,7 @@ export const projectAndroidApplicationEvidence = (
     schema: androidApplicationProjectionInputSchema,
     project: projectAndroidApplication,
     operation: OPERATION,
-    predicateType: "rea.android-application-graph",
+    predicateType: "binsight.android-application-graph",
     provider: ANDROID_APPLICATION_PROVIDER,
     subjectFormat: () => "apk",
     protocolError: "Android application projection produced an invalid result",

@@ -10,7 +10,7 @@ const TAG_GNU_MIPS_ABI_FP = 4;
 const TAG_GNU_MIPS_ABI_MSA = 8;
 
 /**
- * Read only GNU file-scope MIPS ABI attributes REA understands. Unknown
+ * Read only GNU file-scope MIPS ABI attributes BinSight understands. Unknown
  * vendors, scopes and tags fail closed; their declarations are not skipped.
  */
 export const parseMipsGnuAttributes = (
@@ -56,7 +56,7 @@ export const parseMipsGnuAttributes = (
       return err("unterminated MIPS GNU attribute vendor name");
     if (bytes.toString("latin1", position + 4, vendorEnd) !== "gnu")
       return err(
-        "MIPS ELF declares non-GNU vendor attributes that REA does not inspect",
+        "MIPS ELF declares non-GNU vendor attributes that BinSight does not inspect",
       );
     if (vendorSeen)
       return err("duplicate MIPS GNU attribute vendor subsections");
@@ -70,7 +70,7 @@ export const parseMipsGnuAttributes = (
         return err("malformed MIPS GNU attribute scope tag");
       if (scope.value !== TAG_FILE)
         return err(
-          "MIPS GNU attributes scoped to sections or symbols are not inspected by REA",
+          "MIPS GNU attributes scoped to sections or symbols are not inspected by BinSight",
         );
       if (end - scope.next < 4)
         return err("truncated MIPS GNU attribute scope length");
@@ -92,7 +92,7 @@ export const parseMipsGnuAttributes = (
           tag.value !== TAG_GNU_MIPS_ABI_MSA
         )
           return err(
-            `MIPS ELF declares GNU attribute tag ${tag.value}, which REA does not inspect`,
+            `MIPS ELF declares GNU attribute tag ${tag.value}, which BinSight does not inspect`,
           );
         const value = readUleb(tag.next, scopeEnd);
         if (value === undefined)

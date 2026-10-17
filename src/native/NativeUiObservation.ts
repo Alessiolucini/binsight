@@ -255,7 +255,7 @@ const observeWithHelper = async (
       steps: results,
       restore: "leave-as-is",
       limitations: [
-        "Only the explicitly selected already-running process/window is admitted. REA starts no target process and does not change permissions, foreground applications, or restore application data.",
+        "Only the explicitly selected already-running process/window is admitted. BinSight starts no target process and does not change permissions, foreground applications, or restore application data.",
         "Click uses AXPress; scroll uses AXIncrement/AXDecrement; key-entry sets the selected element's AXValue. Unsupported elements fail without global event fallback.",
         "Each completed action is followed immediately by capture; delayed UI changes require explicit wait steps. A failed after-capture can follow a completed action, so failure does not prove absence of application effects.",
         "Scenarios can change app data, cause app network activity and persist changes. The caller explicitly chooses leave-as-is; automatic restoration is unsupported.",

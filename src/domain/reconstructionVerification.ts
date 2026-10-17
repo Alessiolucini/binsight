@@ -41,20 +41,20 @@ import type { ResidualUnknown } from "./residualUnknown.js";
 const providers = {
   behavioral: {
     operation: "compare_process_captures",
-    predicates: ["rea.process-comparison"],
+    predicates: ["binsight.process-comparison"],
     ...PROCESS_PROVIDER,
   },
   "structural-function": {
     operation: "compare_functions",
-    predicates: ["rea.function-comparison"],
-    id: "rea-function-comparison",
-    name: "REA function comparison",
+    predicates: ["binsight.function-comparison"],
+    id: "binsight-function-comparison",
+    name: "BinSight function comparison",
   },
   "structural-artifact": {
     operation: "compare_artifacts",
-    predicates: ["rea.artifact-comparison"],
-    id: "rea-artifact-comparison",
-    name: "REA artifact comparison",
+    predicates: ["binsight.artifact-comparison"],
+    id: "binsight-artifact-comparison",
+    name: "BinSight artifact comparison",
   },
 } as const;
 
@@ -195,17 +195,17 @@ const readValidatedSourceFacts = (
     if (claim.kind === "behavioral")
       return (
         source.operation === "capture_process_scenario" &&
-        source.predicate_type === "rea.process-capture"
+        source.predicate_type === "binsight.process-capture"
       );
     if (claim.kind === "structural-function")
       return (
         source.operation === "analyze_function" &&
-        source.predicate_type === "rea.analysis"
+        source.predicate_type === "binsight.analysis"
       );
     return (
       (source.operation === "inventory_artifact" ||
         source.operation === "inspect_artifact") &&
-      source.predicate_type === "rea.analysis"
+      source.predicate_type === "binsight.analysis"
     );
   };
   if (sources.some((source) => !isExpectedType(source)))

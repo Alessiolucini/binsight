@@ -34,16 +34,16 @@ const comparison = (
   return createEvidence(
     undefined,
     {
-      id: process ? "rea-process" : "rea-artifact-comparison",
+      id: process ? "binsight-process" : "binsight-artifact-comparison",
       name: process
-        ? "REA deterministic process harness"
-        : "REA artifact comparison",
+        ? "BinSight deterministic process harness"
+        : "BinSight artifact comparison",
       version: operation === "compare_process_captures" ? "3" : "1",
     },
     {
       predicateType: process
-        ? "rea.process-comparison"
-        : "rea.artifact-comparison",
+        ? "binsight.process-comparison"
+        : "binsight.artifact-comparison",
       operation,
       parameters: {
         ...(process
@@ -244,9 +244,9 @@ describe("changed behavior", () => {
     );
     const bundle = createEvidence(
       undefined,
-      { id: "rea-bundle-comparison", name: "Bundle", version: "1" },
+      { id: "binsight-bundle-comparison", name: "Bundle", version: "1" },
       {
-        predicateType: "rea.bundle-comparison",
+        predicateType: "binsight.bundle-comparison",
         operation: "compare_bundles",
         parameters: {},
         result: {},

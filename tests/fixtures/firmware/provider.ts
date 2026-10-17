@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../temporaryDirectory.js";
 
 /** Exercise real subprocess ownership with synthetic pinned producer representations. */
 export const firmwareFixture = async (mode = "normal", banner?: string) => {
-  const root = await createTestTempDirectory("rea-firmware-test-");
+  const root = await createTestTempDirectory("binsight-firmware-test-");
   const path = join(root, "input.bin");
   await writeFile(path, Buffer.from("fixture-input-data"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));

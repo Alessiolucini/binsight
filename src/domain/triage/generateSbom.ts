@@ -96,7 +96,7 @@ export const spdxDocumentSchema = z.strictObject({
   dataLicense: z.literal("CC0-1.0"),
   SPDXID: z.literal("SPDXRef-DOCUMENT"),
   name: z.string().min(1),
-  documentNamespace: z.string().regex(/^urn:rea:sbom:[0-9a-f]{64}$/u),
+  documentNamespace: z.string().regex(/^urn:binsight:sbom:[0-9a-f]{64}$/u),
   creationInfo: z.strictObject({
     created: z.string(),
     creators: z.array(z.string().min(1)).min(1),

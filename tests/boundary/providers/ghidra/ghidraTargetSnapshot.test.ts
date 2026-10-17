@@ -18,7 +18,7 @@ afterEach(async () => {
 
 describe("Ghidra target snapshot", () => {
   it("uses the selected installation platform instead of the ambient host", async () => {
-    const root = await createTestTempDirectory("rea-ghidra-platform-");
+    const root = await createTestTempDirectory("binsight-ghidra-platform-");
     roots.push(root);
     const source = join(root, "source.exe");
     const bytes = Buffer.from("platform fixture");

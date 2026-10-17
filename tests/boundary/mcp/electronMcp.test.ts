@@ -299,7 +299,7 @@ it("advertises owned JavaScript analysis effects without foreign target executio
 });
 
 it("exposes endpoint-scoped Electron discovery and inspection as Evidence", async () => {
-  const root = await createTestTempDirectory("rea-electron-mcp-");
+  const root = await createTestTempDirectory("binsight-electron-mcp-");
   temporary.push(root);
   await writeFile(join(root, "index.html"), "<script src='app.js'></script>");
   await writeFile(
@@ -432,7 +432,7 @@ it("exposes endpoint-scoped Electron discovery and inspection as Evidence", asyn
 }, 20_000);
 
 it("runs active Electron scenarios with selected paths and inferred working directory", async () => {
-  const root = await createTestTempDirectory("rea-electron-active-mcp-");
+  const root = await createTestTempDirectory("binsight-electron-active-mcp-");
   temporary.push(root);
   const applicationPath = join(root, "main.js");
   await writeFile(applicationPath, "module.exports = {};\n");
@@ -445,7 +445,7 @@ it("runs active Electron scenarios with selected paths and inferred working dire
   );
   temporary.push(aliasedRoot);
   const workingDirectory = await createTestTempDirectory(
-    "rea-electron-working-directory-",
+    "binsight-electron-working-directory-",
   );
   temporary.push(workingDirectory);
   const capturedInputs: unknown[] = [];
@@ -567,7 +567,7 @@ it("runs active Electron scenarios with selected paths and inferred working dire
   expect(JSON.stringify(captured.structuredContent)).toContain("submit-secret");
   expect(JSON.stringify(captured.structuredContent)).toContain("super-secret");
   expect(captured.structuredContent).toMatchObject({
-    predicate_type: "rea.electron-active-scenario",
+    predicate_type: "binsight.electron-active-scenario",
     operation: "capture_electron_scenario",
     parameters: {
       args: ["--token", "super-secret"],
@@ -584,7 +584,7 @@ it("runs active Electron scenarios with selected paths and inferred working dire
 }, 20_000);
 
 it("exposes the target-free static JavaScript application workflow", async () => {
-  const root = await createTestTempDirectory("rea-electron-static-mcp-");
+  const root = await createTestTempDirectory("binsight-electron-static-mcp-");
   temporary.push(root);
   await writeElectronBoundaryFixture(root);
   const session = createTestBinarySession(() => ({
@@ -651,7 +651,7 @@ it("exposes the target-free static JavaScript application workflow", async () =>
     })
     .parse(analyzed.structuredContent);
   expect(projected.normalized_result).toMatchObject({
-    input_path: expect.stringMatching(/rea-electron-static-mcp-/u),
+    input_path: expect.stringMatching(/binsight-electron-static-mcp-/u),
     summary: {
       browser_windows: 3,
       context_bridge_apis: 2,
@@ -673,7 +673,9 @@ const evidenceFor = (value: unknown) => {
 };
 
 it("reports every unresolved Electron path without starting a provider", async () => {
-  const root = await createTestTempDirectory("rea-electron-invalid-paths-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-invalid-paths-",
+  );
   const capture = vi.fn();
   const session = createTestBinarySession(() => {
     throw new Error("must not start");

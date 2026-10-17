@@ -14,7 +14,7 @@ export const writeElectronBoundaryFixture = async (
     writeFile(
       join(root, "package.json"),
       JSON.stringify({
-        name: "rea-electron-boundary-fixture",
+        name: "binsight-electron-boundary-fixture",
         version: "1.0.0",
         main: "main.js",
         renderer: "renderer/index.html",
@@ -56,16 +56,16 @@ new BrowserWindow({
 });
 new BrowserWindow(windowOptions);
 
-ipcMain.handle("rea:read", async (event, key) => {
+ipcMain.handle("binsight:read", async (event, key) => {
   if (!event.senderFrame.url.startsWith("file://")) throw new Error("denied");
   return read(key);
 });
-ipcMain.on("rea:write", (event, value) => {
+ipcMain.on("binsight:write", (event, value) => {
   if (event.sender.getURL() !== "file://fixture/index.html") return;
   nativeWrite(value);
 });
-ipcMain.handle("rea:ambiguous", async () => 1);
-ipcMain.handle("rea:ambiguous", async () => 2);
+ipcMain.handle("binsight:ambiguous", async () => 1);
+ipcMain.handle("binsight:ambiguous", async () => 2);
 ipcMain.handle(dynamicChannel, dynamicHandler);
 
 utilityProcess.fork("./utility/worker.js", [], { serviceName: "fixture-db" });
@@ -79,26 +79,26 @@ const PRELOAD_SOURCE = String.raw`
 const { contextBridge, ipcRenderer } = require("electron");
 const { read, write } = require("./native/addon.node");
 
-contextBridge.exposeInMainWorld("reaApi", {
-  read: (key) => ipcRenderer.invoke("rea:read", key),
+contextBridge.exposeInMainWorld("binsightApi", {
+  read: (key) => ipcRenderer.invoke("binsight:read", key),
   nested: {
-    write: (value) => ipcRenderer.send("rea:write", value),
+    write: (value) => ipcRenderer.send("binsight:write", value),
   },
   nativeRead: read,
   nativeWrite: write,
 });
 contextBridge.exposeInMainWorld(dynamicApiKey, dynamicApi);
-ipcRenderer.on("rea:event", (_event, value) => console.log(value));
-ipcRenderer.invoke("rea:ambiguous");
-ipcRenderer.invoke("rea:missing");
+ipcRenderer.on("binsight:event", (_event, value) => console.log(value));
+ipcRenderer.invoke("binsight:ambiguous");
+ipcRenderer.invoke("binsight:missing");
 ipcRenderer.invoke(dynamicChannel);
 `;
 
 const RENDERER_SOURCE = String.raw`
 const { ipcRenderer } = require("electron");
-ipcRenderer.invoke("rea:read", "renderer-key");
-ipcRenderer.send("rea:write", "renderer-value");
-ipcRenderer.on("rea:event", (_event, value) => console.log(value));
+ipcRenderer.invoke("binsight:read", "renderer-key");
+ipcRenderer.send("binsight:write", "renderer-value");
+ipcRenderer.on("binsight:event", (_event, value) => console.log(value));
 `;
 
 const UTILITY_SOURCE = String.raw`

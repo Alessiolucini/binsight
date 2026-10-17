@@ -204,7 +204,7 @@ export async function verifyScenarioEnvironment(endpoint, targetId, origin) {
     await assertRestored();
     const initializationFailure = await provider.captureScenario({
       ...scenario,
-      environment: { ...scenario.environment, timezone: "REA/Invalid" },
+      environment: { ...scenario.environment, timezone: "BinSight/Invalid" },
     });
     assert.equal(initializationFailure.ok, false);
     await assertRestored();

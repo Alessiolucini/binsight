@@ -49,7 +49,7 @@ const readPids = async (path: string): Promise<readonly number[]> =>
 it.skipIf(process.platform === "win32")(
   "stops an interpreter launcher and its pipe-holding child when the probe is cancelled",
   async () => {
-    const root = await createTestTempDirectory("rea-apktool-probe-");
+    const root = await createTestTempDirectory("binsight-apktool-probe-");
     const pids = join(root, "pids.json");
     const launcher = join(root, "apktool");
     await writeFile(

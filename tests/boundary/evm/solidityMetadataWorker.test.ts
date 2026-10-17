@@ -20,7 +20,9 @@ it.each([
 ])(
   "retains independent %s metadata through the actual worker",
   async (kind, hex, status) => {
-    const directory = await createTestTempDirectory("rea-solidity-worker-");
+    const directory = await createTestTempDirectory(
+      "binsight-solidity-worker-",
+    );
     const snapshot = join(directory, "selected.hex");
     const reply = join(directory, "reply.json");
     const request = join(directory, "request.json");

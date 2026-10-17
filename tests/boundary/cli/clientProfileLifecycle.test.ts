@@ -91,7 +91,7 @@ const groups = [
 cliTest(
   "uninstall purge retains unrelated data behind a managed-root symlink",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-uninstall-root-link-");
+    const root = await createTestTempDirectory("binsight-uninstall-root-link-");
     const home = join(root, "home");
     const unrelated = join(root, "unrelated-application");
     await mkdir(home);
@@ -99,7 +99,7 @@ cliTest(
       await mkdir(join(unrelated, name), { recursive: true });
       await writeFile(join(unrelated, name, "keep.txt"), `unrelated ${name}`);
     }
-    const managedRoot = join(home, ".rea");
+    const managedRoot = join(home, ".binsight");
     await symlink(
       unrelated,
       managedRoot,
@@ -139,7 +139,7 @@ for (const group of groups) {
   cliTest(
     `${group.name} lifecycle follows the selected roots`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-client-profile-");
+      const home = await createTestTempDirectory("binsight-client-profile-");
       const environment: NodeJS.ProcessEnv = { HOME: home, USERPROFILE: home };
       for (const testCase of group.cases)
         for (const [key, value] of Object.entries(testCase.env))
@@ -230,8 +230,8 @@ for (const group of groups) {
           await writeFile(
             config,
             original.replace(
-              "[mcp_servers.rea]",
-              "[mcp_servers.rea]\ndisabled = true",
+              "[mcp_servers.binsight]",
+              "[mcp_servers.binsight]\ndisabled = true",
             ),
           );
           expect(
@@ -264,7 +264,7 @@ for (const group of groups) {
 }
 
 cliTest("uninstall names each retained skill directory", async ({ cli }) => {
-  const home = await createTestTempDirectory("rea-uninstall-skill-paths-");
+  const home = await createTestTempDirectory("binsight-uninstall-skill-paths-");
   const shared = join(home, ".agents", "skills", PRODUCT_IDENTITY.skillName);
   const claude = join(home, ".claude", "skills", PRODUCT_IDENTITY.skillName);
   for (const directory of [shared, claude]) {
@@ -294,7 +294,7 @@ cliTest("uninstall names each retained skill directory", async ({ cli }) => {
     ["claude_code", claude],
   ] as const) {
     expect(skill?.detail).toContain(
-      `${client} (${directory}): retained (Skill manifest is not REA-owned.)`,
+      `${client} (${directory}): retained (Skill manifest is not BinSight-owned.)`,
     );
     expect(await readFile(join(directory, "SKILL.md"), "utf8")).toBe(
       "---\nname: unrelated\n---\n",

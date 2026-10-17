@@ -14,7 +14,7 @@ import { jsonValueSchema } from "../../../src/domain/jsonValue.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const observeZip = async (entries: readonly (readonly [string, string])[]) => {
-  const root = await createTestTempDirectory("rea-directory-identity-");
+  const root = await createTestTempDirectory("binsight-directory-identity-");
   const path = join(root, "fixture.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   for (const [name, content] of entries)
@@ -28,7 +28,11 @@ const observeZip = async (entries: readonly (readonly [string, string])[]) => {
     inventory,
     evidence: createEvidence(
       { path, sha256: inventory.manifest.root_sha256, format: "zip" },
-      { id: "rea-artifact-graph", name: "REA artifact graph", version: "1" },
+      {
+        id: "binsight-artifact-graph",
+        name: "BinSight artifact graph",
+        version: "1",
+      },
       {
         operation: "inventory_artifact",
         parameters: {},

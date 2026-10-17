@@ -121,7 +121,7 @@ export const runFirmwareCommand = async (context: {
   const { engine, operation, signal } = context;
   if (signal.aborted)
     throw new AnalysisCancelledError(operation, { cause: signal.reason });
-  const runId = `rea-firmware-${randomUUID()}`;
+  const runId = `binsight-firmware-${randomUUID()}`;
   const spawned = await (context.launcher ?? spawnOwnedProviderProcess)({
     command: context.limiter,
     arguments: [

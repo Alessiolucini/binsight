@@ -200,7 +200,9 @@ export async function readStaticCheckArtifact({
   }
   if (!response.ok) throw new Error(`github_http_${response.status}`);
   const bytes = await readLimitedBytes(response, MAX_ARCHIVE_BYTES);
-  const directory = await mkdtemp(join(tmpdir(), "rea-ci-static-artifact-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-ci-static-artifact-"),
+  );
   const archive = join(directory, "artifact.zip");
   try {
     await writeFile(archive, bytes, { flag: "wx" });
@@ -285,7 +287,7 @@ function normalizeDuplicates(report) {
   )
     throw new Error("jscpd report is malformed");
   // The producer owns the checker outcome; do not copy or infer its threshold.
-  const exitCode = report.reaCheck?.exitCode;
+  const exitCode = report.binsightCheck?.exitCode;
   if (exitCode === undefined || exitCode === 0) return [];
   if (!Number.isSafeInteger(exitCode) || exitCode < 0)
     throw new Error("jscpd checker outcome is malformed");

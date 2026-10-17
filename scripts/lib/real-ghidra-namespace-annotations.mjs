@@ -28,7 +28,9 @@ export async function verifyGhidraNamespaceAnnotations({
       { cause },
     );
   }
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-namespaces-"));
+  const workspace = await mkdtemp(
+    join(tmpdir(), "binsight-ghidra-namespaces-"),
+  );
   const source = fileURLToPath(
     new URL("../../tests/conformance/ghidra/namespaces.c", import.meta.url),
   );
@@ -391,6 +393,6 @@ async function requireNamespaceDemangler(env) {
     }
   }
   throw new Error(
-    `Ghidra namespace annotation verification requires the matching GNU demangler native component. Provide ${executable} for ${nativeDirectory} in GPL/DemanglerGnu/os or its build/os equivalent; REA does not build it. Checked: ${failures.join("; ")}`,
+    `Ghidra namespace annotation verification requires the matching GNU demangler native component. Provide ${executable} for ${nativeDirectory} in GPL/DemanglerGnu/os or its build/os equivalent; BinSight does not build it. Checked: ${failures.join("; ")}`,
   );
 }

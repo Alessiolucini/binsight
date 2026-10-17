@@ -149,7 +149,7 @@ func processRunTokenObservation(
     if let runId = parsed.runId {
       return RunTokenObservation(pid: pid, state: "readable", run_id: runId, reason: nil)
     }
-    // A non-empty environment without REA's token proves this candidate is
+    // A non-empty environment without BinSight's token proves this candidate is
     // unrelated. CS_RESTRICT cannot turn that readable fact into uncertainty.
     if parsed.environmentEntryCount > 0 {
       return RunTokenObservation(pid: pid, state: "readable", run_id: nil, reason: nil)

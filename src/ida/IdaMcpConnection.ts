@@ -341,7 +341,7 @@ export const createIdaMcpConnection = (
   environment: Readonly<NodeJS.ProcessEnv>,
   dependencies: IdaMcpConnectionDependencies = {},
 ): IdaMcpConnection => {
-  const client = new Client({ name: "rea-ida-provider", version: "1" });
+  const client = new Client({ name: "binsight-ida-provider", version: "1" });
   const redactor = (
     dependencies.createDiagnosticRedactor ?? createIdaDiagnosticRedactor
   )(config);

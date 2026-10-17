@@ -30,11 +30,11 @@ export async function verifyBrowserScriptExport(
   let primaryError;
   try {
     site = await startBrowserScriptSite();
-    root = await mkdtemp(join(tmpdir(), "rea-browser-script-export-"));
+    root = await mkdtemp(join(tmpdir(), "binsight-browser-script-export-"));
     const env = {
       ...process.env,
       REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-provider/hopper",
     };
     const cli = exportCli(entrypoint, env);
     const scenario = scriptCaptureScenario(executable, site.origin);

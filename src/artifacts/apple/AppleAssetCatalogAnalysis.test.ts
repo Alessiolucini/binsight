@@ -65,7 +65,9 @@ describe("Apple asset catalog application workflow", () => {
   });
 
   it("reports an app without compiled catalogs as an empty observed inventory", async () => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-absent-");
+    const bundle = await createTestTempDirectory(
+      "binsight-asset-catalog-absent-",
+    );
     await mkdir(join(bundle, "Contents", "Resources"), { recursive: true });
     await writeFile(join(bundle, "Contents", "Resources", "icon.icns"), "");
     // Names that merely end in Assets.car are ordinary resources.
@@ -93,7 +95,9 @@ describe("Apple asset catalog application workflow", () => {
   });
 
   it("does not report absence when the only catalog entry is a symlink", async () => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-link-");
+    const bundle = await createTestTempDirectory(
+      "binsight-asset-catalog-link-",
+    );
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     await writeFile(join(bundle, "outside.car"), "catalog");
@@ -114,7 +118,9 @@ describe("Apple asset catalog application workflow", () => {
   });
 
   it("discloses skipped catalog entries beside inspected catalogs", async () => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-mixed-");
+    const bundle = await createTestTempDirectory(
+      "binsight-asset-catalog-mixed-",
+    );
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(join(resources, "Nested"), { recursive: true });
     await writeFile(join(resources, "Assets.car"), "catalog");
@@ -140,7 +146,7 @@ describe("Apple asset catalog application workflow", () => {
 it.each([1, 2])(
   "joins NIBArchive keys against %i supplied assetutil renditions",
   async (count) => {
-    const bundle = await createTestTempDirectory("rea-asset-nib-join-");
+    const bundle = await createTestTempDirectory("binsight-asset-nib-join-");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     const archive = encodeNibArchiveFixture({
@@ -187,7 +193,7 @@ it.each([1, 2])(
 );
 
 it("keeps recognized image fields on NIBArchive controls out of resource joins", async () => {
-  const bundle = await createTestTempDirectory("rea-asset-nib-control-");
+  const bundle = await createTestTempDirectory("binsight-asset-nib-control-");
   const resources = join(bundle, "Contents", "Resources");
   await mkdir(resources, { recursive: true });
   await writeFile(
@@ -213,7 +219,7 @@ it("keeps recognized image fields on NIBArchive controls out of resource joins",
 
 describe("Apple asset catalog and Interface Builder concurrency", () => {
   const catalogBundle = async () => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-ib-");
+    const bundle = await createTestTempDirectory("binsight-asset-catalog-ib-");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     await writeFile(join(resources, "Assets.car"), "catalog");

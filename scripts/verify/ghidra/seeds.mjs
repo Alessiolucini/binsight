@@ -22,7 +22,9 @@ assert.notEqual(
   "win32",
   "This direct headless regression requires a POSIX host; Windows uses its controlled provider lane",
 );
-const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-seed-regression-"));
+const workspace = await mkdtemp(
+  join(tmpdir(), "binsight-ghidra-seed-regression-"),
+);
 const run = createVerifierRun();
 let supervisor;
 try {
@@ -64,7 +66,7 @@ try {
     disabled,
   );
 
-  const unknownAnalyzer = "REA Unknown Analyzer";
+  const unknownAnalyzer = "BinSight Unknown Analyzer";
   const rejected = await runHeadless(target, "analyzer-regression-unknown", [
     "-preScript",
     "ReaGhidraAnalysisOptions.java",

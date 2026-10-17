@@ -12,7 +12,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const execute = promisify(execFile);
 
 it("reports a candidate endpoint through the worker boundary in the public CLI", async () => {
-  const root = await createTestTempDirectory("rea-endpoint-candidate-cli-");
+  const root = await createTestTempDirectory(
+    "binsight-endpoint-candidate-cli-",
+  );
   // Retain ambiguous requests while excluding type-erased collection/config reads.
   await writeFile(
     join(root, "main.ts"),

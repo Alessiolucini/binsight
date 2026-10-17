@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 const encodingFixture = () => {
   const xml =
-    '<?xml version="1.0" encoding="UTF-16"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.rea.encoding</string></dict></plist>';
+    '<?xml version="1.0" encoding="UTF-16"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.binsight.encoding</string></dict></plist>';
   const utf16 = Buffer.from(xml, "utf16le");
   const utf8 = xml.replace("UTF-16", "UTF-8");
   const cases = [
@@ -70,7 +70,9 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "resolves real compiled bundles without changing executable names during decoding",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-bundle-encoding-");
+        const directory = await createTestTempDirectory(
+          "binsight-bundle-encoding-",
+        );
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -100,7 +102,7 @@ describe.skipIf(process.platform !== "darwin")(
               normalized_result: {
                 value: {
                   CFBundleExecutable: "App",
-                  CFBundleIdentifier: "dev.rea.encoding",
+                  CFBundleIdentifier: "dev.binsight.encoding",
                 },
                 bundle: { executable: "App" },
               },
@@ -159,7 +161,7 @@ describe.skipIf(process.platform !== "darwin")(
           normalized_result: {
             value: {
               CFBundleExecutable: "App",
-              CFBundleIdentifier: "dev.rea.encoding",
+              CFBundleIdentifier: "dev.binsight.encoding",
             },
           },
         });

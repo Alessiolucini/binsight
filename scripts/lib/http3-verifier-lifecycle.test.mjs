@@ -90,7 +90,7 @@ test("cleanup continues through failed closes and reaches its audit", async () =
 });
 
 test("a failed reinspection cannot leave the earlier success as the current result", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-http3-results-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-http3-results-"));
   try {
     await writeFile(
       join(root, "verification.json"),
@@ -142,7 +142,7 @@ test("a failed reinspection cannot leave the earlier success as the current resu
 });
 
 test("separate overlapping attempts finishing in reverse order retain the newer failure", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-http3-overlap-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-http3-overlap-"));
   const commands = [];
   const failed = {
     run_id: "newer",
@@ -230,7 +230,7 @@ test("separate overlapping attempts finishing in reverse order retain the newer 
 });
 
 test("publication waits for the lock before reading the current owner", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-http3-lock-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-http3-lock-"));
   let database;
   let publication;
   let primaryError;
@@ -277,7 +277,7 @@ test("publication waits for the lock before reading the current owner", async ()
 });
 
 test("a failed marker read releases the lock and preserves the attempt report", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-http3-lock-failure-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-http3-lock-failure-"));
   try {
     const older = await prepareAttempt(root, true, { run_id: "older" });
     await writeFile(join(root, "verification-latest.json"), "{");
@@ -373,7 +373,7 @@ test("dispatch reverses origin completion; client and capture may arrive in othe
 });
 
 test("cleanup verifies and retires a separately owned producer group", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-http3-group-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-http3-group-"));
   const runId = randomUUID();
   const child = spawn("/usr/bin/sleep", ["60"], {
     detached: true,

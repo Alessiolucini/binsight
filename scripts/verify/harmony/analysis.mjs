@@ -36,7 +36,7 @@ const entrypoint =
   process.env.REA_HARMONY_ENTRYPOINT ?? resolve(repository, "scripts/rea.mjs");
 const execute = promisify(execFile);
 const path = resolve(hap);
-const workspace = await mkdtemp(join(tmpdir(), "rea-harmony-verify-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-harmony-verify-"));
 
 try {
   const inspectResponse = await execute(
@@ -148,7 +148,7 @@ try {
     stderr += chunk.toString();
   });
   const client = new Client({
-    name: "rea-real-harmony-verifier",
+    name: "binsight-real-harmony-verifier",
     version: "1",
   });
   try {

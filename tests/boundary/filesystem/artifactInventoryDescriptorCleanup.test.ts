@@ -27,7 +27,9 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 it.each([false, true])(
   "preserves root admission failure and close authority (invalidated=%s)",
   async (invalidated) => {
-    const root = await createTestTempDirectory("rea-root-admission-cleanup-");
+    const root = await createTestTempDirectory(
+      "binsight-root-admission-cleanup-",
+    );
     const path = join(root, "payload.bin");
     await writeFile(path, "selected bytes");
     const client = new ArtifactProvider({}).createClient({

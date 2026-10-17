@@ -35,7 +35,7 @@ afterEach(() => {
 });
 
 const ready = async () => {
-  const { cacheRoot, open } = await session("rea-kuna-reader-cancel-");
+  const { cacheRoot, open } = await session("binsight-kuna-reader-cancel-");
   const client = open();
   try {
     // Export warm-up is independent of the cancellation deadline below and

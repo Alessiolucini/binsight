@@ -1,6 +1,6 @@
 # DOS MZ and COM analysis with Ghidra
 
-REA can analyze DOS MZ executables and explicitly selected COM images through the bring-your-own Ghidra adapter.
+BinSight can analyze DOS MZ executables and explicitly selected COM images through the bring-your-own Ghidra adapter.
 The Linux x64 and macOS arm64 verification lanes exercise actual 16-bit disassembly and
 decompilation through the CLI and stdio MCP. Provider admission accepts Ghidra
 12.1.x and that installation's declared JDK range. The verification lane uses
@@ -9,13 +9,13 @@ Ghidra 12.1.4 and JDK 21; no DOS emulator or cross-compiler is required.
 ## Open and inspect
 
 ```bash
-rea inspect /absolute/path/to/legacy.exe --provider ghidra --json
-rea search /absolute/path/to/legacy.exe entry --kind procedures --provider ghidra --json
-rea instructions /absolute/path/to/legacy.exe entry --provider ghidra --json
-rea function /absolute/path/to/legacy.exe entry --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/legacy.exe --provider ghidra --json
-rea read-bytes /absolute/path/to/legacy.exe 0x10000 --length 16 --provider ghidra --json
-rea address-to-file-offset /absolute/path/to/legacy.exe 0x10000 --provider ghidra --json
+binsight inspect /absolute/path/to/legacy.exe --provider ghidra --json
+binsight search /absolute/path/to/legacy.exe entry --kind procedures --provider ghidra --json
+binsight instructions /absolute/path/to/legacy.exe entry --provider ghidra --json
+binsight function /absolute/path/to/legacy.exe entry --provider ghidra --json
+binsight inspect-native-load-image /absolute/path/to/legacy.exe --provider ghidra --json
+binsight read-bytes /absolute/path/to/legacy.exe 0x10000 --length 16 --provider ghidra --json
+binsight address-to-file-offset /absolute/path/to/legacy.exe 0x10000 --provider ghidra --json
 ```
 
 Use an observed procedure name or address from discovery when the target does
@@ -47,9 +47,9 @@ COM has no identifying header. Select its interpretation explicitly; neither the
 `.com` suffix nor arbitrary unrecognized bytes are enough to admit it.
 
 ```bash
-rea inspect /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
-rea function /absolute/path/to/legacy.com 0x10100 --target-format dos-com --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
+binsight inspect /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
+binsight function /absolute/path/to/legacy.com 0x10100 --target-format dos-com --provider ghidra --json
+binsight inspect-native-load-image /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
 ```
 
 ```json
@@ -82,7 +82,7 @@ selected bytes belong to its analysis module. The original file stays unchanged.
 
 Returned default-space addresses are linear byte coordinates. A Ghidra
 segment:offset address has linear value `segment * 16 + offset`; multiple
-segment aliases can identify the same byte. REA accepts the returned linear
+segment aliases can identify the same byte. BinSight accepts the returned linear
 address for subsequent lookups and leaves instruction decoding context with
 Ghidra. These coordinates are analysis load addresses, not file offsets or
 observations of a running DOS system.
@@ -150,9 +150,9 @@ diagnostics are retained for analyst review.
 For a packed executable, importing the original can analyze its unpacking
 stub. Analyze a separately prepared unpacked copy to inspect the original
 program's recovered code. Retain both artifact digests and the transformation
-evidence; REA never silently replaces the admitted target. Appended overlays
+evidence; BinSight never silently replaces the admitted target. Appended overlays
 are separate from the initialized MZ module. Headerless COM requires the
-[explicit COM interpretation](#headerless-com-images); REA does not guess it
+[explicit COM interpretation](#headerless-com-images); BinSight does not guess it
 from the filename or unrecognized bytes. DOS extenders without an admitted
 MZ real-mode entry remain outside this import boundary.
 
@@ -189,7 +189,7 @@ observations rather than asserting cross-process identity of raw p-code.
 ```
 
 ```bash
-rea annotate-native-function /local/program.com 0x10100 --target-format dos-com --provider ghidra --name entry --comment 'Recovered startup role' --json
+binsight annotate-native-function /local/program.com 0x10100 --target-format dos-com --provider ghidra --name entry --comment 'Recovered startup role' --json
 ```
 
 The CLI returns the updated analysis before closing its isolated session. MCP edits remain visible to later reads until `close_binary`. Original bytes remain unchanged, database edits are discarded on close, and immutable analysis snapshots are invalidated after edits. This operation does not save a Ghidra project, change ABI/types/body ranges, patch instructions, or emulate a DOS runtime. Windows P0 does not admit it.

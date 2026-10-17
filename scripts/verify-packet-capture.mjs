@@ -25,7 +25,7 @@ const entrypoint =
   process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const run = createVerifierRun();
 const root = await PrivateRuntimeRoot.create({
-  prefix: "rea-capture-verifier-",
+  prefix: "binsight-capture-verifier-",
 });
 const path = join(root.path, "network with spaces.pcap");
 const bluetooth = join(root.path, "bluetooth.pcap");
@@ -86,7 +86,7 @@ const dnsQuery = Buffer.from(
   "hex",
 );
 const source = pcap(1, [
-  udp(5554, Buffer.from("REA")),
+  udp(5554, Buffer.from("BinSight")),
   udp(5555, dnsQuery),
   udp(5555, dnsQuery),
 ]);

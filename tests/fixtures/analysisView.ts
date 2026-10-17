@@ -202,12 +202,12 @@ export const analysisViewJavaScriptEvidence = (
       sha256: analysis.root_artifact_sha256,
     },
     {
-      id: "rea-javascript-application",
-      name: "REA JavaScript application analyzer",
+      id: "binsight-javascript-application",
+      name: "BinSight JavaScript application analyzer",
       version: "1",
     },
     {
-      predicateType: "rea.javascript-application-analysis",
+      predicateType: "binsight.javascript-application-analysis",
       operation: "analyze_javascript_application",
       parameters: { input_path: analysis.input_path, format: analysis.format },
       result: analysis,

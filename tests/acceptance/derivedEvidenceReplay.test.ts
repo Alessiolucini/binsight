@@ -21,7 +21,7 @@ const resultEnvelope = z.object({ result: z.unknown() });
 
 const capture = (changed: boolean) =>
   createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "binsight.process-capture",
     operation: "capture_process_scenario",
     parameters: {},
     result: {
@@ -130,7 +130,7 @@ it.each([
     expect(retained.unknowns.map(({ revision }) => revision)).toEqual([
       1, 2, 3,
     ]);
-    const root = await createTestTempDirectory("rea-derived-replay-");
+    const root = await createTestTempDirectory("binsight-derived-replay-");
     const path = join(root, "handoff.json");
     await writeFile(path, JSON.stringify(retained));
     const restored = await connectLocalToolsMcp();

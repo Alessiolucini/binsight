@@ -489,7 +489,7 @@ class NativeMacOSClient implements AnalysisClient {
     signal?: AbortSignal,
   ): Promise<Result<NativeObservation, AnalysisError>> {
     // lipo reads only Mach-O; its refusal of a PE, ELF, or plist target is not
-    // a tool failure that a retry or `rea doctor` could repair.
+    // a tool failure that a retry or `binsight doctor` could repair.
     if (!isMachOFormat(this.target.format))
       return err(
         new AnalysisCapabilityUnavailableError(

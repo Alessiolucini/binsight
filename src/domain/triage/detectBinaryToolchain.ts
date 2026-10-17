@@ -78,7 +78,7 @@ export type DetectBinaryToolchainInput = z.infer<
 
 /**
  * Inferred compiler, linker, packer, protector, installer, language and
- * bundler identifications drawn from a REA-authored signature table over the
+ * bundler identifications drawn from a BinSight-authored signature table over the
  * exact file bytes. Detection only: nothing is unpacked or executed.
  */
 export const detectBinaryToolchainReportSchema = z

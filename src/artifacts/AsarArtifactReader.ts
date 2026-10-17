@@ -316,7 +316,9 @@ export class AsarArtifactReader implements ArtifactReader {
   async #captureSnapshot(signal?: AbortSignal): Promise<void> {
     let inputHandle: SharedAsarFileHandle | undefined;
     try {
-      this.#snapshotRoot = await mkdtemp(join(tmpdir(), "rea-asar-snapshot-"));
+      this.#snapshotRoot = await mkdtemp(
+        join(tmpdir(), "binsight-asar-snapshot-"),
+      );
       const snapshotPath = join(this.#snapshotRoot, "container.asar");
       const hash = createHash("sha256");
       inputHandle = await this.#openOwned(

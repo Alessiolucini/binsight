@@ -2,8 +2,8 @@ import type { EvidenceProvider } from "../evidence.js";
 
 /** Canonical provider identity for controlled process capture Evidence. */
 export const PROCESS_PROVIDER = {
-  id: "rea-process",
-  name: "REA process capture",
+  id: "binsight-process",
+  name: "BinSight process capture",
   version: "3",
 } as const;
 
@@ -14,4 +14,4 @@ export const isProcessEvidenceProvider = (
   provider.id === PROCESS_PROVIDER.id &&
   provider.version === PROCESS_PROVIDER.version &&
   (provider.name === PROCESS_PROVIDER.name ||
-    provider.name === "REA deterministic process harness");
+    provider.name === "BinSight deterministic process harness");

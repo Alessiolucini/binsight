@@ -12,7 +12,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "imports a legacy subtree of a Git checkout with its own source facts",
   async ({ cli }) => {
-    const repository = await createTestTempDirectory("rea-reference-legacy-");
+    const repository = await createTestTempDirectory(
+      "binsight-reference-legacy-",
+    );
     const source = join(repository, "source");
     await mkdir(source);
     await Promise.all([
@@ -40,7 +42,7 @@ cliTest(
     await git("add", ".");
     await git(
       "-c",
-      "user.name=REA fixture",
+      "user.name=BinSight fixture",
       "-c",
       "user.email=fixture@example.invalid",
       "-c",

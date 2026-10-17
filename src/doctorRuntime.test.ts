@@ -16,7 +16,7 @@ it("exposes jadx through the doctor provider selector", () => {
 });
 
 it("carries a validated REA_JADX_MCP_JAR into the provider registration environment", async () => {
-  const root = await createTestTempDirectory("rea-jadx-registration-");
+  const root = await createTestTempDirectory("binsight-jadx-registration-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
@@ -44,7 +44,7 @@ it("omits REA_JADX_MCP_JAR from the provider registration environment when it is
 
 it("carries a validated REA_KUNA_COMMAND into the provider registration environment", async () => {
   expect(DOCTOR_PROVIDER_IDS).toContain("kuna");
-  const root = await createTestTempDirectory("rea-kuna-registration-");
+  const root = await createTestTempDirectory("binsight-kuna-registration-");
   const kuna = join(root, "kuna");
   await writeFile(kuna, "#!/bin/sh\nprintf 'kuna 1.833\\n'\n", { mode: 0o700 });
 

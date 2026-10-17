@@ -55,7 +55,7 @@ const entrypoint =
     ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
     : join(packageRoot, "scripts", "rea.mjs");
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-com-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-com-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const fixture = buildDosComFixture();
@@ -68,7 +68,7 @@ const env = {
   REA_LOG_LEVEL: "silent",
   REA_ANALYSIS_PROVIDER: "ghidra",
   REA_PROCESS_RUN_ID: run.run_id,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
   GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR,
   ...(process.env.JAVA_HOME === undefined
     ? {}
@@ -81,7 +81,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-com-proof", version: "1" });
+const client = new Client({ name: "binsight-real-com-proof", version: "1" });
 let opened = false;
 let stderr = "";
 let report;

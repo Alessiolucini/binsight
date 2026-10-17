@@ -90,7 +90,7 @@ export class WindowsOwnedProcess extends EventEmitter {
     this.#authority = options.authority ?? requireWindowsNativeAuthority();
     if (protocolStdin && this.#authority.inspection.protocolStdin !== true)
       throw new Error(
-        "The bundled Windows native artifact does not support owned protocol stdin; use a matching current Windows x64 REA package.",
+        "The bundled Windows native artifact does not support owned protocol stdin; use a matching current Windows x64 BinSight package.",
       );
     // A requested limit is never dropped: an artifact without the control
     // refuses the launch instead of starting an unlimited process.
@@ -99,7 +99,7 @@ export class WindowsOwnedProcess extends EventEmitter {
       this.#authority.inspection.jobMemoryLimit !== true
     )
       throw new Error(
-        "The bundled Windows native artifact does not support Job Object memory limits; use a matching current Windows x64 REA package.",
+        "The bundled Windows native artifact does not support Job Object memory limits; use a matching current Windows x64 BinSight package.",
       );
     const entries = Object.entries(environment)
       .filter((entry): entry is [string, string] => entry[1] !== undefined)

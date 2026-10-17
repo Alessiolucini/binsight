@@ -143,7 +143,7 @@ it("merges paginated jobs, reports elapsed metrics, and preserves raw responses"
     "api",
     "--paginate",
     "--slurp",
-    "repos/example/rea/actions/runs/42/attempts/2/jobs?per_page=100",
+    "repos/example/binsight/actions/runs/42/attempts/2/jobs?per_page=100",
   ]);
 });
 
@@ -197,7 +197,7 @@ async function createFixture(
   pages: unknown[],
   { exitCode = 0 }: { exitCode?: number } = {},
 ) {
-  const directory = await createTestTempDirectory("rea-ci-job-timings-");
+  const directory = await createTestTempDirectory("binsight-ci-job-timings-");
   await workflowGit(directory, ["init", "--initial-branch=main"]);
   const fakeBin = join(directory, "bin");
   await mkdir(fakeBin);
@@ -231,7 +231,7 @@ function runReporter(fixture: Awaited<ReturnType<typeof createFixture>>) {
     env: {
       ...process.env,
       PATH: `${fixture.fakeBin}${delimiter}${process.env.PATH ?? ""}`,
-      CI_REPOSITORY: "example/rea",
+      CI_REPOSITORY: "example/binsight",
       CI_JOB_TIMINGS_DIRECTORY: fixture.outputDirectory,
       CI_GH_ARGS: fixture.args,
       CI_GH_RESPONSE: fixture.rawPath,

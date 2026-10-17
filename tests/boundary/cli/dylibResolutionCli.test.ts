@@ -68,7 +68,7 @@ const expectRootInputError = async (
 
 const fixtureApp = async (): Promise<string> => {
   const app = join(
-    await createTestTempDirectory("rea-dylib-cli-"),
+    await createTestTempDirectory("binsight-dylib-cli-"),
     "Fixture.app",
   );
   await writeFiles(app, {
@@ -229,7 +229,7 @@ describe("trace-dylib-resolution CLI", () => {
           .normalized_result.roots,
       ).toEqual([{ image: "Contents/MacOS/App", architecture: "arm64" }]);
       // A root below a symlinked directory that points outside the bundle.
-      const outside = await createTestTempDirectory("rea-dylib-outside-");
+      const outside = await createTestTempDirectory("binsight-dylib-outside-");
       await writeFiles(outside, { Tool: machoImage({}) });
       await symlink(outside, join(app, "Contents/Linked"), "dir");
       for (const [root, reason, message] of [
@@ -252,7 +252,9 @@ describe("trace-dylib-resolution CLI", () => {
   cliTest(
     "resolves a standalone Mach-O against its own directory",
     async ({ cli }) => {
-      const directory = await createTestTempDirectory("rea-dylib-standalone-");
+      const directory = await createTestTempDirectory(
+        "binsight-dylib-standalone-",
+      );
       await writeFiles(directory, {
         tool: machoImage({
           commands: [
@@ -376,7 +378,7 @@ cliTest(
 cliTest(
   "retains directory requirements when resolving dylib install names",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-dylib-path-cli-");
+    const directory = await createTestTempDirectory("binsight-dylib-path-cli-");
     const names = [
       "@loader_path/lib/libhelper.dylib/",
       "@loader_path/lib/libhelper.dylib/.",
@@ -439,7 +441,9 @@ describe.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     cliTest(
       "reports an unreadable dependency as a permission failure",
       async ({ cli }) => {
-        const directory = await createTestTempDirectory("rea-dylib-denied-");
+        const directory = await createTestTempDirectory(
+          "binsight-dylib-denied-",
+        );
         await writeFiles(directory, {
           tool: machoImage({
             commands: [
@@ -651,7 +655,7 @@ cliTest(
       ["DYLD_VERSIONED_LIBRARY_PATH=", "unresolved"],
       ["DYLD_IMAGE_SUFFIX=:", "unresolved"],
     ] as const) {
-      const root = await createTestTempDirectory("rea-dyld-empty-cli-");
+      const root = await createTestTempDirectory("binsight-dyld-empty-cli-");
       const path = join(root, "program");
       await writeFile(
         path,

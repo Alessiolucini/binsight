@@ -48,7 +48,7 @@ afterEach(async () => {
 
 /** A Windows profile with separate roaming and local AppData roots. */
 const windowsProfile = async () => {
-  const home = await createTestTempDirectory("rea-claude-desktop-");
+  const home = await createTestTempDirectory("binsight-claude-desktop-");
   roots.push(home);
   const env = {
     APPDATA: join(home, "AppData", "Roaming"),
@@ -89,7 +89,7 @@ const writeJson = async (path: string, value: unknown): Promise<void> => {
 const readJson = async (path: string): Promise<Record<string, unknown>> =>
   JSON.parse(await readFile(path, "utf8")) as Record<string, unknown>;
 
-const reaEntry = { command: command[0], args: command.slice(1) };
+const binsightEntry = { command: command[0], args: command.slice(1) };
 
 describe("Windows Claude Desktop configuration location", () => {
   it("uses AppData when no MSIX package storage exists", async () => {
@@ -166,7 +166,7 @@ describe("Windows Claude Desktop configuration location", () => {
       configureClientConfiguration(client, {}, command),
     ).resolves.toEqual({ status: "configured" });
     expect(await readJson(privateConfig)).toEqual({
-      mcpServers: { rea: reaEntry },
+      mcpServers: { binsight: binsightEntry },
     });
   });
 
@@ -180,7 +180,7 @@ describe("Windows Claude Desktop configuration location", () => {
       const { home, env, appDataConfig } = await windowsProfile();
       const foreign = join(env.LOCALAPPDATA, "Packages", family);
       await mkdir(foreign, { recursive: true });
-      const appDataOriginal = { mcpServers: { rea: reaEntry } };
+      const appDataOriginal = { mcpServers: { binsight: binsightEntry } };
       const deploymentConfig = join(env.LOCALAPPDATA, "Claude-3p", CONFIG);
       const deploymentOriginal = {
         deploymentMode: "3p",
@@ -246,7 +246,7 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
   );
   const original = { mcpServers: { other: { command: "other-server" } } };
   const otherOriginal = {
-    mcpServers: { rea: reaEntry },
+    mcpServers: { binsight: binsightEntry },
     preferences: { preserve: true },
   };
   await writeJson(otherConfig, otherOriginal);
@@ -257,7 +257,7 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
     configureClientConfiguration(client, {}, command),
   ).resolves.toEqual({
     status: "configured",
-    backupPath: `${appDataConfig}.rea.backup`,
+    backupPath: `${appDataConfig}.binsight.backup`,
   });
   await writeJson(privateConfig, original);
   client = claudeDesktop(home, selected);
@@ -270,7 +270,7 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
     configureClientConfiguration(client, {}, command),
   ).resolves.toEqual({
     status: "configured",
-    backupPath: `${privateConfig}.rea.backup`,
+    backupPath: `${privateConfig}.binsight.backup`,
   });
   const status = (
     await readClientRegistrationStatuses(home, "unused", {
@@ -290,8 +290,8 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
   expect(await readJson(appDataConfig)).toEqual(original);
   expect(await readJson(privateConfig)).toEqual(original);
   expect(await readJson(otherConfig)).toEqual(otherOriginal);
-  expect(await readJson(`${appDataConfig}.rea.backup`)).toEqual(original);
-  expect(await readJson(`${privateConfig}.rea.backup`)).toEqual(original);
+  expect(await readJson(`${appDataConfig}.binsight.backup`)).toEqual(original);
+  expect(await readJson(`${privateConfig}.binsight.backup`)).toEqual(original);
 });
 
 describe("MSIX Claude Desktop registration lifecycle", () => {
@@ -304,7 +304,7 @@ describe("MSIX Claude Desktop registration lifecycle", () => {
     };
     await writeJson(privateConfig, privateOriginal);
     // Earlier setups wrote AppData, which the package never reads.
-    await writeJson(appDataConfig, { mcpServers: { rea: reaEntry } });
+    await writeJson(appDataConfig, { mcpServers: { binsight: binsightEntry } });
     const appDataOriginal = await readFile(appDataConfig, "utf8");
     const status = async () =>
       (
@@ -327,23 +327,23 @@ describe("MSIX Claude Desktop registration lifecycle", () => {
       inspectClientConfiguration(client, {}, command),
     ).resolves.toEqual({
       status: "update",
-      backupPath: `${privateConfig}.rea.backup`,
+      backupPath: `${privateConfig}.binsight.backup`,
     });
     await expect(
       configureClientConfiguration(client, {}, command),
     ).resolves.toEqual({
       status: "configured",
-      backupPath: `${privateConfig}.rea.backup`,
+      backupPath: `${privateConfig}.binsight.backup`,
     });
 
     expect(await readJson(privateConfig)).toEqual({
       ...privateOriginal,
       mcpServers: {
         ...privateOriginal.mcpServers,
-        rea: reaEntry,
+        binsight: binsightEntry,
       },
     });
-    expect(await readJson(`${privateConfig}.rea.backup`)).toEqual(
+    expect(await readJson(`${privateConfig}.binsight.backup`)).toEqual(
       privateOriginal,
     );
     expect(await readFile(appDataConfig, "utf8")).toBe(appDataOriginal);
@@ -412,7 +412,7 @@ describe("MSIX Claude Desktop registration lifecycle", () => {
 
     expect(await readJson(appDataConfig)).toEqual({
       preferences: { theme: "light" },
-      mcpServers: { rea: reaEntry },
+      mcpServers: { binsight: binsightEntry },
     });
     await expect(access(privateConfig)).rejects.toMatchObject({
       code: "ENOENT",
@@ -464,7 +464,7 @@ describe("MSIX Claude Desktop uninstall", () => {
   it("refuses uninstall when the package view is unknown", async () => {
     const { home, env, appDataConfig, container } = await windowsProfile();
     await mkdir(container, { recursive: true });
-    await writeJson(appDataConfig, { mcpServers: { rea: reaEntry } });
+    await writeJson(appDataConfig, { mcpServers: { binsight: binsightEntry } });
 
     const result = await runUninstall(
       false,
@@ -480,14 +480,16 @@ describe("MSIX Claude Desktop uninstall", () => {
       }),
     );
     expect(await readJson(appDataConfig)).toEqual({
-      mcpServers: { rea: reaEntry },
+      mcpServers: { binsight: binsightEntry },
     });
   });
 
-  it("retains an unrelated rea-named entry when the package view is unknown", async () => {
+  it("retains an unrelated binsight-named entry when the package view is unknown", async () => {
     const { home, env, appDataConfig, container } = await windowsProfile();
     await mkdir(container, { recursive: true });
-    const unrelated = { mcpServers: { rea: { command: "unrelated-server" } } };
+    const unrelated = {
+      mcpServers: { binsight: { command: "unrelated-server" } },
+    };
     await writeJson(appDataConfig, unrelated);
     const result = await runUninstall(
       false,
@@ -530,13 +532,13 @@ describe("MSIX Claude Desktop uninstall", () => {
     expect(await readFile(manifest, "utf8")).toContain("managed fixture");
   });
 
-  it("removes REA from both the private copy and AppData on uninstall", async () => {
+  it("removes BinSight from both the private copy and AppData on uninstall", async () => {
     const { home, env, appDataConfig, privateConfig } = await windowsProfile();
     await writeJson(privateConfig, {
       preferences: {},
-      mcpServers: { other: { command: "other" }, rea: reaEntry },
+      mcpServers: { other: { command: "other" }, binsight: binsightEntry },
     });
-    await writeJson(appDataConfig, { mcpServers: { rea: reaEntry } });
+    await writeJson(appDataConfig, { mcpServers: { binsight: binsightEntry } });
 
     const result = await runUninstall(
       false,

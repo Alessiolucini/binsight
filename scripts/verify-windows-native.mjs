@@ -48,7 +48,7 @@ const { PrivateRuntimeRootUnavailableError } = await import(
     join(packageRoot, "dist/process/PrivateRuntimeRootUnavailableError.js"),
   )
 );
-const workspace = await mkdtemp(join(tmpdir(), "rea-native-conformance-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-native-conformance-"));
 // A pwsh caller can supply module paths incompatible with Windows PowerShell.
 // Each independent observer must discover its own module path.
 const windowsPowerShellEnvironment = Object.fromEntries(
@@ -145,7 +145,7 @@ const report = { ok: false, artifact: "verified", controls: {}, processes: {} };
 try {
   // Exercise the loader in a process whose image is not named node.exe. The
   // ordinary Windows lane otherwise cannot detect eager Node-API imports.
-  const renamedHost = join(workspace, "rea-renamed-node.exe");
+  const renamedHost = join(workspace, "binsight-renamed-node.exe");
   const renamedHostFixture = join(workspace, "renamed-host.mjs");
   const loaderUrl = pathToFileURL(
     join(packageRoot, "dist/windows/WindowsNativeLoader.js"),
@@ -164,7 +164,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
     windowsHide: true,
   });
   assert.deepEqual(JSON.parse(renamedHostResult), {
-    executable: "rea-renamed-node.exe",
+    executable: "binsight-renamed-node.exe",
     abiVersion: 1,
   });
   report.controls.renamedHostNodeApi = true;
@@ -210,7 +210,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
   // without another executable, and proves that no child runtime was created.
   const sharingParent = WindowsPrivateRuntime.create(
     workspace,
-    "rea-sharing-parent-",
+    "binsight-sharing-parent-",
   );
   try {
     await assert.rejects(
@@ -236,7 +236,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
   assert.equal(runtimeParent, driveRoot);
   const driveRootRuntime = native.call("runtime_create", [
     runtimeParent,
-    "rea-drive-root-",
+    "binsight-drive-root-",
   ]);
   try {
     assert.equal(driveRootRuntime.path.startsWith(`${driveRoot}\\`), false);

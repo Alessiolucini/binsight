@@ -13,7 +13,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "reports cargo-auditable packages through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-");
+    const root = await createTestTempDirectory("binsight-rust-cli-");
     const path = join(root, "sample");
     await writeFile(path, createRustImage({ format: "macho" }));
     const result = await cli.run({
@@ -36,7 +36,7 @@ cliTest(
 );
 
 cliTest("returns null metadata when .dep-v0 is absent", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-rust-cli-missing-");
+  const root = await createTestTempDirectory("binsight-rust-cli-missing-");
   const path = join(root, "plain");
   await writeFile(path, createRustImage({ format: "elf", omitSection: true }));
   const result = await cli.run({
@@ -55,7 +55,9 @@ cliTest("returns null metadata when .dep-v0 is absent", async ({ cli }) => {
 cliTest(
   "preserves an unknown cargo-auditable revision and reports its fallback",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-unknown-format-");
+    const root = await createTestTempDirectory(
+      "binsight-rust-cli-unknown-format-",
+    );
     const path = join(root, "sample");
     const payload = rustDependencyPayload({
       format: 4,
@@ -84,7 +86,7 @@ cliTest(
 );
 
 cliTest("reports malformed zlib as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-rust-cli-zlib-");
+  const root = await createTestTempDirectory("binsight-rust-cli-zlib-");
   const path = join(root, "broken.elf");
   await writeFile(
     path,

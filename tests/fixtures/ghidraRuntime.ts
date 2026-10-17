@@ -10,7 +10,7 @@ import { spawnOwnedProviderProcess } from "../../src/process/ProviderProcess.js"
 export const createGhidraTestRuntime = (
   parent: string,
 ): Promise<PrivateRuntimeRoot> =>
-  PrivateRuntimeRoot.create({ parent, prefix: "rea-ghidra-test-" });
+  PrivateRuntimeRoot.create({ parent, prefix: "binsight-ghidra-test-" });
 
 /** Publish a closed endpoint file with the provider child's actual file owner. */
 export const publishGhidraTestEndpoint = async (

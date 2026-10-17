@@ -418,7 +418,7 @@ export class FridaInstrumentationManager implements FridaInstrumentationPort {
       .update(scriptSource)
       .digest("hex");
     const scriptId = randomUUID();
-    const scriptName = `rea-${scriptId}`;
+    const scriptName = `binsight-${scriptId}`;
     managed.messagesByScript.set(scriptId, new MessageFifo());
     let nativeScript: Script | undefined;
     const onMessage = (message: FridaMessage, data: Buffer | null): void => {

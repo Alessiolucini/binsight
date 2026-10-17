@@ -1583,6 +1583,6 @@ const systemProcessPreparationHost: ProcessPreparationHost = {
   prepareOwnershipInspector: prepareProcessOwnershipInspection,
   captureOwnershipBaseline: (signal) =>
     systemProcessOwnershipHost.captureBaseline?.(signal) ?? Promise.resolve([]),
-  createTemporaryRoot: () => mkdtemp(join(tmpdir(), "rea-process-")),
+  createTemporaryRoot: () => mkdtemp(join(tmpdir(), "binsight-process-")),
   cleanup: (path) => rm(path, { recursive: true, force: true }),
 };

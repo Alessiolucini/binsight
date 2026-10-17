@@ -15,7 +15,7 @@ import { parseEvidence } from "../../../../src/domain/evidence.js";
 const { runProviderAnalysis } = createDirectAnalysis({});
 
 it("runs static .app decoding without registering native analysis engines", async () => {
-  const root = await createTestTempDirectory("rea-artifact-only-direct-");
+  const root = await createTestTempDirectory("binsight-artifact-only-direct-");
   const app = join(root, "Fixture.app");
   const contents = join(app, "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -43,7 +43,7 @@ it("runs static .app decoding without registering native analysis engines", asyn
     }).runProviderAnalysis(app, "decode_interface_builder", {}),
   );
   expect(evidence.operation).toBe("decode_interface_builder");
-  expect(evidence.provider.id).toBe("rea-artifact-graph");
+  expect(evidence.provider.id).toBe("binsight-artifact-graph");
   const result = interfaceBuilderAnalysisSchema.parse(
     evidence.normalized_result,
   );
@@ -51,8 +51,8 @@ it("runs static .app decoding without registering native analysis engines", asyn
   expect(result.graph.target_sha256).toBe(evidence.subject?.digest.sha256);
 });
 
-it("inspects an artifact through the direct CLI workflow without an REA grant", async () => {
-  const root = await createTestTempDirectory("rea-artifact-direct-");
+it("inspects an artifact through the direct CLI workflow without an BinSight grant", async () => {
+  const root = await createTestTempDirectory("binsight-artifact-direct-");
   const source = join(root, "source");
   const archive = join(root, "fixture.asar");
   await mkdir(source);
@@ -63,7 +63,7 @@ it("inspects an artifact through the direct CLI workflow without an REA grant", 
     await runProviderAnalysis(archive, "inspect_artifact", {}),
   );
   expect(evidence.operation).toBe("inspect_artifact");
-  expect(evidence.provider.id).toBe("rea-artifact-graph");
+  expect(evidence.provider.id).toBe("binsight-artifact-graph");
   const inspection = artifactInspectionResultSchema.parse(
     evidence.normalized_result,
   );

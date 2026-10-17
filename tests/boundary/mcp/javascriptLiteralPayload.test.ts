@@ -27,7 +27,7 @@ const boundedLargeLiteralPayloads = (): readonly string[] => {
 cliTest(
   "delivers aggregate large literal payloads through CLI and default stdio MCP without metadata copies",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-literal-payload-");
+    const root = await createTestTempDirectory("binsight-literal-payload-");
     const values = boundedLargeLiteralPayloads();
     const value = values[0];
     if (value === undefined) throw new Error("Missing literal payload");

@@ -33,7 +33,7 @@ export const verifyAndroidMetadata = async ({
       { cause },
     );
   }
-  const classes = await mkdtemp(join(tmpdir(), "rea-android-metadata-"));
+  const classes = await mkdtemp(join(tmpdir(), "binsight-android-metadata-"));
   try {
     await execute(
       javac,

@@ -81,12 +81,12 @@ const oracle = JSON.parse(
 const firmwarePath = join(FIXTURE_ROOT, "firmware.bin");
 assert.equal(await hashFirmwareFile(firmwarePath), oracle.sha256);
 
-const workDir = await fs.mkdtemp(join(tmpdir(), "rea-real-firmware-"));
+const workDir = await fs.mkdtemp(join(tmpdir(), "binsight-real-firmware-"));
 const baseEnv = Object.fromEntries(
   Object.entries(process.env).filter(([, v]) => v !== undefined),
 );
 const mcpClient = new Client({
-  name: "rea-real-firmware-verifier",
+  name: "binsight-real-firmware-verifier",
   version: "1",
 });
 

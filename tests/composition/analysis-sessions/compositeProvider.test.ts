@@ -69,7 +69,9 @@ describe("composite analysis provider", () => {
   });
 
   it("retains lineage snapshots from two lazily started dynamic providers", async () => {
-    const directory = await createTestTempDirectory("rea-composite-lineage-");
+    const directory = await createTestTempDirectory(
+      "binsight-composite-lineage-",
+    );
     const targetPath = join(directory, "fixture.hop");
     await writeFile(targetPath, "fixture");
     const first = dynamicProvider("first", "address_name", 100);

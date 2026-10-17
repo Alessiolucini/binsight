@@ -3,7 +3,7 @@ import type { JavaScriptSourceRange } from "../../domain/javascript/javascriptSt
 import type { JavaScriptArtifactAnalysisScope } from "./JavaScriptArtifactAnalysisTypes.js";
 
 const EXTRACTOR = {
-  name: "rea-javascript-artifact-reconstruction",
+  name: "binsight-javascript-artifact-reconstruction",
   version: "1",
   executable_sha256: null,
 } as const;

@@ -62,7 +62,7 @@ if (captureDirectory !== undefined) {
   await mkdir(captureDirectory, { recursive: true, mode: 0o700 });
 }
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-dos-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-dos-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const fixture = buildDosMzFixture();
@@ -76,7 +76,7 @@ const env = {
   REA_LOG_LEVEL: "silent",
   REA_ANALYSIS_PROVIDER: "ghidra",
   REA_PROCESS_RUN_ID: run.run_id,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
   GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR,
   ...(process.env.JAVA_HOME === undefined
     ? {}
@@ -95,7 +95,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-dos-proof", version: "1" });
+const client = new Client({ name: "binsight-real-dos-proof", version: "1" });
 let opened = false;
 let stderr = "";
 let report;
@@ -474,7 +474,7 @@ try {
       "Original changed during cleanup",
     );
     const leftovers = (await readdir(runtime)).filter((name) =>
-      name.startsWith("rea-ghidra-"),
+      name.startsWith("binsight-ghidra-"),
     );
     assert.deepEqual(leftovers, [], "Owned Ghidra runtime survived close");
   } finally {

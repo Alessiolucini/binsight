@@ -8,7 +8,7 @@ import { expect, it } from "vitest";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("retains and retries the exact descriptor after a verifier hash close failure", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-file-");
+  const directory = await createTestTempDirectory("binsight-verifier-file-");
   const path = join(directory, "input.bin");
   const bytes = Buffer.from("owned verifier fixture");
   await writeFile(path, bytes);
@@ -57,7 +57,7 @@ it("retains and retries the exact descriptor after a verifier hash close failure
 });
 
 it("hashes and closes a clean verifier input", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-file-");
+  const directory = await createTestTempDirectory("binsight-verifier-file-");
   const path = join(directory, "input.bin");
   const bytes = Buffer.from("clean verifier fixture");
   await writeFile(path, bytes);

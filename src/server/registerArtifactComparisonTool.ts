@@ -70,7 +70,7 @@ export const registerArtifactComparisonTool = (
             undefined,
             ARTIFACT_COMPARISON_PROVIDER,
             {
-              predicateType: "rea.artifact-comparison",
+              predicateType: "binsight.artifact-comparison",
               operation: contract.name,
               parameters: {
                 left_evidence_ids: leftEvidenceIds,

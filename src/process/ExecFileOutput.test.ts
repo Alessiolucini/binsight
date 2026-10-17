@@ -117,7 +117,7 @@ describe("execFileOutput cancellation lifecycle", () => {
     ] as const)(
     "stops an aborted process with exact %s reason and settles after it exits",
     async (reason) => {
-      const directory = await createTestTempDirectory("rea-exec-stop-");
+      const directory = await createTestTempDirectory("binsight-exec-stop-");
       const ready = join(directory, "ready");
       const stopped = join(directory, "stopped");
       // The child records the signal it received only after a cleanup delay.
@@ -161,7 +161,9 @@ describe("execFileOutput cancellation lifecycle", () => {
   it.skipIf(process.platform === "win32")(
     "keeps the first stop reason when timeout arrives during abort cleanup",
     async () => {
-      const directory = await createTestTempDirectory("rea-exec-double-stop-");
+      const directory = await createTestTempDirectory(
+        "binsight-exec-double-stop-",
+      );
       const ready = join(directory, "ready");
       const script = [
         'const fs = require("node:fs");',
@@ -206,7 +208,7 @@ describe.skipIf(process.platform === "win32")(
   "execFileOutput stop signal at a timeout",
   () => {
     it("stops a timed-out process with the caller's signal and reports the timeout", async () => {
-      const directory = await createTestTempDirectory("rea-exec-timeout-");
+      const directory = await createTestTempDirectory("binsight-exec-timeout-");
       const stopped = join(directory, "stopped");
       // The child exits cleanly once it has recorded the signal it received.
       const script = [
@@ -234,20 +236,20 @@ describe.skipIf(process.platform === "win32")(
       async (timeout) => {
         // Starting this command would fail with ENOENT instead.
         await expect(
-          execFileOutput("/nonexistent/rea-command", [], {
+          execFileOutput("/nonexistent/binsight-command", [], {
             timeout,
             stopSignal: "SIGINT",
           }),
         ).rejects.toMatchObject({ code: "ERR_OUT_OF_RANGE" });
         await expect(
-          execFileOutput("/nonexistent/rea-command", [], { timeout }),
+          execFileOutput("/nonexistent/binsight-command", [], { timeout }),
         ).rejects.toMatchObject({ code: "ERR_OUT_OF_RANGE" });
       },
     );
 
     it("preserves a child failure's missing signal when reporting timeout", async () => {
       const directory = await createTestTempDirectory(
-        "rea-exec-missing-signal-",
+        "binsight-exec-missing-signal-",
       );
       const ready = join(directory, "ready");
       const script = [

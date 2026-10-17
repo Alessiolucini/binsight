@@ -32,7 +32,7 @@ export const androidLocaleQualifierSchema = localeQualifierSchema;
 
 /**
  * Caller intent for Apktool-backed resource decoding. Apktool is
- * bring-your-own: REA never installs it, and decoding happens in a
+ * bring-your-own: BinSight never installs it, and decoding happens in a
  * provider-owned workspace that is removed after the facts are projected.
  */
 export const apktoolInputSchemas = {

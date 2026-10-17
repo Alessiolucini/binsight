@@ -33,7 +33,9 @@ import {
 it.skipIf(process.platform === "win32")(
   "reports Rizin launch provenance and lossy frame decoding through MCP",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-provenance-"));
+    const directory = await mkdtemp(
+      join(tmpdir(), "binsight-rizin-provenance-"),
+    );
     const provider = join(directory, "fake-rizin-provenance.mjs");
     await writeFile(
       provider,
@@ -182,7 +184,9 @@ it("admits Rizin startup across a bound analysis session", async () => {
 it.skipIf(process.platform === "win32")(
   "propagates MCP cancellation into a running Rizin debugger command",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-mcp-cancel-"));
+    const directory = await mkdtemp(
+      join(tmpdir(), "binsight-rizin-mcp-cancel-"),
+    );
     const provider = join(directory, "fake-rizin.mjs");
     const commandPath = join(directory, "command-started");
     await writeFile(

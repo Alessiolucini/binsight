@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("imports Dockerfile-prefixed TypeScript with ordinary source evidence and uncertainty", async () => {
-  const root = await createTestTempDirectory("rea-dockerfile-language-");
+  const root = await createTestTempDirectory("binsight-dockerfile-language-");
   const source = [
     'import "./dep.js";',
     'import "./missing.js";',
@@ -78,7 +78,9 @@ it("imports Dockerfile-prefixed TypeScript with ordinary source evidence and unc
 });
 
 it("retains parser failures and hashes for malformed Dockerfile-prefixed TypeScript", async () => {
-  const root = await createTestTempDirectory("rea-dockerfile-parse-failure-");
+  const root = await createTestTempDirectory(
+    "binsight-dockerfile-parse-failure-",
+  );
   const paths = ["DockerfileGuide.ts", "ordinary.ts"];
   const source = 'import "./dep.js";\nconst = ;\n';
   await Promise.all(paths.map((path) => writeFile(join(root, path), source)));

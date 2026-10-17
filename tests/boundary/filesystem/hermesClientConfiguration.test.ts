@@ -18,6 +18,13 @@ import {
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { clearClientLocationEnvironment } from "../../fixtures/clientEnvironment.js";
 
+const backupOf = (path: string): string => `${path}.binsight.backup`;
+const enabledRegistration = (command: readonly string[]) => ({
+  command: command[0],
+  args: command.slice(1),
+  enabled: true,
+});
+
 /**
  * The registration command setup writes on the host running the tests. Windows
  * wraps it in `cmd.exe /d /c`, so the expected entry follows the host too.
@@ -97,7 +104,7 @@ describe("Hermes configuration paths", () => {
 });
 
 const hermesClient = async () => {
-  const home = await createTestTempDirectory("rea-hermes-");
+  const home = await createTestTempDirectory("bs-hermes-");
   const client = supportedClients(home, process.platform, {}).find(
     ({ name }) => name === "hermes",
   );
@@ -110,8 +117,8 @@ const hermesClient = async () => {
 describe("Hermes YAML shape diagnostics", () => {
   it.each(
     [
-      "!!set {rea: null}",
-      "!!omap [{rea: {command: rea, args: [mcp]}}]",
+      "!!set {binsight: null}",
+      "!!omap [{binsight: {command: binsight, args: [mcp]}}]",
       "!!timestamp 2001-12-15",
       "!!binary cmVh",
     ]
@@ -146,7 +153,7 @@ describe("Hermes YAML shape diagnostics", () => {
       const { home, client } = await hermesClient();
       const cursor = join(home, ".cursor", "mcp.json");
       const cursorOriginal =
-        '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}';
+        '{"mcpServers":{"binsight":{"command":"binsight","args":["mcp"]}}}';
       await mkdir(join(home, ".cursor"));
       await writeFile(cursor, cursorOriginal);
       await writeFile(client.configPath, original);
@@ -173,9 +180,9 @@ describe("Hermes YAML shape diagnostics", () => {
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       expect(await readFile(cursor, "utf8")).toBe(cursorOriginal);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(backupOf(client.configPath), "utf8"),
       ).rejects.toThrow();
-      await expect(readFile(`${cursor}.rea.backup`, "utf8")).rejects.toThrow();
+      await expect(readFile(backupOf(cursor), "utf8")).rejects.toThrow();
     },
   );
 });
@@ -205,7 +212,7 @@ mcp_servers:
       display: { language: "en" },
       mcp_servers: {
         other: { command: "other-server" },
-        rea: { command: command[0], args: command.slice(1), enabled: true },
+        binsight: enabledRegistration(command),
       },
     });
 
@@ -276,7 +283,7 @@ mcp_servers:
     expect(text.startsWith(original)).toBe(true);
     expect(parseYaml(text, { intAsBigInt: true })).toMatchObject({
       mcp_servers: {
-        rea: { command: command[0], args: command.slice(1), enabled: true },
+        binsight: enabledRegistration(command),
       },
     });
     expect((await systemUninstallHost(home).removeClient(client)).status).toBe(
@@ -295,7 +302,7 @@ mcp_servers:
       parseYaml(await readFile(client.configPath, "utf8"), { version: "1.1" }),
     ).toEqual({
       mcp_servers: {
-        rea: {
+        binsight: {
           command: command[0],
           args: command.slice(1),
           env: environment,
@@ -309,7 +316,7 @@ mcp_servers:
     "refuses an environment value %s that Hermes parses as a non-string",
     async (value) => {
       const { home, client } = await hermesClient();
-      const original = `mcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n    env:\n      CUSTOM_SETTING: ${value}\n`;
+      const original = `mcp_servers:\n  binsight:\n    command: binsight\n    args: [mcp]\n    env:\n      CUSTOM_SETTING: ${value}\n`;
       await writeFile(client.configPath, original);
       expect(
         await inspectClientConfiguration(client, {}, command),
@@ -322,14 +329,14 @@ mcp_servers:
       ).toMatchObject({ status: "failed" });
       expect(
         (
-          await readClientRegistrationStatuses(home, "rea", {
+          await readClientRegistrationStatuses(home, "binsight", {
             environment: {},
           })
         ).find(({ client: name }) => name === "hermes"),
       ).toMatchObject({ state: "invalid" });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(backupOf(client.configPath), "utf8"),
       ).rejects.toThrow();
     },
   );
@@ -342,7 +349,7 @@ describe("Hermes YAML empty configurations", () => {
   it("rejects multiple YAML documents before treating an empty first root as absent", async () => {
     const { client } = await hermesClient();
     const original =
-      "---\n---\nmcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n";
+      "---\n---\nmcp_servers:\n  binsight:\n    command: binsight\n    args: [mcp]\n";
     await writeFile(client.configPath, original);
     expect(await inspectClientConfiguration(client, {}, command)).toMatchObject(
       { status: "invalid" },
@@ -353,7 +360,7 @@ describe("Hermes YAML empty configurations", () => {
     });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(backupOf(client.configPath), "utf8"),
     ).rejects.toThrow();
   });
 
@@ -376,7 +383,7 @@ describe("Hermes YAML empty configurations", () => {
       expect(text.slice(0, kept.length)).toBe(kept);
       expect(parseYaml(text)).toEqual({
         mcp_servers: {
-          rea: { command: command[0], args: command.slice(1), enabled: true },
+          binsight: enabledRegistration(command),
         },
       });
       expect(

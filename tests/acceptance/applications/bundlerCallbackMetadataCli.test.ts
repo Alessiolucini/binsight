@@ -8,7 +8,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains both repeated chunk callback observations through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-bundler-callbacks-");
+    const root = await createTestTempDirectory("binsight-bundler-callbacks-");
     const source = [
       '(globalThis.webpackChunkFixture = globalThis.webpackChunkFixture || []).push([[1], {a: function() {}}, function(r) { r(7); r.e("chunk-a"); }]);',
       '(globalThis.webpackChunkFixture = globalThis.webpackChunkFixture || []).push([[1], {a: function() {}}, function(r) { r(8); r.e("chunk-b"); }]);',

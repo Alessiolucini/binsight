@@ -56,7 +56,7 @@ it.each([
 );
 
 it("uses legacy simulator and device platform facts when resolving dylibs", async () => {
-  const root = await createTestTempDirectory("rea-macho-legacy-platform-");
+  const root = await createTestTempDirectory("binsight-macho-legacy-platform-");
   const dylibPath = "Frameworks/libThing.dylib";
   const installName = "@rpath/libThing.dylib";
   const intelExecutable = machoImage({
@@ -137,7 +137,7 @@ it("uses legacy simulator and device platform facts when resolving dylibs", asyn
 });
 
 it("selects matching arm64e subtype slices when tracing a mixed FAT image", async () => {
-  const root = await createTestTempDirectory("rea-macho-arm64e-subtypes-");
+  const root = await createTestTempDirectory("binsight-macho-arm64e-subtypes-");
   const executablePath = "Contents/MacOS/App";
   const dylibPath = "Contents/MacOS/libVariant.dylib";
   const installName = "@executable_path/libVariant.dylib";

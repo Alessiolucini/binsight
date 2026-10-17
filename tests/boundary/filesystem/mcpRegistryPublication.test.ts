@@ -2,7 +2,7 @@ import { expect, it } from "vitest";
 import { registryPublicationState } from "../../../.github/actions/publish-mcp/registry-state.mjs";
 
 const server = {
-  name: "io.github.fixture/rea",
+  name: "io.github.fixture/binsight",
   version: "6.5.0",
   description: "Released metadata",
 };

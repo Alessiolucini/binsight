@@ -84,7 +84,7 @@ const expectNativeViewHierarchy = (result: Analysis, oracle: Oracle) => {
 export const createInterfaceBuilderEncodingFixture = async (
   encoding: Encoding,
 ) => {
-  const directory = await createTestTempDirectory("rea-ib-encoding-");
+  const directory = await createTestTempDirectory("binsight-ib-encoding-");
   await promisify(execFile)("/usr/bin/xcrun", [
     "swift",
     "tests/conformance/native/interface-builder-encoding.swift",

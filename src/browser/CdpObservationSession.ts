@@ -123,7 +123,7 @@ export const observeCdpSession = async (
       timeline: capture.timeline,
       completeness: capture.completeness.snapshot(),
       limitations: [
-        "The timeline begins after REA attaches; earlier navigation and network activity is unavailable.",
+        "The timeline begins after BinSight attaches; earlier navigation and network activity is unavailable.",
         "Only navigation metadata is retained; headers, bodies, cookies, console values, and payloads are not captured by this tool.",
         "An out-of-policy destination ends collection immediately and is recorded without its URL.",
       ],

@@ -1,6 +1,6 @@
-"""REA's experimental local bridge plugin for Cutter.
+"""BinSight's experimental local bridge plugin for Cutter.
 
-Install this file in Cutter's user plugin directory. The bridge is REA-owned
+Install this file in Cutter's user plugin directory. The bridge is BinSight-owned
 IPC, not an upstream Cutter transport. It binds to loopback and requires a
 per-process random token stored in a user-only descriptor file.
 """
@@ -311,8 +311,8 @@ def _bridge_directory() -> Path:
         return Path(configured).expanduser()
     local_app_data = os.environ.get("LOCALAPPDATA")
     if os.name == "nt" and local_app_data:
-        return Path(local_app_data) / "REA" / "CutterBridge"
-    return Path.home() / ".cache" / "rea" / "cutter-bridge"
+        return Path(local_app_data) / "BinSight" / "CutterBridge"
+    return Path.home() / ".cache" / "binsight" / "cutter-bridge"
 
 
 class _RequestDispatcher(QObject):
@@ -468,7 +468,7 @@ class _RequestDispatcher(QObject):
 
 class _BridgeServer(threading.Thread):
     def __init__(self, dispatcher: _RequestDispatcher) -> None:
-        super().__init__(name="rea-cutter-bridge", daemon=True)
+        super().__init__(name="binsight-cutter-bridge", daemon=True)
         self.dispatcher = dispatcher
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -548,16 +548,16 @@ class _BridgeServer(threading.Thread):
                 authenticated = False
                 try:
                     hello = self._receive_frame(connection)
-                    if not isinstance(hello, dict) or hello.get("kind") != "rea-auth-v2" or not isinstance(hello.get("nonce"), str) or len(hello["nonce"]) != 64:
+                    if not isinstance(hello, dict) or hello.get("kind") != "binsight-auth-v2" or not isinstance(hello.get("nonce"), str) or len(hello["nonce"]) != 64:
                         self._send(connection, {"ok": False, "error": "authentication-failed"})
                         continue
                     client_nonce = hello["nonce"]
                     server_nonce = f"{connection_ordinal:016x}{secrets.token_hex(24)}"
-                    server_proof = hmac.new(self.token.encode(), f"rea-cutter-server-v2:{self.session_id}:{client_nonce}:{server_nonce}".encode(), hashlib.sha256).hexdigest()
+                    server_proof = hmac.new(self.token.encode(), f"binsight-cutter-server-v2:{self.session_id}:{client_nonce}:{server_nonce}".encode(), hashlib.sha256).hexdigest()
                     self._send(connection, {"session_id": self.session_id, "nonce": server_nonce, "proof": server_proof})
                     authenticated_frame = self._receive_frame(connection)
                     request_bytes = authenticated_frame.get("request") if isinstance(authenticated_frame, dict) else None
-                    expected_proof = hmac.new(self.token.encode(), f"rea-cutter-client-v2:{self.session_id}:{client_nonce}:{server_nonce}:{request_bytes}".encode(), hashlib.sha256).hexdigest()
+                    expected_proof = hmac.new(self.token.encode(), f"binsight-cutter-client-v2:{self.session_id}:{client_nonce}:{server_nonce}:{request_bytes}".encode(), hashlib.sha256).hexdigest()
                     if not isinstance(request_bytes, str) or not isinstance(authenticated_frame.get("proof"), str) or not hmac.compare_digest(authenticated_frame["proof"], expected_proof):
                         self._send(connection, {"ok": False, "error": "authentication-failed"})
                         continue
@@ -681,7 +681,7 @@ class _BridgeServer(threading.Thread):
             response_parts.append(raw)
             escaped_parts.append(escaped)
         proof = hmac.new(self.token.encode(), digestmod=hashlib.sha256)
-        proof.update(f"rea-cutter-response-v2:{self.session_id}:{client_nonce}:{server_nonce}:".encode())
+        proof.update(f"binsight-cutter-response-v2:{self.session_id}:{client_nonce}:{server_nonce}:".encode())
         for part in response_parts:
             proof.update(part)
         return prefix + b"".join(escaped_parts) + b'","proof":"' + proof.hexdigest().encode() + b'"}\n'
@@ -745,10 +745,10 @@ class _BridgeServer(threading.Thread):
 
 
 class ReaCutterPlugin(cutter.CutterPlugin):
-    name = "REA Local Bridge"
-    description = "Local REA analysis bridge for the active Cutter session"
+    name = "BinSight Local Bridge"
+    description = "Local BinSight analysis bridge for the active Cutter session"
     version = "1.0"
-    author = "REA"
+    author = "BinSight"
 
     def __init__(self) -> None:
         super().__init__()

@@ -1,6 +1,6 @@
 # Flutter build identification
 
-REA identifies a Flutter app's build facts by **pure parsing** of its APK:
+BinSight identifies a Flutter app's build facts by **pure parsing** of its APK:
 the Dart VM snapshot hash, per-ABI library digests, the engine's GNU
 build-id, and any labeled version strings. No engine, no tool installation,
 no execution, and no external lookups — this family answers "which Dart SDK
@@ -15,9 +15,9 @@ SDK-layout-specific snapshot parsers applicable.
 ## Answer an analyst question
 
 ```sh
-rea identify-flutter-build /targets/Example.apk
-rea inspect-dart-aot /targets/Example.apk
-rea inspect-dart-aot /targets/Example.apk --abi armeabi-v7a
+binsight identify-flutter-build /targets/Example.apk
+binsight inspect-dart-aot /targets/Example.apk
+binsight inspect-dart-aot /targets/Example.apk --abi armeabi-v7a
 ```
 
 The equivalent MCP methods are `identify_flutter_build` (with `path`) and
@@ -153,7 +153,7 @@ server; older servers keep the complete request after schema discovery.
   Section-stripped images require a bounded symbol count from `DT_HASH` or
   `DT_GNU_HASH`; layouts without either are refused. Symbol names and their
   terminators must fit their linked string table.
-- REA performs **no hash-to-SDK lookup**: mapping the snapshot hash to a
+- BinSight performs **no hash-to-SDK lookup**: mapping the snapshot hash to a
   Dart SDK release requires an external dataset and is deliberately out of
   scope for this family.
 - The AOT string pool is a **byte-pattern projection, not deserialized

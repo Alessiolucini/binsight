@@ -51,7 +51,7 @@ it.each([
         captured_output: { stdout: "", stderr },
       },
     });
-    expect(JSON.stringify(projected)).not.toContain("rea doctor");
+    expect(JSON.stringify(projected)).not.toContain("binsight doctor");
     // Bun ignores the decoder's V8 heap flags, so no fixed heap is reported.
     const heapLimits = { old_generation_heap_mib: 192, semi_space_heap_mib: 8 };
     if (process.versions.bun === undefined)

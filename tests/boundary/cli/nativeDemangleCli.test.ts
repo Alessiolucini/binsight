@@ -13,7 +13,10 @@ const environment = {
 
 /** Copy a host program to serve as the evidence-identity artifact. */
 const evidenceTarget = async () => {
-  const path = join(await createTestTempDirectory("rea-demangle-"), "tool");
+  const path = join(
+    await createTestTempDirectory("binsight-demangle-"),
+    "tool",
+  );
   await copyFile("/usr/bin/true", path);
   return path;
 };
@@ -46,7 +49,7 @@ describe("Swift demangling CLI with line-terminator characters", () => {
 
   cliTest("rejects a symbol spanning lines as input", async ({ cli }) => {
     const missingTarget = join(
-      await createTestTempDirectory("rea-demangle-invalid-input-"),
+      await createTestTempDirectory("binsight-demangle-invalid-input-"),
       "absent",
     );
     const result = await cli.run({

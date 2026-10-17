@@ -24,7 +24,7 @@ export async function verifyLargeScreenshotE2e(endpoint, origin) {
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
     REA_LOG_LEVEL: "silent",
-    HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+    HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
   };
   let client;
   let transport;
@@ -137,7 +137,9 @@ const verifyDefaultScreenshotDelivery = async ({
   targetId,
   screenshot,
 }) => {
-  const workspace = await mkdtemp(join(tmpdir(), "rea-screenshot-delivery-"));
+  const workspace = await mkdtemp(
+    join(tmpdir(), "binsight-screenshot-delivery-"),
+  );
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [entrypoint, "mcp"],

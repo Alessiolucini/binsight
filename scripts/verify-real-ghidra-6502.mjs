@@ -38,7 +38,7 @@ for (const [name, command] of Object.entries({ ca65, ld65 })) {
   toolchain[name] = (version.stdout + version.stderr).trim();
 }
 await mkdir(join(root, "build"), { recursive: true });
-const workspace = await mkdtemp(join(root, "build", "rea-6502-proof-"));
+const workspace = await mkdtemp(join(root, "build", "binsight-6502-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "image.bin");
@@ -59,7 +59,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-6502-proof", version: "1" });
+const client = new Client({ name: "binsight-real-6502-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);

@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.each([false, true])(
   "stops an SDK export cancellation before publication and keeps the same session usable (overwrite: %s)",
   async (overwrite) => {
-    const root = await createTestTempDirectory("rea-mcp-export-cancel-");
+    const root = await createTestTempDirectory("binsight-mcp-export-cancel-");
     const path = join(root, "bundle.json");
     if (overwrite) await writeFile(path, "original destination");
     const session = createTestBinarySession(() => {
@@ -58,7 +58,7 @@ it.each([false, true])(
     let stagedBytes = 0;
     while (stagedBytes === 0 && performance.now() < deadline) {
       const staging = (await readdir(root)).find((name) =>
-        name.startsWith(".rea-write-"),
+        name.startsWith(".binsight-write-"),
       );
       if (staging !== undefined) {
         const staged = await stat(join(root, staging, "content")).catch(

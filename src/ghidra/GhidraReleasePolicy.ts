@@ -1,4 +1,4 @@
-/** Ghidra build whose bridge behavior this REA release verifies. */
+/** Ghidra build whose bridge behavior this BinSight release verifies. */
 export const SUPPORTED_GHIDRA_VERSION = "12.1.4";
 /** Verified JDK major; admission uses the installation's declared bounds. */
 export const SUPPORTED_GHIDRA_JAVA_MAJOR = 21;

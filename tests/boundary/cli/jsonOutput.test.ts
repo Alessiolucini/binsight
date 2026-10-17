@@ -195,7 +195,7 @@ describe("CLI result output surface", () => {
       const output = createCliResultOutput(argv, destination);
       if (output === undefined)
         throw new Error("Missing structured output surface");
-      const cli = Cli.create("rea-output-test", { sync: false });
+      const cli = Cli.create("binsight-output-test", { sync: false });
       registerManagedCommands(cli, silentLogger, async () => failure);
       streamCliCommandResults(cli, output);
       let fallback = "";
@@ -271,7 +271,7 @@ describe("CLI result output surface", () => {
     const argv = ["fixture", "--json", "--full-output"];
     const output = createCliResultOutput(argv, destination);
     if (output === undefined) throw new Error("Missing JSON output surface");
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("binsight-output-test", { sync: false });
     cli.command("fixture", {
       run: () =>
         logCliCommand(
@@ -316,7 +316,7 @@ describe("full-output token windows", () => {
     ];
     const output = createCliResultOutput(argv, destination);
     if (output === undefined) throw new Error("Missing TOON output surface");
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("binsight-output-test", { sync: false });
     registerManagedCommands(cli, silentLogger, async () => ({
       code: "target_unavailable",
       category: "unavailable",
@@ -362,7 +362,7 @@ describe("logger classification handoff", () => {
     const argv = ["fixture", "--json", "--full-output"];
     const output = createCliResultOutput(argv, destination);
     if (output === undefined) throw new Error("Missing JSON output surface");
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("binsight-output-test", { sync: false });
     cli.command("fixture", {
       run: () =>
         logCliCommand(
@@ -415,7 +415,7 @@ describe("full-output token counts", () => {
     ];
     const output = createCliResultOutput(argv, destination);
     if (output === undefined) throw new Error("Missing JSON output surface");
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("binsight-output-test", { sync: false });
     registerManagedCommands(cli, silentLogger, async () => failure);
     streamCliCommandResults(cli, output);
     const previousExitCode = process.exitCode;
@@ -490,7 +490,7 @@ describe("CLI result output surface", () => {
         callback();
       },
     });
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("binsight-output-test", { sync: false });
     registerManagedCommands(cli, silentLogger, async (path, operation) => {
       expect(path).toBe("fixture.dll");
       expect(operation).toBe("inspect_managed_members");
@@ -530,7 +530,7 @@ describe("CLI result output surface", () => {
     );
     if (tokenOutput === undefined)
       throw new Error("Missing token-count output surface");
-    const tokenCli = Cli.create("rea-output-test", { sync: false });
+    const tokenCli = Cli.create("binsight-output-test", { sync: false });
     registerManagedCommands(tokenCli, silentLogger, async () => value);
     streamCliCommandResults(tokenCli, tokenOutput);
     await tokenCli.serve(tokenArgv, {

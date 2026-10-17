@@ -19,7 +19,7 @@ import { resolveJavaScriptSemanticEvidence } from "../../src/domain/javascript/j
 const SEMANTIC_GRAPH_ID = `jsrg_${"0".repeat(64)}`;
 
 it("reports invalid nested semantic graph Evidence as caller input through CLI and SDK MCP", async () => {
-  const root = await createTestTempDirectory("rea-semantic-trace-input-");
+  const root = await createTestTempDirectory("binsight-semantic-trace-input-");
   await mkdir(join(root, "src"));
   await writeFile(
     join(root, "src", "main.js"),
@@ -126,7 +126,7 @@ it("reports invalid nested semantic graph Evidence as caller input through CLI a
 });
 
 it("excludes local exports from writes-only traces through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-semantic-export-trace-");
+  const root = await createTestTempDirectory("binsight-semantic-export-trace-");
   await mkdir(join(root, "src"));
   await writeFile(
     join(root, "src", "main.js"),
@@ -198,7 +198,9 @@ it("excludes local exports from writes-only traces through CLI and MCP", async (
 });
 
 it("traces exact empty property names through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-semantic-empty-property-");
+  const root = await createTestTempDirectory(
+    "binsight-semantic-empty-property-",
+  );
   await writeFile(
     join(root, "main.js"),
     "const routes = {'': 'HOME', x: 'NAMED'}; const root = routes['']; const named = routes.x;\n",

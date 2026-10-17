@@ -16,7 +16,9 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "retains every compiler-recorded linker option string in order",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-linker-option-");
+        const directory = await createTestTempDirectory(
+          "binsight-linker-option-",
+        );
         const source = join(directory, "options.c");
         const object = join(directory, "options.o");
         await writeFile(

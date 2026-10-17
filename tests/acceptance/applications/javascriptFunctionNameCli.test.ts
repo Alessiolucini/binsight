@@ -32,7 +32,7 @@ it.each([
 ])(
   "keeps named expression %s calls distinct in the public CLI",
   async (name, source, callLine, targetLine) => {
-    const root = await createTestTempDirectory("rea-function-name-cli-");
+    const root = await createTestTempDirectory("binsight-function-name-cli-");
     await writeFile(join(root, "app.js"), source);
     const { stdout } = await execute(
       process.execPath,

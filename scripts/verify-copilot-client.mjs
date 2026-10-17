@@ -34,7 +34,7 @@ assert(
   "Usage: verify-copilot-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-copilot-client-"));
+const lab = await mkdtemp(join(tmpdir(), "binsight-copilot-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -133,25 +133,25 @@ const fixture = await createOpenAiModelFixture({
     wireModels.push(body.model);
     // Auxiliary requests without tools cannot execute the analyst's workflow.
     if (tools.length === 0)
-      return { role: "assistant", content: "REA fixture title" };
+      return { role: "assistant", content: "BinSight fixture title" };
     const analysis = tools.find((t) =>
       t.name.endsWith("analyze_javascript_application"),
     );
-    assert(analysis, "Copilot CLI must expose the REA analysis tool");
+    assert(analysis, "Copilot CLI must expose the BinSight analysis tool");
     const prefix = analysis.name.slice(
       0,
       -"analyze_javascript_application".length,
     );
     const expected = TOOL_CONTRACTS.map((t) => prefix + t.name).sort();
-    const reaTools = tools.filter((t) => expected.includes(t.name));
+    const binsightTools = tools.filter((t) => expected.includes(t.name));
     assert.deepEqual(
-      reaTools.map((t) => t.name).sort(),
+      binsightTools.map((t) => t.name).sort(),
       expected,
-      "Copilot CLI must forward the complete REA catalog",
+      "Copilot CLI must forward the complete BinSight catalog",
     );
     catalogSize = expected.length;
     if (schemasChecked === 0) {
-      for (const tool of reaTools) {
+      for (const tool of binsightTools) {
         assert(
           tool.parameters,
           `${tool.name}: missing advertised input schema`,
@@ -228,7 +228,7 @@ const fixture = await createOpenAiModelFixture({
     }
     assert(
       skillLoaded,
-      "Copilot CLI must load the installed personal REA skill",
+      "Copilot CLI must load the installed personal BinSight skill",
     );
     const spilled = replies.find(
       (message) =>
@@ -307,7 +307,10 @@ try {
       }
     }
   }
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const configured = await readFile(configPath, "utf8");
   assert(configured.includes("unrelated-server"));
 
@@ -325,13 +328,16 @@ try {
   );
   assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
   assert.equal(await readFile(configPath, "utf8"), configured);
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   if (inputSchemaProfile === "compact") {
     // Select the existing presentation in this disposable native-client profile.
     const customized = JSON.parse(configured);
-    assert(customized.mcpServers.rea);
-    customized.mcpServers.rea.env = {
-      ...customized.mcpServers.rea.env,
+    assert(customized.mcpServers.binsight);
+    customized.mcpServers.binsight.env = {
+      ...customized.mcpServers.binsight.env,
       REA_MCP_INPUT_SCHEMA_PROFILE: inputSchemaProfile,
     };
     await writeFile(configPath, JSON.stringify(customized, null, 2));
@@ -364,7 +370,7 @@ try {
     });
     await writeFile(join(lab, `${name}.stdout`), result.stdout);
     await writeFile(join(lab, `${name}.stderr`), result.stderr);
-    if (name === "mcp-list") assert(result.stdout.includes("rea"));
+    if (name === "mcp-list") assert(result.stdout.includes("binsight"));
     if (name === "skill-list")
       assert(result.stdout.includes("reverse-engineer-anything"));
   }
@@ -381,13 +387,13 @@ try {
       model,
       "--allow-tool=skill",
       "--allow-tool=read",
-      "--allow-tool=rea(analyze_javascript_application)",
+      "--allow-tool=binsight(analyze_javascript_application)",
       "--add-dir",
       target,
       "--prompt",
       mode === "chat"
         ? "Say hello briefly."
-        : `Use the REA skill and tools to analyze the JavaScript directory ${target}. Report the result.`,
+        : `Use the BinSight skill and tools to analyze the JavaScript directory ${target}. Report the result.`,
     ],
     {
       env: { ...environment, COPILOT_PROVIDER_BASE_URL: fixture.baseUrl },

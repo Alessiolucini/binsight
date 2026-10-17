@@ -29,7 +29,7 @@ export async function verifyAndroidFailureRecovery({
   execute,
   fixture,
 }) {
-  const root = await mkdtemp(join(tmpdir(), "rea-android-recovery-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-android-recovery-"));
   const javaName = process.platform === "win32" ? "java.exe" : "java";
   const jlinkName = process.platform === "win32" ? "jlink.exe" : "jlink";
   try {
@@ -162,7 +162,7 @@ export async function verifyAndroidFailureRecovery({
       );
       if (scenario.jarFailure)
         assert.doesNotMatch(failure.message, /Select a full JDK/u);
-      assert.doesNotMatch(JSON.stringify(failure), /rea doctor/u);
+      assert.doesNotMatch(JSON.stringify(failure), /binsight doctor/u);
       await verifyAndroidReadiness({
         entrypoint,
         environment: scenario.env,
@@ -189,7 +189,7 @@ export async function verifyAndroidFailureRecovery({
       stderr: "pipe",
     });
     const client = new Client({
-      name: "rea-real-android-failures",
+      name: "binsight-real-android-failures",
       version: "1",
     });
     try {
@@ -221,7 +221,7 @@ export async function verifyAndroidFailureRecovery({
           requireMcpToolError(response).details.issues[0].message,
           /search_android_classes/u,
         );
-        assert.doesNotMatch(JSON.stringify(response), /rea doctor/u);
+        assert.doesNotMatch(JSON.stringify(response), /binsight doctor/u);
         console.log(`PASS MCP selector correction: ${name}`);
       }
       const method = await client.callTool(
@@ -273,7 +273,10 @@ const verifyAndroidReadiness = async ({
     env: environment,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-android-readiness", version: "1" });
+  const client = new Client({
+    name: "binsight-android-readiness",
+    version: "1",
+  });
   try {
     await client.connect(transport);
     const catalog = await client.listTools();

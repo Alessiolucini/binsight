@@ -23,7 +23,7 @@ type ExtractionGap = z.infer<typeof extractionGap>;
 /** Static, truthful continuations that use already configured capabilities. */
 const GAP_CONTINUATIONS: Record<ExtractionGap["kind"], string> = {
   "missing-extractor-dependency":
-    "REA installs nothing. Add the named dependency to your own environment and rerun extract_firmware on the same immutable input with a fresh output_directory to re-evaluate the affected region; otherwise it stays unextracted.",
+    "BinSight installs nothing. Add the named dependency to your own environment and rerun extract_firmware on the same immutable input with a fresh output_directory to re-evaluate the affected region; otherwise it stays unextracted.",
   "unknown-chunk-handler":
     "If Binwalk is configured with REA_BINWALK_COMMAND, run inspect_firmware_regions on the same input for signature hypotheses. Without configured Binwalk that inspection is unavailable. Alternatively, select a materially narrower range with extract_firmware and a fresh output_directory; the region is not decoded content.",
   "encrypted-chunk":
@@ -37,7 +37,7 @@ const GAP_CONTINUATIONS: Record<ExtractionGap["kind"], string> = {
 };
 
 const UNNAMED_DEPENDENCY_CONTINUATION =
-  "The producer reported a missing extractor dependency without naming it; its identity is unavailable in this evidence. No specific installation or rerun can be prescribed from this report. Retain the gap as unextracted unless additional provider evidence establishes the dependency. REA installs nothing.";
+  "The producer reported a missing extractor dependency without naming it; its identity is unavailable in this evidence. No specific installation or rerun can be prescribed from this report. Retain the gap as unextracted unless additional provider evidence establishes the dependency. BinSight installs nothing.";
 
 import { FIRMWARE_LIMITS } from "./FirmwareRelease.js";
 

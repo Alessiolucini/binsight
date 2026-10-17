@@ -37,35 +37,35 @@ const encodedDotSpecifiers = ["\t", "\n", "\r"].flatMap((control) => [
 
 const requests = [
   {
-    specifier: "rea-self-fixture",
+    specifier: "binsight-self-fixture",
     target: "root.cjs",
     status: "resolved",
     value: 11,
     error: null,
   },
   {
-    specifier: "rea-self-fixture/feature",
+    specifier: "binsight-self-fixture/feature",
     target: "feature.cjs",
     status: "resolved",
     value: 22,
     error: null,
   },
   {
-    specifier: "rea-self-fixture/feature?cache=1",
+    specifier: "binsight-self-fixture/feature?cache=1",
     target: "punctuated.cjs",
     status: "resolved",
     value: 33,
     error: null,
   },
   {
-    specifier: "rea-self-fixture/feature?cache=2",
+    specifier: "binsight-self-fixture/feature?cache=2",
     target: null,
     status: "external",
     value: null,
     error: "ERR_PACKAGE_PATH_NOT_EXPORTED",
   },
   {
-    specifier: "rea-self-fixture/feature#entry",
+    specifier: "binsight-self-fixture/feature#entry",
     target: null,
     status: "external",
     value: null,
@@ -229,7 +229,9 @@ const createPackageSpecifierFixture = async (): Promise<{
   readonly root: string;
   readonly source: string;
 }> => {
-  const root = await createTestTempDirectory("rea-package-specifier-suffix-");
+  const root = await createTestTempDirectory(
+    "binsight-package-specifier-suffix-",
+  );
   const packagePath = join(root, "node_modules", "fixture");
   const legacyPackagePath = join(root, "node_modules", "legacy");
   await Promise.all([
@@ -239,7 +241,7 @@ const createPackageSpecifierFixture = async (): Promise<{
   await writeFile(
     join(root, "package.json"),
     JSON.stringify({
-      name: "rea-self-fixture",
+      name: "binsight-self-fixture",
       exports: {
         ".": { import: "./root.cjs", require: "./require.cjs" },
         "./feature": { import: "./feature.cjs", require: "./require.cjs" },

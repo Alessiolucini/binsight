@@ -217,7 +217,7 @@ export const readClientPolicyBlock = async (
     )
   )
     return ok(
-      `Gemini mcpServers.${PRODUCT_IDENTITY.mcpServerKey} in ${override.path} overrides the user registration. Review that settings file before rerunning setup; REA does not modify system or workspace settings.`,
+      `Gemini mcpServers.${PRODUCT_IDENTITY.mcpServerKey} in ${override.path} overrides the user registration. Review that settings file before rerunning setup; BinSight does not modify system or workspace settings.`,
     );
   return ok(undefined);
 };

@@ -6,8 +6,8 @@ import {
 
 /** Provider identity for deterministic composed analysis workflows. */
 export const REA_WORKFLOW_PROVIDER = {
-  id: "rea-workflow",
-  name: "REA composed investigation workflow",
+  id: "binsight-workflow",
+  name: "BinSight composed investigation workflow",
   version: "1",
 } as const;
 
@@ -30,133 +30,133 @@ export const workflowAnalysisProfile = (
 
 /** Provider identity for deterministic artifact inventories. */
 export const ARTIFACT_GRAPH_PROVIDER = Object.freeze({
-  id: "rea-artifact-graph",
-  name: "REA safe artifact graph provider",
+  id: "binsight-artifact-graph",
+  name: "BinSight safe artifact graph provider",
   version: "1",
 } as const);
 
 /** Provider identity for execution-free managed PE/CLI analysis. */
 export const MANAGED_STATIC_PROVIDER = Object.freeze({
-  id: "rea-dotnet-static",
-  name: "REA managed static analysis provider",
+  id: "binsight-dotnet-static",
+  name: "BinSight managed static analysis provider",
   version: "1",
 } as const);
 
 /** Provider identity for portable, execution-free PE resource decoding. */
 export const PE_RESOURCES_PROVIDER = Object.freeze({
-  id: "rea-pe-resources",
-  name: "REA PE resource parser",
+  id: "binsight-pe-resources",
+  name: "BinSight PE resource parser",
   version: "1",
 } as const);
 
 /** Provider identity for deterministic managed-code comparison workflows. */
 export const MANAGED_WORKFLOW_PROVIDER = {
-  id: "rea-dotnet-workflows",
-  name: "REA managed-code workflows",
+  id: "binsight-dotnet-workflows",
+  name: "BinSight managed-code workflows",
   version: "1",
 } as const;
 
 /** Provider identity for deterministic Apple application projections. */
 export const APPLE_APPLICATION_PROVIDER = {
-  id: "rea-apple-application",
-  name: "REA Apple application workflows",
+  id: "binsight-apple-application",
+  name: "BinSight Apple application workflows",
   version: "1",
 } as const;
 
 /** Provider identity for deterministic Android application projections. */
 export const ANDROID_APPLICATION_PROVIDER = {
-  id: "rea-android-application",
-  name: "REA Android application workflows",
+  id: "binsight-android-application",
+  name: "BinSight Android application workflows",
   version: "1",
 } as const;
 
 /** Provider identity for deterministic HarmonyOS application projections. */
 export const HARMONY_APPLICATION_PROVIDER = {
-  id: "rea-harmony-application",
-  name: "REA HarmonyOS application workflows",
+  id: "binsight-harmony-application",
+  name: "BinSight HarmonyOS application workflows",
   version: "1",
 } as const;
 
 /** Provider identity for verified publication of retained website scripts. */
 export const WEB_SCRIPT_EXPORT_PROVIDER = {
-  id: "rea-web-script-export",
-  name: "REA captured script export",
+  id: "binsight-web-script-export",
+  name: "BinSight captured script export",
   version: "1",
 } as const;
 
 /** Provider identity for deterministic static JavaScript application analysis. */
 export const JAVASCRIPT_APPLICATION_PROVIDER = {
-  id: "rea-javascript-application",
-  name: "REA JavaScript application analyzer",
+  id: "binsight-javascript-application",
+  name: "BinSight JavaScript application analyzer",
   version: "1",
 } as const;
 
 /** Provider identity for static/passive-runtime JavaScript reconciliation. */
 export const JAVASCRIPT_RUNTIME_RECONCILIATION_PROVIDER = {
-  id: "rea-javascript-runtime-reconciliation",
-  name: "REA JavaScript runtime reconciliation",
+  id: "binsight-javascript-runtime-reconciliation",
+  name: "BinSight JavaScript runtime reconciliation",
   version: "1",
 } as const;
 
 /** Provider identity for selected views of retained analysis Evidence. */
 export const ANALYSIS_VIEW_PROVIDER = {
-  id: "rea-analysis-view",
-  name: "REA analysis view projection",
+  id: "binsight-analysis-view",
+  name: "BinSight analysis view projection",
   version: "1",
 } as const;
 
 /** Provider identity for graph-native feature tracing and version comparison. */
 export const JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER = {
-  id: "rea-javascript-application-workflows",
-  name: "REA JavaScript application workflows",
+  id: "binsight-javascript-application-workflows",
+  name: "BinSight JavaScript application workflows",
   version: "1",
 } as const;
 
 /** Provider identity for deterministic cross-artifact comparisons. */
 export const ARTIFACT_COMPARISON_PROVIDER = {
-  id: "rea-artifact-comparison",
-  name: "REA artifact comparison",
+  id: "binsight-artifact-comparison",
+  name: "BinSight artifact comparison",
   version: "1",
 } as const;
 
 /** Provider identity for deterministic cross-function comparisons. */
 export const FUNCTION_COMPARISON_PROVIDER = {
-  id: "rea-function-comparison",
-  name: "REA function comparison",
+  id: "binsight-function-comparison",
+  name: "BinSight function comparison",
   version: "1",
 } as const;
 
 /** Provider identity for deterministic Evidence bundle comparisons. */
 export const BUNDLE_COMPARISON_PROVIDER = {
-  id: "rea-bundle-comparison",
-  name: "REA Evidence bundle comparison",
+  id: "binsight-bundle-comparison",
+  name: "BinSight Evidence bundle comparison",
   version: "1",
 } as const;
 
 /** Provider identity for comparison-Evidence behavior aggregation. */
 export const CHANGED_BEHAVIOR_PROVIDER = {
-  id: "rea-changed-behavior",
-  name: "REA changed behavior investigation",
+  id: "binsight-changed-behavior",
+  name: "BinSight changed behavior investigation",
   version: "1",
 } as const;
 
 /** Provider identity for Evidence-backed call-path reconstruction. */
 export const CALL_PATH_PROVIDER = {
-  id: "rea-call-path",
-  name: "REA call path reconstruction",
+  id: "binsight-call-path",
+  name: "BinSight call path reconstruction",
   version: "1",
 } as const;
 
 /** Provider identity for explicit static/runtime hypothesis correlation. */
 export const STATIC_RUNTIME_PROVIDER = {
-  id: "rea-static-runtime-correlation",
-  name: "REA static/runtime correlation",
+  id: "binsight-static-runtime-correlation",
+  name: "BinSight static/runtime correlation",
   version: "1",
 } as const;
 
 /** Provider identity for finite reconstruction specification verification. */
 export const RECONSTRUCTION_PROVIDER = {
-  id: "rea-reconstruction-verifier",
-  name: "REA reconstruction verifier",
+  id: "binsight-reconstruction-verifier",
+  name: "BinSight reconstruction verifier",
   version: "1",
 } as const;

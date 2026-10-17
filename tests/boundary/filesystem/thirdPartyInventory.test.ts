@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 test("generates locked inventory and rejects stale notice metadata or preserved texts", async ({
   processes,
 }) => {
-  const root = await createTestTempDirectory("rea-notice-records-");
+  const root = await createTestTempDirectory("binsight-notice-records-");
   await mkdir(resolve(root, "scripts/lib"), { recursive: true });
   await mkdir(resolve(root, "licenses"));
   for (const file of [

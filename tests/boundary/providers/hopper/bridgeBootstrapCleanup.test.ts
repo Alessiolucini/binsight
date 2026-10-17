@@ -9,7 +9,9 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 it.each(["failed", "cancelled"] as const)(
   "removes the token-bearing bootstrap and releases the lease after a %s launch",
   async (outcome) => {
-    const directory = await createTestTempDirectory("rea-bootstrap-cleanup-");
+    const directory = await createTestTempDirectory(
+      "binsight-bootstrap-cleanup-",
+    );
     const controller = new AbortController();
     if (outcome === "cancelled") controller.abort();
     let releases = 0;

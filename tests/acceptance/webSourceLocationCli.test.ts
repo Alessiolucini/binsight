@@ -14,7 +14,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "accepts numeric UTF-16 coordinates and runs the actual owned source-map codec without a browser",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-source-map-cli-");
+    const root = await createTestTempDirectory("binsight-source-map-cli-");
     const fixture = webSourceLocationFixture();
     await mkdir(join(root, "files", "modules"), { recursive: true });
     await writeFile(join(root, "files", "modules", "main.js"), fixture.source);

@@ -117,7 +117,9 @@ const sourceFor = (specifier: string, moduleKind: "import" | "require") =>
     : `const value = require(${JSON.stringify(specifier)});\nmodule.exports = value;`;
 
 const createSelfNameFixture = async () => {
-  const root = await createTestTempDirectory("rea-package-self-name-boundary-");
+  const root = await createTestTempDirectory(
+    "binsight-package-self-name-boundary-",
+  );
   const files: Record<string, string> = {};
   for (const item of cases) {
     const prefix = item.directory;

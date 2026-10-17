@@ -64,7 +64,7 @@ if (installation.status !== "available")
 const execute = promisify(execFile);
 const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-mips-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-mips-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
@@ -75,7 +75,7 @@ const env = {
   REA_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
 };
 for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
   if (process.env[setting] !== undefined) env[setting] = process.env[setting];
@@ -150,7 +150,7 @@ try {
       assert.deepEqual(
         resolved.value.mips.limitations ?? [],
         legacy.limitations,
-        "REA legacy ABI-record absence interpretation disagrees with GNU readelf",
+        "BinSight legacy ABI-record absence interpretation disagrees with GNU readelf",
       );
       assert.equal(resolved.value.sha256, fixture.sha256);
       const snapshotPath = join(workspace, `${byteOrder}-legacy.snapshot.json`);
@@ -161,7 +161,7 @@ try {
         stderr: "pipe",
       });
       const client = new Client({
-        name: "rea-real-mips-legacy-proof",
+        name: "binsight-real-mips-legacy-proof",
         version: "1",
       });
       let stderr = "";
@@ -307,13 +307,13 @@ try {
       assert.deepEqual(
         resolved.value.mips,
         independent.mips,
-        "REA PSP ELF/ABI interpretation disagrees with GNU readelf and raw ABI bytes",
+        "BinSight PSP ELF/ABI interpretation disagrees with GNU readelf and raw ABI bytes",
       );
     } else {
       assert.deepEqual(
         resolved.value.mips,
         independent.mips,
-        "REA ELF/ABI interpretation disagrees with GNU readelf",
+        "BinSight ELF/ABI interpretation disagrees with GNU readelf",
       );
     }
     assert.equal(resolved.value.sha256, fixture.sha256);
@@ -327,7 +327,10 @@ try {
       env,
       stderr: "pipe",
     });
-    const client = new Client({ name: "rea-real-mips-proof", version: "1" });
+    const client = new Client({
+      name: "binsight-real-mips-proof",
+      version: "1",
+    });
     let stderr = "";
     transport.stderr?.on("data", (chunk) => {
       stderr = (stderr + chunk.toString()).slice(-65536);
@@ -433,16 +436,16 @@ try {
         address: independent.symbols[`${prefix}_marker`],
         length: Buffer.byteLength(
           psp
-            ? "rea-psp-source-owned-fixture\0"
-            : "rea-mips-source-owned-fixture\0",
+            ? "binsight-psp-source-owned-fixture\0"
+            : "binsight-mips-source-owned-fixture\0",
         ),
       });
       assert.equal(
         marker.bytes_hex,
         Buffer.from(
           psp
-            ? "rea-psp-source-owned-fixture\0"
-            : "rea-mips-source-owned-fixture\0",
+            ? "binsight-psp-source-owned-fixture\0"
+            : "binsight-mips-source-owned-fixture\0",
         ).toString("hex"),
       );
       const callees = await call("procedure_callees", {

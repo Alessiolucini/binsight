@@ -12,7 +12,7 @@ import { fakeKunaCalls, writeFakeKuna } from "./fakeKuna.js";
 const it = test.skipIf(process.platform === "win32");
 
 it("identifies a caller-selected kuna by version and digest", async () => {
-  const root = await createTestTempDirectory("rea-kuna-install-");
+  const root = await createTestTempDirectory("binsight-kuna-install-");
   const kuna = await writeFakeKuna(root);
   const link = join(root, "current-kuna");
   await symlink(kuna, link);
@@ -36,7 +36,7 @@ it("identifies a caller-selected kuna by version and digest", async () => {
         .digest("hex"),
     },
   });
-  // The probe runs inside REA's cache home with no inherited PATH.
+  // The probe runs inside BinSight's cache home with no inherited PATH.
   expect(await fakeKunaCalls(kuna)).toEqual([
     {
       pid: expect.any(Number),
@@ -50,7 +50,7 @@ it("identifies a caller-selected kuna by version and digest", async () => {
 });
 
 it("accepts another release but reports it as unverified", async () => {
-  const root = await createTestTempDirectory("rea-kuna-unverified-");
+  const root = await createTestTempDirectory("binsight-kuna-unverified-");
   const kuna = await writeFakeKuna(root, {
     version: { stdout: "kuna 1.900\n" },
   });
@@ -64,7 +64,7 @@ it("accepts another release but reports it as unverified", async () => {
 });
 
 it("refuses a version line it cannot recognize", async () => {
-  const root = await createTestTempDirectory("rea-kuna-garbled-");
+  const root = await createTestTempDirectory("binsight-kuna-garbled-");
   const kuna = await writeFakeKuna(root, {
     version: { stdout: "Kuna decompiler, built today\n" },
   });
@@ -81,7 +81,7 @@ it("refuses a version line it cannot recognize", async () => {
 });
 
 it("reports a failed version probe with its exit status", async () => {
-  const root = await createTestTempDirectory("rea-kuna-probe-exit-");
+  const root = await createTestTempDirectory("binsight-kuna-probe-exit-");
   const kuna = await writeFakeKuna(root, { version: { exit: 3 } });
 
   expect(
@@ -97,7 +97,7 @@ it("reports a failed version probe with its exit status", async () => {
 });
 
 it("reports a missing or non-executable command as executable_missing", async () => {
-  const root = await createTestTempDirectory("rea-kuna-missing-");
+  const root = await createTestTempDirectory("binsight-kuna-missing-");
   const kuna = await writeFakeKuna(root);
   await chmod(kuna, 0o644);
 
@@ -143,7 +143,7 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
   expect(readKunaConfiguration(environment, "linux")).toMatchObject({
     ok: true,
     value: {
-      cacheRoot: "/home/analyst/.cache/rea/kuna",
+      cacheRoot: "/home/analyst/.cache/binsight/kuna",
       cacheMaxBytes: 4 * 1024 ** 3,
       projectTimeoutMs: 1_800_000,
       functionTimeoutMs: 120_000,
@@ -156,9 +156,9 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
       { ...environment, XDG_CACHE_HOME: "/var/cache/analyst" },
       "linux",
     ),
-  ).toMatchObject({ value: { cacheRoot: "/var/cache/analyst/rea/kuna" } });
+  ).toMatchObject({ value: { cacheRoot: "/var/cache/analyst/binsight/kuna" } });
   expect(readKunaConfiguration(environment, "darwin")).toMatchObject({
-    value: { cacheRoot: "/home/analyst/Library/Caches/rea/kuna" },
+    value: { cacheRoot: "/home/analyst/Library/Caches/binsight/kuna" },
   });
   expect(
     readKunaConfiguration(
@@ -197,7 +197,7 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
 });
 
 it("stops a version probe that ignores SIGTERM instead of waiting on it", async () => {
-  const root = await createTestTempDirectory("rea-kuna-probe-term-");
+  const root = await createTestTempDirectory("binsight-kuna-probe-term-");
   const kuna = await writeFakeKuna(root, { version: { ignoreTerm: true } });
   const started = Date.now();
 

@@ -336,7 +336,7 @@ const withEarlierHistoricalEvidence = (
           "binary_overview",
         ),
         confidence: "derived",
-        limitations: ["Derived by an REA composed workflow."],
+        limitations: ["Derived by an BinSight composed workflow."],
       },
     ),
   ).find((record) => record.evidence_id < current.evidence_id);
@@ -354,7 +354,7 @@ const withEarlierHistoricalEvidence = (
 describe("snapshot output cleanup lifecycle", () => {
   it("returns completed analysis after retrying cleanup of a published snapshot", async () => {
     const fixture = await createSnapshotReplayFixture(
-      "rea-snapshot-cleanup-retry-",
+      "binsight-snapshot-cleanup-retry-",
     );
     const cleanup = vi
       .spyOn(OwnedStagedOutput.prototype, "close")
@@ -378,7 +378,9 @@ describe("snapshot output cleanup lifecycle", () => {
   });
 
   it("saves snapshots after closing and reopening the same session", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-snapshot-reopen-");
+    const fixture = await createSnapshotReplayFixture(
+      "binsight-snapshot-reopen-",
+    );
     const session = createTestBinarySession(fixture.createProvider());
     try {
       for (const index of [1, 2]) {
@@ -407,7 +409,7 @@ const verifyWindowsSnapshotAdmission = async (
   selectedPath: "direct" | "junction",
 ): Promise<void> => {
   const fixture = await createSnapshotReplayFixture(
-    "rea-direct-snapshot-junction-",
+    "binsight-direct-snapshot-junction-",
   );
   const rawPath = join(dirname(fixture.path), "image.bin");
   await writeFile(rawPath, Buffer.from("a92a60", "hex"));
@@ -482,7 +484,9 @@ it.each([
 ] as const)(
   "refreshes unattributed $tool Evidence and replays the current revision",
   async (scenario) => {
-    const fixture = await createSnapshotReplayFixture("rea-prior-coverage-");
+    const fixture = await createSnapshotReplayFixture(
+      "binsight-prior-coverage-",
+    );
     const limitation = "Original PDB names may be missing.";
     const provider = fixture.createProvider({
       supportedOperations: workflowProviderOperations,
@@ -510,7 +514,7 @@ it.each([
     const prior = withAlternateWorkflowProfile(
       saved.value,
       fixture.path,
-      { ...first, limitations: ["Derived by an REA composed workflow."] },
+      { ...first, limitations: ["Derived by an BinSight composed workflow."] },
       priorProfile,
     );
     const written = await withArtifactResourceScope((resources) =>
@@ -566,7 +570,7 @@ describe("direct analysis composed snapshot replay", () => {
     "reuses the previewed profile on a $tool snapshot miss",
     async (scenario) => {
       const fixture = await createSnapshotReplayFixture(
-        "rea-snapshot-miss-route-",
+        "binsight-snapshot-miss-route-",
       );
       const profile = createAnalysisProfile(IDENTITY, { fixture: true });
       const provider = fixture.createProvider({
@@ -630,7 +634,7 @@ describe("direct analysis composed snapshot replay", () => {
   ] as const) {
     it(`persists and replays ${scenario.tool} without provider startup`, async () => {
       const fixture = await createSnapshotReplayFixture(
-        "rea-workflow-command-",
+        "binsight-workflow-command-",
       );
       const provider = fixture.createProvider({
         identity: IDENTITY,
@@ -677,7 +681,9 @@ describe("Ghidra composed workflow snapshot replay", () => {
   ] as const)(
     "persists $tool with production Ghidra capability policies",
     async ({ tool, arguments: parameters }) => {
-      const fixture = await createSnapshotReplayFixture("rea-ghidra-workflow-");
+      const fixture = await createSnapshotReplayFixture(
+        "binsight-ghidra-workflow-",
+      );
       const profile = createAnalysisProfile(
         { ...GHIDRA_PROVIDER_IDENTITY, version: "12.1.4" },
         { fixture: true },
@@ -727,7 +733,9 @@ describe("Ghidra composed workflow snapshot replay", () => {
 
 describe("binary overview snapshot replay", () => {
   it("replays the identical binary overview without provider startup or calls", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-workflow-snapshot-");
+    const fixture = await createSnapshotReplayFixture(
+      "binsight-workflow-snapshot-",
+    );
     const provider = fixture.createProvider();
     const dependencies = fixture.dependencies(provider);
 
@@ -808,7 +816,9 @@ describe("binary overview snapshot replay", () => {
 
 describe("snapshot replay provider identity", () => {
   it("uses the resolved provider version when capability metadata omits it", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-profile-version-");
+    const fixture = await createSnapshotReplayFixture(
+      "binsight-profile-version-",
+    );
     const unresolvedIdentity = { ...IDENTITY, version: null };
     const resolvedProfile = createAnalysisProfile(
       { ...IDENTITY, version: "launcher-sha256:fixture" },
@@ -899,7 +909,7 @@ describe("snapshot replay provider identity", () => {
 
 const assertEvidenceSurvivesSnapshotSaveFailure = async (): Promise<void> => {
   const fixture = await createSnapshotReplayFixture(
-    "rea-workflow-save-error-",
+    "binsight-workflow-save-error-",
     join("missing", "snapshot.json"),
   );
   const provider = fixture.createProvider();
@@ -937,7 +947,9 @@ describe("workflow snapshot profile and cancellation binding", () => {
     assertEvidenceSurvivesSnapshotSaveFailure,
   );
   it("does not replay a valid entry from a different workflow profile", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-workflow-profile-");
+    const fixture = await createSnapshotReplayFixture(
+      "binsight-workflow-profile-",
+    );
     const provider = fixture.createProvider();
     const dependencies = fixture.dependencies(provider);
     await runDirectAnalysis(
@@ -981,7 +993,9 @@ describe("workflow snapshot profile and cancellation binding", () => {
   });
 
   it("does not return a cached result when cancelled during route resolution", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-workflow-cancel-");
+    const fixture = await createSnapshotReplayFixture(
+      "binsight-workflow-cancel-",
+    );
     const provider = fixture.createProvider();
     const initialDependencies = fixture.dependencies(provider);
     await runDirectAnalysis(

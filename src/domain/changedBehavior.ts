@@ -113,19 +113,19 @@ type ParsedComparison =
 
 const EXPECTED_PROVIDERS = {
   compare_process_captures: {
-    predicates: ["rea.process-comparison"],
+    predicates: ["binsight.process-comparison"],
     ...PROCESS_PROVIDER,
   },
   compare_artifacts: {
-    predicates: ["rea.artifact-comparison"],
-    id: "rea-artifact-comparison",
-    name: "REA artifact comparison",
+    predicates: ["binsight.artifact-comparison"],
+    id: "binsight-artifact-comparison",
+    name: "BinSight artifact comparison",
     version: "1",
   },
   compare_functions: {
-    predicates: ["rea.function-comparison"],
-    id: "rea-function-comparison",
-    name: "REA function comparison",
+    predicates: ["binsight.function-comparison"],
+    id: "binsight-function-comparison",
+    name: "BinSight function comparison",
     version: "1",
   },
 } as const;

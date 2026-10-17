@@ -269,7 +269,9 @@ const expectPeInventoriesAcrossAdapters = async (
 cliTest(
   "inspects PE32/PE32+ resources through compiled CLI and real stdio MCP without an active target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-resource-acceptance-");
+    const root = await createTestTempDirectory(
+      "binsight-pe-resource-acceptance-",
+    );
     const transport = new StdioClientTransport({
       command: process.execPath,
       args: [resolve("scripts/rea.mjs"), "mcp"],

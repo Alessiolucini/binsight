@@ -127,7 +127,7 @@ const createPartialInspectorServer = (
 it.each(failureCases)(
   "preserves captured scripts and contexts after %s",
   async (failure, reason) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-inspector-partial-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-inspector-partial-"));
     const scriptPath = join(root, "target.js");
     const scriptUrl = pathToFileURL(scriptPath).href;
     const reportedScriptUrl = failure === "cancellation" ? "" : scriptUrl;

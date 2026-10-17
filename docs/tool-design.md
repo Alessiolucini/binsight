@@ -33,7 +33,7 @@ A format-specific decoder qualifies; one application's business interpretation
 belongs outside the general contract. Expose provider APIs when they add a
 useful capability that existing tools cannot express.
 
-Compose a workflow when repeated use demonstrates a multi-source outcome REA
+Compose a workflow when repeated use demonstrates a multi-source outcome BinSight
 can join without hiding caller choices or uncertainty. Batch homogeneous reads
 when that removes repeated work while preserving per-item outcomes. Keep prompts
 optional and avoid prescribing call sequences that a direct tool can replace.

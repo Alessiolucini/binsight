@@ -80,7 +80,7 @@ const snapshotFixture = (): AnalysisSnapshot => {
 describe("analysis snapshots: persistence", () => {
   it("reports retained snapshot staging without an active provider and clears it after retry", async () => {
     const directory = await createTestTempDirectory(
-      "rea-snapshot-cleanup-status-",
+      "binsight-snapshot-cleanup-status-",
     );
     const path = join(directory, "analysis.json");
     const session = createTestBinarySession(() => {
@@ -123,7 +123,7 @@ describe("analysis snapshots: persistence", () => {
   });
 
   it("writes canonical private v2 JSON and rejects changed query identity", async () => {
-    const directory = await createTestTempDirectory("rea-snapshot-");
+    const directory = await createTestTempDirectory("binsight-snapshot-");
     const path = join(directory, "analysis.json");
     const snapshot = snapshotFixture();
     const written = await withArtifactResourceScope((resources) =>
@@ -164,7 +164,9 @@ describe("analysis snapshots: persistence", () => {
 
 describe("analysis snapshot member decoding", () => {
   it("restores reordered legacy members with last-key semantics and authenticated shared payloads", async () => {
-    const directory = await createTestTempDirectory("rea-snapshot-members-");
+    const directory = await createTestTempDirectory(
+      "binsight-snapshot-members-",
+    );
     const path = join(directory, "snapshot.json");
     const snapshot = snapshotFixture();
     const entry = snapshot.entries[0];
@@ -206,7 +208,9 @@ describe("analysis snapshot member decoding", () => {
   it.each(["result", "raw_result", "limitations", "provider", "query_id"])(
     "rejects cache %s changes even when bundled Evidence is intact",
     async (field) => {
-      const directory = await createTestTempDirectory("rea-snapshot-tamper-");
+      const directory = await createTestTempDirectory(
+        "binsight-snapshot-tamper-",
+      );
       const path = join(directory, "snapshot.json");
       const snapshot = snapshotFixture();
       const entry = snapshot.entries[0];
@@ -240,7 +244,9 @@ describe("analysis snapshot member decoding", () => {
   );
 
   it("validates skipped JSON syntax and UTF-8 and does not turn missing arrays into empty caches", async () => {
-    const directory = await createTestTempDirectory("rea-snapshot-invalid-");
+    const directory = await createTestTempDirectory(
+      "binsight-snapshot-invalid-",
+    );
     const path = join(directory, "snapshot.json");
     const snapshot = snapshotFixture();
     const encoded = JSON.stringify(snapshot);
@@ -268,7 +274,9 @@ describe("analysis snapshot member decoding", () => {
   });
 
   it("returns cancellation and permits the next complete read", async () => {
-    const directory = await createTestTempDirectory("rea-snapshot-cancel-");
+    const directory = await createTestTempDirectory(
+      "binsight-snapshot-cancel-",
+    );
     const path = join(directory, "snapshot.json");
     const snapshot = snapshotFixture();
     await writeFile(
@@ -304,7 +312,9 @@ describe("analysis snapshot file ownership", () => {
   it.each([false, true])(
     "retains the file owner when snapshot close fails (cancelled: %s)",
     async (cancelDuringClose) => {
-      const directory = await createTestTempDirectory("rea-snapshot-cleanup-");
+      const directory = await createTestTempDirectory(
+        "binsight-snapshot-cleanup-",
+      );
       const path = join(directory, "snapshot.json");
       await writeFile(path, JSON.stringify(snapshotFixture()));
       const controller = new AbortController();
@@ -339,7 +349,9 @@ describe("analysis snapshot file ownership", () => {
   );
 
   it("rejects changed bytes between scans on the same descriptor", async () => {
-    const directory = await createTestTempDirectory("rea-snapshot-changed-");
+    const directory = await createTestTempDirectory(
+      "binsight-snapshot-changed-",
+    );
     const path = join(directory, "input.json");
     await writeFile(path, `${" ".repeat(9 * 1024 * 1024)}{"value":1}`);
     const reader = new Map([

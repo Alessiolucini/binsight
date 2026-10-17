@@ -22,7 +22,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 const compile = promisify(execFile);
 
 const compileNestedViews = async (depth: number, withWindow = false) => {
-  const root = await createTestTempDirectory("rea-nib-hierarchy-");
+  const root = await createTestTempDirectory("binsight-nib-hierarchy-");
   const bundle = join(root, "Fixture.app");
   const resources = join(bundle, "Contents", "Resources");
   await mkdir(resources, { recursive: true });

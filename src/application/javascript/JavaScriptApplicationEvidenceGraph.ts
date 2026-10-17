@@ -81,7 +81,7 @@ export const rememberOwnedApplicationGraphEvidence = (
   return evidence;
 };
 
-/** Parse and authenticate one REA-produced JavaScript Application Graph Evidence. */
+/** Parse and authenticate one BinSight-produced JavaScript Application Graph Evidence. */
 export const parseApplicationGraphEvidence = (
   input: unknown,
   path: readonly (string | number)[] = [],
@@ -94,12 +94,20 @@ export const parseApplicationGraphEvidence = (
     const owned = ownedApplicationSources.get(evidence);
     if (owned !== undefined) return owned;
     if (evidence.operation === "analyze_javascript_application") {
-      requirePredicate(evidence, "rea.javascript-application-analysis", path);
+      requirePredicate(
+        evidence,
+        "binsight.javascript-application-analysis",
+        path,
+      );
       requireProvider(evidence, JAVASCRIPT_APPLICATION_PROVIDER, path);
       return staticApplicationSource(evidence, path);
     }
     if (evidence.operation === "reconcile_javascript_runtime") {
-      requirePredicate(evidence, "rea.javascript-runtime-reconciliation", path);
+      requirePredicate(
+        evidence,
+        "binsight.javascript-runtime-reconciliation",
+        path,
+      );
       requireProvider(
         evidence,
         JAVASCRIPT_RUNTIME_RECONCILIATION_PROVIDER,
@@ -108,7 +116,7 @@ export const parseApplicationGraphEvidence = (
       return staticRuntimeSource(evidence, path);
     }
     if (evidence.operation === "project_managed_application_graph") {
-      requirePredicate(evidence, "rea.managed-application-graph", path);
+      requirePredicate(evidence, "binsight.managed-application-graph", path);
       requireProvider(evidence, MANAGED_WORKFLOW_PROVIDER, path);
       return managedApplicationSource(evidence, path);
     }
@@ -145,7 +153,7 @@ const staticApplicationSourceForResult = (
       "authority",
       "JavaScript application Evidence must use shipped-artifact authority and derived confidence.",
     );
-  if (evidence.predicate_type !== "rea.javascript-application-analysis")
+  if (evidence.predicate_type !== "binsight.javascript-application-analysis")
     throw invalidEvidence(
       path,
       "predicate_type",

@@ -24,19 +24,19 @@ it("requires positive canonical-input and echo terminal mode tokens", () => {
 });
 
 it("rejects a backup replaced with the post-setup client configuration", async () => {
-  const directory = await createTestTempDirectory("rea-client-backup-");
+  const directory = await createTestTempDirectory("binsight-client-backup-");
   const path = join(directory, "client.json");
   const original = Buffer.from('{"existing":true,"model":"caller"}\n');
   const configured = JSON.stringify({
     existing: true,
     model: "caller",
-    mcpServers: { rea: { command: process.execPath, args: ["mcp"] } },
+    mcpServers: { binsight: { command: process.execPath, args: ["mcp"] } },
   });
   await writeFile(path, configured);
-  await writeFile(`${path}.rea.backup`, original);
+  await writeFile(`${path}.binsight.backup`, original);
   await assertClientConfig(process.execPath, path, original);
 
-  await writeFile(`${path}.rea.backup`, configured);
+  await writeFile(`${path}.binsight.backup`, configured);
   await expect(
     assertClientConfig(process.execPath, path, original),
   ).rejects.toThrow("packaged client backup failed");
@@ -44,12 +44,14 @@ it("rejects a backup replaced with the post-setup client configuration", async (
 });
 
 it("compares backup bytes even when invalid UTF-8 decodes to the same text", async () => {
-  const directory = await createTestTempDirectory("rea-client-backup-bytes-");
+  const directory = await createTestTempDirectory(
+    "binsight-client-backup-bytes-",
+  );
   const path = join(directory, "client.json");
   const original = Buffer.from('{"existing":true,"note":"\uFFFD"}\n');
   const configured = JSON.stringify({
     existing: true,
-    mcpServers: { rea: { command: process.execPath, args: ["mcp"] } },
+    mcpServers: { binsight: { command: process.execPath, args: ["mcp"] } },
   });
   const changed = Buffer.concat([
     Buffer.from('{"existing":true,"note":"'),
@@ -58,7 +60,7 @@ it("compares backup bytes even when invalid UTF-8 decodes to the same text", asy
   ]);
   expect(changed.toString("utf8")).toBe(original.toString("utf8"));
   await writeFile(path, configured);
-  await writeFile(`${path}.rea.backup`, changed);
+  await writeFile(`${path}.binsight.backup`, changed);
   await expect(
     assertClientConfig(process.execPath, path, original),
   ).rejects.toThrow("packaged client backup failed");

@@ -248,7 +248,7 @@ const persistClientConfiguration = async ({
     if (target.value) return { status: "failed", reason: "target_changed" };
   }
   const backupPath =
-    original === undefined ? undefined : `${client.configPath}.rea.backup`;
+    original === undefined ? undefined : `${client.configPath}.binsight.backup`;
   let recoveryBackupPath: string | undefined;
   if (backupPath !== undefined && original !== undefined) {
     const selection = await selectCurrentRecoveryBackup(backupPath, original);
@@ -269,7 +269,7 @@ const persistClientConfiguration = async ({
       return { status: "failed", reason: "backup" };
     recoveryBackupPath = verified.value.backupPath;
   }
-  // A native OpenCode V2 entry replaces REA's legacy V1 entry, which would
+  // A native OpenCode V2 entry replaces BinSight's legacy V1 entry, which would
   // otherwise conflict with it.
   const legacyPath = legacyClientServerPath(
     parsed,
@@ -576,7 +576,7 @@ const inspectClientDocument = async (
     };
   }
   const backupSelection = await selectCurrentRecoveryBackup(
-    `${client.configPath}.rea.backup`,
+    `${client.configPath}.binsight.backup`,
     original,
   );
   if (!backupSelection.ok)
@@ -676,7 +676,7 @@ const rollbackOrReadbackFailure = async (
 const errorDetail = (cause: unknown): string =>
   cause instanceof Error ? cause.message : String(cause);
 
-/** Whether REA's entry matches, no legacy entry remains, and no client disable list suppresses it. */
+/** Whether BinSight's entry matches, no legacy entry remains, and no client disable list suppresses it. */
 const registrationCurrent = (
   parsed: ClientConfigurationDocument,
   desired: unknown,

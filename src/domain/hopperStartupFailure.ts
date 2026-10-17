@@ -7,57 +7,57 @@ const failures = [
   [
     70,
     "private_display_unavailable",
-    "REA could not start its private Linux display. Install Xvfb, then rerun rea doctor.",
+    "BinSight could not start its private Linux display. Install Xvfb, then rerun binsight doctor.",
   ],
   [
     71,
     "x11_authorization_failed",
-    "REA could not authorize its private Linux display. Install xauth, then rerun rea doctor.",
+    "BinSight could not authorize its private Linux display. Install xauth, then rerun binsight doctor.",
   ],
   [
     72,
     "unsupported_hopper_build",
-    "This Hopper build is not supported for unattended Linux analysis. Unset HOPPER_LAUNCHER_PATH and rerun rea setup --yes --install-hopper, or update REA.",
+    "This Hopper build is not supported for unattended Linux analysis. Unset HOPPER_LAUNCHER_PATH and rerun binsight setup --yes --install-hopper, or update BinSight.",
   ],
   [
     73,
     "invalid_launch_command",
-    "REA refused an unexpected Hopper launch command. Check HOPPER_LAUNCHER_PATH and rerun rea doctor.",
+    "BinSight refused an unexpected Hopper launch command. Check HOPPER_LAUNCHER_PATH and rerun binsight doctor.",
   ],
   [
     74,
     "process_ownership_mismatch",
-    "REA could not verify ownership of the launched Hopper process and stopped safely. Close other Hopper sessions and retry.",
+    "BinSight could not verify ownership of the launched Hopper process and stopped safely. Close other Hopper sessions and retry.",
   ],
   [
     75,
     "hopper_exited_during_startup",
-    "Hopper exited before the REA bridge was ready. In CI, run rea doctor --provider hopper --json; if Hopper showed a UI or license prompt, complete it in the runner user session, otherwise close stale Hopper sessions and retry.",
+    "Hopper exited before the BinSight bridge was ready. In CI, run binsight doctor --provider hopper --json; if Hopper showed a UI or license prompt, complete it in the runner user session, otherwise close stale Hopper sessions and retry.",
   ],
   [
     76,
     "unsupported_demo_dialog",
-    "This Hopper demo dialog is not supported for unattended Linux analysis. Update REA or use a supported Hopper build.",
+    "This Hopper demo dialog is not supported for unattended Linux analysis. Update BinSight or use a supported Hopper build.",
   ],
   [
     77,
     "unexpected_display_geometry",
-    "REA's private Linux display did not match the validated layout. Close custom display overrides and retry.",
+    "BinSight's private Linux display did not match the validated layout. Close custom display overrides and retry.",
   ],
   [
     78,
     "x11_input_failed",
-    "REA could not activate Hopper's validated demo control. Install the XTEST runtime, then rerun rea doctor.",
+    "BinSight could not activate Hopper's validated demo control. Install the XTEST runtime, then rerun binsight doctor.",
   ],
   [
     79,
     "runtime_dependency_unavailable",
-    "A Linux demo-session dependency is unavailable. Rerun rea setup --yes --install-hopper, then rea doctor.",
+    "A Linux demo-session dependency is unavailable. Rerun binsight setup --yes --install-hopper, then binsight doctor.",
   ],
   [
     80,
     "x11_socket_directory_unusable",
-    "REA cannot use the host X11 socket directory for a private display. Run rea doctor --provider hopper for exact mount and namespace diagnostics.",
+    "BinSight cannot use the host X11 socket directory for a private display. Run binsight doctor --provider hopper for exact mount and namespace diagnostics.",
   ],
 ] as const;
 

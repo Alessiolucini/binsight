@@ -55,7 +55,7 @@ describe("Factory Droid configuration paths", () => {
 
 describe("Factory Droid JSON registration", () => {
   const droidClient = async () => {
-    const home = await createTestTempDirectory("rea-droid-");
+    const home = await createTestTempDirectory("binsight-droid-");
     const client = droidPath(home, process.platform);
     if (client?.markerPath === undefined)
       throw new Error("missing Factory Droid client");
@@ -63,7 +63,7 @@ describe("Factory Droid JSON registration", () => {
     return { home, client };
   };
 
-  it("upserts rea into mcpServers while preserving unrelated servers and permissions", async () => {
+  it("upserts binsight into mcpServers while preserving unrelated servers and permissions", async () => {
     const { home, client } = await droidClient();
     await writeFile(
       client.configPath,
@@ -97,7 +97,7 @@ describe("Factory Droid JSON registration", () => {
     expect(parsed.persistentPermissions).toEqual({
       servers: { other: { approvedAt: "2026-01-01T00:00:00.000Z" } },
     });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -126,7 +126,7 @@ describe("Factory Droid JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.persistentPermissions).toEqual({ servers: {} });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -139,13 +139,13 @@ describe("Factory Droid JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the binsight entry on uninstall", async () => {
     const { home, client } = await droidClient();
     await writeFile(
       client.configPath,
@@ -162,6 +162,6 @@ describe("Factory Droid JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toBeUndefined();
+    expect(parsed.mcpServers.binsight).toBeUndefined();
   });
 });

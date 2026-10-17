@@ -7,7 +7,7 @@ import { reconstructJavaScriptArtifact } from "../../../support/javascriptApplic
 import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js";
 
 it("resolves empty-path HTML script URLs against their canonical base path", async () => {
-  const root = await createTestTempDirectory("rea-html-empty-reference-");
+  const root = await createTestTempDirectory("binsight-html-empty-reference-");
   await Promise.all([
     mkdir(join(root, "base-file", "assets"), { recursive: true }),
     mkdir(join(root, "base-directory", "assets"), { recursive: true }),

@@ -29,7 +29,7 @@ const analyze = async (root: string) => {
 
 describe("literal CommonJS paths in application graphs", () => {
   it("agrees with Node for both require projections while preserving ESM suffixes", async () => {
-    const root = await createTestTempDirectory("rea-literal-require-");
+    const root = await createTestTempDirectory("binsight-literal-require-");
     const specifier = "./dep.cjs#literal.cjs";
     await Promise.all([
       writeFile(
@@ -80,7 +80,7 @@ describe("literal CommonJS paths in application graphs", () => {
   it.each(["literal", "stripped", "both"] as const)(
     "keeps native graph/count projections aligned with %s files",
     async (layout) => {
-      const root = await createTestTempDirectory("rea-literal-native-");
+      const root = await createTestTempDirectory("binsight-literal-native-");
       const specifier = "./addon.node#literal.node";
       await Promise.all([
         writeFile(
@@ -137,7 +137,9 @@ describe("literal CommonJS paths in application graphs", () => {
 
 describe("literal CommonJS percent bytes in application graphs", () => {
   it("agrees with Node for requests whose literal names contain %2e or %2F", async () => {
-    const root = await createTestTempDirectory("rea-literal-percent-require-");
+    const root = await createTestTempDirectory(
+      "binsight-literal-percent-require-",
+    );
     const files = {
       "app/lit%2eb.js": "module.exports = 'lit%2eb.js';",
       "app/x%2Fy.js": "module.exports = 'x%2Fy.js';",
@@ -199,8 +201,12 @@ describe("literal CommonJS percent bytes in application graphs", () => {
 });
 
 it("reports a present non-JavaScript require target as unavailable with inventory identity", async () => {
-  const present = await createTestTempDirectory("rea-require-opaque-present-");
-  const absent = await createTestTempDirectory("rea-require-opaque-absent-");
+  const present = await createTestTempDirectory(
+    "binsight-require-opaque-present-",
+  );
+  const absent = await createTestTempDirectory(
+    "binsight-require-opaque-absent-",
+  );
   const bytes = Buffer.from([0xde, 0xc0, 0x17, 0x0b, 0x00, 0x01, 0x02]);
   const main = 'require("./core.jsc");';
   await Promise.all([

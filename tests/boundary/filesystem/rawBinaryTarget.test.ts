@@ -14,7 +14,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("raw-binary admission", () => {
   it("preserves the requested raw path for Windows reparse admission", async () => {
-    const directory = await createTestTempDirectory("rea-raw-linked-");
+    const directory = await createTestTempDirectory("binsight-raw-linked-");
     const actual = join(directory, "actual");
     const linked = join(directory, "linked");
     await mkdir(actual);
@@ -45,7 +45,7 @@ describe("raw-binary admission", () => {
     });
   });
   it("requires explicit architecture and entry even with a misleading suffix", async () => {
-    const directory = await createTestTempDirectory("rea-raw-target-");
+    const directory = await createTestTempDirectory("binsight-raw-target-");
     const path = join(directory, "fixture.js");
     const bytes = Buffer.from("1eff2fe1", "hex");
     await writeFile(path, bytes);
@@ -74,7 +74,7 @@ describe("raw-binary admission", () => {
     expect(detected.ok && detected.value.format).not.toBe("raw-binary");
   });
   it("rejects raw-binary without architecture and entry", async () => {
-    const directory = await createTestTempDirectory("rea-raw-missing-");
+    const directory = await createTestTempDirectory("binsight-raw-missing-");
     const path = join(directory, "fixture.bin");
     await writeFile(path, Buffer.from("c3", "hex"));
     expect(
@@ -92,7 +92,7 @@ describe("raw-binary admission", () => {
     });
   });
   it("rejects architecture without format=raw-binary", async () => {
-    const directory = await createTestTempDirectory("rea-raw-unpaired-");
+    const directory = await createTestTempDirectory("binsight-raw-unpaired-");
     const path = join(directory, "fixture.bin");
     await writeFile(path, Buffer.from("c3", "hex"));
     expect(
@@ -111,7 +111,7 @@ describe("raw-binary admission", () => {
     });
   });
   it("rejects an empty image", async () => {
-    const directory = await createTestTempDirectory("rea-raw-empty-");
+    const directory = await createTestTempDirectory("binsight-raw-empty-");
     const path = join(directory, "fixture.bin");
     await writeFile(path, Buffer.alloc(0));
     expect(
@@ -125,7 +125,7 @@ describe("raw-binary admission", () => {
     ).toMatchObject({ ok: false, error: { _tag: "BinaryTargetError" } });
   });
   it("rejects a contradictory target kind", async () => {
-    const directory = await createTestTempDirectory("rea-raw-kind-");
+    const directory = await createTestTempDirectory("binsight-raw-kind-");
     const path = join(directory, "fixture.bin");
     await writeFile(path, Buffer.from("c3", "hex"));
     expect(

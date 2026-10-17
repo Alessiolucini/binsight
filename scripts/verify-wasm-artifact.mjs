@@ -59,12 +59,14 @@ const tool = (name, args, cwd) =>
   });
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const run = createVerifierRun();
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-wabt-verifier-" });
+const root = await PrivateRuntimeRoot.create({
+  prefix: "binsight-wabt-verifier-",
+});
 // Keep provider scratch outside the leased private input root. On Windows the
 // root's retained DELETE handle blocks child temp creation beneath that root.
 let childTempRoot;
 try {
-  childTempRoot = await mkdtemp(join(tmpdir(), "rea-wabt-child-temp-"));
+  childTempRoot = await mkdtemp(join(tmpdir(), "binsight-wabt-child-temp-"));
 } catch (cause) {
   try {
     await root.close();
@@ -421,7 +423,7 @@ try {
 try {
   assert.ok(
     !(await readdir(childTempRoot)).some((name) =>
-      name.startsWith("rea-wabt-"),
+      name.startsWith("binsight-wabt-"),
     ),
     "Provider workspace leaked",
   );

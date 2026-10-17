@@ -26,11 +26,11 @@ export async function verifyBrowserSourceMap(
   let primaryError;
   try {
     site = await startBrowserSourceMapSite();
-    root = await mkdtemp(join(tmpdir(), "rea-browser-source-map-"));
+    root = await mkdtemp(join(tmpdir(), "binsight-browser-source-map-"));
     const env = {
       ...process.env,
       REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-provider/hopper",
     };
     const cli = async (...args) => {
       const { stdout } = await promisify(execFile)(

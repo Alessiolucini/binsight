@@ -39,9 +39,11 @@ type PolicyTarget = {
 /** Owns only its frame scripts and registration wrappers, never caller-owned workers. */
 export class PlaywrightScenarioServiceWorkers {
   private readonly marker = JSON.stringify(
-    `rea-service-workers-${randomUUID()}`,
+    `binsight-service-workers-${randomUUID()}`,
   );
-  private readonly restoreKey = JSON.stringify(`rea-restore-${randomUUID()}`);
+  private readonly restoreKey = JSON.stringify(
+    `binsight-restore-${randomUUID()}`,
+  );
   private readonly secret = JSON.stringify(randomUUID());
   #initialization: Promise<void> | undefined;
   #restoration: Promise<void> | undefined;

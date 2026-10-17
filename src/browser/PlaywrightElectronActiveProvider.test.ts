@@ -340,7 +340,7 @@ it("retains the initial snapshot when the final state read fails", async () => {
 });
 
 it("rejects active capture before launch when EnableNodeCliInspectArguments fuse is disabled", async () => {
-  const root = await createTestTempDirectory("rea-active-provider-fuse-");
+  const root = await createTestTempDirectory("binsight-active-provider-fuse-");
   const disabledBinary = join(root, "disabled-electron");
   await writeFile(disabledBinary, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
 

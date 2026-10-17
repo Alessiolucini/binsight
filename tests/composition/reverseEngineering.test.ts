@@ -20,7 +20,7 @@ describe("reverse engineering command services", () => {
   });
 
   it("uses compatible local DWARF link flags and disables debuginfod through the environment", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-reverse-tools-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-reverse-tools-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
     const calls: {
@@ -70,7 +70,7 @@ describe("reverse engineering command services", () => {
 
   it("rejects non-regular artifacts without launching the provider", async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-reverse-special-file-"),
+      join(tmpdir(), "binsight-reverse-special-file-"),
     );
     let invoked = false;
     const service = new ReverseEngineeringService({
@@ -99,7 +99,7 @@ describe("reverse engineering command services", () => {
 
   it("classifies captured spawn failures instead of reporting provider evidence", async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-objdump-spawn-failure-"),
+      join(tmpdir(), "binsight-objdump-spawn-failure-"),
     );
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");
@@ -133,7 +133,9 @@ describe("reverse engineering command services", () => {
   });
 
   it("marks max-buffer termination as unknown completion while retaining output", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-objdump-max-buffer-"));
+    const directory = await mkdtemp(
+      join(tmpdir(), "binsight-objdump-max-buffer-"),
+    );
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");
     const service = new ReverseEngineeringService({
@@ -168,7 +170,9 @@ describe("reverse engineering command services", () => {
 });
 
 it("uses one selected environment snapshot for provider selection and execution", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-environment-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-provider-environment-"),
+  );
   const path = join(directory, "fixture.bin");
   await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
   const selectedEnvironment = {
@@ -208,7 +212,9 @@ it("uses one selected environment snapshot for provider selection and execution"
 });
 
 it("marks signal-terminated provider commands as unknown completion", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-signal-exit-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-provider-signal-exit-"),
+  );
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   let invocation = 0;
@@ -275,7 +281,7 @@ it("marks signal-terminated provider commands as unknown completion", async () =
 
 describe("Rizin command service", () => {
   it("runs Rizin with user scripts suppressed while retaining plugins and preserves nonzero output", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-rizin-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");
     const calls: { command: string; args: readonly string[] }[] = [];
@@ -335,7 +341,7 @@ describe("Rizin command service", () => {
   });
 
   it("rejects multiline Rizin command input before launching the provider", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-input-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-rizin-input-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");
     let invoked = false;
@@ -359,7 +365,7 @@ describe("Rizin command service", () => {
   });
 
   it("preserves pre and post artifact digests when an unrestricted Rizin command changes the file", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-mutation-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-rizin-mutation-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, "before");
     const service = new ReverseEngineeringService({
@@ -395,7 +401,9 @@ describe("Rizin command service", () => {
 });
 
 it("retains partial Evidence when a provider command times out", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-rizin-timeout-partial-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-rizin-timeout-partial-"),
+  );
   const path = join(directory, "fixture.bin");
   await writeFile(path, "before");
   const service = new ReverseEngineeringService({
@@ -440,7 +448,7 @@ it("retains partial Evidence when a provider command times out", async () => {
 
 it("preserves raw byte counts when cancellation rejects invalid UTF-8 output", async () => {
   const directory = await mkdtemp(
-    join(tmpdir(), "rea-rizin-abort-invalid-utf8-"),
+    join(tmpdir(), "binsight-rizin-abort-invalid-utf8-"),
   );
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
@@ -482,7 +490,9 @@ it("preserves raw byte counts when cancellation rejects invalid UTF-8 output", a
 });
 
 it("preserves provider facts when cancellation interrupts the post-run digest", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-rizin-digest-cancel-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-rizin-digest-cancel-"),
+  );
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const controller = new AbortController();
@@ -534,7 +544,7 @@ it("preserves provider facts when cancellation interrupts the post-run digest", 
 });
 
 it("marks signal-terminated provider output incomplete", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-rizin-signal-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-rizin-signal-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const service = new ReverseEngineeringService({

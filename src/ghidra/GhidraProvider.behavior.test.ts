@@ -441,7 +441,7 @@ describe("Ghidra platform support", () => {
     "records explicit Windows $architecture processor selection without claiming loader selection",
     async ({ architecture, languageId }) => {
       const directory = await mkdtemp(
-        join(tmpdir(), "rea-arm-profile-language-"),
+        join(tmpdir(), "binsight-arm-profile-language-"),
       );
       onTestFinished(() => rm(directory, { recursive: true, force: true }));
       const languages = join(
@@ -805,7 +805,7 @@ describe("Ghidra Windows PE fixture admission", () => {
         const path = join(
           root,
           "build/fixtures",
-          `rea-ghidra-windows${suffix}.${dll ? "dll" : "exe"}`,
+          `binsight-ghidra-windows${suffix}.${dll ? "dll" : "exe"}`,
         );
         const bytes = await readFile(path);
         const metadata = parseExecutableHeader(bytes, "x64");
@@ -2032,7 +2032,7 @@ describe("Ghidra NativeAOT snapshot budget", () => {
 });
 
 const sessionInfo = () => ({
-  name: "REA Ghidra bridge" as const,
+  name: "BinSight Ghidra bridge" as const,
   run_id: "11111111-1111-4111-8111-111111111111",
   profile_digest: "a".repeat(64),
   provider: { id: "ghidra" as const, version: "12.1.4" },
@@ -2193,7 +2193,7 @@ describe("Ghidra extension failures", () => {
     "preserves %s recovery diagnostics and closes without restarting",
     async (status) => {
       const directory = await mkdtemp(
-        join(tmpdir(), "rea-provider-extension-"),
+        join(tmpdir(), "binsight-provider-extension-"),
       );
       try {
         const jar = join(directory, "addon.jar");
@@ -2406,7 +2406,7 @@ describe("Ghidra analysis seeds and configured language", () => {
   const seedSession = async (
     report: (sha256: string) => GhidraSeedReport | undefined,
   ) => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-provider-seeds-"));
+    const directory = await mkdtemp(join(tmpdir(), "binsight-provider-seeds-"));
     const seeds = join(directory, "seeds.tsv");
     await writeFile(seeds, "0x401000\tfunction\tentry\n0x401010\tcode\n");
     const config = parseConfig({
@@ -2458,7 +2458,7 @@ describe("Ghidra analysis seeds and configured language", () => {
     };
   };
   const applied = (sha256: string): GhidraSeedReport => ({
-    format: "rea-ghidra-seeds-v1",
+    format: "binsight-ghidra-seeds-v1",
     sha256,
     entries: 2,
     function_created: 1,
@@ -2759,7 +2759,7 @@ describe("Ghidra queries after the owned provider is lost", () => {
     expect(projected.message).toContain("exited with code 137");
     expect(projected.message).toContain("Call open_binary");
     expect(projected.remediation.action).toContain("Call open_binary");
-    expect(projected.remediation.action).not.toContain("rea doctor");
+    expect(projected.remediation.action).not.toContain("binsight doctor");
   });
 
   it("tells the caller to reopen the target when the bridge became unreachable", async () => {
@@ -2779,7 +2779,7 @@ describe("Ghidra queries after the owned provider is lost", () => {
     if (result.ok) return;
     const projected = projectAnalysisError(result.error);
     expect(projected.message).not.toContain("Call open_binary");
-    expect(projected.remediation.action).toContain("rea doctor");
+    expect(projected.remediation.action).toContain("binsight doctor");
   });
 
   it("keeps the generic failure when the provider is not known to be lost", async () => {
@@ -2788,7 +2788,7 @@ describe("Ghidra queries after the owned provider is lost", () => {
     expect(result.ok).toBe(false);
     if (result.ok) return;
     expect(projectAnalysisError(result.error).remediation.action).toContain(
-      "rea doctor",
+      "binsight doctor",
     );
   });
 

@@ -48,7 +48,7 @@ const verifyManagedArtifact = async ({ cli, managedPath, environment }) => {
   );
   if (
     managedArtifact.operation !== "inspect_managed_artifact" ||
-    managedArtifact.provider?.id !== "rea-dotnet-static" ||
+    managedArtifact.provider?.id !== "binsight-dotnet-static" ||
     managedArtifact.normalized_result?.classification?.status !== "managed"
   )
     throw new Error("packaged managed artifact CLI failed");
@@ -113,7 +113,7 @@ const verifyManagedReconstruction = async ({
   );
   if (
     managedReconstruction.operation !== "import_managed_reconstruction" ||
-    managedReconstruction.provider?.id !== "rea-dotnet-workflows" ||
+    managedReconstruction.provider?.id !== "binsight-dotnet-workflows" ||
     managedReconstruction.normalized_result?.executed !== false ||
     managedReconstruction.normalized_result?.methods?.[0]?.validation
       ?.canonical_observation !== false
@@ -170,7 +170,7 @@ const verifyManagedApplicationGraph = async ({
   );
   if (
     managedApplicationGraph.operation !== "project_managed_application_graph" ||
-    managedApplicationGraph.provider?.id !== "rea-dotnet-workflows" ||
+    managedApplicationGraph.provider?.id !== "binsight-dotnet-workflows" ||
     managedApplicationGraph.confidence !== "inferred" ||
     managedApplicationGraph.normalized_result?.summary?.pinvoke_imports !== 1 ||
     managedApplicationGraph.normalized_result?.graph?.schema !==
@@ -193,8 +193,8 @@ const managedEvidence = (output, operation) => {
       format: "pe",
     },
     {
-      id: "rea-dotnet-static",
-      name: "REA managed static analysis provider",
+      id: "binsight-dotnet-static",
+      name: "BinSight managed static analysis provider",
       version: "1",
     },
     {
@@ -256,7 +256,7 @@ const verifyManagedNativeVerification = async ({
   if (
     managedNativeVerification.operation !==
       "verify_managed_native_boundaries" ||
-    managedNativeVerification.provider?.id !== "rea-dotnet-workflows" ||
+    managedNativeVerification.provider?.id !== "binsight-dotnet-workflows" ||
     managedNativeVerification.normalized_result?.summary?.verified !== 1 ||
     managedNativeVerification.normalized_result?.algorithm
       ?.token_to_address_mapping !== "not-inferred"
@@ -279,7 +279,7 @@ const verifyManagedComparison = async ({
   );
   if (
     managedComparison.operation !== "compare_managed_members" ||
-    managedComparison.provider?.id !== "rea-dotnet-workflows" ||
+    managedComparison.provider?.id !== "binsight-dotnet-workflows" ||
     managedComparison.normalized_result?.algorithm?.name_matching !==
       "exact-signature-fallback"
   )

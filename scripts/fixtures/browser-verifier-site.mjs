@@ -166,11 +166,11 @@ export async function startBrowserVerifierSite() {
     }
     response.setHeader("content-type", "text/html");
     response.setHeader("set-cookie", [
-      "rea-root-cookie=root-fixture; Path=/; SameSite=Lax",
-      "rea-app-cookie=app-fixture; Path=/app; SameSite=Lax",
+      "binsight-root-cookie=root-fixture; Path=/; SameSite=Lax",
+      "binsight-app-cookie=app-fixture; Path=/app; SameSite=Lax",
     ]);
     response.end(
-      '<!doctype html><html><head><title>REA browser verifier</title><base href="assets/"></head><body><main><h1>Browser evidence</h1><a href="guide">Guide</a><button aria-label="ax-private-label-value">Verify</button><form action=""></form><form action=" "></form><button formaction=""></button><input formaction=""></main><script type="module" src="/app.js?token=script-query-secret"></script></body></html>',
+      '<!doctype html><html><head><title>BinSight browser verifier</title><base href="assets/"></head><body><main><h1>Browser evidence</h1><a href="guide">Guide</a><button aria-label="ax-private-label-value">Verify</button><form action=""></form><form action=" "></form><button formaction=""></button><input formaction=""></main><script type="module" src="/app.js?token=script-query-secret"></script></body></html>',
     );
   });
   const webSockets = new WebSocketServer({ noServer: true });
@@ -209,13 +209,13 @@ export async function startBrowserVerifierSite() {
 }
 
 const browserScript = (port) => `
-  export const reaSourceMarker = "approved-source-marker";
+  export const binsightSourceMarker = "approved-source-marker";
   export const verifiedRoute = { path: "/verified-route" };
-  localStorage.setItem("rea-storage-key", "storage-secret-value");
-  indexedDB.open("rea-browser-db", 1);
-  caches.open("rea-browser-cache");
+  localStorage.setItem("binsight-storage-key", "storage-secret-value");
+  indexedDB.open("binsight-browser-db", 1);
+  caches.open("binsight-browser-cache");
   const observe = () => {
-    console.log("rea-browser-observation", "authorization=Bearer console-secret-value");
+    console.log("binsight-browser-observation", "authorization=Bearer console-secret-value");
     fetch("/api?token=network-secret-value", {
       method: "POST",
       headers: {
@@ -255,10 +255,10 @@ const sourceMap = () =>
   JSON.stringify({
     version: 3,
     file: "app.js",
-    names: ["reaSourceMarker"],
+    names: ["binsightSourceMarker"],
     sources: ["../src/main.ts"],
     sourcesContent: [
-      "import './dependency.ts';\nexport const reaSourceMarker = 'approved-source-marker';",
+      "import './dependency.ts';\nexport const binsightSourceMarker = 'approved-source-marker';",
     ],
     mappings: "AAAAA",
   });

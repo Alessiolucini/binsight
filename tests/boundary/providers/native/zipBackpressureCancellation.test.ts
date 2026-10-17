@@ -7,7 +7,7 @@ import { ZipArtifactReader } from "../../../../src/artifacts/ZipArtifactReader.j
 import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js";
 
 it("cancels a ZIP read while its consumer is applying backpressure", async () => {
-  const root = await createTestTempDirectory("rea-zip-backpressure-");
+  const root = await createTestTempDirectory("binsight-zip-backpressure-");
   const path = join(root, "fixture.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("large.txt", new TextReader("x".repeat(2 * 1024 * 1024)), {

@@ -9,7 +9,7 @@ import { analyzeJavaScriptApplication } from "../../../support/javascriptApplica
 
 it("classifies overloaded open calls from lexical receiver facts", async () => {
   const inputPath = await createTestTempDirectory(
-    "rea-js-open-classification-",
+    "binsight-js-open-classification-",
   );
   await writeFile(
     join(inputPath, "app.js"),

@@ -29,7 +29,7 @@ describe.each([
   it.each(["", "\uFEFF"])(
     "preflights, configures, and reads back prefix %j in an isolated home",
     async (bom) => {
-      const home = await createTestTempDirectory("rea-client-config-bom-");
+      const home = await createTestTempDirectory("binsight-client-config-bom-");
       const client = supportedClients(home, "linux", {}).find(
         (candidate) => candidate.name === name,
       );
@@ -46,16 +46,16 @@ describe.each([
       ).replaceAll("\n", "\r\n")}\r\n`;
       await mkdir(dirname(client.configPath), { recursive: true });
       await writeFile(client.configPath, original);
-      const currentCommandPath = join(home, "rea");
+      const currentCommandPath = join(home, "binsight");
       const command = [currentCommandPath, "mcp"];
       expect(await inspectClientConfiguration(client, {}, command)).toEqual({
         status: "update",
-        backupPath: `${client.configPath}.rea.backup`,
+        backupPath: `${client.configPath}.binsight.backup`,
       });
       expect(await clientConfigurationAligned(client, {}, command)).toBe(false);
       expect(await configureClientConfiguration(client, {}, command)).toEqual({
         status: "configured",
-        backupPath: `${client.configPath}.rea.backup`,
+        backupPath: `${client.configPath}.binsight.backup`,
       });
       const updated = await readFile(client.configPath, "utf8");
       expect(
@@ -66,7 +66,7 @@ describe.each([
           label: "left\uFEFFright",
           [serversKey]: {
             other: { command: "other" },
-            rea: clientRegistrationEntry(client.format, command, {}),
+            binsight: clientRegistrationEntry(client.format, command, {}),
           },
           theme: "dark",
         },
@@ -93,18 +93,18 @@ describe.each([
         status: "unchanged",
       });
       expect(await readFile(client.configPath)).toEqual(Buffer.from(updated));
-      expect(await readFile(`${client.configPath}.rea.backup`)).toEqual(
+      expect(await readFile(`${client.configPath}.binsight.backup`)).toEqual(
         Buffer.from(original),
       );
     },
   );
 });
 
-it.each(['\uFEFF{"servers": {"rea": @}}', '\uFEFF{"setting":\uFEFFtrue}'])(
+it.each(['\uFEFF{"servers": {"binsight": @}}', '\uFEFF{"setting":\uFEFFtrue}'])(
   "rejects malformed BOM placement without mutation: %j",
   async (original) => {
     const home = await createTestTempDirectory(
-      "rea-client-config-bom-invalid-",
+      "binsight-client-config-bom-invalid-",
     );
     const configPath = join(home, "mcp.json");
     const client = { name: "vscode", format: "vscode", configPath } as const;
@@ -115,10 +115,10 @@ it.each(['\uFEFF{"servers": {"rea": @}}', '\uFEFF{"setting":\uFEFFtrue}'])(
     );
 
     expect(
-      await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+      await inspectClientConfiguration(client, {}, ["binsight", "mcp"]),
     ).toMatchObject({ status: "invalid" });
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
     expect(await readFile(configPath)).toEqual(Buffer.from(original));
     expect(await readdir(home)).toEqual(["mcp.json"]);
@@ -126,7 +126,9 @@ it.each(['\uFEFF{"servers": {"rea": @}}', '\uFEFF{"setting":\uFEFFtrue}'])(
 );
 
 it("preserves BOM-prefixed JSONC values and comments through update and removal", async () => {
-  const home = await createTestTempDirectory("rea-client-config-bom-cycle-");
+  const home = await createTestTempDirectory(
+    "binsight-client-config-bom-cycle-",
+  );
   const client = supportedClients(home, "linux", {}).find(
     (candidate) => candidate.name === "cursor",
   );
@@ -140,7 +142,7 @@ it("preserves BOM-prefixed JSONC values and comments through update and removal"
 
   if (CURRENT_ENTRYPOINT_PATH === undefined)
     throw new Error("test runner entrypoint is unavailable");
-  const firstCommand = ["rea", "mcp"];
+  const firstCommand = ["binsight", "mcp"];
   const updatedCommand = [process.execPath, CURRENT_ENTRYPOINT_PATH, "mcp"];
   expect(
     await configureClientConfiguration(client, {}, firstCommand),
@@ -151,7 +153,7 @@ it("preserves BOM-prefixed JSONC values and comments through update and removal"
   const updated = await readFile(client.configPath, "utf8");
   expect(parseClientConfiguration(updated, client.format).servers).toEqual({
     other: { command: "other\uFEFFtool" },
-    rea: clientRegistrationEntry(client.format, updatedCommand, {}),
+    binsight: clientRegistrationEntry(client.format, updatedCommand, {}),
   });
 
   expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
@@ -166,7 +168,7 @@ it("preserves BOM-prefixed JSONC values and comments through update and removal"
   expect(parseClientConfiguration(removed, client.format).document).toEqual(
     parseClientConfiguration(original, client.format).document,
   );
-  expect(await readFile(`${client.configPath}.rea.backup`)).toEqual(
+  expect(await readFile(`${client.configPath}.binsight.backup`)).toEqual(
     Buffer.from(original),
   );
 });
@@ -174,7 +176,7 @@ it("preserves BOM-prefixed JSONC values and comments through update and removal"
 it.each(["", "\n  \n", "\uFEFF"])(
   "configures an empty client file %j as a new document",
   async (original) => {
-    const home = await createTestTempDirectory("rea-client-config-empty-");
+    const home = await createTestTempDirectory("binsight-client-config-empty-");
     const client = supportedClients(home, "linux", {}).find(
       (candidate) => candidate.name === "antigravity",
     );
@@ -182,18 +184,20 @@ it.each(["", "\n  \n", "\uFEFF"])(
       throw new Error("missing Antigravity JSON config");
     await mkdir(dirname(client.configPath), { recursive: true });
     await writeFile(client.configPath, original);
-    const command = [join(home, "rea"), "mcp"];
+    const command = [join(home, "binsight"), "mcp"];
 
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "update",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.binsight.backup`,
     });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.binsight.backup`,
     });
     expect(JSON.parse(await readFile(client.configPath, "utf8"))).toEqual({
-      mcpServers: { rea: clientRegistrationEntry(client.format, command, {}) },
+      mcpServers: {
+        binsight: clientRegistrationEntry(client.format, command, {}),
+      },
     });
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "already_current",

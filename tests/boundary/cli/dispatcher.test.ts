@@ -89,11 +89,11 @@ describe("executable dispatcher", () => {
         expect(result).toMatchObject({
           exitCode: 1,
           stderr: expect.stringContaining(
-            "REA's compiled runtime is missing. Run `npm ci && npm run build:cached` in",
+            "BinSight's compiled runtime is missing. Run `npm ci && npm run build:cached` in",
           ),
         });
         expect(result.stderr).toContain(
-          "If this is an installed package, reinstall rea-agents.",
+          "If this is an installed package, reinstall binsight.",
         );
         expect(result).toMatchObject({
           stderr: expect.not.stringContaining("ERR_MODULE_NOT_FOUND"),

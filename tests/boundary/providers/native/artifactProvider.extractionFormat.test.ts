@@ -13,7 +13,7 @@ import type { BinaryTarget } from "../../../../src/domain/binaryTargetTypes.js";
 
 describe("artifact extraction format support", () => {
   it("refuses unsupported formats before inventory or output", async () => {
-    const root = await createTestTempDirectory("rea-extract-format-");
+    const root = await createTestTempDirectory("binsight-extract-format-");
     const image = join(root, "Image.dmg");
     await writeFile(image, "not mounted");
     const alias = join(root, "Alias.dmg");
@@ -48,7 +48,9 @@ describe("artifact extraction format support", () => {
   it.each(["zip", "hap", "hsp", "app-pack"] as const)(
     "extracts the ZIP-backed %s package family that inventory already supports",
     async (format) => {
-      const root = await createTestTempDirectory("rea-extract-zip-family-");
+      const root = await createTestTempDirectory(
+        "binsight-extract-zip-family-",
+      );
       const archive = join(
         root,
         `Payload.${format === "app-pack" ? "app" : format}`,

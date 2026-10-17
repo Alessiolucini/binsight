@@ -55,7 +55,7 @@ const revisionBundle = () => {
 cliTest(
   "reports standalone import counts for every unknown revision",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-import-");
+    const root = await createTestTempDirectory("binsight-evidence-import-");
     const path = join(root, "bundle.json");
     await writeFile(path, JSON.stringify(revisionBundle()));
     const result = await cli.run({
@@ -69,7 +69,9 @@ cliTest(
 cliTest(
   "reports a standalone Evidence record as the wrong input file kind",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-record-input-");
+    const root = await createTestTempDirectory(
+      "binsight-evidence-record-input-",
+    );
     const path = join(root, "record.json");
     const record = revisionBundle().records[0];
     if (record === undefined) throw new Error("Missing fixture Evidence");
@@ -90,7 +92,9 @@ cliTest(
 cliTest(
   "rejects altered Evidence and incomplete unknown history before reporting counts",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-import-invalid-");
+    const root = await createTestTempDirectory(
+      "binsight-evidence-import-invalid-",
+    );
     const path = join(root, "bundle.json");
     const bundle = revisionBundle();
     for (const invalid of [

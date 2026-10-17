@@ -119,7 +119,9 @@ const resolveAlias = (
 
 describe("literal package import keys compared with Node", () => {
   it("matches literal imports keys containing path-like bytes in both Node loaders", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-literal-");
+    const root = await createTestTempDirectory(
+      "binsight-import-alias-literal-",
+    );
     const specifiers = ["#/x", "#x%2Fy", "#x%2Ey", "#x\\y", "#x\0y"];
     const contents = await writeTree(root, {
       "package.json": JSON.stringify({
@@ -156,7 +158,7 @@ describe("literal package import keys compared with Node", () => {
   });
 
   it("still rejects unsafe selected targets for literal imports keys", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-target-");
+    const root = await createTestTempDirectory("binsight-import-alias-target-");
     const contents = await writeTree(root, {
       "package.json": JSON.stringify({
         imports: { "#x%2Fy": "./nested%2Ftarget.cjs" },
@@ -178,7 +180,9 @@ describe("literal package import keys compared with Node", () => {
 
 describe("inactive package target arrays compared with Node", () => {
   it("continues past inactive arrays in enclosing imports and exports conditions", async () => {
-    const root = await createTestTempDirectory("rea-inactive-package-array-");
+    const root = await createTestTempDirectory(
+      "binsight-inactive-package-array-",
+    );
     const conditional = {
       node: [{ browser: "./browser.cjs" }],
       default: "./fallback.cjs",
@@ -186,7 +190,7 @@ describe("inactive package target arrays compared with Node", () => {
     const nested = {
       node: [
         [{ browser: "./browser.cjs" }],
-        { "rea-inactive": "./inactive.cjs" },
+        { "binsight-inactive": "./inactive.cjs" },
       ],
       default: "./fallback.cjs",
     };
@@ -234,7 +238,9 @@ describe("inactive package target arrays compared with Node", () => {
 
 describe("package target refusal evidence compared with Node", () => {
   it("keeps empty, null, invalid, and unmatched array outcomes distinct", async () => {
-    const root = await createTestTempDirectory("rea-inactive-package-refusal-");
+    const root = await createTestTempDirectory(
+      "binsight-inactive-package-refusal-",
+    );
     const inactive = { browser: "./browser.cjs" };
     const contents = await writeTree(root, {
       "package.json": JSON.stringify({
@@ -250,7 +256,7 @@ describe("package target refusal evidence compared with Node", () => {
           },
           "#unmatched": [inactive],
           "#unmatched-nested": [
-            [inactive, { "rea-inactive": "./inactive.cjs" }],
+            [inactive, { "binsight-inactive": "./inactive.cjs" }],
           ],
           "#unmatched-active": { node: [inactive] },
         },
@@ -301,7 +307,7 @@ describe("package target refusal evidence compared with Node", () => {
         "#unmatched-nested",
         "ERR_PACKAGE_IMPORT_NOT_DEFINED",
         "external",
-        "it declares browser, rea-inactive.",
+        "it declares browser, binsight-inactive.",
       ],
       [
         "#unmatched-active",
@@ -335,7 +341,9 @@ describe("package target refusal evidence compared with Node", () => {
 
 describe("package import target arrays compared with Node", () => {
   it("skips invalid parent, absolute, and URL targets before an exact fallback", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-fallback-");
+    const root = await createTestTempDirectory(
+      "binsight-import-alias-fallback-",
+    );
     const imports = {
       "#parent": ["../outside.cjs", "./fallback.cjs"],
       "#absolute": { node: [["/outside.cjs"], "./fallback.cjs"] },
@@ -375,7 +383,7 @@ describe("package import target arrays compared with Node", () => {
 
   it("preserves invalid, null, and unsupported-package outcomes in arrays", async () => {
     const root = await createTestTempDirectory(
-      "rea-import-alias-fallback-refuse-",
+      "binsight-import-alias-fallback-refuse-",
     );
     const contents = await writeTree(root, {
       "package.json": JSON.stringify({
@@ -457,7 +465,7 @@ describe("package import target arrays compared with Node", () => {
 
 describe("package import target URL normalization compared with Node", () => {
   it("normalizes targets before package-root validation and array selection", async () => {
-    const root = await createTestTempDirectory("rea-package-target-url-");
+    const root = await createTestTempDirectory("binsight-package-target-url-");
     const directory = "app space#?%λ";
     const imports = {
       "#tab-escape": ["./.\t./outside.cjs", "./fallback.cjs"],
@@ -507,7 +515,7 @@ describe("package import target URL normalization compared with Node", () => {
 
   it("keeps URL decoding and missing-file failures after array selection", async () => {
     const root = await createTestTempDirectory(
-      "rea-package-target-url-refusal-",
+      "binsight-package-target-url-refusal-",
     );
     const contents = await writeTree(root, {
       "package.json": JSON.stringify({
@@ -589,7 +597,7 @@ describe("package import target URL normalization compared with Node", () => {
 
 describe("package import aliases compared with Node", () => {
   it("matches Node require and import for an exact root alias", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-root-");
+    const root = await createTestTempDirectory("binsight-import-alias-root-");
     const files = {
       "package.json": JSON.stringify({
         name: "app",
@@ -619,7 +627,7 @@ describe("package import aliases compared with Node", () => {
   });
 
   it("matches Node when a nested package has its own imports map", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-nested-");
+    const root = await createTestTempDirectory("binsight-import-alias-nested-");
     const files = {
       "package.json": JSON.stringify({
         name: "app",
@@ -664,7 +672,7 @@ describe("package import aliases compared with Node", () => {
   });
 
   it("matches Node when a nested package does not define the alias", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-scope-");
+    const root = await createTestTempDirectory("binsight-import-alias-scope-");
     const files = {
       "package.json": JSON.stringify({
         name: "app",
@@ -703,7 +711,7 @@ describe("package import aliases compared with Node", () => {
 
 describe("package import alias refusals compared with Node", () => {
   it("matches Node refusal for a missing key, explicit null, and reserved specifier", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-refuse-");
+    const root = await createTestTempDirectory("binsight-import-alias-refuse-");
     const files = {
       "package.json": JSON.stringify({
         name: "app",
@@ -747,7 +755,7 @@ describe("package import alias refusals compared with Node", () => {
   });
 
   it("matches Node when an import condition selects a different exact file", async () => {
-    const root = await createTestTempDirectory("rea-import-alias-cond-");
+    const root = await createTestTempDirectory("binsight-import-alias-cond-");
     const files = {
       "package.json": JSON.stringify({
         name: "app",

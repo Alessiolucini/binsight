@@ -166,7 +166,7 @@ export const readMipsElfMetadata = async (
         const size = u32(contents.value, position + 20);
         if (size === 0 || size > MIPS_GNU_ATTRIBUTES_MAX_BYTES)
           return err(
-            `MIPS GNU attribute section size ${size} is outside REA's inspected bound of ${MIPS_GNU_ATTRIBUTES_MAX_BYTES} bytes`,
+            `MIPS GNU attribute section size ${size} is outside BinSight's inspected bound of ${MIPS_GNU_ATTRIBUTES_MAX_BYTES} bytes`,
           );
         const section = await read(
           u32(contents.value, position + 16),

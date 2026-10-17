@@ -281,7 +281,7 @@ const publishFile = async (
   cancellation?: TextWriteCancellation,
 ): Promise<number> => {
   const stagingDirectory = await mkdtemp(
-    resolve(dirname(destination), ".rea-write-"),
+    resolve(dirname(destination), ".binsight-write-"),
   );
   const owner = await OwnedStagedOutput.create(stagingDirectory);
   let outcome: Result<PublishedEvidenceFile, unknown>;

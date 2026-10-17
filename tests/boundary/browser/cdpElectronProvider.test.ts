@@ -254,7 +254,9 @@ describe("CdpElectronProvider target selection", () => {
 
 describe("CdpElectronProvider packaged pages", () => {
   it("lists and inspects packaged pages served from inside app.asar", async () => {
-    const root = await createTestTempDirectory("rea-electron-asar-provider-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-asar-provider-",
+    );
     temporary.push(root);
     const source = join(root, "source");
     await mkdir(source);
@@ -569,7 +571,7 @@ describe("CdpElectronProvider script source capture", () => {
 });
 
 const electronFixture = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-provider-");
+  const root = await createTestTempDirectory("binsight-electron-provider-");
   temporary.push(root);
   await writeFile(join(root, "index.html"), "<script src='app.js'></script>");
   await writeFile(join(root, "app.js"), "export const app = true;");

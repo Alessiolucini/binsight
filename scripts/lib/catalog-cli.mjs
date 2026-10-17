@@ -5,7 +5,9 @@ import { z } from "zod";
 export const createCliInventory = (cli) => {
   const commands = Cli.toCommands.get(cli);
   if (commands === undefined)
-    throw new Error("Incur did not expose the registered REA CLI commands");
+    throw new Error(
+      "Incur did not expose the registered BinSight CLI commands",
+    );
   const primary = [];
   const aliases = [];
   for (const [name, entry] of commands) {
@@ -39,7 +41,9 @@ export const cliCommandOptionNames = (cli, name) => {
 export const cliCommandDescriptionIssues = (cli) => {
   const commands = Cli.toCommands.get(cli);
   if (commands === undefined)
-    throw new Error("Incur did not expose the registered REA CLI commands");
+    throw new Error(
+      "Incur did not expose the registered BinSight CLI commands",
+    );
   const missing = [];
   for (const [commandName, command] of commands) {
     if ("_alias" in command) continue;

@@ -8,7 +8,7 @@ import { WABT_WORKFLOW_TIMEOUT_MS } from "./lib/wabt-verifier-timeouts.mjs";
 import { verifyPackagePack } from "./verify-package-pack.mjs";
 
 const root = await PrivateRuntimeRoot.create({
-  prefix: "rea-wabt-package-verifier-",
+  prefix: "binsight-wabt-package-verifier-",
 });
 let primaryError;
 try {
@@ -44,7 +44,7 @@ try {
     ...(process.platform === "win32"
       ? ["node_modules"]
       : ["lib", "node_modules"]),
-    "rea-agents",
+    "binsight",
     "scripts",
     "rea.mjs",
   );

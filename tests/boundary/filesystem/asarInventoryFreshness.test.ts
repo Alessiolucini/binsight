@@ -16,7 +16,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const CONTENT = "module.exports = 42;\n";
 
 const archiveFixture = async () => {
-  const root = await createTestTempDirectory("rea-asar-freshness-");
+  const root = await createTestTempDirectory("binsight-asar-freshness-");
   const source = join(root, "source");
   const bundle = join(root, "app");
   await Promise.all([mkdir(source), mkdir(bundle)]);
@@ -37,7 +37,7 @@ const archiveFixture = async () => {
 
 describe("ASAR path boundary", () => {
   it("keeps inventory paths portable and opens nested entries from a packed archive", async () => {
-    const root = await createTestTempDirectory("rea-asar-paths-");
+    const root = await createTestTempDirectory("binsight-asar-paths-");
     const source = join(root, "source");
     await mkdir(join(source, "nested"), { recursive: true });
     await writeFile(join(source, "nested", "main.js"), CONTENT);
@@ -65,7 +65,7 @@ describe("ASAR path boundary", () => {
   it.skipIf(process.platform === "win32")(
     "reports packed ASAR symlinks without following them",
     async () => {
-      const root = await createTestTempDirectory("rea-asar-symlink-");
+      const root = await createTestTempDirectory("binsight-asar-symlink-");
       const source = join(root, "source");
       await mkdir(join(source, "nested"), { recursive: true });
       await writeFile(join(source, "nested", "main.js"), CONTENT);
@@ -90,7 +90,7 @@ describe("ASAR path boundary", () => {
   it.skipIf(process.platform === "win32")(
     "preserves literal backslashes in POSIX ASAR filenames",
     async () => {
-      const root = await createTestTempDirectory("rea-asar-backslash-");
+      const root = await createTestTempDirectory("binsight-asar-backslash-");
       const source = join(root, "source");
       await mkdir(source);
       await writeFile(join(source, "literal\\name.js"), CONTENT);
@@ -115,7 +115,7 @@ describe("ASAR path boundary", () => {
 
 describe("ASAR inventory freshness", () => {
   it("preserves missing-container I/O as an I/O failure instead of malformed format", async () => {
-    const root = await createTestTempDirectory("rea-asar-missing-");
+    const root = await createTestTempDirectory("binsight-asar-missing-");
     const reader = new AsarArtifactReader(join(root, "missing.asar"));
 
     await expect(

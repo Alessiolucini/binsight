@@ -115,7 +115,7 @@ export const runSourceMapCommand = async (
 };
 
 class OwnedCodec implements SourceMapCleanupOwner {
-  readonly #runId = `rea-source-map-${randomUUID()}`;
+  readonly #runId = `binsight-source-map-${randomUUID()}`;
   #runtime: SourceMapCodecRuntime | undefined;
   #supervisor: ProviderProcessSupervisor | undefined;
   #oversized = false;
@@ -130,7 +130,7 @@ class OwnedCodec implements SourceMapCleanupOwner {
     this.check();
     this.#runtime = await (
       this.dependencies.createRuntime ??
-      (() => PrivateRuntimeRoot.create({ prefix: "rea-source-map-" }))
+      (() => PrivateRuntimeRoot.create({ prefix: "binsight-source-map-" }))
     )();
     this.check();
     const requestPath = join(this.#runtime.path, "request.json");

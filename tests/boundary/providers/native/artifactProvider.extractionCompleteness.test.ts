@@ -18,7 +18,7 @@ import { DirectoryArtifactReader } from "../../../../src/artifacts/DirectoryArti
 it.each(["file", "directory"] as const)(
   "rolls back when an inventoried %s disappears before extraction",
   async (removedKind) => {
-    const root = await createTestTempDirectory("rea-extract-missing-");
+    const root = await createTestTempDirectory("binsight-extract-missing-");
     const source = join(root, "source");
     await mkdir(join(source, "z"), { recursive: true });
     // Equal bytes share an artifact node, but both occurrences must be copied.
@@ -48,7 +48,7 @@ it.each(["file", "directory"] as const)(
 );
 
 it("still refuses a regular file added after inventory and rolls back", async () => {
-  const root = await createTestTempDirectory("rea-extract-added-");
+  const root = await createTestTempDirectory("binsight-extract-added-");
   const source = join(root, "source");
   await mkdir(source);
   await writeFile(join(source, "a.txt"), "original\n");
@@ -63,7 +63,7 @@ it("still refuses a regular file added after inventory and rolls back", async ()
 });
 
 it("rolls back when cancellation arrives while closing the materialization reader", async () => {
-  const root = await createTestTempDirectory("rea-extract-cancel-close-");
+  const root = await createTestTempDirectory("binsight-extract-cancel-close-");
   const source = join(root, "source");
   await mkdir(source);
   await writeFile(join(source, "payload.txt"), "complete payload\n");
@@ -99,7 +99,7 @@ it("rolls back when cancellation arrives while closing the materialization reade
 });
 
 it("preserves every equal-content occurrence and copies a nested ASAR as its containing file", async () => {
-  const root = await createTestTempDirectory("rea-extract-nested-");
+  const root = await createTestTempDirectory("binsight-extract-nested-");
   const source = join(root, "source");
   const nested = join(root, "nested");
   await mkdir(source);
@@ -126,7 +126,9 @@ it("preserves every equal-content occurrence and copies a nested ASAR as its con
 });
 
 it("ignores unavailable members of a nested ASAR but refuses them as active entries", async () => {
-  const root = await createTestTempDirectory("rea-extract-nested-unpacked-");
+  const root = await createTestTempDirectory(
+    "binsight-extract-nested-unpacked-",
+  );
   const contents = join(root, "contents");
   await mkdir(join(contents, "native"), { recursive: true });
   await writeFile(join(contents, "main.js"), "export default 1;\n");

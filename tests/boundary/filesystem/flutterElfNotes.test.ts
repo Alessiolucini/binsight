@@ -33,7 +33,7 @@ it.each([
         size: 1,
       })),
     );
-    const root = await createTestTempDirectory("rea-flutter-notes-");
+    const root = await createTestTempDirectory("binsight-flutter-notes-");
     const path = join(root, "engine.so");
     await writeFile(path, image);
     const file = await open(path, "r");
@@ -62,7 +62,7 @@ it("deduplicates shared program/section notes and skips empty ranges before char
     "section",
     ranges,
   );
-  const root = await createTestTempDirectory("rea-flutter-notes-");
+  const root = await createTestTempDirectory("binsight-flutter-notes-");
   const path = join(root, "engine.so");
   await writeFile(path, image);
   const file = await open(path, "r");

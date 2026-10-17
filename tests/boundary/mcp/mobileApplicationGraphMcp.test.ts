@@ -80,7 +80,7 @@ it("advertises and executes Android and Apple inventory projections", async () =
   expect(names.has("project_android_application_graph")).toBe(true);
   expect(names.has("project_apple_application_graph")).toBe(true);
 
-  const root = await createTestTempDirectory("rea-mobile-graph-mcp-");
+  const root = await createTestTempDirectory("binsight-mobile-graph-mcp-");
   const apkInventory = parseEvidence(
     await runProviderAnalysis(await writeApk(root), "inventory_artifact", {}),
   );
@@ -92,7 +92,7 @@ it("advertises and executes Android and Apple inventory projections", async () =
     throw new Error(JSON.stringify(android, null, 2));
   expect(android.structuredContent).toMatchObject({
     operation: "project_android_application_graph",
-    provider: { id: "rea-android-application" },
+    provider: { id: "binsight-android-application" },
   });
 
   const ipaInventory = parseEvidence(
@@ -105,13 +105,13 @@ it("advertises and executes Android and Apple inventory projections", async () =
   if (apple.isError === true) throw new Error(JSON.stringify(apple, null, 2));
   expect(apple.structuredContent).toMatchObject({
     operation: "project_apple_application_graph",
-    provider: { id: "rea-apple-application" },
+    provider: { id: "binsight-apple-application" },
   });
 });
 
 it("retains Harmony unavailable components and their source Evidence through MCP", async () => {
   const client = await connect();
-  const root = await createTestTempDirectory("rea-harmony-graph-mcp-");
+  const root = await createTestTempDirectory("binsight-harmony-graph-mcp-");
   const path = join(root, "Locked.hap");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("module.json", new TextReader("{}"));

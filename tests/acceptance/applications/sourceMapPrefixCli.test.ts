@@ -12,7 +12,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "recovers retained prefixed source-map originals and byte identity through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-retained-map-prefix-");
+    const root = await createTestTempDirectory("binsight-retained-map-prefix-");
     const original = "export const answer: number = 42;";
     const mapText = `\uFEFF)]}'retained response\r\n${JSON.stringify({
       version: 3,
@@ -68,7 +68,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains nullable source-map declarations and aligned content through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-nullable-map-");
+    const root = await createTestTempDirectory("binsight-nullable-map-");
     const original = "export const answer: number = 42;";
     const unnamed = "retained source text without a declared name";
     const maps = {
@@ -192,7 +192,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "rejects non-string source-map names without inventing originals through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-invalid-map-source-");
+    const root = await createTestTempDirectory("binsight-invalid-map-source-");
     const mapText = JSON.stringify({
       version: 3,
       sources: [42, "discarded.ts"],

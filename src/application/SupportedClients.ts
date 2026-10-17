@@ -240,7 +240,7 @@ const grokBotDirectory = ({ home, env }: ClientPathContext): string => {
  * hosted computer. The data directory is only a detection marker.
  */
 export const GROK_BOT_MANUAL_REGISTRATION_REMEDIATION =
-  "Grok Bot keeps connectors in the signed-in account and runs them on its hosted computer. Setup does not write that account store, and a data-directory mcp.json is not a registration. In the Grok Bot chat, add a custom MCP server named rea that runs on the Bot's computer with `npx -y rea-agents@<version> mcp`. Do not put credentials in the command or arguments. A stdio server on this machine is not attached.";
+  "Grok Bot keeps connectors in the signed-in account and runs them on its hosted computer. Setup does not write that account store, and a data-directory mcp.json is not a registration. In the Grok Bot chat, add a custom MCP server named binsight that runs on the Bot's computer with `npx -y binsight@<version> mcp`. Do not put credentials in the command or arguments. A stdio server on this machine is not attached.";
 
 /** Remediation for a client whose connector is not a local configuration file. */
 export const manualRegistrationRemediation = (
@@ -289,7 +289,7 @@ export const registrationWriteBlocker = (
   const name = client.displayName ?? client.name;
   return msix.processView === "redirected"
     ? `This process was started from ${name}'s MSIX package ${msix.packageFamilyName}: its AppData is redirected into that package, so ${name} is running and would overwrite ${msix.privateConfigPath} from memory. Quit ${name} fully, then rerun ${operation} from a terminal that ${name} did not start.`
-    : `REA cannot tell whether ${name}'s MSIX package ${msix.packageFamilyName} started this process, because none of its files under ${dirname(msix.privateConfigPath)} could be compared with ${dirname(msix.appDataConfigPath)}. A running ${name} would overwrite the change. Open ${name} once if it has never run, quit it fully, then rerun ${operation} from a terminal that ${name} did not start.`;
+    : `BinSight cannot tell whether ${name}'s MSIX package ${msix.packageFamilyName} started this process, because none of its files under ${dirname(msix.privateConfigPath)} could be compared with ${dirname(msix.appDataConfigPath)}. A running ${name} would overwrite the change. Open ${name} once if it has never run, quit it fully, then rerun ${operation} from a terminal that ${name} did not start.`;
 };
 
 /** The MSIX package view, if any, that redirects this process's AppData writes. */

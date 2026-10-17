@@ -137,7 +137,7 @@ const assertCoverageControls = async ({
 cliTest(
   "compares fully observed roots without inventing coverage gaps through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-artifact-coverage-");
+    const root = await createTestTempDirectory("binsight-artifact-coverage-");
     const leftPath = join(root, "left.plist");
     const rightPath = join(root, "right.plist");
     await Promise.all([
@@ -241,7 +241,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32")(
   "preserves executable metadata changes for fully observed plist roots",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-artifact-mode-");
+    const root = await createTestTempDirectory("binsight-artifact-mode-");
     const leftPath = join(root, "left.plist");
     const rightPath = join(root, "right.plist");
     await Promise.all([
@@ -282,7 +282,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "retains traversal uncertainty when a directory omits special filesystem entries",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-gap-");
+    const root = await createTestTempDirectory("binsight-gap-");
     const leftPath = join(root, "l.app"),
       rightPath = join(root, "r.app");
     await Promise.all([mkdir(leftPath), mkdir(rightPath)]);
@@ -340,7 +340,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest(
   "compares fully traversed case-distinct ZIP entries while retaining materialization limits",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-case-coverage-");
+    const root = await createTestTempDirectory("binsight-case-coverage-");
     const leftPath = join(root, "left.zip"),
       rightPath = join(root, "right.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -381,7 +381,9 @@ cliTest(
 cliTest(
   "keeps unreadable encrypted ZIP content unknown with complete traversal",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-encrypted-comparison-");
+    const root = await createTestTempDirectory(
+      "binsight-encrypted-comparison-",
+    );
     const leftPath = join(root, "left.zip");
     const rightPath = join(root, "right.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());

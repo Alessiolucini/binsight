@@ -34,7 +34,7 @@ describe("onboarding documentation product facts", () => {
     expect(jsonExamples(content)).toContainEqual(
       expect.objectContaining({
         mcpServers: expect.objectContaining({
-          rea: expect.objectContaining({
+          binsight: expect.objectContaining({
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           }),

@@ -29,9 +29,11 @@ const collisionInput = async (
   const root = await applicationFixture();
   if (alternatives > 0) await writeFile(join(root, "other.js"), CAPTURED);
   const live = explicitMapping
-    ? await createTestTempDirectory("rea-runtime-content-live-")
+    ? await createTestTempDirectory("binsight-runtime-content-live-")
     : root;
-  const extra = await createTestTempDirectory("rea-runtime-content-extra-");
+  const extra = await createTestTempDirectory(
+    "binsight-runtime-content-extra-",
+  );
   await writeFile(join(extra, "app.js"), CAPTURED);
   return parseRuntimeReconciliationInput(
     reconcileJavaScriptRuntimeInputSchema.parse({
@@ -103,7 +105,9 @@ it("restricts content-and-location ambiguity to mapped candidates", async () => 
   const application = await applicationFixture();
   const cache = await applicationFixture();
   const other = await applicationFixture();
-  const live = await createTestTempDirectory("rea-runtime-content-mapped-");
+  const live = await createTestTempDirectory(
+    "binsight-runtime-content-mapped-",
+  );
   const analysis = await analyzeFixture(application);
   const mapping = [{ kind: "file-root", root: live, artifact_prefix: "" }];
   const parsed = parseRuntimeReconciliationInput(
@@ -145,7 +149,7 @@ it.each([false, true])(
     const root = await applicationFixture();
     await writeFile(join(root, "other.js"), CAPTURED);
     const live = await createTestTempDirectory(
-      "rea-runtime-content-unlocated-",
+      "binsight-runtime-content-unlocated-",
     );
     const result = reconcileJavaScriptRuntime(
       parseRuntimeReconciliationInput(

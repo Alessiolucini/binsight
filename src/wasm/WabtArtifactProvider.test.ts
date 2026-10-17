@@ -142,7 +142,7 @@ const assertCancellationDuringRootRelease = async (options: {
 };
 
 const createWabtArtifactFixture = async () => {
-  const selectedRoot = await createTestTempDirectory("rea-wabt-seam-");
+  const selectedRoot = await createTestTempDirectory("binsight-wabt-seam-");
   const path = join(selectedRoot, "selected.wasm");
   const bytes = Buffer.alloc(76, 1);
   await writeFile(path, bytes);
@@ -218,7 +218,7 @@ it("returns actionable unavailable without creating a workspace when tools are a
 });
 
 it("retries a retained input descriptor before admitting the next WABT operation", async () => {
-  const root = await createTestTempDirectory("rea-wabt-read-cleanup-");
+  const root = await createTestTempDirectory("binsight-wabt-read-cleanup-");
   const path = join(root, "selected.wasm");
   await writeFile(path, Buffer.alloc(76, 1));
   for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])
@@ -302,7 +302,7 @@ it("retries a retained input descriptor before admitting the next WABT operation
 it.each([false, true])(
   "reports an unavailable private runtime root with retryable=%s without a misleading WABT remediation",
   async (retryable) => {
-    const toolRoot = await createTestTempDirectory("rea-wabt-tool-root-");
+    const toolRoot = await createTestTempDirectory("binsight-wabt-tool-root-");
     for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])
       await writeFile(
         join(toolRoot, tool + (process.platform === "win32" ? ".exe" : "")),
@@ -314,7 +314,7 @@ it.each([false, true])(
       undefined,
       () => {
         throw new PrivateRuntimeRootUnavailableError(
-          "REA Windows native controls are unavailable: probe failure",
+          "BinSight Windows native controls are unavailable: probe failure",
           { retryable },
         );
       },
@@ -331,7 +331,7 @@ it.each([false, true])(
         retryable,
         userMessage: undefined,
         message: expect.stringContaining(
-          "REA Windows native controls are unavailable",
+          "BinSight Windows native controls are unavailable",
         ),
       },
     });
@@ -443,7 +443,7 @@ const runOwnedArtifactOutcome = async (mode: OutcomeMode): Promise<void> => {
     async () => {
       runtimeCreations += 1;
       const root = await PrivateRuntimeRoot.create({
-        prefix: "rea-wabt-owned-test-",
+        prefix: "binsight-wabt-owned-test-",
       });
       runtimePath = root.path;
       return {
@@ -566,7 +566,7 @@ const outputLimitFailure = ({
     cleanupFailure === null ? [] : ["/owned/runtime"],
   );
 it("reports WABT output beyond the budget as a resource constraint with a bounded excerpt", async () => {
-  const selectedRoot = await createTestTempDirectory("rea-wabt-budget-");
+  const selectedRoot = await createTestTempDirectory("binsight-wabt-budget-");
   const path = join(selectedRoot, "selected.wasm");
   await writeFile(path, Buffer.alloc(76, 1));
   for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])
@@ -630,7 +630,7 @@ it("reports WABT output beyond the budget as a resource constraint with a bounde
   });
 });
 it("does not attribute wasm-objdump output to a wasm2wat launch failure", async () => {
-  const selectedRoot = await createTestTempDirectory("rea-wabt-launch-");
+  const selectedRoot = await createTestTempDirectory("binsight-wabt-launch-");
   const path = join(selectedRoot, "selected.wasm");
   await writeFile(path, Buffer.alloc(76, 1));
   for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])

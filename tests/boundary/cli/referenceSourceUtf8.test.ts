@@ -17,7 +17,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "retains malformed source bytes without inventing decoded import targets",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-utf8-");
+    const root = await createTestTempDirectory("binsight-reference-utf8-");
     const sources = new Map([
       [
         "invalid.mjs",
@@ -87,9 +87,11 @@ cliTest(
 cliTest.skipIf(process.platform === "win32")(
   "preserves historical literal-backslash entries and their exact owning import base",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-literal-paths-");
+    const root = await createTestTempDirectory(
+      "binsight-reference-literal-paths-",
+    );
     const config = await createTestTempDirectory(
-      "rea-reference-literal-config-",
+      "binsight-reference-literal-config-",
     );
     await mkdir(join(root, "literal"));
     await mkdir(join(root, "literal\\dir"));
@@ -136,9 +138,11 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "preserves an observed historical symlink target with a literal backslash",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-literal-link-");
+    const root = await createTestTempDirectory(
+      "binsight-reference-literal-link-",
+    );
     const config = await createTestTempDirectory(
-      "rea-reference-literal-link-config-",
+      "binsight-reference-literal-link-config-",
     );
     await writeFile(
       join(root, "literal\\name.js"),
@@ -175,8 +179,12 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "imports an inventory-owned POSIX UNC-looking symlink target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-unc-literal-");
-    const config = await createTestTempDirectory("rea-reference-unc-config-");
+    const root = await createTestTempDirectory(
+      "binsight-reference-unc-literal-",
+    );
+    const config = await createTestTempDirectory(
+      "binsight-reference-unc-config-",
+    );
     const literal = "\\\\server\\share.js";
     const literalBytes = "export const value = 'literal';\n";
     const slashBytes = "export const value = 'slash';\n";

@@ -84,7 +84,9 @@ fuseMcpTest(
         openWorldHint: false,
       });
 
-      const root = await createTestTempDirectory("rea-electron-fuses-mcp-");
+      const root = await createTestTempDirectory(
+        "binsight-electron-fuses-mcp-",
+      );
       const elf = elfFuseImage([ELECTRON_FUSE_STATE_BYTES.removed, 0x99]);
       const path = join(root, "application");
       await writeFile(path, elf.bytes);

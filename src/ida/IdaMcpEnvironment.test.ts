@@ -13,7 +13,7 @@ afterEach(async () => {
 });
 
 it("launches the upstream SDK transport with the selected snapshot and suppresses ambient SDK defaults", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-ida-environment-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-ida-environment-"));
   roots.push(root);
   const script = join(root, "producer.mjs");
   await writeFile(

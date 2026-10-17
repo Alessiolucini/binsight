@@ -27,7 +27,7 @@ import { inspectEvidenceBundle } from "../../../src/application/investigation/In
 cliTest(
   "preserves native relationship coverage independently of exhausted CLI pages",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-native-coverage-cli-");
+    const root = await createTestTempDirectory("binsight-native-coverage-cli-");
     const parent = analysisViewNativeEvidence({
       status: "partial",
       limited_directions: ["callees"],
@@ -64,7 +64,9 @@ cliTest(
 cliTest(
   "reads typed module references through the public CLI with canonical Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-module-reference-cli-");
+    const root = await createTestTempDirectory(
+      "binsight-module-reference-cli-",
+    );
     const request = join(root, "request.json");
     const parent = analysisViewJavaScriptEvidence(
       analysisViewJavaScriptAnalysisWithSource(),
@@ -97,7 +99,7 @@ cliTest(
 cliTest(
   "projects opted-in query names through compiled CLI without query values",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-query-names-cli-");
+    const root = await createTestTempDirectory("binsight-query-names-cli-");
     const path = join(root, "view.json");
     const capture = analysisViewCaptureFixture();
     capture.records = capture.records.slice(0, 2);
@@ -147,7 +149,7 @@ cliTest(
 cliTest(
   "projects portable artifact inventory after the original ZIP is removed",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-inventory-view-cli-");
+    const root = await createTestTempDirectory("binsight-inventory-view-cli-");
     const archive = join(root, "fixture.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("main.js", new TextReader("console.log('portable');\n"));
@@ -192,7 +194,7 @@ cliTest(
 cliTest(
   "admits portable captures before parsing and preserves capture caveats",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-inline-capture-cli-");
+    const root = await createTestTempDirectory("binsight-inline-capture-cli-");
     const path = join(root, "view.json");
     const environment = {
       HOME: root,
@@ -264,7 +266,9 @@ cliTest(
 cliTest(
   "discovers native records from a complete portable bundle using the shared workflow",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-discovery-cli-");
+    const root = await createTestTempDirectory(
+      "binsight-evidence-discovery-cli-",
+    );
     const parent = createEvidence(
       { path: "/fixtures/native.exe", format: "pe", sha256: "a".repeat(64) },
       { id: "ghidra", name: "Ghidra", version: "12.1.4" },
@@ -308,7 +312,7 @@ cliTest(
 cliTest(
   "projects one section from a JSON file of inline layout Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-analysis-view-cli-");
+    const root = await createTestTempDirectory("binsight-analysis-view-cli-");
     const parent = analysisViewLayoutEvidence();
     const request = {
       source: { kind: "inline", evidence: parent },
@@ -344,7 +348,7 @@ cliTest(
 cliTest(
   "projects native function pseudocode without requiring Ghidra",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-native-view-cli-");
+    const root = await createTestTempDirectory("binsight-native-view-cli-");
     const parent = createEvidence(
       { path: "/fixtures/native.exe", format: "pe", sha256: "a".repeat(64) },
       { id: "ghidra", name: "Ghidra", version: "12.1.4" },
@@ -384,7 +388,7 @@ cliTest(
 );
 
 cliTest("rejects malformed JSON before projection", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-analysis-view-cli-bad-");
+  const root = await createTestTempDirectory("binsight-analysis-view-cli-bad-");
   const result = await cli.run({
     arguments: ["inspect-analysis-view", "{", "--json"],
     environment: {
@@ -402,7 +406,9 @@ cliTest("rejects malformed JSON before projection", async ({ cli }) => {
 });
 
 cliTest("rejects a request that omits source", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-analysis-view-cli-missing-");
+  const root = await createTestTempDirectory(
+    "binsight-analysis-view-cli-missing-",
+  );
   const input = join(root, "missing-source.json");
   await writeFile(input, JSON.stringify({ view: { kind: "summary" } }));
   const result = await cli.run({
@@ -428,7 +434,7 @@ for (const [view, reason] of [
   cliTest(
     `reports correction details for ${reason} view kind`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-view-variant-");
+      const root = await createTestTempDirectory("binsight-view-variant-");
       const input = join(root, "view.json");
       await writeFile(
         input,
@@ -469,7 +475,7 @@ for (const [view, reason] of [
 cliTest(
   "decodes HAR credentials and projects recorded API paths through the compiled workflows",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-surface-cli-");
+    const root = await createTestTempDirectory("binsight-surface-cli-");
     const fixture = apiSurfaceHar();
     const entry = fixture.log.entries[0]!;
     const urls = [

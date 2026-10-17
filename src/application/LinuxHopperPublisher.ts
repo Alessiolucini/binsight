@@ -46,7 +46,7 @@ const RELEASE_METADATA_BYTES = 1024 * 1024;
 /** Small feed/key requests must not consume the full package-download deadline. */
 const RELEASE_METADATA_TIMEOUT_MS = 10_000;
 const cacheRecordSchema = z.object({
-  format: z.literal("rea-signed-hopper-release-v1"),
+  format: z.literal("binsight-signed-hopper-release-v1"),
   family: z.enum(["deb", "rpm", "arch"]),
   release: z.unknown(),
 });
@@ -104,7 +104,7 @@ export const linuxHopperReleaseCacheDirectory = (
       join(
         supplied ??
           join(homeDirectoryFromEnvironment(environment, "linux"), ".cache"),
-        "rea",
+        "binsight",
         "hopper-releases",
       ),
     );
@@ -361,7 +361,7 @@ export class LinuxHopperPublisher {
             await writeFile(
               join(stage, "release.json"),
               JSON.stringify({
-                format: "rea-signed-hopper-release-v1",
+                format: "binsight-signed-hopper-release-v1",
                 family: verified.family,
                 release: verified.release,
               }) + "\n",
@@ -930,7 +930,7 @@ export class LinuxHopperPublisher {
     parent?: string,
   ): Promise<T> {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-hopper-publisher-",
+      prefix: "binsight-hopper-publisher-",
       ...(parent === undefined ? {} : { parent }),
     });
     const temporaryResources = new ArtifactResourceScope();

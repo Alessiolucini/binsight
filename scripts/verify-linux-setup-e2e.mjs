@@ -83,7 +83,9 @@ await execFileAsync(command, ["analyze", "/usr/bin/true"], {
 process.env.REA_VERIFY_SERVER_ARGS_JSON = '["mcp"]';
 await import("./verify-real-hopper-linux.mjs");
 
-const modifiedDirectory = await mkdtemp(join(tmpdir(), "rea-modified-hopper-"));
+const modifiedDirectory = await mkdtemp(
+  join(tmpdir(), "binsight-modified-hopper-"),
+);
 try {
   const modifiedHopper = join(modifiedDirectory, "Hopper");
   await copyFile("/opt/hopper/bin/Hopper", modifiedHopper);

@@ -127,7 +127,7 @@ const causesOf = (cause: unknown): unknown[] => {
 
 it("publishes a verified export and serves later requests from the cache", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-cache-",
+    "binsight-kuna-cache-",
     {
       functions: [
         { name: "main", addr: "0x1000" },
@@ -192,7 +192,7 @@ it("publishes a verified export and serves later requests from the cache", async
     "// Function: broken @ 0x1080  (error: Exceeded the instruction budget)\n\n",
   );
 
-  // Kuna listed and decompiled a staged copy from REA's own HOME, in reference mode.
+  // Kuna listed and decompiled a staged copy from BinSight's own HOME, in reference mode.
   const [listing] = await callsOf(kuna, "functions");
   const [exported] = await callsOf(kuna, "decompile-project");
   expect(listing?.argv).toEqual(["functions", exported?.argv[1], "--json"]);
@@ -217,7 +217,7 @@ it("publishes a verified export and serves later requests from the cache", async
 
 it("retains a failed warm-cache hash descriptor and retries it at cache close", async () => {
   const { installation, cache, target } = await fixture(
-    "rea-kuna-cache-hash-owner-",
+    "binsight-kuna-cache-hash-owner-",
   );
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
@@ -251,7 +251,7 @@ it.each(["success", "failure"] as const)(
   "keeps hash cleanup bound to its exact owner when a concurrent lookup retry %s",
   async (retryOutcome) => {
     const { installation, cache, target } = await fixture(
-      `rea-kuna-cache-hash-race-${retryOutcome}-`,
+      `binsight-kuna-cache-hash-race-${retryOutcome}-`,
     );
     const input = await target("program");
     const built = await cache.build({ installation, ...input });
@@ -345,7 +345,7 @@ it.each(["success", "failure"] as const)(
 
 it("resolves a hash failure delivered after its retained owner was released", async () => {
   const { installation, cache, target } = await fixture(
-    "rea-kuna-cache-late-hash-",
+    "binsight-kuna-cache-late-hash-",
   );
   const built = await cache.build({
     installation,
@@ -403,7 +403,7 @@ it("resolves a hash failure delivered after its retained owner was released", as
 
 it("blocks repeated cache reads while a retained hash descriptor cannot close", async () => {
   const { installation, cache, target } = await fixture(
-    "rea-kuna-cache-hash-admission-",
+    "binsight-kuna-cache-hash-admission-",
   );
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
@@ -501,7 +501,7 @@ it("blocks repeated cache reads while a retained hash descriptor cannot close", 
 
 it("keeps hash cleanup aggregates pending through retained staging removal", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-cache-hash-staging-owner-",
+    "binsight-kuna-cache-hash-staging-owner-",
   );
   const persistentCloseCause = new Error(
     "persistent staging hash close failure",
@@ -566,7 +566,7 @@ it("keeps hash cleanup aggregates pending through retained staging removal", asy
 
 it("shares one Kuna run between concurrent requests for one export", async () => {
   const { kuna, installation, cache, target } = await fixture(
-    "rea-kuna-singleflight-",
+    "binsight-kuna-singleflight-",
     { delayMs: 300 },
   );
   const input = await target("program");
@@ -584,7 +584,7 @@ it("shares one Kuna run between concurrent requests for one export", async () =>
 
 it("stops the run only when every waiting request is cancelled", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-cancel-",
+    "binsight-kuna-cancel-",
     { project: "hang" },
   );
   const input = await target("program");
@@ -625,7 +625,7 @@ it("stops the run only when every waiting request is cancelled", async () => {
 
 it("applies one deadline to the inventory and the export together", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-timeout-",
+    "binsight-kuna-timeout-",
     { project: "hang" },
     { environment: { REA_KUNA_PROJECT_TIMEOUT_MS: "800" } },
   );
@@ -651,7 +651,7 @@ it("applies one deadline to the inventory and the export together", async () => 
 
 it("reports a failed export with Kuna's diagnostics and retains nothing", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-failure-",
+    "binsight-kuna-failure-",
     { project: "exit-failure" },
   );
 
@@ -691,7 +691,7 @@ it.each([
   ],
 ] as const)("refuses %s", async (_case, behavior, reason) => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-refused-",
+    "binsight-kuna-refused-",
     behavior,
   );
 
@@ -709,8 +709,9 @@ it.each([
 });
 
 it("refuses to decompile a target that no longer matches its digest", async () => {
-  const { kuna, installation, cache, target } =
-    await fixture("rea-kuna-changed-");
+  const { kuna, installation, cache, target } = await fixture(
+    "binsight-kuna-changed-",
+  );
   const input = await target("program");
   await appendFile(input.targetPath, "patched");
 
@@ -722,8 +723,9 @@ it("refuses to decompile a target that no longer matches its digest", async () =
 });
 
 it("removes its staging when the target disappears before the copy", async () => {
-  const { installation, cacheRoot, cache, target } =
-    await fixture("rea-kuna-vanished-");
+  const { installation, cacheRoot, cache, target } = await fixture(
+    "binsight-kuna-vanished-",
+  );
   const input = await target("program");
 
   const result = await cache.build({
@@ -743,8 +745,9 @@ it("removes its staging when the target disappears before the copy", async () =>
 });
 
 it("discards an entry whose files no longer match their manifest", async () => {
-  const { installation, cacheRoot, cache, target } =
-    await fixture("rea-kuna-tamper-");
+  const { installation, cacheRoot, cache, target } = await fixture(
+    "binsight-kuna-tamper-",
+  );
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
   if (!built.ok) throw built.error;
@@ -755,9 +758,12 @@ it("discards an entry whose files no longer match their manifest", async () => {
 });
 
 it("evicts least recently used entries above the cap, never a pinned one", async () => {
-  const { installation, cacheRoot, target } = await fixture("rea-kuna-evict-", {
-    asmPadding: 400 * 1024,
-  });
+  const { installation, cacheRoot, target } = await fixture(
+    "binsight-kuna-evict-",
+    {
+      asmPadding: 400 * 1024,
+    },
+  );
   const cache = newCache(installation, 1024 * 1024);
   const build = async (name: string, ageSeconds: number) => {
     const result = await cache.build({ installation, ...(await target(name)) });
@@ -785,7 +791,7 @@ it("evicts least recently used entries above the cap, never a pinned one", async
 
 it("refuses an export larger than the whole cache may hold", async () => {
   const { installation, cacheRoot, target } = await fixture(
-    "rea-kuna-capacity-",
+    "binsight-kuna-capacity-",
     { asmPadding: 8 * 1024 },
   );
 
@@ -807,12 +813,12 @@ it("refuses an export larger than the whole cache may hold", async () => {
 
 it("keeps the first publication when another process exports the same key", async () => {
   const { kuna, installation, cacheRoot, target } = await fixture(
-    "rea-kuna-race-",
+    "binsight-kuna-race-",
     { delayMs: 300 },
   );
   const input = await target("program");
 
-  // Two cache instances stand in for two REA processes sharing one root.
+  // Two cache instances stand in for two BinSight processes sharing one root.
   const [first, second] = await Promise.all([
     newCache(installation).build({ installation, ...input }),
     newCache(installation).build({ installation, ...input }),
@@ -829,7 +835,9 @@ it("keeps the first publication when another process exports the same key", asyn
 });
 
 it("reports each build phase to every waiting request", async () => {
-  const { installation, cache, target } = await fixture("rea-kuna-phases-");
+  const { installation, cache, target } = await fixture(
+    "binsight-kuna-phases-",
+  );
   const statuses: KunaExportStatus[] = [];
 
   const result = await cache.build({
@@ -854,8 +862,9 @@ it("reports each build phase to every waiting request", async () => {
 });
 
 it("sweeps retired entries but preserves staging with unresolved process ownership", async () => {
-  const { installation, cacheRoot, cache, target } =
-    await fixture("rea-kuna-sweep-");
+  const { installation, cacheRoot, cache, target } = await fixture(
+    "binsight-kuna-sweep-",
+  );
   const abandoned = join(cacheRoot, "staging", "build-abandoned");
   const recent = join(cacheRoot, "staging", "build-recent");
   const evicted = join(cacheRoot, "trash", "evicted");
@@ -879,7 +888,7 @@ it.each(["sweep", "close"] as const)(
   "keeps failed file cleanup owned until recovery through %s",
   async (recovery) => {
     const { installation, cacheRoot, cache, target } = await fixture(
-      "rea-kuna-trash-cleanup-",
+      "binsight-kuna-trash-cleanup-",
     );
     const retired = join(cacheRoot, "trash", "retired");
     await mkdir(retired, { recursive: true });
@@ -916,7 +925,7 @@ it.each(["sweep", "close"] as const)(
 
 it("keeps staging owned when a cancelled Kuna process cannot be proven stopped", async () => {
   const { kuna, installation, cacheRoot, target } = await fixture(
-    "rea-kuna-retained-",
+    "binsight-kuna-retained-",
     { project: "hang" },
   );
   // Stop the process for real, but report that ownership could not be revalidated.
@@ -996,7 +1005,7 @@ it("keeps staging owned when a cancelled Kuna process cannot be proven stopped",
 
 it("rebuilds an entry another cache instance evicted after this one verified it", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-evicted-elsewhere-",
+    "binsight-kuna-evicted-elsewhere-",
   );
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
@@ -1018,7 +1027,7 @@ it("rebuilds an entry another cache instance evicted after this one verified it"
 
 it("reports an abandoned build's unproven cleanup even after a retry replaced it", async () => {
   const { kuna, installation, cacheRoot, target } = await fixture(
-    "rea-kuna-replaced-",
+    "binsight-kuna-replaced-",
     { project: "hang" },
   );
   let exports = 0;
@@ -1069,7 +1078,7 @@ it("reports an abandoned build's unproven cleanup even after a retry replaced it
 
 it("removes its staging when publication itself fails", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-publish-failure-",
+    "binsight-kuna-publish-failure-",
     { project: "block-manifest" },
   );
 

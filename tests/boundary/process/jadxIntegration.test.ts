@@ -235,7 +235,7 @@ it("rejects a copied JAR that differs from its admitted session identity", async
   }
   await writeFile(jar, "engine changed between hashing and copying");
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-jadx-admission-",
+    prefix: "binsight-jadx-admission-",
   });
   try {
     await expect(
@@ -757,7 +757,9 @@ it("bounds each upstream call by the selected deadline instead of a fixed limit"
   const { apk } = await setup();
   const target = await parseBinaryTarget(apk);
   if (!target.ok) throw target.error;
-  const workspace = await createTestTempDirectory("rea-jadx-call-deadline-");
+  const workspace = await createTestTempDirectory(
+    "binsight-jadx-call-deadline-",
+  );
   const pids: number[] = [];
   const session = new JadxSession(
     {

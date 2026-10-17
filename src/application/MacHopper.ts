@@ -341,7 +341,8 @@ export const systemMacHopperInstallHost = (
   const pendingCleanup = new Set<() => Promise<void>>();
   return {
     download: downloadHopperPackage,
-    createTemporaryDirectory: () => mkdtemp(join(tmpdir(), "rea-hopper-mac-")),
+    createTemporaryDirectory: () =>
+      mkdtemp(join(tmpdir(), "binsight-hopper-mac-")),
     createMountDirectory: (path) => mkdir(path),
     writePackage: (path, bytes) => writeFile(path, bytes, { mode: 0o600 }),
     async mount(packagePath, mountPath) {
@@ -412,7 +413,7 @@ export const systemMacHopperInstallHost = (
         {
           async createStagingRoot(parent) {
             await mkdir(parent, { recursive: true });
-            return mkdtemp(join(parent, ".rea-hopper-stage-"));
+            return mkdtemp(join(parent, ".binsight-hopper-stage-"));
           },
           copyBundle: async (bundle, staged) => {
             await execFileAsync("ditto", [bundle, staged], {

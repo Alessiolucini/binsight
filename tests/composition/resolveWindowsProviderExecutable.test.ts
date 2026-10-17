@@ -19,12 +19,12 @@ const windowsLookup = (cwd: string, files: readonly string[]) => {
 describe("resolveWindowsProviderExecutable", () => {
   it("resolves a bare name from quoted and relative Windows PATH entries", () => {
     const cwd = "C:\\work";
-    const expected = "C:\\work\\Program Files\\REA Tools\\objdump.EXE";
+    const expected = "C:\\work\\Program Files\\BinSight Tools\\objdump.EXE";
     expect(
       resolveWindowsProviderExecutable(
         "objdump",
         {
-          PATH: `.;".\\Program Files\\REA Tools";D:\\unused`,
+          PATH: `.;".\\Program Files\\BinSight Tools";D:\\unused`,
           PATHEXT: ".COM;.EXE;.BAT",
         },
         windowsLookup(cwd, [expected]),

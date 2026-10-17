@@ -16,7 +16,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "keeps full endpoint evidence usable without copying large values into metadata",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-endpoint-payload-");
+    const root = await createTestTempDirectory("binsight-endpoint-payload-");
     const endpoint = `https://example.invalid/${"part/ğ".repeat(160_000)}`;
     const digestLookalike = `value-sha256:${createHash("sha256").update(JSON.stringify(endpoint)).digest("hex")}`;
     // UTF-8 replacement would conflate these distinct JavaScript strings.

@@ -24,7 +24,7 @@ import { snapshotEnvironment } from "./process/snapshotEnvironment.js";
 afterEach(() => vi.unstubAllEnvs());
 
 it("plans setup and uninstall against selected home and client overrides", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-selected-setup-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-selected-setup-"));
   const environment = {
     HOME: join(root, "selected-home"),
     USERPROFILE: join(root, "selected-home"),
@@ -124,7 +124,7 @@ it("includes the macOS Hopper installer diagnostic in setup remediation", async 
 });
 
 it("preserves a validated selected JEB endpoint in setup registrations without claiming live readiness", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-jeb-setup-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-jeb-setup-"));
   const endpoint = "http://127.0.0.1:8425/mcp/";
   const ambientEndpoint = "http://127.0.0.1:8426/mcp";
   vi.stubEnv("REA_JEB_MCP_URL", ambientEndpoint);

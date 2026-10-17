@@ -324,7 +324,7 @@ interface CdpTargetOperationSession<Input> {
   readonly progress?: NonNullable<ExecutionOptions["progress"]>;
 }
 
-/** Authorize one discovered target, run work in its session, and close REA's socket. */
+/** Authorize one discovered target, run work in its session, and close BinSight's socket. */
 const withTargetSession = async <
   Input extends Pick<
     InspectWebPageInput,
@@ -403,7 +403,7 @@ const withTargetSession = async <
       cause instanceof AnalysisError
         ? cause
         : new ProviderCleanupError(
-            "rea-cdp-browser",
+            "binsight-cdp-browser",
             [input.target_id],
             { reason: cause instanceof Error ? cause.message : String(cause) },
             { operation, cause },
@@ -441,7 +441,7 @@ const withTargetSession = async <
     throw bindCdpTransportCleanup(
       cleanupFailure,
       new ProviderCleanupError(
-        "rea-cdp-browser",
+        "binsight-cdp-browser",
         cleanupFailure.cleanupResources,
         { cleanup_error: cleanupFailure.message },
         {

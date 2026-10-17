@@ -20,7 +20,7 @@ const exec = promisify(execFile);
 await exec("/usr/bin/xcrun", ["--find", "actool"]);
 await exec("/usr/bin/xcrun", ["--find", "clang"]);
 await exec("/usr/bin/assetutil", ["--version"]);
-const root = await mkdtemp(join(tmpdir(), "rea-asset-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-asset-e2e-"));
 let report;
 try {
   const app = join(root, "Fixture.app");
@@ -40,7 +40,7 @@ try {
   ]);
   await writeFile(
     join(app, "Contents", "Info.plist"),
-    '<?xml version="1.0"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>Fixture</string><key>CFBundleIdentifier</key><string>dev.rea.asset-fixture</string></dict></plist>',
+    '<?xml version="1.0"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>Fixture</string><key>CFBundleIdentifier</key><string>dev.binsight.asset-fixture</string></dict></plist>',
   );
   await exec("/usr/bin/xcrun", [
     "actool",

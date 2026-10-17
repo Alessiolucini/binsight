@@ -12,7 +12,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "function fingerprint seeds retain directive values and normalized duplicates through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-function-fingerprints-");
+    const root = await createTestTempDirectory(
+      "binsight-function-fingerprints-",
+    );
     const application = join(root, "application");
     await mkdir(application);
     await writeFile(

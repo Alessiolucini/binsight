@@ -78,7 +78,7 @@ const cases: readonly {
 it.each(cases)(
   "uses exact HTML resource identity for $name",
   async ({ html, files, expected }) => {
-    const root = await createTestTempDirectory("rea-html-resources-");
+    const root = await createTestTempDirectory("binsight-html-resources-");
     await Promise.all(
       Object.entries({ ...files, "index.html": html }).map(
         async ([path, text]) => {
@@ -124,7 +124,7 @@ it.each(cases)(
 );
 
 it("retains CommonJS extension resolution against Node", async () => {
-  const root = await createTestTempDirectory("rea-html-node-control-");
+  const root = await createTestTempDirectory("binsight-html-node-control-");
   await Promise.all([
     writeFile(
       join(root, "main.cjs"),

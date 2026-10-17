@@ -18,7 +18,7 @@ import { PrivateRuntimeRoot } from "../../../src/process/PrivateRuntimeRoot.js";
 import type { VerifiedLinuxHopperPackage } from "../../../src/application/LinuxHopperPublisher.js";
 
 it("adopts and retries the descriptor when hashing succeeded but close failed", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-close-");
+  const root = await createTestTempDirectory("binsight-stable-hash-close-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const closeCause = new Error("injected descriptor close failure");
@@ -61,7 +61,7 @@ it("adopts and retries the descriptor when hashing succeeded but close failed", 
 });
 
 it("preserves a read cancellation cause when close also fails", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-primary-");
+  const root = await createTestTempDirectory("binsight-stable-hash-primary-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const primary = new Error("injected cancellation after read");
@@ -118,7 +118,7 @@ it("preserves a read cancellation cause when close also fails", async () => {
 });
 
 it("closes a normally hashed file without adopting an owner", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-control-");
+  const root = await createTestTempDirectory("binsight-stable-hash-control-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const retainFailedClose = vi.fn();
@@ -129,7 +129,7 @@ it("closes a normally hashed file without adopting an owner", async () => {
 });
 
 it("retains a completed digest when cancellation follows successful close", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-cancel-");
+  const root = await createTestTempDirectory("binsight-stable-hash-cancel-");
   const path = join(root, "input.bin");
   const bytes = Buffer.from("owned bytes");
   await writeFile(path, bytes);
@@ -174,7 +174,7 @@ it("retains a completed digest when cancellation follows successful close", asyn
 });
 
 it("adopts a descriptor from an admission failure and preserves both causes", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-admission-");
+  const root = await createTestTempDirectory("binsight-stable-hash-admission-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const owner = new OwnedFileHandle(await openFile(path, "r"));
@@ -213,7 +213,7 @@ it("adopts a descriptor from an admission failure and preserves both causes", as
 });
 
 it("distinguishes a thrown undefined primary failure from a clean hash", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-undefined-");
+  const root = await createTestTempDirectory("binsight-stable-hash-undefined-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const openFileAtBoundary = regularFile.openRegularFile;
@@ -262,7 +262,7 @@ it("distinguishes a thrown undefined primary failure from a clean hash", async (
 });
 
 it("retries a publisher-owned launcher hash close before returning its digest", async () => {
-  const root = await createTestTempDirectory("rea-publisher-hash-owner-");
+  const root = await createTestTempDirectory("binsight-publisher-hash-owner-");
   const path = join(root, "launcher");
   await writeFile(path, "fixture launcher bytes");
   const publisher = new LinuxHopperPublisher({}, async () => undefined);
@@ -283,7 +283,7 @@ it("retries a publisher-owned launcher hash close before returning its digest", 
 });
 
 it("retries pending cleanup before acquiring a publisher temporary root", async () => {
-  const root = await createTestTempDirectory("rea-publisher-admission-");
+  const root = await createTestTempDirectory("binsight-publisher-admission-");
   const path = join(root, "launcher");
   const launcherBytes = "fixture launcher bytes";
   await writeFile(path, launcherBytes);

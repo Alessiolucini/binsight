@@ -838,7 +838,10 @@ it("rejects unresolved output-schema references even for uncalled tools", () => 
 });
 
 it("validates each tool independently when output schema IDs repeat", () => {
-  const outputSchema = { $id: "urn:rea:test:shared-output", type: "string" };
+  const outputSchema = {
+    $id: "urn:binsight:test:shared-output",
+    type: "string",
+  };
   const errors = schemaErrors([
     { name: "first", inputSchema: { type: "object" }, outputSchema },
     {
@@ -895,7 +898,7 @@ it("checks client array constraints in schema positions while preserving literal
 it.each([false, true])(
   "rejects references to another tool's nested IDs (earlier compilation fails: %s)",
   (invalidPrevious) => {
-    const nestedId = "urn:rea:test:nested-output";
+    const nestedId = "urn:binsight:test:nested-output";
     const errors = schemaErrors([
       {
         name: "first",

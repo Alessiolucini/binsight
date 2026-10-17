@@ -22,7 +22,7 @@ export const sameIdaHostPath = (left: string, right: string): boolean =>
 
 /** Private input copy isolates upstream database and sidecar writes from the original. */
 export class IdaWorkspace {
-  readonly sessionId = `rea-${randomUUID()}`;
+  readonly sessionId = `binsight-${randomUUID()}`;
   #inputSha256: string | undefined;
   private constructor(
     private readonly runtime: PrivateRuntimeRoot,
@@ -49,7 +49,7 @@ export class IdaWorkspace {
     // private input path must already be canonical for identity checks.
     const runtime = await PrivateRuntimeRoot.create({
       parent: await realpath(normalize(root)),
-      prefix: "rea-ida-",
+      prefix: "binsight-ida-",
     });
     const inputPath = join(runtime.path, basename(target.path));
     return new IdaWorkspace(runtime, inputPath, target);

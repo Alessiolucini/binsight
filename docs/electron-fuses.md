@@ -7,7 +7,7 @@ embedded ASAR integrity validation, and loading application code only from
 launch the app, modify fuse bytes, or use the network.
 
 ```bash
-rea inspect-electron-fuses /Applications/Example.app --json
+binsight inspect-electron-fuses /Applications/Example.app --json
 ```
 
 The CLI resolves a relative path against the caller's working directory. MCP
@@ -72,7 +72,7 @@ byte is preserved and the enforcement outcome is `unknown`.
 No sentinel means the fuse state is unknown. It does not mean the fuses are
 disabled. A wire that continues past the slice is reported as truncated, with
 only the fuse bytes that were present. Two or more sentinels in one slice are
-all reported. REA does not pick one.
+all reported. BinSight does not pick one.
 
 Fuse bytes do not prove that the application enables Inspector some other way,
 for example through `app.commandLine` or a remote-debugging switch in

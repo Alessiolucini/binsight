@@ -18,7 +18,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { scriptScenarioFixture } from "../../fixtures/webScriptCapture.js";
 
 const fixture = async (bytes = Buffer.from('import "./dep.js";')) => {
-  const root = await createTestTempDirectory("rea-module-artifacts-");
+  const root = await createTestTempDirectory("binsight-module-artifacts-");
   const capturePath = join(root, "capture.json");
   const resources = new ArtifactResourceScope();
   onTestFinished(() => resources.close());
@@ -194,7 +194,7 @@ describe("caller-selected web module files", () => {
   });
 
   it("reports a missing or non-file manifest selection as invalid input", async () => {
-    const root = await createTestTempDirectory("rea-module-missing-");
+    const root = await createTestTempDirectory("binsight-module-missing-");
     const missing = join(root, "missing.json");
     const directory = join(root, "directory");
     await mkdir(directory);

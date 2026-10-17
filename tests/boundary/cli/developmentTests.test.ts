@@ -34,7 +34,7 @@ const commit = (root: string, message: string) =>
   git(
     root,
     "-c",
-    "user.name=REA fixture",
+    "user.name=BinSight fixture",
     "-c",
     "user.email=fixture@example.test",
     "-c",
@@ -46,7 +46,7 @@ const commit = (root: string, message: string) =>
   );
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-development-tests-");
+  const root = await createTestTempDirectory("binsight-development-tests-");
   await mkdir(join(root, "scripts", "lib"), { recursive: true });
   await mkdir(join(root, "src"));
   for (const path of [

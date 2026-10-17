@@ -45,7 +45,9 @@ const executeRizinCommand = async (
 };
 
 it("uses the captured server environment to resolve reverse-engineering providers", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-environment-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-provider-environment-"),
+  );
   const provider = join(directory, "selected-rizin");
   const artifact = join(directory, "fixture.bin");
   await writeFile(artifact, "fixture");
@@ -63,7 +65,9 @@ it("uses the captured server environment to resolve reverse-engineering provider
 });
 
 it("prefers an explicit provider environment over the captured server environment", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-override-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-provider-override-"),
+  );
   const configured = join(directory, "captured-rizin");
   const override = join(directory, "override-rizin");
   const artifact = join(directory, "fixture.bin");
@@ -91,7 +95,9 @@ it("prefers an explicit provider environment over the captured server environmen
 });
 
 it("snapshots an explicit provider environment when the server is created", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-snapshot-"));
+  const directory = await mkdtemp(
+    join(tmpdir(), "binsight-provider-snapshot-"),
+  );
   const configured = join(directory, "captured-rizin");
   const override = join(directory, "explicit-rizin");
   const artifact = join(directory, "fixture.bin");

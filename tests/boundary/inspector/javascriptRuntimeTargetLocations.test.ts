@@ -16,7 +16,7 @@ afterEach(async () => {
 });
 
 async function entryFile(name: string): Promise<string> {
-  const root = await createTestTempDirectory("rea-node-discovery-");
+  const root = await createTestTempDirectory("binsight-node-discovery-");
   roots.push(root);
   const entry = join(root, name);
   await writeFile(entry, "setInterval(() => {}, 1000);\n");

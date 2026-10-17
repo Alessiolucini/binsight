@@ -14,7 +14,7 @@ cliTest("starts when the selected home is empty", async ({ cli }) => {
   const { version } = packageSchema.parse(
     JSON.parse(await readFile("package.json", "utf8")),
   );
-  const cwd = await createTestTempDirectory("rea-empty-home-startup-");
+  const cwd = await createTestTempDirectory("binsight-empty-home-startup-");
   const environment = { HOME: "", USERPROFILE: "" };
 
   const reported = await cli.run({

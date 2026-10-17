@@ -16,7 +16,9 @@ export async function verifyGhidraEntryAliases({
 }) {
   const exec = promisify(execFile);
   const compiler = process.env.REA_CC ?? "cc";
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-entry-aliases-"));
+  const workspace = await mkdtemp(
+    join(tmpdir(), "binsight-ghidra-entry-aliases-"),
+  );
   const source = fileURLToPath(
     new URL("../../tests/conformance/ghidra/entry-aliases.c", import.meta.url),
   );

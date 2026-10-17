@@ -34,8 +34,8 @@ import { loadTriageImage, triageSubject } from "./triageSupport.js";
 
 /** Bundled reader identity. Byte differences between the two files are observed facts. */
 export const COMPARE_BINARIES_PROVIDER_IDENTITY = {
-  id: "rea-compare-binaries",
-  name: "REA binary comparison engine",
+  id: "binsight-compare-binaries",
+  name: "BinSight binary comparison engine",
   version: "1",
 } as const;
 const OPERATION = "compare_binaries";

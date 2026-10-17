@@ -21,7 +21,7 @@ import { projectAnalysisError } from "../../../src/domain/analysisErrorProjectio
 
 describe("artifact inventory snapshot", () => {
   it("retains the complete scan after the source directory changes", async () => {
-    const root = await createTestTempDirectory("rea-inventory-snapshot-");
+    const root = await createTestTempDirectory("binsight-inventory-snapshot-");
     await writeFile(join(root, "a.txt"), "a");
     await writeFile(join(root, "b.txt"), "b");
     const snapshot = await scanArtifactInventory(root);
@@ -36,7 +36,7 @@ describe("artifact inventory snapshot", () => {
   });
 
   it("projects the complete inventory when reader cleanup fails after scanning", async () => {
-    const root = await createTestTempDirectory("rea-inventory-cleanup-");
+    const root = await createTestTempDirectory("binsight-inventory-cleanup-");
     await writeFile(join(root, "observed.txt"), "observed");
     const directory = new DirectoryArtifactReader(root);
     const resourceScope = new ArtifactResourceScope();
@@ -54,7 +54,7 @@ describe("artifact inventory snapshot", () => {
         throw new ArtifactReaderFailure("unavailable", "mount still attached", {
           cleanup: {
             reason: "DMG detach failed",
-            resources: ["/dev/disk-test", "/tmp/rea-mount-test"],
+            resources: ["/dev/disk-test", "/tmp/binsight-mount-test"],
           },
         });
       },
@@ -76,7 +76,7 @@ describe("artifact inventory snapshot", () => {
       code: "cleanup_incomplete",
       details: {
         execution_failure: "artifact_operation_failed",
-        resources: ["/dev/disk-test", "/tmp/rea-mount-test"],
+        resources: ["/dev/disk-test", "/tmp/binsight-mount-test"],
         partial_observation: {
           kind: "artifact-inventory",
           inventory: {
@@ -95,7 +95,7 @@ describe("artifact inventory snapshot", () => {
 
 it("unwinds every nested traversal and preserves its primary failure", async () => {
   const root = await createTestTempDirectory(
-    "rea-inventory-traversal-cleanup-",
+    "binsight-inventory-traversal-cleanup-",
   );
   const contents = join(root, "contents");
   const bundle = join(root, "bundle");

@@ -10,7 +10,7 @@ export const analysisErrorWithCleanupFailure = (
 ): AnalysisError => {
   const projected = projectAnalysisError(cleanup);
   return new ProviderAdapterError(
-    cleanup instanceof ProviderAdapterError ? cleanup.providerId : "rea",
+    cleanup instanceof ProviderAdapterError ? cleanup.providerId : "binsight",
     operation,
     {
       cause: new AggregateError(

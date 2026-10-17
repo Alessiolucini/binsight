@@ -28,7 +28,7 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "honors the $0 plist selection",
       async ([, target, selected, identifier], { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-cli-");
+        const directory = await createTestTempDirectory("binsight-plist-cli-");
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -79,7 +79,9 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest.for(["xml", "binary"] as const)(
       "decodes $0 plists that plutil cannot express as JSON",
       async (format, { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-types-");
+        const directory = await createTestTempDirectory(
+          "binsight-plist-types-",
+        );
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -166,7 +168,9 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest.for([false, true])(
       "reports exact plist integers and integral reals beyond the JSON number range (data: %s)",
       async (withData, { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-integers-");
+        const directory = await createTestTempDirectory(
+          "binsight-plist-integers-",
+        );
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });

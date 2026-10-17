@@ -149,7 +149,7 @@ export const parsePlistXml = (
       ),
     );
   }
-  // The XML decoder turns <integer> and <real> into numbers before REA sees
+  // The XML decoder turns <integer> and <real> into numbers before BinSight sees
   // them, rounding integers beyond the exact range.
   const literals = xmlNumberLiterals(output);
   let exactIntegerCount = 0;

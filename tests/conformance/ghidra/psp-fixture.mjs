@@ -106,7 +106,7 @@ export async function buildPspFixture(directory, globalValue = 7) {
   };
 }
 
-/** Complete independent fields for the pinned PSPSDK fixture, not REA's parser. */
+/** Complete independent fields for the pinned PSPSDK fixture, not BinSight's parser. */
 export function parsePspReadelfMips(text) {
   const field = (expression, label) => {
     const matches = [...text.matchAll(expression)];

@@ -18,7 +18,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const retryFixture = async (
   execute: AnalysisClient["execute"] = () => Promise.resolve(ok(null)),
 ) => {
-  const parent = await createTestTempDirectory("rea-session-cleanup-retry-");
+  const parent = await createTestTempDirectory(
+    "binsight-session-cleanup-retry-",
+  );
   const runtime = join(parent, "owned-runtime");
   const document = join(parent, "retained-document");
   await mkdir(runtime);
@@ -254,7 +256,9 @@ it("honors an explicit retention choice on a cleanup retry", async () => {
 });
 
 it("keeps failed restoration resources available for a close retry", async () => {
-  const parent = await createTestTempDirectory("rea-restore-cleanup-retry-");
+  const parent = await createTestTempDirectory(
+    "binsight-restore-cleanup-retry-",
+  );
   const runtime = join(parent, "restore-runtime");
   await mkdir(runtime);
   await writeFile(join(runtime, "observation"), "restore observation");
@@ -302,7 +306,9 @@ it("keeps failed restoration resources available for a close retry", async () =>
 });
 
 it("does not start a replacement cancelled while pending cleanup completes", async () => {
-  const parent = await createTestTempDirectory("rea-cancel-cleanup-retry-");
+  const parent = await createTestTempDirectory(
+    "binsight-cancel-cleanup-retry-",
+  );
   const runtime = join(parent, "owned-runtime");
   await mkdir(runtime);
   await writeFile(join(runtime, "observation"), "owned observation");

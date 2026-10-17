@@ -6,7 +6,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.for(["analyze", "inspect-artifact"])(
   "%s rejects an explicitly empty target before resolving it against cwd",
   async (command, { cli }) => {
-    const cwd = await createTestTempDirectory("rea-empty-target-");
+    const cwd = await createTestTempDirectory("binsight-empty-target-");
     const result = await cli.run({
       arguments: [command, "", "--json"],
       cwd,
@@ -21,7 +21,7 @@ cliTest.for(["analyze", "inspect-artifact"])(
 cliTest(
   "inspect-artifact still admits an explicitly selected current directory",
   async ({ cli }) => {
-    const cwd = await createTestTempDirectory("rea-explicit-target-");
+    const cwd = await createTestTempDirectory("binsight-explicit-target-");
     const result = await cli.run({
       arguments: ["inspect-artifact", ".", "--json"],
       cwd,

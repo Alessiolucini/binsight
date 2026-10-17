@@ -560,7 +560,7 @@ describe("native IDA literal matching", () => {
       if (typeof args.pattern !== "string")
         throw new Error("Invalid fixture pattern");
       // Exercise a byte-oriented producer seam, including Unicode candidates
-      // whose final matching semantics belong to REA, not the upstream regex.
+      // whose final matching semantics belong to BinSight, not the upstream regex.
       const regex = new RegExp(
         Buffer.from(args.pattern).toString("latin1"),
         "i",

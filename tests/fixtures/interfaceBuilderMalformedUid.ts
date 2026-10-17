@@ -79,7 +79,7 @@ const childEdges = (result: Analysis, oracle: Oracle) =>
 export const createInterfaceBuilderUidFixture = async (
   selectedCase: UidCase,
 ) => {
-  const directory = await createTestTempDirectory("rea-ib-uid-");
+  const directory = await createTestTempDirectory("binsight-ib-uid-");
   await promisify(execFile)("/usr/bin/xcrun", [
     "swift",
     "tests/conformance/native/interface-builder-malformed-uid.swift",

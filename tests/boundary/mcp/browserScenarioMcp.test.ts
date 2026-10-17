@@ -232,7 +232,7 @@ describe("browser scenario MCP tool", () => {
     });
     expect(provider.scenarios).toHaveLength(2);
     expect(captured.structuredContent).toMatchObject({
-      predicate_type: "rea.browser-scenario-capture",
+      predicate_type: "binsight.browser-scenario-capture",
       operation: "capture_browser_scenario",
       parameters: {
         ...provider.scenarios[1],

@@ -33,7 +33,7 @@ it("describes engine authority truthfully", () => {
     expect(contract.description).toMatch(/JEB|[Ee]ngine/);
   }
   expect(contractByName("open_jeb_project").description).toContain(
-    "REA does not",
+    "BinSight does not",
   );
 });
 

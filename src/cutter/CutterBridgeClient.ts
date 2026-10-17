@@ -271,7 +271,7 @@ export interface CutterBridgeDiscovery {
     | "not_checked";
 }
 
-/** Discovers and communicates with REA Python bridge plugins in live Cutter processes. */
+/** Discovers and communicates with BinSight Python bridge plugins in live Cutter processes. */
 export class CutterBridgeClient {
   readonly #directory: string;
   readonly #descriptorResources = new ArtifactResourceScope();
@@ -907,7 +907,7 @@ export class CutterBridgeClient {
       connection.once("connect", () => {
         if (completion !== undefined) return;
         connection.write(
-          `${JSON.stringify({ kind: "rea-auth-v2", nonce: clientNonce })}\n`,
+          `${JSON.stringify({ kind: "binsight-auth-v2", nonce: clientNonce })}\n`,
         );
       });
       connection.on("data", (chunk: Buffer) => {
@@ -929,7 +929,7 @@ export class CutterBridgeClient {
               connectionOrdinal = challenge.nonce.slice(0, 16);
               const expected = createHmac("sha256", descriptor.token)
                 .update(
-                  `rea-cutter-server-v2:${descriptor.session_id}:${clientNonce}:${challenge.nonce}`,
+                  `binsight-cutter-server-v2:${descriptor.session_id}:${clientNonce}:${challenge.nonce}`,
                 )
                 .digest();
               if (
@@ -939,7 +939,7 @@ export class CutterBridgeClient {
               onAuthenticated?.(connectionOrdinal);
               const proof = createHmac("sha256", descriptor.token)
                 .update(
-                  `rea-cutter-client-v2:${descriptor.session_id}:${clientNonce}:${challenge.nonce}:${requestBytes}`,
+                  `binsight-cutter-client-v2:${descriptor.session_id}:${clientNonce}:${challenge.nonce}:${requestBytes}`,
                 )
                 .digest("hex");
               authenticated = true;
@@ -957,7 +957,7 @@ export class CutterBridgeClient {
                 .parse(frame);
               const expected = createHmac("sha256", descriptor.token)
                 .update(
-                  `rea-cutter-response-v2:${descriptor.session_id}:${clientNonce}:${serverNonce}:${envelope.response}`,
+                  `binsight-cutter-response-v2:${descriptor.session_id}:${clientNonce}:${serverNonce}:${envelope.response}`,
                 )
                 .digest();
               if (
@@ -1001,8 +1001,8 @@ const resolveBridgeDirectory = (
     return configured;
   }
   return platform === "win32" && localAppData
-    ? join(localAppData, "REA", "CutterBridge")
-    : join(homeDirectory, ".cache", "rea", "cutter-bridge");
+    ? join(localAppData, "BinSight", "CutterBridge")
+    : join(homeDirectory, ".cache", "binsight", "cutter-bridge");
 };
 
 class CutterDiscoveryFailure extends Error {

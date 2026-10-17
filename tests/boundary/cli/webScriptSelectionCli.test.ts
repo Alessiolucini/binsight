@@ -9,7 +9,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "exits with a capture_path invalid_request for a named pipe before publishing output",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-script-selection-cli-");
+    const root = await createTestTempDirectory(
+      "binsight-script-selection-cli-",
+    );
     const capturePath = join(root, "capture.pipe");
     const outputDirectory = join(root, "export");
     const created = await processes.run("mkfifo", [capturePath], {

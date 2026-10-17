@@ -378,11 +378,12 @@ const registrationAligned = ({
     return "stale";
   if (client.format === "vscode" && registration.type !== "stdio")
     return "stale";
-  // A Harness registration only connects as the rea stdio server; another
-  // server name or transport leaves the session without REA tools.
+  // A Harness registration only connects as the binsight stdio server; another
+  // server name or transport leaves the session without BinSight tools.
   if (
     client.format === "dsh" &&
-    (registration.serverName !== "rea" || registration.transport !== "stdio")
+    (registration.serverName !== "binsight" ||
+      registration.transport !== "stdio")
   )
     return "stale";
   if (
@@ -479,13 +480,13 @@ const parseRegistration = (
 /** A client that rewrites its file from memory must be quit before setup. */
 const remediation = (client: SetupClient): string => {
   if (client.quitBeforeSetup !== true)
-    return "Run rea setup to refresh this registration, then restart the client.";
+    return "Run binsight setup to refresh this registration, then restart the client.";
   const name = client.displayName ?? client.name;
-  return `Quit ${name} fully, run rea setup to refresh this registration, then start ${name} again. A running ${name} can rewrite its configuration from memory and drop the registration.`;
+  return `Quit ${name} fully, run binsight setup to refresh this registration, then start ${name} again. A running ${name} can rewrite its configuration from memory and drop the registration.`;
 };
 
 const unknownEntryPointRemediation = (): string =>
-  "The existing registration was retained because its executable identity cannot be verified. Run the installed REA CLI or a supported package runner, then rerun rea doctor; no registration was changed.";
+  "The existing registration was retained because its executable identity cannot be verified. Run the installed BinSight CLI or a supported package runner, then rerun binsight doctor; no registration was changed.";
 
 const configuredStatus = (
   client: SetupClient,
@@ -544,7 +545,7 @@ const timeoutAdvisory = (
   const headroom = isKimi
     ? `${String(MCP_STARTUP_POLICY.toolOperationHeadroomMs)} ms`
     : `${String(MCP_STARTUP_POLICY.toolOperationHeadroomMs / 1000)} seconds`;
-  return `The configured ${setting} (${currentValue}) is shorter than REA's known provider allowance (${String(providerAllowance)} ms), so provider startup or an upstream request may exceed this client deadline. REA recommends ${setting} = ${recommendedValue} to cover that allowance plus ${headroom} of operation headroom; this additional headroom is a recommendation, not a guarantee for every analysis.`;
+  return `The configured ${setting} (${currentValue}) is shorter than BinSight's known provider allowance (${String(providerAllowance)} ms), so provider startup or an upstream request may exceed this client deadline. BinSight recommends ${setting} = ${recommendedValue} to cover that allowance plus ${headroom} of operation headroom; this additional headroom is a recommendation, not a guarantee for every analysis.`;
 };
 
 const exactRegisteredPackageVersion = (
@@ -561,7 +562,7 @@ const packageVersionRemediation = (
   packageReference: string,
   client: SetupClient,
 ): string =>
-  `This registration requests ${packageReference}, while the current REA CLI package is ${PRODUCT_IDENTITY.packageVersion}. REA does not resolve package-runner requests during doctor; update the registration with rea setup --client ${client.name}, then restart the client.`;
+  `This registration requests ${packageReference}, while the current BinSight CLI package is ${PRODUCT_IDENTITY.packageVersion}. BinSight does not resolve package-runner requests during doctor; update the registration with binsight setup --client ${client.name}, then restart the client.`;
 
 const unavailableStatus = (
   client: SetupClient,

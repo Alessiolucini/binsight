@@ -15,7 +15,7 @@ import { readWithoutFifoWriter } from "../../fixtures/fifoInput.js";
 it.skipIf(process.platform === "win32")(
   "rejects a FIFO artifact root without waiting for a writer",
   async () => {
-    const root = await createTestTempDirectory("rea-artifact-root-fifo-");
+    const root = await createTestTempDirectory("binsight-artifact-root-fifo-");
     const fifoPath = join(root, "input.asar");
     await promisify(execFile)("mkfifo", [fifoPath]);
 
@@ -36,7 +36,9 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("rejects a root path replaced between its initial stat and open", async () => {
-  const root = await createTestTempDirectory("rea-artifact-root-replaced-");
+  const root = await createTestTempDirectory(
+    "binsight-artifact-root-replaced-",
+  );
   const path = join(root, "input.bin");
   const replacement = join(root, "replacement.bin");
   await writeFile(path, "first bytes\n");
@@ -54,7 +56,7 @@ it("rejects a root path replaced between its initial stat and open", async () =>
 });
 
 it("keeps unavailable container traversal distinct from observed root bytes", async () => {
-  const root = await createTestTempDirectory("rea-artifact-root-scope-");
+  const root = await createTestTempDirectory("binsight-artifact-root-scope-");
   const path = join(root, "fixture.pkg");
   // The recognized XAR prefix selects PKG inventory; no child decoder is installed.
   await writeFile(path, Buffer.from("xar!fixture"));

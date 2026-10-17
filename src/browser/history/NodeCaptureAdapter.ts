@@ -40,7 +40,7 @@ export class NodeCaptureAdapter implements HistoricalCaptureFormatAdapter {
       throw new AnalysisCapabilityUnavailableError(
         this.identity.id,
         "inspect_web_network_capture",
-        `${this.format} decoding requires an enforced decoder memory limit. Run REA with Node.js on this host.`,
+        `${this.format} decoding requires an enforced decoder memory limit. Run BinSight with Node.js on this host.`,
       );
     return {
       command: process.execPath,

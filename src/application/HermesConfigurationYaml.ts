@@ -392,7 +392,7 @@ export const editHermesConfigurationYaml = (
         : value,
     );
   }
-  // Editing REA must not reflow unrelated user prompts or other YAML scalars.
+  // Editing BinSight must not reflow unrelated user prompts or other YAML scalars.
   return document.toString({
     lineWidth: 0,
     // Hermes tries the YAML 1.1 C loader before its directive-aware pure

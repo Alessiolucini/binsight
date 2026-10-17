@@ -153,7 +153,7 @@ describe("evidence ledger metadata imports", () => {
   it("reports and commits metadata replacement when importing unknown history", () => {
     const ledger = new EvidenceLedger();
     const mutation = createEvidence(TARGET, PROVIDER, {
-      predicateType: "rea.residual-unknown-mutation",
+      predicateType: "binsight.residual-unknown-mutation",
       operation: "record_unknown",
       parameters: {},
       result: { action: "record", question: "Which path is current?" },
@@ -176,7 +176,7 @@ describe("evidence ledger metadata imports", () => {
       { ...TARGET, path: "/relocated/mutation" },
       PROVIDER,
       {
-        predicateType: "rea.residual-unknown-mutation",
+        predicateType: "binsight.residual-unknown-mutation",
         operation: "record_unknown",
         parameters: {},
         result: { action: "record", question: "Which path is current?" },
@@ -291,7 +291,7 @@ describe("evidence bundle imports", () => {
       result: { status: "unknown" },
     });
     const mutation = createEvidence(undefined, PROVIDER, {
-      predicateType: "rea.residual-unknown-mutation",
+      predicateType: "binsight.residual-unknown-mutation",
       operation: "record_unknown",
       parameters: {},
       result: { action: "record" },

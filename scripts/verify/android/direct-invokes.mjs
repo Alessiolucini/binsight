@@ -74,7 +74,7 @@ export const verifyAndroidDirectInvokes = async ({
     stderr += chunk.toString();
   });
   const client = new Client({
-    name: "rea-real-android-direct-invokes",
+    name: "binsight-real-android-direct-invokes",
     version: "1",
   });
   try {

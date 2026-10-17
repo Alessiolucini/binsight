@@ -172,7 +172,7 @@ export class CutterBridgeService {
           version: output.cutterVersion,
         },
         {
-          predicateType: "rea.cutter.command-observation",
+          predicateType: "binsight.cutter.command-observation",
           operation: "cutter_command",
           parameters: {
             session_id: input.session_id,
@@ -198,7 +198,7 @@ export class CutterBridgeService {
           limitations: [
             "Document identity is partial: the bridge uses a plugin instance UUID and observed generation; a same-path tab switch or reload may not be distinguishable.",
             "Cutter command effects depend on the Rizin command and active plugins.",
-            "The local IPC protocol is implemented by REA and is not an upstream Cutter API.",
+            "The local IPC protocol is implemented by BinSight and is not an upstream Cutter API.",
             ...(output.executionState === "unknown"
               ? [
                   "Command completion or its output could not be confirmed; do not retry automatically because the command may have produced partial or persistent effects.",

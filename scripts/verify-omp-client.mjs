@@ -25,7 +25,7 @@ assert(
   "Usage: verify-omp-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-omp-client-"));
+const lab = await mkdtemp(join(tmpdir(), "binsight-omp-client-"));
 const account = join(lab, "account");
 const agent = join(lab, "selected agent");
 const workspace = join(lab, "workspace");
@@ -119,7 +119,7 @@ const fixture = await createOpenAiModelFixture({
     const replies = body.messages.filter((message) => message.role === "tool");
     if (requestIndex === 1)
       return call(requestIndex, "read", {
-        i: "Load REA skill",
+        i: "Load BinSight skill",
         path: "skill://reverse-engineer-anything:raw",
       });
     assert(
@@ -130,7 +130,7 @@ const fixture = await createOpenAiModelFixture({
     skillLoaded = true;
     if (requestIndex === 2)
       return call(requestIndex, "read", {
-        i: "Inspect REA native tool contract",
+        i: "Inspect BinSight native tool contract",
         path: analysisDevice,
       });
     assert(containsText(replies, "# mcp__rea_analyze_javascript_application"));
@@ -194,7 +194,7 @@ const fixture = await createOpenAiModelFixture({
 const original = JSON.stringify(
   {
     mcpServers: { other: { command: "unrelated-server", enabled: false } },
-    disabledServers: ["rea", "other"],
+    disabledServers: ["binsight", "other"],
   },
   null,
   2,
@@ -211,14 +211,14 @@ await writeFile(
   join(agent, "models.yml"),
   JSON.stringify({
     providers: {
-      "rea-fixture": {
+      "binsight-fixture": {
         baseUrl: fixture.baseUrl,
         apiKey: "local-fixture-key",
         api: "openai-completions",
         models: [
           {
-            id: "rea-client-fixture",
-            name: "REA local fixture",
+            id: "binsight-client-fixture",
+            name: "BinSight local fixture",
             reasoning: false,
             input: ["text"],
             cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
@@ -230,7 +230,7 @@ await writeFile(
     },
   }),
 );
-const rea = async (args, env = environment) =>
+const binsight = async (args, env = environment) =>
   exec(
     process.execPath,
     [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
@@ -257,7 +257,7 @@ try {
     join(lab, "invalid-profile-native.stderr"),
     nativeRejected.stderr,
   );
-  const setupRejected = await rea(
+  const setupRejected = await binsight(
     ["setup", "--client", "omp", "--dry-run"],
     invalidEnvironment,
   ).then(
@@ -281,7 +281,7 @@ try {
     ["setup", "--client", "omp", "--yes"],
     ["doctor", "--client", "omp", "--skill"],
   ]) {
-    const result = await rea(args);
+    const result = await binsight(args);
     await writeFile(
       join(lab, `${args[0]}${args.includes("--dry-run") ? "-plan" : ""}.json`),
       result.stdout,
@@ -314,17 +314,23 @@ try {
       }
     }
   }
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const configured = await readFile(configPath, "utf8");
   const registration = JSON.parse(configured);
   assert.equal(registration.mcpServers.other.command, "unrelated-server");
   assert.deepEqual(registration.disabledServers, ["other"]);
   const repeated = JSON.parse(
-    (await rea(["setup", "--client", "omp", "--yes"])).stdout,
+    (await binsight(["setup", "--client", "omp", "--yes"])).stdout,
   );
   assert.deepEqual(repeated.appliedActions, []);
   assert.equal(await readFile(configPath, "utf8"), configured);
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   expectedSkillBody = await readFile(join(skillDirectory, "SKILL.md"), "utf8");
   const execution = exec(
     command,
@@ -339,10 +345,10 @@ try {
       "--approval-mode",
       "yolo",
       "--model",
-      "rea-fixture/rea-client-fixture",
+      "binsight-fixture/binsight-client-fixture",
       mode === "chat"
         ? "Say hello briefly."
-        : `Use the REA skill to analyze ${target}.`,
+        : `Use the BinSight skill to analyze ${target}.`,
     ],
     {
       env: environment,
@@ -372,7 +378,7 @@ try {
   assert.deepEqual(
     mounted.sort(),
     expectedDevices,
-    "Native OMP must mount the complete REA catalog",
+    "Native OMP must mount the complete BinSight catalog",
   );
   catalogMounted = true;
   assert(

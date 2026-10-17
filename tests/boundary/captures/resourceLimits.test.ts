@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "linux")(
   "enforces both address-space limits before any producer allocation",
   async () => {
-    const directory = await createTestTempDirectory("rea-tshark-limits-");
+    const directory = await createTestTempDirectory("binsight-tshark-limits-");
     const command = join(directory, "memory-probe");
     await writeFile(
       command,
@@ -54,7 +54,7 @@ it.skipIf(process.platform !== "linux")(
   "preserves lower inherited file/CPU limits in the real launch",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-tshark-inherited-limits-",
+      "binsight-tshark-inherited-limits-",
     );
     const command = join(directory, "limit-probe");
     const path = join(directory, "recording.pcap");
@@ -114,7 +114,9 @@ try {
 it.skipIf(process.platform !== "linux")(
   "reports a real kernel file-limit termination with its effective ceiling",
   async () => {
-    const directory = await createTestTempDirectory("rea-tshark-file-limit-");
+    const directory = await createTestTempDirectory(
+      "binsight-tshark-file-limit-",
+    );
     const command = join(directory, "file-probe");
     const path = join(directory, "recording.pcap");
     await writeFile(path, "selected fixture");

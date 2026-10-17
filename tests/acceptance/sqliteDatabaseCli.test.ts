@@ -32,7 +32,9 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
   cliTest.skipIf(expectedErrno === "ELOOP" && process.platform === "win32")(
     `reports an initial ${expectedErrno} path failure through CLI and MCP`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-sqlite-path-failure-");
+      const root = await createTestTempDirectory(
+        "binsight-sqlite-path-failure-",
+      );
       const path =
         expectedErrno === "ELOOP"
           ? join(root, "cycle-a", "selected.db")
@@ -69,7 +71,7 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
 cliTest(
   "reports the combined database and WAL byte budget through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-size-budget-");
+    const root = await createTestTempDirectory("binsight-sqlite-size-budget-");
     const path = join(root, "selected.db");
     const walPath = `${path}-wal`;
     const maximum = 256 * 1024 * 1024;
@@ -132,7 +134,9 @@ cliTest(
 cliTest.skipIf(process.platform === "win32" || !SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reports an unavailable capability when a closed database sidecar path is too long",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-long-basename-");
+    const root = await createTestTempDirectory(
+      "binsight-sqlite-long-basename-",
+    );
     const path = join(root, "x".repeat(255));
     const originalPath = join(root, "selected.db");
     const database = new DatabaseSync(originalPath);
@@ -190,7 +194,7 @@ cliTest.skipIf(process.platform === "win32" || !SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "bounds default context and projects exact columns without evaluating unrelated cells",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-selective-");
+    const root = await createTestTempDirectory("binsight-sqlite-selective-");
     const path = join(root, "selected.db");
     const database = new DatabaseSync(path);
     try {
@@ -367,7 +371,7 @@ cliTest(
 cliTest.skipIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reports the required native SQLite limits capability through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-unavailable-");
+    const root = await createTestTempDirectory("binsight-sqlite-unavailable-");
     const path = join(root, "selected.db");
     const database = new DatabaseSync(path);
     try {
@@ -397,7 +401,7 @@ cliTest.skipIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "accepts small samples above 1000 rows within the real resource budgets",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-row-budget-");
+    const root = await createTestTempDirectory("binsight-sqlite-row-budget-");
     const path = join(root, "rows.db");
     const database = new DatabaseSync(path);
     try {
@@ -497,7 +501,7 @@ cliTest
   .for(["DELETE", "PERSIST", "TRUNCATE"])(
   "inspects a real %s SQLite schema and lossless selected records identically through CLI and MCP",
   async (journalMode, { cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-public-");
+    const root = await createTestTempDirectory("binsight-sqlite-public-");
     const path = join(root, "selected.db");
     createLosslessSnapshot(path, journalMode);
     const original = await readFile(path);
@@ -615,7 +619,7 @@ cliTest
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "includes uncheckpointed committed WAL data without modifying the source database or sidecars",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-wal-public-");
+    const root = await createTestTempDirectory("binsight-sqlite-wal-public-");
     const path = join(root, "wal.db");
     const database = new DatabaseSync(path);
     onTestFinished(() => database.close());
@@ -676,7 +680,9 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "returns actionable public errors for corrupt input, unknown or ambiguous tables and invalid record choices",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-errors-public-");
+    const root = await createTestTempDirectory(
+      "binsight-sqlite-errors-public-",
+    );
     const path = join(root, "invalid.db");
     await writeFile(path, "not a SQLite database");
     const { call } = await connectLocalToolsMcp();

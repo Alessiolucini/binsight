@@ -134,7 +134,7 @@ try {
       for (const file of [clone.firstFile, clone.secondFile])
         file.name = relative(process.cwd(), file.name).split(sep).join("/");
     // Record the actual checker result, including caller-selected thresholds.
-    report.reaCheck = { exitCode: result.status };
+    report.binsightCheck = { exitCode: result.status };
     await writeFile(reportPath, JSON.stringify(report, null, 2));
     const { sources, clones, percentage } = report.statistics.total;
     console.log(

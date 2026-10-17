@@ -24,7 +24,7 @@ const repo = fileURLToPath(new URL("..", import.meta.url));
 const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
 const command =
   process.env[`REA_VERIFY_${client.toUpperCase()}_COMMAND`] ?? client;
-const lab = await mkdtemp(join(tmpdir(), `rea-${client}-client-`));
+const lab = await mkdtemp(join(tmpdir(), `binsight-${client}-client-`));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const stickyHermes =
@@ -97,7 +97,7 @@ for (const args of [
     result.stdout,
   );
 }
-assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+assert.equal(await readFile(`${configPath}.binsight.backup`, "utf8"), original);
 const installedConfiguration = await readFile(configPath, "utf8");
 assert(installedConfiguration.includes("unrelated-server"));
 if (client === "hermes")
@@ -116,7 +116,7 @@ const repeated = await exec(
 );
 assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
 assert.equal(await readFile(configPath, "utf8"), installedConfiguration);
-assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+assert.equal(await readFile(`${configPath}.binsight.backup`, "utf8"), original);
 assert(
   (await readFile(skillPath, "utf8")).includes(
     "name: reverse-engineer-anything",
@@ -284,11 +284,11 @@ const fixture = await createOpenAiModelFixture({
       );
       assert(
         JSON.stringify(messages).includes(skillPath),
-        "Pi must advertise the installed REA skill.",
+        "Pi must advertise the installed BinSight skill.",
       );
       callRequested = true;
       return call(tool.name, {
-        code: `await describeNamespace("rea"); const skill = await tools.read({path:${JSON.stringify(skillPath)}}); const result = await tools.mcp__rea__analyze_javascript_application({input_path:${JSON.stringify(target)},format:"directory"}); if(result.isError) throw new Error(JSON.stringify(result)); const evidence = result.structuredContent ?? JSON.parse(result.content.find(c=>c.type==="text").text); await tools.write({path:${JSON.stringify(artifactPath)},content:JSON.stringify(evidence)}); text({REA_CLIENT_FIXTURE:true,skill_loaded:typeof skill==="string"&&skill.includes("name: reverse-engineer-anything"),catalog:ALL_TOOLS.filter(t=>t.name.startsWith("mcp__rea__")).map(t=>t.name.slice(10))});`,
+        code: `await describeNamespace("binsight"); const skill = await tools.read({path:${JSON.stringify(skillPath)}}); const result = await tools.mcp__rea__analyze_javascript_application({input_path:${JSON.stringify(target)},format:"directory"}); if(result.isError) throw new Error(JSON.stringify(result)); const evidence = result.structuredContent ?? JSON.parse(result.content.find(c=>c.type==="text").text); await tools.write({path:${JSON.stringify(artifactPath)},content:JSON.stringify(evidence)}); text({REA_CLIENT_FIXTURE:true,skill_loaded:typeof skill==="string"&&skill.includes("name: reverse-engineer-anything"),catalog:ALL_TOOLS.filter(t=>t.name.startsWith("mcp__rea__")).map(t=>t.name.slice(10))});`,
       });
     }
     if (!skillRequested) {
@@ -333,13 +333,13 @@ if (client === "pi") {
     join(profile, "models.json"),
     JSON.stringify({
       providers: {
-        "rea-fixture": {
+        "binsight-fixture": {
           baseUrl: fixture.baseUrl,
           api: "openai-completions",
           apiKey: "local-fixture-key",
           models: [
             {
-              id: "rea-client-fixture",
+              id: "binsight-client-fixture",
               reasoning: false,
               contextWindow: 200000,
               maxTokens: 4096,
@@ -354,7 +354,7 @@ if (client === "pi") {
   await writeFile(
     configPath,
     configured +
-      `\nmodel:\n  default: rea-client-fixture\n  provider: custom\n  base_url: ${fixture.baseUrl}\nagent:\n  max_turns: 6\n`,
+      `\nmodel:\n  default: binsight-client-fixture\n  provider: custom\n  base_url: ${fixture.baseUrl}\nagent:\n  max_turns: 6\n`,
   );
 }
 const args =
@@ -362,9 +362,9 @@ const args =
     ? [
         "--offline",
         "--provider",
-        "rea-fixture",
+        "binsight-fixture",
         "--model",
-        "rea-client-fixture",
+        "binsight-client-fixture",
         "--no-session",
         "--no-context-files",
         "--mode",
@@ -372,17 +372,17 @@ const args =
         "-p",
         mode === "chat"
           ? "Say hello briefly."
-          : `Use REA to analyze ${target}.`,
+          : `Use BinSight to analyze ${target}.`,
       ]
     : [
         "--oneshot",
         mode === "chat"
           ? "Say hello briefly."
-          : `Use REA to analyze ${target}.`,
+          : `Use BinSight to analyze ${target}.`,
         "--provider",
         "custom",
         "--model",
-        "rea-client-fixture",
+        "binsight-client-fixture",
         "--reasoning",
         "none",
       ];
@@ -415,7 +415,7 @@ try {
     assert.deepEqual(
       catalog?.sort(),
       TOOL_CONTRACTS.map((t) => t.name).sort(),
-      "The complete REA catalog must survive native client discovery.",
+      "The complete BinSight catalog must survive native client discovery.",
     );
   }
 } catch (cause) {

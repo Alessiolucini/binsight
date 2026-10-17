@@ -30,7 +30,7 @@ export const importEvidenceBundleInputSchema = z.strictObject({
   path: localPathStringSchema
     .refine(isAbsolute, {
       message:
-        "path must be an absolute local filesystem path (for example /tmp/evidence.json or C:\\rea\\evidence.json)",
+        "path must be an absolute local filesystem path (for example /tmp/evidence.json or C:\\binsight\\evidence.json)",
     })
     .describe(
       "Absolute local filesystem path for the evidence bundle to import; relative paths are rejected.",

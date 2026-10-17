@@ -6,7 +6,7 @@ import { z } from "zod";
 // It is a protocol fixture, not evidence of JADX decompiler support.
 const mode = process.env.REA_FAKE_JADX_MODE ?? "normal";
 const server = new McpServer({
-  name: mode === "empty-server-identity" ? "" : "rea-jadx-bridge",
+  name: mode === "empty-server-identity" ? "" : "binsight-jadx-bridge",
   version:
     mode === "empty-server-identity" ? "" : mode === "version" ? "99.0.0" : "1",
 });

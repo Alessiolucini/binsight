@@ -17,7 +17,7 @@ import { writeOrderedZip } from "../fixtures/artifactEntryOrder.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 
 it("rejects a symlink when O_NOFOLLOW is unavailable and still follows when requested", async () => {
-  const root = await createTestTempDirectory("rea-no-nofollow-");
+  const root = await createTestTempDirectory("binsight-no-nofollow-");
   const target = join(root, "target.zip");
   const link = join(root, "selected.zip");
   await writeOrderedZip(target, ["member.bin"]);

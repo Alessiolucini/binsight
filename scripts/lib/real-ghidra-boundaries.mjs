@@ -108,7 +108,7 @@ export async function verifyGhidraBoundaries(
   };
   const original = await call("analyze_function", { procedure });
   const roots = (await readdir(env.TMPDIR)).filter((name) =>
-    name.startsWith("rea-ghidra-"),
+    name.startsWith("binsight-ghidra-"),
   );
   assert.equal(roots.length, 1, "Expected one owned Ghidra runtime");
   const runtimeRoot = join(env.TMPDIR, roots[0]);
@@ -852,7 +852,7 @@ async function verifyStartupCancellation(client, call, target, env, options) {
   try {
     while (Date.now() < deadline && !settled) {
       const roots = (await readdir(env.TMPDIR)).filter((name) =>
-        name.startsWith("rea-ghidra-"),
+        name.startsWith("binsight-ghidra-"),
       );
       if (roots.length === 1) {
         const root = join(env.TMPDIR, roots[0]);

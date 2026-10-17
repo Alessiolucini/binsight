@@ -45,7 +45,9 @@ for (const { jarConfigured, setting } of [
   cliTest.skipIf(process.platform === "win32")(
     `preserves the APK ${setting} failure through the compiled CLI and MCP factories`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-android-composition-");
+      const root = await createTestTempDirectory(
+        "binsight-android-composition-",
+      );
       const apk = join(root, "fixture.apk");
       await writeOrderedZip(apk, ["AndroidManifest.xml", "classes.dex"]);
       const jar = join(root, "jadx-headless-mcp.jar");
@@ -79,7 +81,9 @@ for (const { jarConfigured, setting } of [
 cliTest.skipIf(process.platform !== "linux")(
   "preserves the missing firmware command reason through both caller paths",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-firmware-composition-");
+    const root = await createTestTempDirectory(
+      "binsight-firmware-composition-",
+    );
     const path = join(root, "input.bin");
     await writeFile(path, "firmware fixture");
     const environment = { REA_LOG_LEVEL: "silent" };
@@ -106,7 +110,9 @@ cliTest.skipIf(process.platform !== "linux")(
 cliTest.skipIf(process.platform !== "linux")(
   "resolves relative firmware CLI paths against the operator working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-firmware-cli-relative-");
+    const root = await createTestTempDirectory(
+      "binsight-firmware-cli-relative-",
+    );
     await writeFile(join(root, "input.bin"), "firmware fixture");
     const cliResult = await cli.run({
       arguments: ["inspect-firmware-regions", "input.bin", "--json"],
@@ -124,7 +130,9 @@ cliTest.skipIf(process.platform !== "linux")(
 cliTest(
   "preserves optional JavaScript recovery configuration through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-recovery-composition-");
+    const root = await createTestTempDirectory(
+      "binsight-recovery-composition-",
+    );
     const path = join(root, "bundle.js");
     await writeFile(path, "globalThis.fixture = 1;");
     const environment = {
@@ -159,7 +167,9 @@ cliTest(
 cliTest(
   "returns recovery path diagnostics before missing-engine errors in CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-recovery-path-parity-");
+    const root = await createTestTempDirectory(
+      "binsight-recovery-path-parity-",
+    );
     const environment = {
       REA_LOG_LEVEL: "silent",
       REA_WAKARU_COMMAND: "relative-unavailable-tool",

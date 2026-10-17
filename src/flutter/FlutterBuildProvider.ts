@@ -358,7 +358,7 @@ export class FlutterBuildProvider {
   ): Promise<OwnedSnapshot> {
     let root: string;
     try {
-      root = await mkdtemp(join(tmpdir(), "rea-flutter-"));
+      root = await mkdtemp(join(tmpdir(), "binsight-flutter-"));
     } catch (cause) {
       throw mapOwnedIoFailure(operation, cause);
     }
@@ -836,7 +836,7 @@ export class FlutterBuildProvider {
           locations: [{ kind: "artifact-path", path }],
           limitations: [
             "The APK is read through an owned read-only snapshot; concurrent changes to the original cannot mix into this observation",
-            "The snapshot hash identifies a Dart SDK build only against an external mapping dataset; REA performs no lookup",
+            "The snapshot hash identifies a Dart SDK build only against an external mapping dataset; BinSight performs no lookup",
             "Release engine builds often carry no labeled Dart version string; absence is reported, not guessed",
             "Engine build IDs come only from ELF-declared PT_NOTE/SHT_NOTE records; conflicting or incompletely examined notes preserve candidates and report partial coverage",
             ...[...facts].flatMap(([abi, value]) => [

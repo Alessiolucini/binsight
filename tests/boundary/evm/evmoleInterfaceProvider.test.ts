@@ -23,7 +23,9 @@ const requestSchema = z.strictObject({
   encoding: z.enum(["raw", "hex"]),
 });
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-evm-interface-boundary-");
+  const workspace = await createTestWorkspace(
+    "binsight-evm-interface-boundary-",
+  );
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = join(workspace.root, "selected.hex");
   await writeFile(path, "0x60006000f3\n");
@@ -554,7 +556,7 @@ it.runIf(!unsupportedHost)(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-cancel-",
+          prefix: "binsight-evm-cancel-",
         });
         ownedRoot = root.path;
         controller.abort();
@@ -672,7 +674,7 @@ it.runIf(!unsupportedHost).each(["late-cancellation", "cleanup-failure"])(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-late-",
+          prefix: "binsight-evm-late-",
         });
         ownedRoot = root.path;
         return {
@@ -710,7 +712,7 @@ it.runIf(!unsupportedHost).each(["directory", "missing-interpreter"])(
     const limiter =
       scenario === "directory" ? root : join(root, "broken-limiter");
     if (scenario === "missing-interpreter")
-      await writeFile(limiter, "#!/rea-missing-limiter-interpreter\n", {
+      await writeFile(limiter, "#!/binsight-missing-limiter-interpreter\n", {
         mode: 0o700,
       });
     let ownedRoot: string | undefined;
@@ -719,7 +721,7 @@ it.runIf(!unsupportedHost).each(["directory", "missing-interpreter"])(
       undefined,
       async () => {
         const runtime = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-limiter-",
+          prefix: "binsight-evm-limiter-",
         });
         ownedRoot = runtime.path;
         return runtime;

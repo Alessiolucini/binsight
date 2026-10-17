@@ -48,7 +48,7 @@ if (installation.status !== "available")
 const execute = promisify(execFile);
 const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-mips-rel-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-mips-rel-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
@@ -59,7 +59,7 @@ const env = {
   REA_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
 };
 for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
   if (process.env[setting] !== undefined) env[setting] = process.env[setting];
@@ -106,7 +106,7 @@ async function verifyFixture(byteOrder, kernelModule) {
   assert.deepEqual(
     resolved.value.mips,
     independent.mips,
-    "REA ELF/ABI interpretation disagrees with GNU readelf",
+    "BinSight ELF/ABI interpretation disagrees with GNU readelf",
   );
   assert.equal(resolved.value.sha256, fixture.sha256);
   const label = `${byteOrder}${kernelModule ? "-module" : ""}`;
@@ -117,7 +117,10 @@ async function verifyFixture(byteOrder, kernelModule) {
     env,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-real-mips-rel-proof", version: "1" });
+  const client = new Client({
+    name: "binsight-real-mips-rel-proof",
+    version: "1",
+  });
   let stderr = "";
   transport.stderr?.on("data", (chunk) => {
     stderr = (stderr + chunk.toString()).slice(-65536);

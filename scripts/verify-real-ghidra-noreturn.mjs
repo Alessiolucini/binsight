@@ -46,7 +46,7 @@ const fixtures = fileURLToPath(
   new URL("../tests/conformance/ghidra", import.meta.url),
 );
 const bridge = fileURLToPath(new URL("../bridge/ghidra", import.meta.url));
-const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-noreturn-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-ghidra-noreturn-"));
 let cleaned = true;
 let report;
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");

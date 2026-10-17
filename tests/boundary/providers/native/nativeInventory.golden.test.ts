@@ -29,7 +29,7 @@ const signatureTarget = async (
   signedArchitecture: "arm64" | "arm64e" = "arm64",
 ) => {
   const path = join(
-    await createTestTempDirectory("rea-native-inventory-"),
+    await createTestTempDirectory("binsight-native-inventory-"),
     "fixture",
   );
   await writeFile(

@@ -19,7 +19,7 @@ const { runProviderAnalysis } = createDirectAnalysis({});
 
 describe("artifact archive inventory", () => {
   it("returns complete ZIP and official ASAR inventories inline", async () => {
-    const root = await createTestTempDirectory("rea-containers-");
+    const root = await createTestTempDirectory("binsight-containers-");
     const zipPath = join(root, "fixture.apk");
     const zipWriter = new ZipWriter(new Uint8ArrayWriter());
     await zipWriter.add("assets/index.js", new TextReader("export default 1;"));
@@ -38,7 +38,7 @@ describe("artifact archive inventory", () => {
     );
     expect(cliEvidence).toMatchObject({
       operation: "inventory_artifact",
-      provider: { id: "rea-artifact-graph" },
+      provider: { id: "binsight-artifact-graph" },
       subject: { format: "apk" },
     });
     const inspectionEvidence = parseEvidence(

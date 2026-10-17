@@ -453,7 +453,7 @@ const installSkillAction = async (
   appliedActions: string[],
   skillClientIds: readonly string[],
 ): Promise<SetupSkillInstallError | undefined> => {
-  const label = "REA reverse-engineering skill";
+  const label = "BinSight reverse-engineering skill";
   emitProgress(options, {
     actionId: "install_skill",
     label,
@@ -527,11 +527,11 @@ const finalSetupRemediation = (
   hopperPath: string | undefined,
 ): string | undefined => {
   if (platform === "darwin" && installedHopper)
-    return "Open Hopper, choose its demo mode or activate a license, then rerun rea doctor --json.";
+    return "Open Hopper, choose its demo mode or activate a license, then rerun binsight doctor --json.";
   if (healthy) return undefined;
   return hopperPath === undefined
     ? "Hopper is optional for non-Hopper providers. Rerun with --yes --install-hopper for deep native analysis."
-    : "Run rea doctor and apply each reported remediation.";
+    : "Run binsight doctor and apply each reported remediation.";
 };
 
 const isSetupDecisionCancelled = (

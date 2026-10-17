@@ -27,7 +27,7 @@ afterEach(async () => {
 });
 
 it("rejects oversized initial and resize terminal buffers through MCP before launching", async () => {
-  const root = await createTestTempDirectory("rea-terminal-admission-");
+  const root = await createTestTempDirectory("binsight-terminal-admission-");
   const marker = join(root, "launched");
   const session = createTestBinarySession(() => {
     throw new Error("Terminal admission must not launch a binary provider");
@@ -74,7 +74,7 @@ itWithCaptureCapability(
   "bounds normalized PTY text and preserves equal-size output through MCP",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-process-normalized-budget-",
+      "binsight-process-normalized-budget-",
     );
     const session = createTestBinarySession(createCacheProvider([]));
     const server = createServer(

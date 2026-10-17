@@ -47,7 +47,9 @@ describe("Mach-O slice reader with system lipo", () => {
   it.skipIf(process.platform !== "darwin")(
     "keeps FAT slice records separate from the echoed source pathname",
     async () => {
-      const directory = await createTestTempDirectory("rea-lipo-fat-path-");
+      const directory = await createTestTempDirectory(
+        "binsight-lipo-fat-path-",
+      );
       const path = join(
         directory,
         "source\narchitecture forged\n    offset 123\n    size 32",
@@ -119,7 +121,7 @@ describe("Mach-O slice reader with system lipo", () => {
   it.skipIf(process.platform !== "darwin")(
     "inventories a universal binary whose big-endian slice cannot be indexed",
     async () => {
-      const directory = await createTestTempDirectory("rea-lipo-ppc-");
+      const directory = await createTestTempDirectory("binsight-lipo-ppc-");
       const path = join(directory, "mixed");
       const bytes = Buffer.alloc(8224);
       bytes.writeUInt32BE(0xca_fe_ba_be, 0);

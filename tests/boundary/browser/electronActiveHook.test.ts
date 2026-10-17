@@ -131,7 +131,7 @@ afterEach(async () => {
 });
 
 it("retains active hook evidence within its event-retention budget", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-");
+  const root = await createTestTempDirectory("binsight-electron-hook-");
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "exercise.cjs");
@@ -221,7 +221,7 @@ it("retains active hook evidence within its event-retention budget", async () =>
 
 it("classifies a dropped browser preload as preload configuration at capture", async () => {
   const root = await createTestTempDirectory(
-    "rea-electron-hook-browser-preload-",
+    "binsight-electron-hook-browser-preload-",
   );
   temporary.push(root);
   await writeElectronFixture(root);
@@ -260,7 +260,9 @@ process.stdout.write(JSON.stringify(snapshot) + "\\n");
 });
 
 it("removes observed ipcMain listeners through their original function", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-removal-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-removal-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-removal.cjs");
@@ -304,7 +306,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("removes the newest matching ipcMain registration across unpatched aliases", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-aliases-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-aliases-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-aliases.cjs");
@@ -347,7 +351,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("records ipcMain listeners registered by a newListener callback during once", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-nested-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-nested-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-nested.cjs");
@@ -378,7 +384,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("keeps removal working after many fired ipcMain once registrations", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-repeat-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-repeat-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-repeat.cjs");
@@ -413,7 +421,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("removes the newest registration of an ipcMain listener that has its own listener property", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-wrapped-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-wrapped-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-wrapped.cjs");
@@ -445,7 +455,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("reports original ipcMain listeners to newListener and removeListener observers", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-meta-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-meta-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-meta.cjs");
@@ -492,7 +504,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("registers and removes ipcMain once listeners through decorators installed after the hook", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-decor-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-decor-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-decorators.cjs");
@@ -541,7 +555,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("keeps hooked ipcMain listener semantics identical to an unhooked EventEmitter", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-diff-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-diff-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-differential.cjs");
@@ -625,7 +641,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("keeps a replacement registered by a removeListener observer during ipcMain removeAllListeners", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-replace-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-replace-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-replacement.cjs");
@@ -699,7 +717,9 @@ process.stdout.write(JSON.stringify({
 });
 
 it("keeps ipcMain once self-removal through an on decorator that wraps the hook", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-wrap-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-wrap-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-wrapping-decorator.cjs");
@@ -772,7 +792,7 @@ it.each(["stable", "replaced", "readonly", "getter", "proxy"])(
   "normalizes raw ipcMain on entries before %s removal decorators",
   async (mode) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-ipc-remove-decorator-",
+      "binsight-electron-hook-ipc-remove-decorator-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -845,7 +865,7 @@ process.stdout.write(JSON.stringify({ plain: scenario(new EventEmitter()), hooke
 
 it("preserves native removal before mutated raw listener metadata throws", async () => {
   const root = await createTestTempDirectory(
-    "rea-electron-hook-ipc-mutated-metadata-",
+    "binsight-electron-hook-ipc-mutated-metadata-",
   );
   temporary.push(root);
   await writeElectronFixture(root);
@@ -884,7 +904,7 @@ it.each(["single-on", "multiple-on", "empty-once", "event-once"])(
   "preserves native callable method reads during %s dispatch",
   async (mode) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-ipc-dispatch-",
+      "binsight-electron-hook-ipc-dispatch-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -947,7 +967,9 @@ it.each([
   "missing",
   "primitive",
 ])("preserves raw callback apply with %s argument lists", async (mode) => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-apply-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-apply-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-apply.cjs");
@@ -1000,7 +1022,7 @@ console.log(JSON.stringify({ plain: scenario(new EventEmitter()), hooked: scenar
 
 it("preserves the native once argument-list object passed to custom apply", async () => {
   const root = await createTestTempDirectory(
-    "rea-electron-hook-ipc-once-args-",
+    "binsight-electron-hook-ipc-once-args-",
   );
   temporary.push(root);
   await writeElectronFixture(root);
@@ -1049,7 +1071,7 @@ it.each([
   "object-readonly",
 ])("owns on-wrapper metadata despite inherited %s properties", async (mode) => {
   const root = await createTestTempDirectory(
-    "rea-electron-hook-ipc-prototype-",
+    "binsight-electron-hook-ipc-prototype-",
   );
   temporary.push(root);
   await writeElectronFixture(root);
@@ -1093,7 +1115,7 @@ it.each(["on", "multiple-on", "once"])(
   "records %s invocations without consulting application Array species",
   async (kind) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-ipc-species-",
+      "binsight-electron-hook-ipc-species-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -1151,7 +1173,7 @@ it.each(["array", "arguments", "array-like", "null"])(
   "preserves opaque custom apply inputs for raw %s lists",
   async (mode) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-custom-apply-",
+      "binsight-electron-hook-custom-apply-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -1218,7 +1240,7 @@ it.each([false, true])(
   "preserves a borrowed raw apply method's receiver (custom: %s)",
   async (custom) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-borrowed-apply-",
+      "binsight-electron-hook-borrowed-apply-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -1278,7 +1300,7 @@ it.each([
   "keeps listener registration and removal independent of late %s replacement",
   async (method) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-late-intrinsic-",
+      "binsight-electron-hook-late-intrinsic-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -1416,7 +1438,7 @@ it.each([
   "preserves native dispatch for $mode chains (depth $depth, prototype $prototypeDepth, once $once)",
   async ({ mode, depth, prototypeDepth, once, gaps, remaining }) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-chain-coverage-",
+      "binsight-electron-hook-chain-coverage-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -1485,7 +1507,7 @@ it.each(["array", "map"])(
   "snapshots retained state without application %s iterators",
   async (kind) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-snapshot-iterator-",
+      "binsight-electron-hook-snapshot-iterator-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -1523,7 +1545,9 @@ console.log(JSON.stringify({ calls, reads, failure, copied: !!copied, retained: 
 );
 
 it("invokes handle callbacks without reading callable method properties", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-callable-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-callable-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-callable-properties.cjs");
@@ -1584,7 +1608,9 @@ const scenario = async (emitter, observed) => {
 });
 
 it("keeps native removal traversal when an ipcMain observer prepends a listener", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ipc-prepend-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ipc-prepend-",
+  );
   temporary.push(root);
   await writeElectronFixture(root);
   const script = join(root, "ipc-prepend-during-removal.cjs");
@@ -1633,7 +1659,7 @@ it.each(["accessor", "proxy"])(
   "does not evaluate %s listener metadata while classifying ipcMain wrappers",
   async (kind) => {
     const root = await createTestTempDirectory(
-      "rea-electron-hook-ipc-accessor-",
+      "binsight-electron-hook-ipc-accessor-",
     );
     temporary.push(root);
     await writeElectronFixture(root);
@@ -1687,7 +1713,9 @@ process.stdout.write(JSON.stringify({ plain: scenario(new EventEmitter()), hooke
 );
 
 it("isolates hook and exercise from ancestor Electron packages", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-ancestor-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-hook-ancestor-",
+  );
   temporary.push(root);
   await writeElectronFixture(root, 'module.exports = "/ambient/Electron";');
   const ambientHook = await stageHook(join(root, "producer", "scripts"));
@@ -1715,7 +1743,7 @@ process.stdout.write(JSON.stringify({
 });
 
 it("preserves fatal process termination after recording uncaught exceptions", async () => {
-  const root = await createTestTempDirectory("rea-electron-hook-fatal-");
+  const root = await createTestTempDirectory("binsight-electron-hook-fatal-");
   temporary.push(root);
   await writeElectronFixture(
     root,

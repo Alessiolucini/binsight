@@ -4,7 +4,7 @@ import { digestSchema } from "../digests.js";
 
 /**
  * Caller intent for packet-capture analysis through caller-supplied tshark
- * and capinfos. REA never installs Wireshark or its tools.
+ * and capinfos. BinSight never installs Wireshark or its tools.
  */
 export const pcapInputSchemas = {
   inspect_pcap_client: z.strictObject({}),

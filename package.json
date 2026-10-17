@@ -1,18 +1,19 @@
 {
-  "name": "rea-agents",
-  "mcpName": "io.github.morluto/rea",
+  "name": "binsight",
+  "mcpName": "io.github.alessiolucini/binsight",
   "version": "6.5.0",
-  "description": "Reverse engineer anything from your terminal or agent with one CLI and MCP server.",
+  "description": "The AI X-ray for any file: what is it, what does it hide, what changed. Static reverse-engineering intelligence via CLI and MCP. Built on REA.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/morluto/rea.git"
+    "url": "git+https://github.com/Alessiolucini/binsight.git"
   },
-  "homepage": "https://github.com/morluto/rea#readme",
+  "homepage": "https://github.com/Alessiolucini/binsight#readme",
   "bugs": {
-    "url": "https://github.com/morluto/rea/issues"
+    "url": "https://github.com/Alessiolucini/binsight/issues"
   },
   "keywords": [
+    "binsight",
     "reverse-engineering",
     "binary-analysis",
     "agents",
@@ -38,8 +39,7 @@
     "#javascript-analysis-worker": "./dist/composition/javascriptAnalysisWorkerProcess.js"
   },
   "bin": {
-    "rea": "scripts/rea.mjs",
-    "rea-agents": "scripts/rea.mjs"
+    "binsight": "scripts/rea.mjs"
   },
   "engines": {
     "node": "^22.19.0 || ^24.11.0 || >=26.0.0"

@@ -556,7 +556,7 @@ const createManagedEvidence = (
     },
   },
   extractor: {
-    name: "rea-dotnet-static",
+    name: "binsight-dotnet-static",
     version: "1",
     operation,
     executable_sha256: null,

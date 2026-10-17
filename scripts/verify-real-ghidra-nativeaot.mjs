@@ -81,7 +81,7 @@ const target =
       : symbolTarget;
 const bytes = await readFile(target);
 const sha256 = hash(bytes);
-const workspace = await mkdtemp(join(tmpdir(), "rea-nativeaot-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-nativeaot-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const packageRoot = process.env.REA_NATIVEAOT_PROOF_PACKAGE_ROOT;
@@ -143,7 +143,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-nativeaot-proof", version: "1" });
+const client = new Client({ name: "binsight-nativeaot-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);

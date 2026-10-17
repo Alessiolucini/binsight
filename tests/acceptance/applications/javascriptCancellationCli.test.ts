@@ -6,7 +6,7 @@ import { z } from "zod";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("returns a nonzero exit for a streamed JSON analysis failure", async () => {
-  const root = await createTestTempDirectory("rea-cli-js-missing-");
+  const root = await createTestTempDirectory("binsight-cli-js-missing-");
   const result = await new Promise<{ code: number | string; stdout: string }>(
     (resolve, reject) => {
       execFile(
@@ -60,14 +60,16 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "returns typed cancellation and exit 130 through $command during $phase",
   async ({ command, phase, parsedFiles }) => {
-    const root = await createTestTempDirectory("rea-cli-js-cancellation-");
+    const root = await createTestTempDirectory("binsight-cli-js-cancellation-");
     await writeFile(join(root, "main.js"), "export const observed = 1;\n");
     const nodeArguments: string[] = [];
     if (parsedFiles !== null) {
       // A tiny graph/hash phase may finish before the parent receives stderr.
       // Invoke the real signal handler synchronously in the owned CLI child at
       // that progress boundary; the two early-phase cases still use OS SIGINT.
-      const controls = await createTestTempDirectory("rea-cli-cancel-control-");
+      const controls = await createTestTempDirectory(
+        "binsight-cli-cancel-control-",
+      );
       const preload = join(controls, "cancel-at-phase.mjs");
       await writeFile(
         preload,

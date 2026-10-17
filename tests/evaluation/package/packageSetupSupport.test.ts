@@ -10,7 +10,7 @@ const osRelease = (fields: Record<string, string>) =>
       .join("\n"),
   );
 
-/** A Debian-family host REA supports that the Hopper package never tests. */
+/** A Debian-family host BinSight supports that the Hopper package never tests. */
 const KALI = osRelease({ ID: "kali", VERSION_ID: "2026.3", ID_LIKE: "debian" });
 const UBUNTU_24 = osRelease({ ID: "ubuntu", VERSION_ID: "24.04" });
 
@@ -20,7 +20,7 @@ const checks = ({ node = true, host = true } = {}) => [
 ];
 
 describe("packaged setup support derivation", () => {
-  it("keeps an installer-untested REA-supported distribution out of the automated Hopper path", () => {
+  it("keeps an installer-untested BinSight-supported distribution out of the automated Hopper path", () => {
     // The doctor host check passes on Kali, so reading installer applicability
     // from it promised an automated install the packaged setup never offers.
     expect(

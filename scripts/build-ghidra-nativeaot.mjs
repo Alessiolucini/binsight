@@ -54,7 +54,7 @@ const javacBanner = capture(javac, ["-version"]);
 const javacMajor = Number(/^javac (\d+)/mu.exec(javacBanner)?.[1]);
 if (!Number.isInteger(javacMajor) || javacMajor < 21)
   throw new Error(
-    `NativeAOT build lane requires javac 21 or newer and compiles with --release 21. Observed: ${javacBanner || "no version"}. REA does not install or upgrade Java.`,
+    `NativeAOT build lane requires javac 21 or newer and compiles with --release 21. Observed: ${javacBanner || "no version"}. BinSight does not install or upgrade Java.`,
   );
 const revision = run("git", ["-C", source, "rev-parse", "HEAD"]);
 if (
@@ -106,7 +106,7 @@ try {
     join(classes, "LICENSE-ghidra-nativeaot.md"),
     await readFile(join(source, "LICENSE.md")),
   );
-  const jar = join(output, "rea-ghidra-nativeaot.jar");
+  const jar = join(output, "binsight-ghidra-nativeaot.jar");
   run(java ? join(java, "jar") : "jar", [
     "--create",
     "--file",

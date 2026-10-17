@@ -11,7 +11,7 @@ export type McpOutputSchemaProfile = z.infer<
 >;
 
 const profileConstraint =
-  'REA_MCP_OUTPUT_SCHEMA_PROFILE must be "full" (default) or "off". The off profile omits output schemas from tools/list while REA validates every successful result against its canonical tool contract and returns complete structured content.';
+  'REA_MCP_OUTPUT_SCHEMA_PROFILE must be "full" (default) or "off". The off profile omits output schemas from tools/list while BinSight validates every successful result against its canonical tool contract and returns complete structured content.';
 
 /** Parse the output schema advertisement selection at server composition. */
 export const parseMcpOutputSchemaProfile = (

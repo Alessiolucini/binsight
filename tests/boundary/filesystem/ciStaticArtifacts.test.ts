@@ -16,7 +16,7 @@ const producer = fileURLToPath(
 it.each([3.5, 100, 0])(
   "retains real lint failures when the duplication threshold is %s",
   async (threshold) => {
-    const root = await createTestTempDirectory("rea-ci-static-archive-");
+    const root = await createTestTempDirectory("binsight-ci-static-archive-");
     await mkdir(join(root, "src"));
     await mkdir(join(root, "tests"));
     await writeFile(
@@ -55,7 +55,7 @@ it.each([3.5, 100, 0])(
       JSON.parse(
         await readFile(join(reports, "jscpd/jscpd-report.json"), "utf8"),
       ),
-    ).toMatchObject({ reaCheck: { exitCode: threshold === 0 ? 1 : 0 } });
+    ).toMatchObject({ binsightCheck: { exitCode: threshold === 0 ? 1 : 0 } });
     await writeFile(
       join(reports, "static-task-context.json"),
       JSON.stringify({

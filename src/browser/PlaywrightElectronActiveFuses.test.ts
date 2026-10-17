@@ -17,7 +17,7 @@ import { assertNodeCliInspectArgumentsSupported } from "./PlaywrightElectronActi
 
 describe("assertNodeCliInspectArgumentsSupported", () => {
   it("rejects thin Mach-O binary when EnableNodeCliInspectArguments fuse is disabled", async () => {
-    const root = await createTestTempDirectory("rea-fuse-preflight-");
+    const root = await createTestTempDirectory("binsight-fuse-preflight-");
     const binaryPath = join(root, "disabled-app");
     const image = thinFuseImage(OBSIDIAN_FUSE_BYTES); // index 3 is disabled
     await writeFile(binaryPath, image.bytes);
@@ -39,7 +39,7 @@ describe("assertNodeCliInspectArgumentsSupported", () => {
   });
 
   it("passes when EnableNodeCliInspectArguments fuse is enabled", async () => {
-    const root = await createTestTempDirectory("rea-fuse-preflight-");
+    const root = await createTestTempDirectory("binsight-fuse-preflight-");
     const binaryPath = join(root, "enabled-app");
     const enabledFuses = [...OBSIDIAN_FUSE_BYTES];
     enabledFuses[3] = ELECTRON_FUSE_STATE_BYTES.enabled;
@@ -52,7 +52,7 @@ describe("assertNodeCliInspectArgumentsSupported", () => {
   });
 
   it("passes when binary contains no fuse sentinel (fuse state unknown)", async () => {
-    const root = await createTestTempDirectory("rea-fuse-preflight-");
+    const root = await createTestTempDirectory("binsight-fuse-preflight-");
     const binaryPath = join(root, "stock-node");
     const image = thinMacho(0x0100000c, Buffer.from("no-sentinel-bytes-here"));
     await writeFile(binaryPath, image);
@@ -63,7 +63,7 @@ describe("assertNodeCliInspectArgumentsSupported", () => {
   });
 
   it("passes gracefully when fuse reader throws a format or reading failure", async () => {
-    const root = await createTestTempDirectory("rea-fuse-preflight-");
+    const root = await createTestTempDirectory("binsight-fuse-preflight-");
     const nonMachoPath = join(root, "script.sh");
     await writeFile(nonMachoPath, "#!/bin/sh\necho hello");
 
@@ -73,7 +73,7 @@ describe("assertNodeCliInspectArgumentsSupported", () => {
   });
 
   it("rejects Windows PE binary when EnableNodeCliInspectArguments fuse is disabled", async () => {
-    const root = await createTestTempDirectory("rea-fuse-preflight-");
+    const root = await createTestTempDirectory("binsight-fuse-preflight-");
     const binaryPath = join(root, "disabled-pe.exe");
     const image = peFuseImage(OBSIDIAN_FUSE_BYTES);
     await writeFile(binaryPath, image.bytes);
@@ -84,7 +84,7 @@ describe("assertNodeCliInspectArgumentsSupported", () => {
   });
 
   it("rejects Linux ELF binary when EnableNodeCliInspectArguments fuse is disabled", async () => {
-    const root = await createTestTempDirectory("rea-fuse-preflight-");
+    const root = await createTestTempDirectory("binsight-fuse-preflight-");
     const binaryPath = join(root, "disabled-elf");
     const image = elfFuseImage(OBSIDIAN_FUSE_BYTES);
     await writeFile(binaryPath, image.bytes);
@@ -111,7 +111,7 @@ describe("assertNodeCliInspectArgumentsSupported", () => {
   });
 
   it("rejects macOS app bundle when framework binary has disabled inspect fuse", async () => {
-    const root = await createTestTempDirectory("rea-fuse-mac-bundle-");
+    const root = await createTestTempDirectory("binsight-fuse-mac-bundle-");
     const appBundle = join(root, "Obsidian.app");
     const launcherBinary = join(appBundle, "Contents", "MacOS", "Obsidian");
     const frameworkDir = join(
@@ -148,7 +148,7 @@ describe("assertNodeCliInspectArgumentsSupported", () => {
   });
 
   it("evaluates matching architecture slice in universal Mach-O binary", async () => {
-    const root = await createTestTempDirectory("rea-fuse-preflight-");
+    const root = await createTestTempDirectory("binsight-fuse-preflight-");
     const binaryPath = join(root, "universal-app");
     // universalFuseImage has left (x86_64) disabled, right (arm64) enabled
     const image = universalFuseImage();

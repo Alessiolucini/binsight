@@ -11,7 +11,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("reports expanded ASAR admission failure through MCP and permits a valid retry", async () => {
-  const root = await createTestTempDirectory("rea-asar-listing-mcp-");
+  const root = await createTestTempDirectory("binsight-asar-listing-mcp-");
   const path = join(root, "app.asar");
   const bytes = nestedAsarHeader(64, "d".repeat(256), 4000);
   await writeFile(path, bytes);

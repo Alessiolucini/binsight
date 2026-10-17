@@ -32,7 +32,7 @@ const REAL_YML = [
 
 const REAL_MANIFEST = [
   '<?xml version="1.0" encoding="utf-8" standalone="no"?>',
-  '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rea.apktool.probe">',
+  '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.binsight.apktool.probe">',
   '    <application android:label="@string/app_name" android:debuggable="true"/>',
   "</manifest>",
   "",
@@ -58,7 +58,7 @@ const DE_STRINGS = [
 const writeApktoolStub = async (
   body: (root: string) => string,
 ): Promise<{ readonly command: string; readonly root: string }> => {
-  const root = await mkdtemp(join("/tmp", "rea-apktool-stub-"));
+  const root = await mkdtemp(join("/tmp", "binsight-apktool-stub-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const command = join(root, "apktool");
   await writeFile(command, `#!/bin/sh\n${body(root)}\n`, { mode: 0o755 });
@@ -193,9 +193,9 @@ it("decodes resources with target identity, metadata, and strings", async () => 
     version_code: "7",
     min_sdk_version: "24",
     target_sdk_version: "34",
-    package_name: "com.rea.apktool.probe",
+    package_name: "com.binsight.apktool.probe",
   });
-  expect(result.manifest).toContain('package="com.rea.apktool.probe"');
+  expect(result.manifest).toContain('package="com.binsight.apktool.probe"');
   expect(result.strings).toEqual([
     { name: "api_endpoint", value: "https://api.example.com/v1" },
     { name: "app_name", value: "ApktoolProbe" },
@@ -477,11 +477,11 @@ describe("truncated manifest prefixes", () => {
   it.each([
     {
       name: "a retained prefix ending after the root element",
-      manifest: `<manifest package="com.rea.large"></manifest>${" ".repeat(512 * 1024 + 1)}`,
+      manifest: `<manifest package="com.binsight.large"></manifest>${" ".repeat(512 * 1024 + 1)}`,
     },
     {
       name: "a retained prefix ending before the root element closes",
-      manifest: `<manifest package="com.rea.large">${" ".repeat(512 * 1024 + 1)}</manifest>`,
+      manifest: `<manifest package="com.binsight.large">${" ".repeat(512 * 1024 + 1)}</manifest>`,
     },
   ])("retains $name without parsing its package", async ({ manifest }) => {
     const { command, root } = await writeApktoolStub((root) =>

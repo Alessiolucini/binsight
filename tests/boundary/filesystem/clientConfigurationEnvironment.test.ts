@@ -24,7 +24,7 @@ it.each([
 ] as const)(
   "preserves %s server environment through command and provider updates",
   async (name, format, serversKey, environmentKey) => {
-    const root = await createTestTempDirectory("rea-setup-environment-");
+    const root = await createTestTempDirectory("binsight-setup-environment-");
     const configPath = join(root, "config");
     const client = { name, format, configPath };
     const custom = {
@@ -42,7 +42,11 @@ it.each([
     const original = serializeClientConfiguration(
       {
         [serversKey]: {
-          rea: clientRegistrationEntry(format, ["rea-old", "mcp"], custom),
+          binsight: clientRegistrationEntry(
+            format,
+            ["binsight-old", "mcp"],
+            custom,
+          ),
           other: clientRegistrationEntry(format, ["other"], { OTHER: "keep" }),
         },
       },
@@ -50,7 +54,7 @@ it.each([
     );
     await writeFile(configPath, original);
     const providers = { GHIDRA_INSTALL_DIR: join(root, "new-ghidra") };
-    const command = ["rea", "mcp"];
+    const command = ["binsight", "mcp"];
     expect(
       await inspectClientConfiguration(client, providers, command),
     ).toMatchObject({ status: "update" });
@@ -59,7 +63,7 @@ it.each([
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
     const parsed = parseClientConfiguration(configured, format);
-    expect(effectiveClientServer(parsed, "rea")).toHaveProperty(
+    expect(effectiveClientServer(parsed, "binsight")).toHaveProperty(
       environmentKey,
       { ...custom, ...providers },
     );
@@ -69,7 +73,9 @@ it.each([
         "other",
       ),
     );
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
     expect(await clientConfigurationAligned(client, providers, command)).toBe(
       true,
     );
@@ -84,7 +90,7 @@ it.each([
 );
 
 it("retains legacy OpenCode environment when migrating into a native server table", async () => {
-  const root = await createTestTempDirectory("rea-opencode-environment-");
+  const root = await createTestTempDirectory("binsight-opencode-environment-");
   const configPath = join(root, "opencode.json");
   const client = { name: "opencode", format: "opencode", configPath } as const;
   const custom = { REA_MCP_INPUT_SCHEMA_PROFILE: "compact" };
@@ -92,7 +98,7 @@ it("retains legacy OpenCode environment when migrating into a native server tabl
     configPath,
     JSON.stringify({
       mcp: {
-        rea: clientRegistrationEntry("opencode", ["old", "mcp"], custom),
+        binsight: clientRegistrationEntry("opencode", ["old", "mcp"], custom),
         servers: {
           other: clientRegistrationEntry("opencode_v2", ["other"], {}),
         },
@@ -100,18 +106,18 @@ it("retains legacy OpenCode environment when migrating into a native server tabl
     }),
   );
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
   ).toMatchObject({ status: "configured" });
   const parsed = parseClientConfiguration(
     await readFile(configPath, "utf8"),
     "opencode",
   );
   expect(parsed.legacyServers).toEqual({});
-  expect(parsed.servers.rea).toEqual(
-    clientRegistrationEntry("opencode_v2", ["rea", "mcp"], custom),
+  expect(parsed.servers.binsight).toEqual(
+    clientRegistrationEntry("opencode_v2", ["binsight", "mcp"], custom),
   );
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
   ).toEqual({ status: "unchanged" });
 });
 
@@ -192,28 +198,28 @@ it.each([
 ] as const)(
   "refuses %s before changing the configuration",
   async (_name, env, setting) => {
-    const home = await createTestTempDirectory("rea-invalid-environment-");
+    const home = await createTestTempDirectory("binsight-invalid-environment-");
     const directory = join(home, ".cursor");
     const configPath = join(directory, "mcp.json");
     await mkdir(directory);
     const original = JSON.stringify({
-      mcpServers: { rea: { command: "rea", args: ["mcp"], env } },
+      mcpServers: { binsight: { command: "binsight", args: ["mcp"], env } },
     });
     await writeFile(configPath, original);
     const client = { name: "cursor", format: "json", configPath } as const;
     expect(
-      await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+      await inspectClientConfiguration(client, {}, ["binsight", "mcp"]),
     ).toMatchObject({
       status: "invalid",
       remediation: expect.stringContaining(setting),
     });
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
-    expect(await clientConfigurationAligned(client, {}, ["rea", "mcp"])).toBe(
-      false,
-    );
-    const statuses = await readClientRegistrationStatuses(home, "rea", {
+    expect(
+      await clientConfigurationAligned(client, {}, ["binsight", "mcp"]),
+    ).toBe(false);
+    const statuses = await readClientRegistrationStatuses(home, "binsight", {
       environment: {},
     });
     expect(statuses.find(({ client }) => client === "cursor")).toMatchObject({
@@ -221,8 +227,10 @@ it.each([
       remediation: expect.stringContaining(setting),
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
-      code: "ENOENT",
-    });
+    await expect(access(`${configPath}.binsight.backup`)).rejects.toMatchObject(
+      {
+        code: "ENOENT",
+      },
+    );
   },
 );

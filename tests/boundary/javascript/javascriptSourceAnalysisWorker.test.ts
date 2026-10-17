@@ -222,7 +222,9 @@ it("ends worker stdin and unreferences process handles when cleanup reports insp
 });
 
 it("lets a separate host exit while its live worker cleanup remains incomplete", async () => {
-  const root = await createTestTempDirectory("rea-worker-incomplete-host-");
+  const root = await createTestTempDirectory(
+    "binsight-worker-incomplete-host-",
+  );
   const ownershipPath = join(root, "ownership.json");
   const workerUrl = new URL(
     "../../../dist/javascript/analysis/JavaScriptAnalysisWorker.js",

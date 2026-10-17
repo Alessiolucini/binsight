@@ -72,7 +72,9 @@ const emulateSupportedHost = async (
 
 it("reports the read failure without stale incomplete-cleanup state when close retry succeeds", async () =>
   emulateSupportedHost(async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-pwntools-close-retry-"));
+    const root = await mkdtemp(
+      join(tmpdir(), "binsight-pwntools-close-retry-"),
+    );
     const path = join(root, "selected.bin");
     await writeFile(path, "selected evidence");
     closeState.fail = false;
@@ -107,7 +109,7 @@ it("reports the read failure without stale incomplete-cleanup state when close r
 
 it("retains a persistent failed input descriptor and refuses the next acquisition", async () =>
   emulateSupportedHost(async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-pwntools-held-close-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-pwntools-held-close-"));
     const path = join(root, "selected.bin");
     await writeFile(path, "selected evidence");
     closeState.fail = true;

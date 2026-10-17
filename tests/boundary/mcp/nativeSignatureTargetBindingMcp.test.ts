@@ -20,7 +20,7 @@ it.each(["mach-o", "mach-o-universal"] as const)(
   "rejects changed %s signature targets through MCP and accepts reopening the new version",
   async (format) => {
     const path = join(
-      await createTestTempDirectory("rea-signature-binding-mcp-"),
+      await createTestTempDirectory("binsight-signature-binding-mcp-"),
       "program",
     );
     const image = (commands: readonly Uint8Array[] = []) =>

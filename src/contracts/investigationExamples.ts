@@ -14,12 +14,12 @@ const comparison = compareFunctions(
 export const FUNCTION_COMPARISON_EVIDENCE = createEvidence(
   undefined,
   {
-    id: "rea-function-comparison",
-    name: "REA function comparison",
+    id: "binsight-function-comparison",
+    name: "BinSight function comparison",
     version: "1",
   },
   {
-    predicateType: "rea.function-comparison",
+    predicateType: "binsight.function-comparison",
     operation: "compare_functions",
     parameters: {
       left_evidence_id: FUNCTION_COMPARISON_EXAMPLE.left.evidence_id,
@@ -37,14 +37,14 @@ export const FUNCTION_COMPARISON_EVIDENCE = createEvidence(
 );
 
 const PROCESS_PROVIDER = {
-  id: "rea-process",
-  name: "REA deterministic process harness",
+  id: "binsight-process",
+  name: "BinSight deterministic process harness",
   version: "3",
 } as const;
 const capture = parseProcessCapture(EMPTY_PROCESS_CAPTURE_EXAMPLE);
 const captureEvidence = (scenario: string) =>
   createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "binsight.process-capture",
     operation: "capture_process_scenario",
     parameters: { scenario },
     result: jsonValueSchema.parse(capture),
@@ -63,7 +63,7 @@ export const PROCESS_COMPARISON_EVIDENCE = createEvidence(
   undefined,
   PROCESS_PROVIDER,
   {
-    predicateType: "rea.process-comparison",
+    predicateType: "binsight.process-comparison",
     operation: "compare_process_captures",
     parameters: {
       left_evidence_id: PROCESS_CAPTURE_REFERENCE.evidence_id,

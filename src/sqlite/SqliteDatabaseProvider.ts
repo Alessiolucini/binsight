@@ -72,7 +72,8 @@ export class SqliteDatabaseProvider implements SqliteDatabasePort {
     readonly launcher?: SqliteWorkerLauncher,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-sqlite-database-" }),
+    > = () =>
+      PrivateRuntimeRoot.create({ prefix: "binsight-sqlite-database-" }),
   ) {}
 
   /** Return exact original DB/WAL identities and current schema/selected committed rows. */

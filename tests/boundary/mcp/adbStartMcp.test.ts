@@ -24,7 +24,7 @@ const responseText = (response: { readonly content: readonly unknown[] }) =>
     .join("");
 
 const createFakeAdb = async () => {
-  const directory = await createTestTempDirectory("rea-adb-start-mcp-");
+  const directory = await createTestTempDirectory("binsight-adb-start-mcp-");
   const binary = join(directory, "adb");
   const stdoutFile = join(directory, "stdout");
   const stderrFile = join(directory, "stderr");

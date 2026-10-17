@@ -63,12 +63,12 @@ export class PrivateRuntimeRoot {
     if (platform === "win32") {
       const runtime = WindowsPrivateRuntime.create(
         options.parent ?? tmpdir(),
-        options.prefix ?? "rea-provider-",
+        options.prefix ?? "binsight-provider-",
       );
       return new PrivateRuntimeRoot(runtime.observation.path, runtime);
     }
     const path = await mkdtemp(
-      join(options.parent ?? tmpdir(), options.prefix ?? "rea-provider-"),
+      join(options.parent ?? tmpdir(), options.prefix ?? "binsight-provider-"),
     );
     // POSIX mkdtemp establishes owner-only access atomically. Return its owner
     // without a fallible permission rewrite and rollback after allocation.

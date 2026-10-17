@@ -59,7 +59,7 @@ afterEach(() => {
 });
 
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-stage-retirement-");
+  const workspace = await createTestWorkspace("binsight-stage-retirement-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("selected.core");
   const value = recordedCrashFixture(path);

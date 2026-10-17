@@ -24,14 +24,14 @@ export async function verifyPackageInstall({
     ],
     { env: environment },
   );
-  const cli = join(prefix, "bin", "rea");
-  const packageRunnerCli = join(prefix, "bin", "rea-agents");
+  const cli = join(prefix, "bin", "binsight");
+  const packageRunnerCli = join(prefix, "bin", "binsight");
   if (!(await run(packageRunnerCli, ["--help"], environment)).includes("setup"))
-    throw new Error("packaged rea-agents alias did not expose setup");
+    throw new Error("packaged binsight alias did not expose setup");
   const processCaptureCapabilityUrl = pathToFileURL(
     join(
       prefix,
-      "lib/node_modules/rea-agents/dist/process/capture/ProcessCaptureCapability.js",
+      "lib/node_modules/binsight/dist/process/capture/ProcessCaptureCapability.js",
     ),
   ).href;
   const processCaptureCapability = json(
@@ -64,11 +64,11 @@ export async function verifyPackageInstall({
     ],
     { env: environment },
   );
-  const noOptionalCli = join(noOptionalPrefix, "bin", "rea");
+  const noOptionalCli = join(noOptionalPrefix, "bin", "binsight");
   await rm(
     join(
       noOptionalPrefix,
-      "lib/node_modules/rea-agents/node_modules/@lydell",
+      "lib/node_modules/binsight/node_modules/@lydell",
       `node-pty-${process.platform}-${process.arch}`,
     ),
     { recursive: true, force: true },
@@ -76,7 +76,7 @@ export async function verifyPackageInstall({
   const noOptionalCapabilityUrl = pathToFileURL(
     join(
       noOptionalPrefix,
-      "lib/node_modules/rea-agents/dist/process/capture/ProcessCaptureCapability.js",
+      "lib/node_modules/binsight/dist/process/capture/ProcessCaptureCapability.js",
     ),
   ).href;
   const noOptionalCapability = json(
@@ -104,7 +104,7 @@ export async function verifyPackageInstall({
 }
 
 const verifyInstalledPackageCanRepack = async (prefix, environment) => {
-  const installedPackageRoot = join(prefix, "lib/node_modules/rea-agents");
+  const installedPackageRoot = join(prefix, "lib/node_modules/binsight");
   const repackedTarball = (
     await execNpm(["pack", "--silent"], {
       cwd: installedPackageRoot,

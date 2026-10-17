@@ -16,7 +16,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { holdFirstFileRead } from "../../support/holdFirstFileRead.js";
 
 it("leaves the session unchanged after bundle comparison cancellation and permits a retry", async () => {
-  const root = await createTestTempDirectory("rea-mcp-compare-cancel-");
+  const root = await createTestTempDirectory("binsight-mcp-compare-cancel-");
   const leftPath = join(root, "left.json");
   const rightPath = join(root, "right.json");
   const provider = { id: "fixture", name: "Fixture", version: "1" };

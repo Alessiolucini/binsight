@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "linux")(
   "enforces both address-space limits before any producer allocation",
   async () => {
-    const directory = await createTestTempDirectory("rea-sigrok-limits-");
+    const directory = await createTestTempDirectory("binsight-sigrok-limits-");
     const command = join(directory, "memory-probe");
     await writeFile(
       command,
@@ -54,7 +54,7 @@ it.skipIf(process.platform !== "linux")(
   "preserves lower inherited file/CPU limits in the real launch",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-sigrok-inherited-limits-",
+      "binsight-sigrok-inherited-limits-",
     );
     const command = join(directory, "limit-probe");
     const path = join(directory, "recording.vcd");

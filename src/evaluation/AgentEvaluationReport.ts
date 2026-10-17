@@ -3,7 +3,7 @@ export type FixtureCorrectness = "passed" | "failed" | "not_assessed";
 
 /** Measurements consumed by the evaluation runner's release gate. */
 export interface AgentEvaluationGateResult {
-  /** Explicit null requires a target clarification with no REA calls. */
+  /** Explicit null requires a target clarification with no BinSight calls. */
   readonly expectedFirstTool?: string | null;
   readonly targetClarificationPassed?: boolean;
   readonly exitCode: number;

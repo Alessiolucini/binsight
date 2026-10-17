@@ -118,7 +118,7 @@ const storagePage = (kind, port) => {
       localStorage.removeItem("rea_storage_remove");
       sessionStorage.setItem("rea_storage_empty", "");
       addEventListener("message", (event) => {
-        if (event.data?.kind !== "rea-storage-frame") return;
+        if (event.data?.kind !== "binsight-storage-frame") return;
         const report = document.querySelector("#frame-report");
         report.textContent = JSON.stringify(event.data.state);
         report.dataset.ready = "true";
@@ -132,14 +132,14 @@ const storagePage = (kind, port) => {
       sessionStorage.setItem("rea_storage_probe", "frame-session-updated");
       localStorage.removeItem("rea_storage_remove");
       sessionStorage.setItem("rea_storage_empty", "");
-      parent.postMessage({ kind: "rea-storage-frame", state }, "*");
+      parent.postMessage({ kind: "binsight-storage-frame", state }, "*");
     </script></body></html>`;
   if (kind === "debugger")
     return `<!doctype html><html><body><pre id="debugger-state"></pre><script>
-      window.reaDebuggerBefore = true;
+      window.binsightDebuggerBefore = true;
       debugger;
-      window.reaDebuggerAfter = true;
-      document.querySelector("#debugger-state").textContent = String(window.reaDebuggerAfter);
+      window.binsightDebuggerAfter = true;
+      document.querySelector("#debugger-state").textContent = String(window.binsightDebuggerAfter);
     </script></body></html>`;
   return `<!doctype html><html><body><pre id="top-report"></pre><script>
     const state = { local: localStorage.getItem("rea_storage_probe"), session: sessionStorage.getItem("rea_storage_probe"), removed: localStorage.getItem("rea_storage_remove"), empty: sessionStorage.getItem("rea_storage_empty") };
@@ -523,7 +523,7 @@ const verifyCallerDebuggerPause = async (caller, origin, scenario) => {
     });
     const pausedState = await caller.send("Debugger.evaluateOnCallFrame", {
       callFrameId,
-      expression: "window.reaDebuggerAfter === true",
+      expression: "window.binsightDebuggerAfter === true",
       returnByValue: true,
     });
     assert.equal(
@@ -542,7 +542,7 @@ const verifyCallerDebuggerPause = async (caller, origin, scenario) => {
     const result = await pending;
     if (!result.ok) throw result.error;
     const debuggerState = await caller.send("Runtime.evaluate", {
-      expression: "window.reaDebuggerAfter === true",
+      expression: "window.binsightDebuggerAfter === true",
       returnByValue: true,
     });
     assert.equal(debuggerState.result.value, true);

@@ -84,7 +84,7 @@ if (!compilerOnly) {
   assert.equal(installation.status, "available", JSON.stringify(installation));
 }
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-switch-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-switch-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const source = join(workspace, "switch.c");
@@ -125,7 +125,7 @@ try {
     const stripped = join(workspace, `${compiler}-stripped`);
     await copyFile(original, stripped);
     await exec(commands.strip, ["--strip-all", stripped]);
-    // Byte/physical target oracle survives removal of the names that REA could use.
+    // Byte/physical target oracle survives removal of the names that BinSight could use.
     assertCompiledSwitchOracle(await readFile(stripped), fixtures, disassembly);
     for (const [variant, path] of [
       ["optimized", original],
@@ -138,7 +138,7 @@ try {
       assert.equal(
         digest(await readFile(path)),
         sha256,
-        "REA analysis changed original compiled fixture",
+        "BinSight analysis changed original compiled fixture",
       );
       results.push({
         compiler,
@@ -169,7 +169,9 @@ try {
 } finally {
   try {
     assert.deepEqual(
-      (await readdir(runtime)).filter((name) => name.startsWith("rea-ghidra-")),
+      (await readdir(runtime)).filter((name) =>
+        name.startsWith("binsight-ghidra-"),
+      ),
       [],
       "Owned Ghidra runtime survived close",
     );
@@ -205,7 +207,10 @@ async function verifyTarget(path, sha256, fixtures, variant) {
     env,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-real-switch-proof", version: "1" });
+  const client = new Client({
+    name: "binsight-real-switch-proof",
+    version: "1",
+  });
   let opened = false;
   let stderr = "";
   const observations = [];
@@ -299,8 +304,8 @@ async function verifyTarget(path, sha256, fixtures, variant) {
 function assertWorkflowIdentity(evidence, sha256) {
   assert.equal(evidence.subject.digest.sha256, sha256);
   assert.equal(evidence.operation, "inspect_native_api");
-  assert.equal(evidence.provider.id, "rea-workflow");
-  assert.equal(evidence.analysis_profile.provider.id, "rea-workflow");
+  assert.equal(evidence.provider.id, "binsight-workflow");
+  assert.equal(evidence.analysis_profile.provider.id, "binsight-workflow");
   assert.equal(
     evidence.analysis_profile.parameters.upstream_analysis_profile.parameters
       .language_id,

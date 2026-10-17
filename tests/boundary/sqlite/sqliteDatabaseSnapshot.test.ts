@@ -25,7 +25,7 @@ import {
 } from "../../support/workspace/workspaceFixture.js";
 
 const fixture = async (wal = false) => {
-  const workspace = await createTestWorkspace("rea-sqlite-snapshot-race-");
+  const workspace = await createTestWorkspace("binsight-sqlite-snapshot-race-");
   const database = createSqliteDatabaseFixture(workspace.root, wal);
   if (!wal) database.close();
   const resourceScope = new ArtifactResourceScope();

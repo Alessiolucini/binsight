@@ -86,7 +86,7 @@ export const webSourceMapReportSchema = z.strictObject({
       v8_heap_limit_bytes: z.number().int().min(1),
     }),
     // Bun reports V8-shaped heap statistics but does not enforce V8 heap flags.
-    // On Windows REA instead enforces a Job Object commit limit on the codec.
+    // On Windows BinSight instead enforces a Job Object commit limit on the codec.
     z.strictObject({
       id: z.literal("bun"),
       version: z.string().min(1),

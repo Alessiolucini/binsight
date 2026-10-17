@@ -90,7 +90,9 @@ describe("Hopper analysis profiles", () => {
   ])(
     "commits effective loader arguments from $source in the profile",
     async (scenario) => {
-      directory = await createTestTempDirectory("rea-hopper-profile-loader-");
+      directory = await createTestTempDirectory(
+        "binsight-hopper-profile-loader-",
+      );
       const launcherPath = join(directory, "hopper");
       await writeFile(launcherPath, "Hopper build");
       const resolved = await resolveHopperAnalysisProfile(
@@ -120,7 +122,9 @@ describe("Hopper analysis profiles", () => {
   );
 
   it("stops launcher hashing when profile resolution is cancelled", async () => {
-    directory = await createTestTempDirectory("rea-hopper-profile-cancel-");
+    directory = await createTestTempDirectory(
+      "binsight-hopper-profile-cancel-",
+    );
     const launcher = join(directory, "hopper");
     await writeFile(launcher, "Hopper build");
     const controller = new AbortController();

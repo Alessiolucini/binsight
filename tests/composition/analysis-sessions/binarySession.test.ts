@@ -314,7 +314,9 @@ it("preserves Evidence records while retiring the client after an external mutat
 });
 
 it("requires explicitly reopening an app bundle after a session mutation", async () => {
-  const directory = await createTestTempDirectory("rea-session-app-rebind-");
+  const directory = await createTestTempDirectory(
+    "binsight-session-app-rebind-",
+  );
   const app = join(directory, "Fixture.app");
   const executable = join(app, "Fixture");
   await mkdir(app, { recursive: true });
@@ -543,7 +545,7 @@ describe("evidence metadata imports and snapshot cache", () => {
       },
       { id: "fixture", name: "Fixture", version: "1" },
       {
-        predicateType: "rea.analysis",
+        predicateType: "binsight.analysis",
         operation: "health",
         parameters: { source: "additive-import" },
         result: true,
@@ -789,7 +791,7 @@ describe("replay of exact immutable calls", () => {
     expect(cached.ok).toBe(true);
     if (cached.ok)
       expect(cached.value.limitations).toContainEqual(
-        expect.stringContaining("local REA analysis snapshot"),
+        expect.stringContaining("local BinSight analysis snapshot"),
       );
     expect(
       (
@@ -865,7 +867,7 @@ describe("replay of exact immutable calls", () => {
 describe("snapshot switch rollback", () => {
   it("retains the previous cache when a target switch snapshot conflicts", async () => {
     const [first] = await createBinarySessionTargets();
-    const directory = await createTestTempDirectory("rea-session-copy-");
+    const directory = await createTestTempDirectory("binsight-session-copy-");
     const second = join(directory, `second${extname(first)}`);
     await copyFile(first, second);
     const calls: string[] = [];

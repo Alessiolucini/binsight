@@ -30,7 +30,7 @@ const installation = async (
   properties = "application.version=12.1.4\n",
   compilerStatus = 0,
 ) => {
-  const root = await createTestTempDirectory("rea-ghidra-bridge-test-");
+  const root = await createTestTempDirectory("binsight-ghidra-bridge-test-");
   const install = join(root, "Ghidra SDK");
   await mkdir(join(install, "Ghidra/Framework/lib"), { recursive: true });
   await writeFile(
@@ -144,7 +144,9 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "rejects a $action launcher source before compilation: $source",
   async ({ source, action }) => {
-    const repository = await createTestTempDirectory("rea-ghidra-source-set-");
+    const repository = await createTestTempDirectory(
+      "binsight-ghidra-source-set-",
+    );
     await mkdir(join(repository, "scripts"));
     await mkdir(join(repository, "src/ghidra"), { recursive: true });
     await writeFile(join(repository, "package.json"), '{"type":"module"}\n');

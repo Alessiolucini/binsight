@@ -22,7 +22,7 @@ vi.mock("../../filesystem/RegularFile.js", async (importOriginal) => {
 it.skipIf(process.platform === "win32")(
   "rejects a named pipe without waiting for a writer",
   async () => {
-    const root = await createTestTempDirectory("rea-recovery-fifo-");
+    const root = await createTestTempDirectory("binsight-recovery-fifo-");
     const regular = join(root, "regular.js");
     await writeFile(regular, "module.exports = 1;\n");
     await expect(readRecoveryFile(regular, 1024)).resolves.toHaveLength(20);

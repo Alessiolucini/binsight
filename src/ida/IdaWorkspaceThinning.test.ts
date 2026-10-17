@@ -25,7 +25,7 @@ const resolveUniversalTarget = async (
   bytes: Buffer,
   hostArchitecture: "arm64" | "x64",
 ) => {
-  const directory = await createTestTempDirectory("rea-ida-thin-");
+  const directory = await createTestTempDirectory("binsight-ida-thin-");
   roots.push(directory);
   const path = join(directory, "universal");
   await writeFile(path, bytes);
@@ -190,7 +190,7 @@ describe("IDA workspace input thinning", () => {
 
   it("binds a headless session to the thinned input identity", async () => {
     const { target } = await universalTarget("arm64");
-    const root = await createTestTempDirectory("rea-ida-thin-root-");
+    const root = await createTestTempDirectory("binsight-ida-thin-root-");
     roots.push(root);
     const producer = new RecordingIdaMcp(target, "headless");
     const client = new IdaSessionClient(

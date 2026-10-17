@@ -15,7 +15,9 @@ import type { BinaryTarget } from "../../../../src/domain/binaryTargetTypes.js";
 
 describe("artifact extraction", () => {
   it("keeps committed files after the owning client closes", async () => {
-    const root = await createTestTempDirectory("rea-extract-client-close-");
+    const root = await createTestTempDirectory(
+      "binsight-extract-client-close-",
+    );
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "payload.txt"), "committed\n");
@@ -35,7 +37,7 @@ describe("artifact extraction", () => {
   });
 
   it("extracts all regular occurrences through an exclusively owned output tree", async () => {
-    const root = await createTestTempDirectory("rea-extract-");
+    const root = await createTestTempDirectory("binsight-extract-");
     const source = join(root, "source");
     await mkdir(join(source, "assets"), { recursive: true });
     await writeFile(join(source, "assets", "selected.js"), "selected();\n");

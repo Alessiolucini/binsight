@@ -51,7 +51,9 @@ const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );
 const run = createVerifierRun();
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-evm-verifier-" });
+const root = await PrivateRuntimeRoot.create({
+  prefix: "binsight-evm-verifier-",
+});
 const client = new Client({ name: "evm-interface-verifier", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -375,7 +377,7 @@ try {
     }
   }
   const brokenLimiter = join(root.path, "broken-limiter");
-  await writeFile(brokenLimiter, "#!/rea-verifier-missing-interpreter\n", {
+  await writeFile(brokenLimiter, "#!/binsight-verifier-missing-interpreter\n", {
     mode: 0o700,
   });
   const signalLimiter = join(root.path, "signal-limiter");

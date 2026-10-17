@@ -15,7 +15,9 @@ it.skipIf(process.platform === "win32").each([
 ] as const)(
   "finishes %s cleanup when %s is delivered again",
   async (mode, signal) => {
-    const root = await createTestTempDirectory("rea-direct-analysis-signals-");
+    const root = await createTestTempDirectory(
+      "binsight-direct-analysis-signals-",
+    );
     const child = spawn(
       process.execPath,
       ["tests/fixtures/directAnalysisInterrupt.mjs", root, mode],

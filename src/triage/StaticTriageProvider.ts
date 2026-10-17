@@ -35,8 +35,8 @@ import {
 
 /** Bundled engine identity; analyzed file content is a separate observed fact. */
 export const STATIC_TRIAGE_PROVIDER_IDENTITY = {
-  id: "rea-static-triage",
-  name: "REA static triage engine",
+  id: "binsight-static-triage",
+  name: "BinSight static triage engine",
   version: "1",
 } as const;
 

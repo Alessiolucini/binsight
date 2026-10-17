@@ -1,6 +1,6 @@
 # Ghidra provider semantics
 
-REA imports one target into an ephemeral Ghidra database. Linux/macOS support
+BinSight imports one target into an ephemeral Ghidra database. Linux/macOS support
 read-only analysis and atomic function-name/entry-comment edits; Windows P0 is
 read-only. GUI controls and persistent database mutation are unavailable.
 Executable bytes remain unchanged.
@@ -8,7 +8,7 @@ Executable bytes remain unchanged.
 Use [installation](installation.md#ghidra) for supported hosts, prerequisites,
 configuration, startup deadlines, resource controls, and cleanup recovery.
 [Linux Ghidra launches](installation.md#linux-owned-process-prerequisite) also
-require a procps-compatible `ps` on REA's `PATH` for process ownership checks.
+require a procps-compatible `ps` on BinSight's `PATH` for process ownership checks.
 [Windows P0](windows-ghidra-p0.md) has its own admission and lifecycle boundary;
 [NativeAOT observations](ghidra-nativeaot.md) include a built-in read-only PE
 snapshot parser and a separate optional annotation extension. Check the
@@ -59,17 +59,17 @@ are omitted with an explicit resource limitation, rather than truncated.
 Original names and types may be missing even when auto-analysis completes.
 An empty name search does not establish that a function is absent; use
 `list_procedures` and address-based analysis to inspect recovered functions.
-REA imports a private executable copy and does not admit a caller-selected
+BinSight imports a private executable copy and does not admit a caller-selected
 PDB companion. This reporting does not search symbol servers, copy a sibling
 PDB, or change analyzer settings.
 
 ## Loaded addresses and file offsets
 
-`rea analyze <path> --provider ghidra --json` and MCP `binary_overview` report
+`binsight analyze <path> --provider ghidra --json` and MCP `binary_overview` report
 the observed loaded `image_base` in `normalized_result`. They retain each
 segment's reported `image_base` and `address_space`. A provider that does not
 report a base, or whose segments disagree, omits the overview field, following
-the existing contract on main. REA does not substitute zero or the first
+the existing contract on main. BinSight does not substitute zero or the first
 segment's address. All reported bases and address spaces remain visible in the
 complete segment inventory, including conflicting observations.
 
@@ -108,11 +108,11 @@ Use `list_procedures` to select an observed procedure address. To relate file
 bytes to loaded memory, call MCP `inspect_native_load_image` or:
 
 ```sh
-rea search <path> . --kind procedures --mode regex --provider ghidra --json
-rea inspect-native-load-image <path> --provider ghidra --json
-rea decompile <path> <observed-procedure-address> --provider ghidra --json
-rea decompile <path> --file-offset=0x1013 --provider ghidra --json
-rea address-to-file-offset <path> <observed-procedure-address> --provider ghidra --json
+binsight search <path> . --kind procedures --mode regex --provider ghidra --json
+binsight inspect-native-load-image <path> --provider ghidra --json
+binsight decompile <path> <observed-procedure-address> --provider ghidra --json
+binsight decompile <path> --file-offset=0x1013 --provider ghidra --json
+binsight address-to-file-offset <path> <observed-procedure-address> --provider ghidra --json
 ```
 
 The load-image result preserves source-file indexes, file offsets, address
@@ -214,7 +214,7 @@ for real-provider coverage and exclusions.
 These lanes check all 26 read-only operations, target/snapshot/import SHA-256 linkage,
 and project, endpoint, process, and runtime cleanup. The independent native
 lane checks DACLs, handle admission, cancellation, and Job Object lifecycle.
-`npm run verify:ghidra:windows:package` packs and installs REA into an isolated
+`npm run verify:ghidra:windows:package` packs and installs BinSight into an isolated
 prefix, then checks ordinary-user CLI/MCP operations against canonical contracts.
 It accepts the same architecture and DLL flags and verifies the selected PE role
 in the analysis profile.
@@ -223,7 +223,7 @@ only package compatibility.
 
 ## Masked byte search
 
-`search_bytes` (`rea search-bytes PATH '48 8B ?? ?? 89' --provider ghidra`)
+`search_bytes` (`binsight search-bytes PATH '48 8B ?? ?? 89' --provider ghidra`)
 searches initialized analyzed memory, including loader fixups. Supply hexadecimal
 byte pairs, with `??` for any byte. An optional equal-length hexadecimal `mask`
 selects bits: `pattern: "a0"`, `mask: "f0"` matches bytes from `a0` through `af`.

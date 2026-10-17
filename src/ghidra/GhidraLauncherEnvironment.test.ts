@@ -11,13 +11,13 @@ describe("Ghidra headless JVM environment", () => {
   it("passes Windows paths with spaces to Java's environment parser", () => {
     expect(
       ghidraHeadlessJavaOptions(
-        "C:\\REA Runtime\\home",
-        "C:\\REA Runtime\\tmp",
+        "C:\\BinSight Runtime\\home",
+        "C:\\BinSight Runtime\\tmp",
         "win32",
       ),
     ).toEqual({
       JDK_JAVA_OPTIONS:
-        '"-Duser.home=C:\\REA Runtime\\home" "-Djava.io.tmpdir=C:\\REA Runtime\\tmp" "-XX:-UsePerfData"',
+        '"-Duser.home=C:\\BinSight Runtime\\home" "-Djava.io.tmpdir=C:\\BinSight Runtime\\tmp" "-XX:-UsePerfData"',
       GHIDRA_HEADLESS_JAVA_OPTIONS: "",
     });
   });
@@ -47,7 +47,7 @@ it("uses selected mixed-case Windows PATH and ComSpec through direct launch boun
     platform: "win32",
     analyzeHeadlessPath: "C:\\ghidra\\support\\analyzeHeadless.bat",
     configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
-    bridgeScriptPath: "C:\\rea\\bridge.py",
+    bridgeScriptPath: "C:\\binsight\\bridge.py",
   });
   environment.ComSpec = "C:\\changed\\cmd.exe";
   expect(

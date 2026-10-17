@@ -575,7 +575,7 @@ export class GdbSessionManager {
           "start_gdb_session",
           this.#platform === "win32"
             ? "Persistent Windows GDB sessions are unavailable because owned Job Object cleanup can terminate debugger inferiors."
-            : "Persistent GDB sessions are available only on Linux because REA verifies live inferior output descriptors through /proc.",
+            : "Persistent GDB sessions are available only on Linux because BinSight verifies live inferior output descriptors through /proc.",
         ),
       );
     const controller = new AbortController();
@@ -934,7 +934,7 @@ export class GdbSessionManager {
         startupEvidencePayload === undefined
           ? undefined
           : createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
-              predicateType: "rea.debugger.startup-observation",
+              predicateType: "binsight.debugger.startup-observation",
               operation: "start_gdb_session",
               parameters: {
                 mi_version: miVersion,
@@ -1096,7 +1096,7 @@ export class GdbSessionManager {
               undefined,
               { id: "gnu.gdb", name: "GNU GDB", version: null },
               {
-                predicateType: "rea.debugger.console-observation",
+                predicateType: "binsight.debugger.console-observation",
                 operation: "gdb_console",
                 parameters: { session_id: sessionId, command },
                 result: {
@@ -1159,7 +1159,7 @@ export class GdbSessionManager {
                 undefined,
                 { id: "gnu.gdb", name: "GNU GDB", version: null },
                 {
-                  predicateType: "rea.debugger.console-observation",
+                  predicateType: "binsight.debugger.console-observation",
                   operation: "gdb_console",
                   parameters: { session_id: sessionId, command },
                   result: { ...result, records: [...result.records] },
@@ -1642,7 +1642,7 @@ export class GdbSessionManager {
       partial === undefined
         ? undefined
         : createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
-            predicateType: "rea.debugger.console-observation",
+            predicateType: "binsight.debugger.console-observation",
             operation: "gdb_console",
             parameters: {
               session_id: session.id,
@@ -1900,8 +1900,8 @@ export class GdbSessionManager {
         const evidence = createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
           predicateType:
             operation === "start_gdb_session"
-              ? "rea.debugger.startup-observation"
-              : "rea.debugger.console-observation",
+              ? "binsight.debugger.startup-observation"
+              : "binsight.debugger.console-observation",
           operation,
           parameters: {
             session_id: session.id,
@@ -2017,7 +2017,7 @@ export class GdbSessionManager {
           completion_status: "unknown",
         };
         const evidence = createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
-          predicateType: "rea.debugger.console-observation",
+          predicateType: "binsight.debugger.console-observation",
           operation: "gdb_console",
           parameters: {
             session_id: session.id,

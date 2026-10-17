@@ -222,7 +222,7 @@ export const captureMemoryFailure = (
     },
     {
       cause,
-      remediationAction: `Use a smaller capture exported by its producer, or another decoder with sufficient capacity for the original capture. Preserve the original for provenance; a subset does not establish complete-capture coverage.${input.format !== "mitmproxy" && NODE_CAPTURE_HEAP_ENFORCED ? ` REA's Node capture old-generation heap is fixed at ${NODE_CAPTURE_HEAP_LIMITS.oldGenerationMiB} MiB; inherited NODE_OPTIONS cannot raise it.` : ""}${input.format !== "mitmproxy" && NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES !== null ? ` REA's Node capture decoder process commit limit is fixed at ${String(NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES)} bytes.` : ""}`,
+      remediationAction: `Use a smaller capture exported by its producer, or another decoder with sufficient capacity for the original capture. Preserve the original for provenance; a subset does not establish complete-capture coverage.${input.format !== "mitmproxy" && NODE_CAPTURE_HEAP_ENFORCED ? ` BinSight's Node capture old-generation heap is fixed at ${NODE_CAPTURE_HEAP_LIMITS.oldGenerationMiB} MiB; inherited NODE_OPTIONS cannot raise it.` : ""}${input.format !== "mitmproxy" && NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES !== null ? ` BinSight's Node capture decoder process commit limit is fixed at ${String(NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES)} bytes.` : ""}`,
       ...(cause instanceof OwnedCommandFailure && cause.snapshot !== null
         ? {
             capturedOutput: {

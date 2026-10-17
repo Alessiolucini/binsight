@@ -258,7 +258,9 @@ describe("Electron alias identity through stdio MCP", () => {
   ])(
     "recovers Electron boundaries through $name (#1656)",
     async ({ cliParity, main, preload, esm }) => {
-      const root = await createTestTempDirectory("rea-electron-alias-cli-");
+      const root = await createTestTempDirectory(
+        "binsight-electron-alias-cli-",
+      );
       await Promise.all([
         writeFile(
           join(root, "package.json"),
@@ -416,7 +418,9 @@ describe("Electron unavailable identity through stdio MCP", () => {
   ])(
     "keeps Electron identity unresolved for $name (#1656)",
     async ({ cliParity, main, preload }) => {
-      const root = await createTestTempDirectory("rea-electron-alias-unknown-");
+      const root = await createTestTempDirectory(
+        "binsight-electron-alias-unknown-",
+      );
       await Promise.all([
         writeFile(
           join(root, "package.json"),
@@ -451,7 +455,7 @@ describe("Electron unavailable identity through stdio MCP", () => {
 });
 
 it("preserves complete line-comment source-map URLs through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-source-map-url-cli-");
+  const root = await createTestTempDirectory("binsight-source-map-url-cli-");
   const directives = [
     "//# sourceMappingURL=app.js.map?variant=a*modern",
     "//@ sourceMappingURL=app.js.map?variant=a*legacy",
@@ -520,7 +524,9 @@ it("preserves complete line-comment source-map URLs through CLI and MCP", async 
 }, 20_000);
 
 it("resolves source-map URL paths once without changing their declarations", async () => {
-  const root = await createTestTempDirectory("rea-source-map-encoding-cli-");
+  const root = await createTestTempDirectory(
+    "binsight-source-map-encoding-cli-",
+  );
   const cases = [
     ["space%20part.js.map", "space part.js.map"],
     ["literal%25.js.map", "literal%.js.map"],
@@ -641,7 +647,9 @@ it("resolves source-map URL paths once without changing their declarations", asy
 
 describe("JavaScript application path CLI", () => {
   it("accepts a relative local application path and preserves canonical Evidence identity", async () => {
-    const root = await createTestTempDirectory("rea-relative-application-cli-");
+    const root = await createTestTempDirectory(
+      "binsight-relative-application-cli-",
+    );
     await writeFile(join(root, "app.js"), "export const value = 1;\n");
     const absolute = await analyzeJavaScriptApplication({ input_path: root });
     if (!absolute.ok) throw absolute.error;
@@ -667,7 +675,7 @@ describe("JavaScript application path CLI", () => {
 
   it("returns the self-import graph consistently through CLI and stdio MCP", async () => {
     const root = await createTestTempDirectory(
-      "rea-self-import-application-cli-",
+      "binsight-self-import-application-cli-",
     );
     await writeSelfImportFixture(root);
 
@@ -689,7 +697,7 @@ describe("JavaScript application path CLI", () => {
   }, 20_000);
 
   it("preserves canonical Electron API aliases through CLI and stdio MCP", async () => {
-    const root = await createTestTempDirectory("rea-electron-api-alias-");
+    const root = await createTestTempDirectory("binsight-electron-api-alias-");
     await writeElectronApiAliasApplication(root);
 
     const cliResult = z
@@ -750,7 +758,7 @@ describe("application workflow CLI parity", () => {
     ]);
     expect(traced).toMatchObject({
       operation: "trace_application_feature",
-      predicate_type: "rea.application-feature-trace",
+      predicate_type: "binsight.application-feature-trace",
       normalized_result: {
         seed: { kind: "module", value: "renderer.js", match: "exact" },
         summary: {
@@ -772,7 +780,7 @@ describe("application workflow CLI parity", () => {
       },
     });
 
-    const root = await createTestTempDirectory("rea-application-cli-");
+    const root = await createTestTempDirectory("binsight-application-cli-");
     const comparisonPath = join(root, "comparison.json");
     await writeFile(
       comparisonPath,
@@ -785,7 +793,7 @@ describe("application workflow CLI parity", () => {
     ]);
     expect(compared).toMatchObject({
       operation: "compare_application_versions",
-      predicate_type: "rea.application-version-comparison",
+      predicate_type: "binsight.application-version-comparison",
       normalized_result: {
         summary: {
           unchanged: 0,
@@ -813,7 +821,7 @@ describe("application workflow CLI parity", () => {
     ]);
     expect(sourceCompared).toMatchObject({
       operation: "compare_source_to_bundle",
-      predicate_type: "rea.source-to-bundle-comparison",
+      predicate_type: "binsight.source-to-bundle-comparison",
       normalized_result: {
         reference: { inventory_state: "complete" },
         summary: {
@@ -837,7 +845,7 @@ describe("application workflow CLI parity", () => {
   }, 20_000);
 
   it("traces the same authenticated semantic graph through the CLI", async () => {
-    const root = await createTestTempDirectory("rea-semantic-cli-");
+    const root = await createTestTempDirectory("binsight-semantic-cli-");
     await writeFile(
       join(root, "app.js"),
       "function add(value) { return value + 1; } add(2);",
@@ -867,7 +875,7 @@ describe("application workflow CLI parity", () => {
     );
     expect(traced).toMatchObject({
       operation: "trace_javascript_semantics",
-      predicate_type: "rea.javascript-semantic-trace",
+      predicate_type: "binsight.javascript-semantic-trace",
       normalized_result: {
         source_evidence_id: analyzed.value.evidence_id,
         source_graph_id: result.semantic_graph.graph_id,
@@ -877,7 +885,9 @@ describe("application workflow CLI parity", () => {
 });
 
 it("traces all endpoint carriers and their response consumers through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-endpoint-response-trace-");
+  const root = await createTestTempDirectory(
+    "binsight-endpoint-response-trace-",
+  );
   const endpoint = "https://example.invalid/v1/data";
   const source = `export async function load() {
     const response = await fetch(${JSON.stringify(endpoint)});
@@ -982,7 +992,7 @@ it("traces all endpoint carriers and their response consumers through CLI and MC
 
 describe("rest parameter semantic trace CLI", () => {
   it("traces each ordinary rest argument to its parameter through public application Evidence", async () => {
-    const root = await createTestTempDirectory("rea-rest-arguments-cli-");
+    const root = await createTestTempDirectory("binsight-rest-arguments-cli-");
     await writeFile(
       join(root, "app.js"),
       "function collect(first, ...rest) { return rest; } collect('first', 'second', 'third');",
@@ -1035,7 +1045,7 @@ describe("empty property key application CLI", () => {
   it.each(["const root = routes[''];", "const {'': root} = routes;"])(
     "analyzes a root-route dictionary with %s",
     async (read) => {
-      const root = await createTestTempDirectory("rea-empty-key-cli-");
+      const root = await createTestTempDirectory("binsight-empty-key-cli-");
       await writeFile(
         join(root, "app.js"),
         `const routes = {'': 'HOME'}; ${read}`,
@@ -1066,7 +1076,7 @@ describe("empty property key application CLI", () => {
 
 describe("Webpack factory CommonJS export keys", () => {
   it("keeps exact static keys and omits computed names through CLI and MCP", async () => {
-    const root = await createTestTempDirectory("rea-webpack-export-keys-");
+    const root = await createTestTempDirectory("binsight-webpack-export-keys-");
     const bundle = `globalThis.webpackChunkStaticExports.push([["main"], {
       1: function(module, exports, __webpack_require__) {${WEBPACK_FACTORY_BODY}},
       2: function(module) { module.exports = function realDefault() {}; },
@@ -1085,7 +1095,7 @@ describe("Webpack factory CommonJS export keys", () => {
     // Execute the same factory body as CommonJS, outside the analyzer, to
     // verify Node's alias behavior and the exact runtime object keys.
     const oracleRoot = await createTestTempDirectory(
-      "rea-webpack-export-oracle-",
+      "binsight-webpack-export-oracle-",
     );
     const oraclePath = join(oracleRoot, "oracle.cjs");
     await writeFile(oraclePath, WEBPACK_FACTORY_BODY);
@@ -1218,7 +1228,7 @@ describe("application workflow CLI input", () => {
 
 describe("application workflow CLI copy boundaries", () => {
   it("compares source values excluded from escaped rest and spread copies", async () => {
-    const root = await createTestTempDirectory("rea-copy-boundary-cli-");
+    const root = await createTestTempDirectory("binsight-copy-boundary-cli-");
     const sources = [
       `export default function make() {
         function mutate(value) { value.changed = true; }
@@ -1290,7 +1300,9 @@ describe("application workflow CLI copy boundaries", () => {
 
 describe("application workflow CLI and MCP capture lifetimes", () => {
   it("compares captured primitives and source values after aliases are replaced", async () => {
-    const parent = await createTestTempDirectory("rea-capture-lifetime-cli-");
+    const parent = await createTestTempDirectory(
+      "binsight-capture-lifetime-cli-",
+    );
     const root = join(parent, "fixtures # capture");
     await mkdir(root);
     const fields = [
@@ -1400,7 +1412,9 @@ describe("application workflow CLI and MCP capture lifetimes", () => {
 
 describe("application workflow CLI export Evidence", () => {
   it("preserves uncertainty after a helper can mutate an awaited return object", async () => {
-    const root = await createTestTempDirectory("rea-awaited-export-shape-cli-");
+    const root = await createTestTempDirectory(
+      "binsight-awaited-export-shape-cli-",
+    );
     const sources = [
       `export default async function make() {
         const result = { kind: "record" };
@@ -1436,7 +1450,7 @@ describe("application workflow CLI export Evidence", () => {
   }, 20_000);
 
   it("compares exact export shapes from file-backed Evidence", async () => {
-    const root = await createTestTempDirectory("rea-export-shape-cli-");
+    const root = await createTestTempDirectory("binsight-export-shape-cli-");
     const leftRoot = join(root, "left");
     const rightRoot = join(root, "right");
     await Promise.all([mkdir(leftRoot), mkdir(rightRoot)]);
@@ -1479,7 +1493,7 @@ describe("application workflow CLI export Evidence", () => {
     ]);
     expect(compared).toMatchObject({
       operation: "compare_javascript_export_shapes",
-      predicate_type: "rea.javascript-export-shape-comparison",
+      predicate_type: "binsight.javascript-export-shape-comparison",
       normalized_result: {
         summary: { added: 1, removed: 0, changed: 0, unknown: 0 },
         changes: [
@@ -1498,7 +1512,7 @@ describe("application workflow CLI export Evidence", () => {
 describe("application workflow CLI export property presence", () => {
   it("reports tagged search property presence through compare-javascript-export-shapes", async () => {
     const root = await createTestTempDirectory(
-      "rea-export-shape-presence-cli-",
+      "binsight-export-shape-presence-cli-",
     );
     const leftRoot = join(root, "left");
     const rightRoot = join(root, "right");
@@ -1670,7 +1684,7 @@ const analyzeComparisonSources = async (
 
 it("retains bundled isolated-world contextBridge APIs through dedicated and generic CLI routes", async () => {
   const root = await createTestTempDirectory(
-    "rea-context-bridge-isolated-cli-",
+    "binsight-context-bridge-isolated-cli-",
   );
   await writeFile(
     join(root, "preload.js"),

@@ -17,7 +17,7 @@ import {
 } from "../../../src/adb/AdbInputSnapshot.js";
 
 it("retains and retries a source handle that fails close during admission", async () => {
-  const parent = await mkdtemp(join(tmpdir(), "rea-adb-snapshot-test-"));
+  const parent = await mkdtemp(join(tmpdir(), "binsight-adb-snapshot-test-"));
   const root = await PrivateRuntimeRoot.create({ parent });
   const resources = new ArtifactResourceScope();
   const sourcePath = join(parent, "selected.apk");

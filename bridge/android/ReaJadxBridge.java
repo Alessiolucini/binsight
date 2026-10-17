@@ -21,7 +21,7 @@ import kotlinx.io.CoreKt;
 import kotlinx.io.JvmCoreKt;
 import kotlinx.serialization.json.JsonObject;
 
-/** REA-owned metadata boundary for the unmodified jadx-headless-mcp 0.7.1 JAR. */
+/** BinSight-owned metadata boundary for the unmodified jadx-headless-mcp 0.7.1 JAR. */
 class ReaJadxBridge {
   private static final Gson JSON = new Gson();
   private final SessionHolder holder;
@@ -250,7 +250,7 @@ class ReaJadxBridge {
       target += "." + selectedMethod.name();
       uses = method(cls, selectedMethod).getUseIn();
     }
-    // REA consumes all references without materializing source line information.
+    // BinSight consumes all references without materializing source line information.
     MethodInfo targetInfo = selectedMethod == null ? null : method(cls, selectedMethod).getMethodNode().getMethodInfo();
     List<Map<String, Object>> items = uses.stream().map(node -> {
       Map<String, Object> item = new LinkedHashMap<>(current.describeUsage(node, false));
@@ -291,7 +291,7 @@ class ReaJadxBridge {
         1048576, 0, 90000L, 1, List.of(), List.of(), 64, ResourceMode.FULL));
     ServerCapabilities capabilities = new ServerCapabilities(
         new ServerCapabilities.Tools(null), null, null, null, null, null, null, Map.of());
-    Server server = new Server(new Implementation("rea-jadx-bridge", "1", null, null, null),
+    Server server = new Server(new Implementation("binsight-jadx-bridge", "1", null, null, null),
         new ServerOptions(capabilities), "", ignored -> Unit.INSTANCE);
     SessionToolsKt.registerSessionTools(server, holder);
     ManifestToolsKt.registerManifestTools(server, holder);

@@ -12,6 +12,8 @@ import {
 } from "../../../src/application/SetupClientConfiguration.js";
 import { PRODUCT_IDENTITY } from "../../../src/identity.js";
 
+const backupOf = (path: string): string => `${path}.binsight.backup`;
+
 const pinnedPackage = PRODUCT_IDENTITY.registrationPackageSpecifier;
 
 describe("JSON client configuration transaction: writing configuration through safe paths", () => {
@@ -39,7 +41,7 @@ describe("JSON client configuration transaction: writing configuration through s
   );
 
   it("preserves existing keys, creates a backup, and reads back the MCP entry", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     const original =
       '{"theme":"dark","mcpServers":{"other":{"command":"other"}}}\n';
@@ -50,12 +52,12 @@ describe("JSON client configuration transaction: writing configuration through s
       format: "json",
     });
     expect(result.status).toBe("configured");
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(backupOf(configPath), "utf8")).toBe(original);
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       theme: "dark",
       mcpServers: {
         other: { command: "other" },
-        rea: {
+        binsight: {
           command: "npx",
           args: ["-y", pinnedPackage, "mcp"],
         },
@@ -64,7 +66,7 @@ describe("JSON client configuration transaction: writing configuration through s
   });
 
   it("updates a symlink target without replacing the JSON config symlink", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const targetPath = join(directory, "managed.json");
     const configPath = join(directory, "mcp.json");
     const original = '{"theme":"dark"}\n';
@@ -79,11 +81,11 @@ describe("JSON client configuration transaction: writing configuration through s
       }),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(backupOf(configPath), "utf8")).toBe(original);
     expect(JSON.parse(await readFile(targetPath, "utf8"))).toMatchObject({
       theme: "dark",
       mcpServers: {
-        rea: {
+        binsight: {
           command: "npx",
           args: ["-y", pinnedPackage, "mcp"],
         },
@@ -101,7 +103,7 @@ describe("JSON client configuration transaction: writing configuration through s
   });
 
   it("fails before mutation when a JSON config symlink is dangling", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     await symlink(join(directory, "missing.json"), configPath);
 
@@ -116,19 +118,17 @@ describe("JSON client configuration transaction: writing configuration through s
       reason: "path",
     });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
-    ).rejects.toThrow();
+    await expect(readFile(backupOf(configPath), "utf8")).rejects.toThrow();
   });
 });
 
 describe("JSON client configuration transaction: keeping matching configuration unchanged", () => {
   it("performs no write or second backup when configuration already matches", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(
       configPath,
-      `${JSON.stringify({ mcpServers: { rea: { command: "npx", args: ["-y", pinnedPackage, "mcp"] } } })}\n`,
+      `${JSON.stringify({ mcpServers: { binsight: { command: "npx", args: ["-y", pinnedPackage, "mcp"] } } })}\n`,
     );
     expect(
       await configureClientConfiguration({
@@ -139,19 +139,17 @@ describe("JSON client configuration transaction: keeping matching configuration 
     ).toEqual({
       status: "unchanged",
     });
-    await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
-    ).rejects.toThrow();
+    await expect(readFile(backupOf(configPath), "utf8")).rejects.toThrow();
   });
 
   it("does not rewrite an equivalent configuration with reordered environment keys", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(
       configPath,
       `${JSON.stringify({
         mcpServers: {
-          rea: {
+          binsight: {
             env: {
               JAVA_HOME: "/usr/lib/jvm/jdk-21",
               GHIDRA_INSTALL_DIR: "/opt/ghidra",
@@ -172,18 +170,16 @@ describe("JSON client configuration transaction: keeping matching configuration 
         },
       ),
     ).toEqual({ status: "unchanged" });
-    await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
-    ).rejects.toThrow();
+    await expect(readFile(backupOf(configPath), "utf8")).rejects.toThrow();
   });
 });
 
 describe("JSON client configuration migration and provider paths", () => {
   it("migrates an unversioned npx registration and preserves sibling configuration", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     const original =
-      '{"theme":"dark","mcpServers":{"rea":{"command":"npx","args":["-y","rea-agents","mcp"]},"other":{"command":"other"}}}\n';
+      '{"theme":"dark","mcpServers":{"binsight":{"command":"npx","args":["-y","binsight","mcp"]},"other":{"command":"other"}}}\n';
     await writeFile(configPath, original);
 
     expect(
@@ -197,18 +193,18 @@ describe("JSON client configuration migration and provider paths", () => {
     expect(JSON.parse(await readFile(configPath, "utf8"))).toEqual({
       theme: "dark",
       mcpServers: {
-        rea: {
+        binsight: {
           command: "npx",
           args: ["-y", pinnedPackage, "mcp"],
         },
         other: { command: "other" },
       },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(backupOf(configPath), "utf8")).toBe(original);
   });
 
   it("persists a custom Hopper launcher and remains idempotent", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     const hopperPath = "/Applications/Hopper v6.app/Contents/MacOS/hopper";
     const client = { name: "cursor", configPath, format: "json" } as const;
@@ -223,7 +219,7 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: {
+        binsight: {
           command: "npx",
           args: ["-y", pinnedPackage, "mcp"],
           env: { HOPPER_LAUNCHER_PATH: hopperPath },
@@ -242,11 +238,11 @@ describe("JSON client configuration migration and provider paths", () => {
         HOPPER_LAUNCHER_PATH: "/opt/hopper/bin/Hopper",
       }),
     ).toMatchObject({ status: "configured" });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(backupOf(configPath), "utf8")).toBe(original);
   });
 
   it("adds exact BYO Ghidra and Java paths without installing dependencies", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     const client = { name: "cursor", configPath, format: "json" } as const;
     const environment = {
@@ -261,7 +257,7 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: {
+        binsight: {
           env: {
             GHIDRA_INSTALL_DIR: environment.GHIDRA_INSTALL_DIR,
             JAVA_HOME: environment.JAVA_HOME,
@@ -275,7 +271,7 @@ describe("JSON client configuration migration and provider paths", () => {
   });
 
   it("refuses malformed existing JSON without overwriting it", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(configPath, "not-json");
     expect(
@@ -293,7 +289,7 @@ describe("JSON client configuration migration and provider paths", () => {
 
   it("refuses a non-object JSON root without overwriting it", async () => {
     const original = "null";
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(configPath, original);
     expect(
@@ -307,14 +303,12 @@ describe("JSON client configuration migration and provider paths", () => {
       reason: "readback",
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
-    ).rejects.toThrow();
+    await expect(readFile(backupOf(configPath), "utf8")).rejects.toThrow();
   });
 
   it("preserves a non-object mcpServers value", async () => {
     const servers = "[]";
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("bs-setup-");
     const configPath = join(directory, "mcp.json");
     const original = `{"mcpServers":${servers}}`;
     await writeFile(configPath, original);
@@ -329,9 +323,7 @@ describe("JSON client configuration migration and provider paths", () => {
       reason: "readback",
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
-    ).rejects.toThrow();
+    await expect(readFile(backupOf(configPath), "utf8")).rejects.toThrow();
   });
 });
 
@@ -340,19 +332,19 @@ describe("JSON client configuration shape diagnostics", () => {
     {
       format: "json" as const,
       original:
-        '{"__proto__":{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}}',
+        '{"__proto__":{"mcpServers":{"binsight":{"command":"binsight","args":["mcp"]}}}}',
       serversKey: "mcpServers",
     },
     {
       format: "opencode" as const,
       original:
-        '{"mcp":{"__proto__":{"servers":{"rea":{"type":"local","command":["rea","mcp"]}}}}}',
+        '{"mcp":{"__proto__":{"servers":{"binsight":{"type":"local","command":["binsight","mcp"]}}}}}',
       serversKey: "mcp",
     },
   ])(
     "registers an own server instead of trusting inherited $format settings",
     async ({ format, original, serversKey }) => {
-      const directory = await createTestTempDirectory("rea-setup-prototype-");
+      const directory = await createTestTempDirectory("bs-setup-prototype-");
       const configPath = join(directory, "mcp.json");
       const client = {
         name: format === "json" ? "cursor" : "opencode",
@@ -361,16 +353,16 @@ describe("JSON client configuration shape diagnostics", () => {
       };
       await writeFile(configPath, original);
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["binsight", "mcp"]),
       ).toMatchObject({ status: "update" });
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["binsight", "mcp"]),
       ).toMatchObject({ status: "configured" });
       const document = JSON.parse(await readFile(configPath, "utf8"));
       expect(Object.hasOwn(document, serversKey)).toBe(true);
-      expect(Object.hasOwn(document[serversKey], "rea")).toBe(true);
-      expect(document[serversKey].rea.command).toEqual(
-        format === "json" ? "rea" : ["rea", "mcp"],
+      expect(Object.hasOwn(document[serversKey], "binsight")).toBe(true);
+      expect(document[serversKey].binsight.command).toEqual(
+        format === "json" ? "binsight" : ["binsight", "mcp"],
       );
       const originalDocument = JSON.parse(original);
       expect(
@@ -380,9 +372,9 @@ describe("JSON client configuration shape diagnostics", () => {
           ? originalDocument.__proto__
           : originalDocument[serversKey].__proto__,
       );
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(backupOf(configPath), "utf8")).toBe(original);
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["binsight", "mcp"]),
       ).toMatchObject({ status: "already_current" });
     },
   );
@@ -394,7 +386,7 @@ describe("JSON client configuration shape diagnostics", () => {
   ] as const)(
     "names structural shape problems in setup remediation: %s",
     async (original, problem) => {
-      const directory = await createTestTempDirectory("rea-setup-shape-");
+      const directory = await createTestTempDirectory("bs-setup-shape-");
       const configPath = join(directory, "mcp.json");
       const client = {
         name: "cursor",
@@ -409,7 +401,7 @@ describe("JSON client configuration shape diagnostics", () => {
         `Configuration ${configPath} is malformed: ${problem}`,
       );
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["binsight", "mcp"]),
       ).toEqual({
         status: "invalid",
         remediation: `Configuration ${configPath} is malformed: ${problem}`,

@@ -16,9 +16,9 @@ describe("MCP startup policy", () => {
   it("profiles unique file-backed ESM modules without retaining paths", () => {
     const collector = createEsmModuleProfileCollector();
     collector.append(
-      "ESM 1: Storing file:///opt/rea/dist/main.js\n" +
-        "ESM 1: Translating StandardModule file:///opt/rea/dist/main.js\n" +
-        "ESM 1: Storing file:///opt/rea/node_modules/zod/index.js",
+      "ESM 1: Storing file:///opt/binsight/dist/main.js\n" +
+        "ESM 1: Translating StandardModule file:///opt/binsight/dist/main.js\n" +
+        "ESM 1: Storing file:///opt/binsight/node_modules/zod/index.js",
     );
 
     expect(collector.result()).toEqual({

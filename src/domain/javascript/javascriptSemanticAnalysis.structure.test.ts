@@ -156,7 +156,7 @@ describe("JavaScript semantic analysis: structure 1", () => {
 
   it("propagates literal, template, object, conditional, and destructured values", () => {
     const ir = analyzeJavaScriptSemantics(`
-      const prefix = "rea";
+      const prefix = "binsight";
       const suffix = "open";
       const channel = \`${"${prefix}"}:${"${suffix}"}\`;
       const options = {
@@ -170,11 +170,11 @@ describe("JavaScript semantic analysis: structure 1", () => {
 
     expect(topLevelBinding(ir, "channel").value).toEqual({
       status: "literal",
-      value: "rea:open",
+      value: "binsight:open",
     });
     expect(topLevelBinding(ir, "selected").value).toEqual({
       status: "literal",
-      value: "rea:open",
+      value: "binsight:open",
     });
     expect(topLevelBinding(ir, "mode").value).toEqual({
       status: "union",

@@ -10,7 +10,7 @@ import type { RelationshipCoverage } from "./relationshipCoverage.js";
 const observe = (
   address: string,
   callees: readonly string[],
-  provider = "rea-workflow",
+  provider = "binsight-workflow",
   options: {
     readonly evidenceLimitations?: readonly string[];
     readonly dossierLimitations?: readonly string[];
@@ -143,7 +143,7 @@ describe("call path reconstruction", () => {
     );
 
     const limitedEmpty = run([
-      observe("0x1000", [], "rea-workflow", {
+      observe("0x1000", [], "binsight-workflow", {
         dossierLimitations: ["Call relationships are incomplete."],
       }),
       observe("0x4000", []),
@@ -185,7 +185,7 @@ describe("call path topology and capacity", () => {
       (_, index) => `context-${index.toString().padStart(7, "0")}`,
     );
     const result = run([
-      observe("0x1000", [], "rea-workflow", {
+      observe("0x1000", [], "binsight-workflow", {
         evidenceLimitations: [...limitations].reverse(),
       }),
     ]);
@@ -232,7 +232,7 @@ describe("call path topology and capacity", () => {
     const evidenceLimitation = "Call graph output was truncated.";
     const dossierLimitation = "One call target could not be resolved.";
     const result = run([
-      observe("0x1000", ["0x4000"], "rea-workflow", {
+      observe("0x1000", ["0x4000"], "binsight-workflow", {
         evidenceLimitations: [evidenceLimitation],
         dossierLimitations: [dossierLimitation],
       }),
@@ -258,7 +258,7 @@ describe("call path topology and capacity", () => {
     const goalLimitation = "The goal dossier has partial outgoing references.";
     const result = run([
       observe("0x1000", ["0x4000"]),
-      observe("0x4000", ["0x5000"], "rea-workflow", {
+      observe("0x4000", ["0x5000"], "binsight-workflow", {
         dossierLimitations: [goalLimitation],
       }),
     ]);
@@ -364,8 +364,10 @@ describe("directional call relationship coverage", () => {
         limited_directions: directions,
       };
       const result = run([
-        observe("0x1000", ["0x2000"], "rea-workflow", { relationshipCoverage }),
-        observe("0x2000", [], "rea-workflow", { relationshipCoverage }),
+        observe("0x1000", ["0x2000"], "binsight-workflow", {
+          relationshipCoverage,
+        }),
+        observe("0x2000", [], "binsight-workflow", { relationshipCoverage }),
       ]);
       expect(result).toMatchObject({ status, search_scope: { exhaustive } });
       expect(result.limitations).toContain(limitation);
@@ -376,7 +378,7 @@ describe("directional call relationship coverage", () => {
 describe("explicit call relationship coverage", () => {
   it("accumulates 150,000 partial reasons without argument-stack exhaustion", () => {
     const result = run([
-      observe("0x1000", [], "rea-workflow", {
+      observe("0x1000", [], "binsight-workflow", {
         relationshipCoverage: {
           status: "partial",
           limitations: Array<string>(150_000).fill("omitted"),
@@ -395,7 +397,7 @@ describe("explicit call relationship coverage", () => {
   it("retains contextual limits on a found path without reducing complete coverage", () => {
     const limitation = "Provider results reflect the current database state.";
     const result = run([
-      observe("0x1000", ["0x4000"], "rea-workflow", {
+      observe("0x1000", ["0x4000"], "binsight-workflow", {
         relationshipCoverage: { status: "complete" },
         evidenceLimitations: [limitation],
       }),
@@ -411,7 +413,7 @@ describe("explicit call relationship coverage", () => {
   it("retains a found path while its expanded relationship coverage remains partial", () => {
     const limitation = "Other callees were omitted by the provider cap.";
     const result = run([
-      observe("0x1000", ["0x4000"], "rea-workflow", {
+      observe("0x1000", ["0x4000"], "binsight-workflow", {
         relationshipCoverage: { status: "partial", limitations: [limitation] },
       }),
     ]);
@@ -426,10 +428,10 @@ describe("explicit call relationship coverage", () => {
   it("retains an unknown goal coverage reason without expanding the terminal goal", () => {
     const reason = "The goal's outgoing relationship coverage is unknown.";
     const result = run([
-      observe("0x1000", ["0x4000"], "rea-workflow", {
+      observe("0x1000", ["0x4000"], "binsight-workflow", {
         relationshipCoverage: { status: "complete" },
       }),
-      observe("0x4000", ["0x5000"], "rea-workflow", {
+      observe("0x4000", ["0x5000"], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
     ]);
@@ -445,10 +447,10 @@ describe("explicit call relationship coverage", () => {
     const reason =
       "Callers: Upstream xrefs do not establish direct caller relationships.";
     const result = run([
-      observe("0x1000", ["0x2000"], "rea-workflow", {
+      observe("0x1000", ["0x2000"], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
-      observe("0x2000", [], "rea-workflow", {
+      observe("0x2000", [], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
     ]);
@@ -463,10 +465,10 @@ describe("explicit call relationship coverage", () => {
     const reason =
       "Callees: Upstream callees capped results at 500; additional callees remain unknown.";
     const result = run([
-      observe("0x1000", ["0x2000"], "rea-workflow", {
+      observe("0x1000", ["0x2000"], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
-      observe("0x2000", [], "rea-workflow", {
+      observe("0x2000", [], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
     ]);
@@ -481,10 +483,10 @@ describe("explicit call relationship coverage", () => {
     const reason =
       "Callers: Upstream xrefs do not establish direct caller relationships. Callees: Upstream callees are not observed.";
     const result = run([
-      observe("0x1000", ["0x2000"], "rea-workflow", {
+      observe("0x1000", ["0x2000"], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
-      observe("0x2000", [], "rea-workflow", {
+      observe("0x2000", [], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
     ]);
@@ -498,10 +500,10 @@ describe("explicit call relationship coverage", () => {
   it("ignores incomplete relationship coverage outside the reachable search closure", () => {
     const reason = "An unrelated function's callees were not observed.";
     const result = run([
-      observe("0x1000", [], "rea-workflow", {
+      observe("0x1000", [], "binsight-workflow", {
         relationshipCoverage: { status: "complete" },
       }),
-      observe("0x2000", ["0x5000"], "rea-workflow", {
+      observe("0x2000", ["0x5000"], "binsight-workflow", {
         relationshipCoverage: { status: "unknown", reason },
       }),
     ]);
@@ -530,7 +532,9 @@ describe("IDA-capped callee coverage beside unknown callers", () => {
     );
     expect(combined.status).toBe("unknown");
     const result = run([
-      observe("0x1000", [], "rea-workflow", { relationshipCoverage: combined }),
+      observe("0x1000", [], "binsight-workflow", {
+        relationshipCoverage: combined,
+      }),
       observe("0x4000", []),
     ]);
     expect(result).toMatchObject({
@@ -588,7 +592,7 @@ describe("call path evidence admission", () => {
 
 it("keeps an absent path unknown when only callee facet availability is declared", () => {
   const result = run([
-    observe("0x1000", [], "rea-workflow", {
+    observe("0x1000", [], "binsight-workflow", {
       calleeUnavailable: "Graph callees unavailable",
     }),
   ]);

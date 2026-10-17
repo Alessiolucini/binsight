@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const vitestPath = resolve(repositoryRoot, "node_modules/vitest/vitest.mjs");
-const OWNED_ENTRY = /^(?:rea-|bb-session-)/u;
+const OWNED_ENTRY = /^(?:binsight-|bb-session-)/u;
 
 const findOwnedEntries = async (root, directory = root) => {
   const owned = [];
@@ -24,7 +24,7 @@ const findOwnedEntries = async (root, directory = root) => {
 
 const canonicalTemporaryRoot = await realpath(tmpdir());
 const isolatedTemporaryRoot = await mkdtemp(
-  join(canonicalTemporaryRoot, "rea-test-hygiene-"),
+  join(canonicalTemporaryRoot, "binsight-test-hygiene-"),
 );
 
 try {

@@ -11,7 +11,7 @@ const linuxX64 = it.skipIf(
 linuxX64(
   "refuses a directory configured as the Wakaru resource limiter",
   async () => {
-    const root = await createTestTempDirectory("rea-wakaru-limiter-");
+    const root = await createTestTempDirectory("binsight-wakaru-limiter-");
     const command = join(root, "wakaru");
     const limiter = join(root, "prlimit");
     await writeFile(command, "#!/bin/sh\n", { mode: 0o700 });
@@ -30,7 +30,9 @@ linuxX64(
 );
 
 linuxX64("allows a symlink to a regular Wakaru resource limiter", async () => {
-  const root = await createTestTempDirectory("rea-wakaru-limiter-symlink-");
+  const root = await createTestTempDirectory(
+    "binsight-wakaru-limiter-symlink-",
+  );
   const command = join(root, "wakaru");
   const limiter = join(root, "prlimit");
   const target = join(root, "prlimit-bin");

@@ -10,7 +10,7 @@ import { analyzeJavaScriptApplication } from "../../../src/application/javascrip
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const analyzeFixture = async (source: string) => {
-  const fixture = await createTestTempDirectory("rea-native-types-");
+  const fixture = await createTestTempDirectory("binsight-native-types-");
   const scope = new ArtifactResourceScope();
   try {
     await writeFile(join(fixture, "main.ts"), `${source}\n`);

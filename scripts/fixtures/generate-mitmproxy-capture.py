@@ -10,7 +10,7 @@ from mitmproxy.websocket import WebSocketData, WebSocketMessage
 class Generator:
     def load(self, loader):
         loader.add_option("rea_fixture_root", str, "", "Owned synthetic fixture root")
-        loader.add_option("rea_adapter_path", str, "", "REA native adapter under verification")
+        loader.add_option("rea_adapter_path", str, "", "BinSight native adapter under verification")
 
     def running(self):
         root = Path(ctx.options.rea_fixture_root)

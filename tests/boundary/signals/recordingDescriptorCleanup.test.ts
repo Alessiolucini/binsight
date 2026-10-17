@@ -37,7 +37,9 @@ it
   ])(
   "retains failed %s descriptors and retries them before further acquisition and shutdown",
   async (member) => {
-    const directory = await createTestTempDirectory("rea-signal-descriptor-");
+    const directory = await createTestTempDirectory(
+      "binsight-signal-descriptor-",
+    );
     const path = join(directory, "recording.vcd");
     const command = join(directory, "sigrok.mjs");
     const limiter = join(directory, "limiter");

@@ -251,7 +251,7 @@ export const FRIDA_TOOL_CONTRACTS = [
     ...toolContractMetadata("close_frida_session"),
     kind: "native-provider",
     description:
-      "Unload session scripts and detach REA's Frida session. If a spawned process is still paused, resume it before detaching so it is not left suspended. REA never kills the target; its final state is reported as unknown.",
+      "Unload session scripts and detach BinSight's Frida session. If a spawned process is still paused, resume it before detaching so it is not left suspended. BinSight never kills the target; its final state is reported as unknown.",
     inputSchema: z.strictObject({ session_id: sessionId }),
     outputSchema: z.strictObject({ target_state: z.literal("unknown") }),
     examples: [

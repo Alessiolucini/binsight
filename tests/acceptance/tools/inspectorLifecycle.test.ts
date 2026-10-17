@@ -10,7 +10,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("observes a real Node Inspector and releases attachments after cancellation and failures", async () => {
-  const root = await createTestTempDirectory("rea-live-inspector-");
+  const root = await createTestTempDirectory("binsight-live-inspector-");
   const fixture = join(root, "probe #百分比 %.cjs");
   await writeFile(fixture, "setInterval(() => {}, 25);\n");
   const child = spawn(process.execPath, ["--inspect=127.0.0.1:0", fixture], {

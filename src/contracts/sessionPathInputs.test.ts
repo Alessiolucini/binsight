@@ -27,7 +27,7 @@ const cases: readonly PathCase[] = [
       openBinaryInputSchema.safeParse({ path: "/tmp/fixture", snapshot_path })
         .success,
     relative: ["relative/analysis.json", "../outside/analysis.json"],
-    absolute: "/tmp/rea/analysis.json",
+    absolute: "/tmp/binsight/analysis.json",
     omitted: () =>
       openBinaryInputSchema.safeParse({ path: "/tmp/fixture" }).success,
   },
@@ -134,7 +134,7 @@ const cases: readonly PathCase[] = [
     accepts: (expected_server_path) =>
       binarySessionInputSchema.safeParse({ expected_server_path }).success,
     relative: ["dist/main.js"],
-    absolute: "/opt/rea/dist/main.js",
+    absolute: "/opt/binsight/dist/main.js",
     omitted: () => binarySessionInputSchema.safeParse({}).success,
   },
 ];
@@ -174,9 +174,12 @@ describe.runIf(process.platform === "win32")(
   "Windows absolute path forms",
   () => {
     it.each([
-      [closeBinaryInputSchema, { snapshot_path: "C:\\rea\\analysis.json" }],
-      [closeBinaryInputSchema, { snapshot_path: "C:/rea/analysis.json" }],
-      [exportEvidenceBundleInputSchema, { path: "C:/rea/bundle.json" }],
+      [
+        closeBinaryInputSchema,
+        { snapshot_path: "C:\\binsight\\analysis.json" },
+      ],
+      [closeBinaryInputSchema, { snapshot_path: "C:/binsight/analysis.json" }],
+      [exportEvidenceBundleInputSchema, { path: "C:/binsight/bundle.json" }],
     ])("accepts %o", (schema, input) => {
       expect(schema.safeParse(input).success).toBe(true);
     });

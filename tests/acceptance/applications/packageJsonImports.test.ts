@@ -13,7 +13,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "reports JSON availability for imported package manifests through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-json-imports-");
+    const root = await createTestTempDirectory(
+      "binsight-package-json-imports-",
+    );
     const files = {
       "main.cjs": [
         'const version = require("./package.json").version;',

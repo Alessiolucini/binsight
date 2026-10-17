@@ -21,7 +21,7 @@ export const parseHopperServerInfo = (
     typeof value === "object" &&
     value !== null &&
     !Array.isArray(value) &&
-    value.name === "REA Hopper bridge" &&
+    value.name === "BinSight Hopper bridge" &&
     typeof value.version === "string" &&
     typeof value.process_id === "number" &&
     Number.isSafeInteger(value.process_id) &&
@@ -36,7 +36,7 @@ export const parseHopperServerInfo = (
   return err(new HopperProtocolError("Hopper bridge health result is invalid"));
 };
 
-/** Require confirmation that the REA bridge detached or its document closed. */
+/** Require confirmation that the BinSight bridge detached or its document closed. */
 export const isHopperShutdownAcknowledgement = (value: JsonValue): boolean => {
   if (typeof value !== "object" || value === null || Array.isArray(value))
     return false;

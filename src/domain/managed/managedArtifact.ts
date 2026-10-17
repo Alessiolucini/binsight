@@ -84,7 +84,7 @@ const managedSignatureSchema = z.object({
     .nullable()
     .default(null)
     .describe(
-      "SHA-256 of the raw signature with each TypeDef or TypeRef operand replaced by that type's namespace-qualified name; equals raw_sha256 when the signature names no types. Unlike raw_sha256 it does not depend on build-local metadata rows. Null when the signature could not be decoded or names a type REA could not resolve, such as a TypeSpec.",
+      "SHA-256 of the raw signature with each TypeDef or TypeRef operand replaced by that type's namespace-qualified name; equals raw_sha256 when the signature names no types. Unlike raw_sha256 it does not depend on build-local metadata rows. Null when the signature could not be decoded or names a type BinSight could not resolve, such as a TypeSpec.",
     ),
   kind: z.enum(["method", "field", "unknown"]),
   parse_status: z.enum(["decoded", "partial", "unsupported", "malformed"]),

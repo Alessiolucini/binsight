@@ -281,7 +281,7 @@ export const captureSqliteDatabaseSnapshot = async (
       },
       {
         remediationAction:
-          "Use the application's supported export workflow to create a consistent, smaller offline SQLite snapshot containing only the relevant data, then inspect that snapshot. REA will not truncate or modify the selected source.",
+          "Use the application's supported export workflow to create a consistent, smaller offline SQLite snapshot containing only the relevant data, then inspect that snapshot. BinSight will not truncate or modify the selected source.",
       },
     );
   if (journal !== null)

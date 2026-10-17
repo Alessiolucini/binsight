@@ -20,14 +20,16 @@ for (const [setting, profile] of [
   cliTest(
     `setup and doctor refuse an invalid retained ${setting} value ${JSON.stringify(profile)}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-pi-invalid-profile-cli-");
+      const home = await createTestTempDirectory(
+        "binsight-pi-invalid-profile-cli-",
+      );
       const agent = join(home, ".pi", "agent");
       const config = join(agent, "mcp.json");
       const original = JSON.stringify({
         mcpServers: {
-          rea: {
+          binsight: {
             type: "stdio",
-            command: "rea",
+            command: "binsight",
             args: ["mcp"],
             env: { [setting]: profile },
           },
@@ -74,16 +76,18 @@ for (const [setting, profile] of [
         },
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
-        code: "ENOENT",
-      });
+      await expect(readFile(`${config}.binsight.backup`)).rejects.toMatchObject(
+        {
+          code: "ENOENT",
+        },
+      );
     },
   );
 
 cliTest(
   "setup preserves a configured compact catalog through CLI migration and MCP startup",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-pi-environment-cli-");
+    const home = await createTestTempDirectory("binsight-pi-environment-cli-");
     const agent = join(home, ".pi", "agent");
     const config = join(agent, "mcp.json");
     const custom = {
@@ -93,10 +97,10 @@ cliTest(
     };
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
+        binsight: {
           type: "stdio",
           command: "npx",
-          args: ["-y", "rea-agents@1.0.0", "mcp"],
+          args: ["-y", "binsight@1.0.0", "mcp"],
           env: custom,
         },
       },
@@ -149,14 +153,14 @@ cliTest(
     const registration = z
       .object({
         mcpServers: z.object({
-          rea: z.object({
+          binsight: z.object({
             command: z.string(),
             args: z.array(z.string()),
             env: z.record(z.string(), z.string()).optional(),
           }),
         }),
       })
-      .parse(JSON.parse(configured)).mcpServers.rea;
+      .parse(JSON.parse(configured)).mcpServers.binsight;
     const transport = new StdioClientTransport({
       command: registration.command,
       args: registration.args,
@@ -188,7 +192,7 @@ cliTest(
       await transport.close();
     }
     expect(registration.env).toMatchObject(custom);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
     const repeated = await cli.run({
       arguments: arguments_,
       cwd: home,
@@ -207,7 +211,7 @@ cliTest(
 cliTest(
   "Pi public CLI plans, requires approval, applies, diagnoses, repeats, and uninstalls only owned content",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-pi-cli-");
+    const home = await createTestTempDirectory("binsight-pi-cli-");
     const agent = join(home, "custom-agent");
     const config = join(agent, "mcp.json");
     const skill = join(
@@ -256,7 +260,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.binsight.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
@@ -279,7 +283,7 @@ cliTest(
     expect(JSON.parse(configured)).toMatchObject({
       mcpServers: {
         other: { command: "other-server" },
-        rea: {
+        binsight: {
           type: "stdio",
           command: process.platform === "win32" ? process.execPath : cliPath,
           args: process.platform === "win32" ? [cliPath, "mcp"] : ["mcp"],
@@ -287,7 +291,7 @@ cliTest(
       },
       autoEnableCodemode: false,
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
     expect(await readFile(skill, "utf8")).toContain(
       "reverse-engineer-anything",
     );
@@ -311,7 +315,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
 
     // Uninstall is global; there is no --client or --yes on this CLI surface.
     const help = await run(["uninstall", "--help"]);
@@ -322,7 +326,7 @@ cliTest(
     expect(JSON.parse(await readFile(config, "utf8"))).toEqual(
       JSON.parse(original),
     );
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.binsight.backup`, "utf8")).toBe(original);
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
@@ -330,7 +334,7 @@ cliTest(
 cliTest(
   "Pi public CLI creates missing strict-JSON configuration and never repairs a malformed file",
   async ({ cli }) => {
-    const created = await createTestTempDirectory("rea-pi-cli-strict-");
+    const created = await createTestTempDirectory("binsight-pi-cli-strict-");
     const agent = join(created, "custom-agent");
     const config = join(agent, "mcp.json");
     await mkdir(agent);
@@ -355,7 +359,7 @@ cliTest(
     const text = await readFile(config, "utf8");
     expect(() => JSON.parse(text)).not.toThrow();
     expect(JSON.parse(text)).toMatchObject({
-      mcpServers: { rea: { type: "stdio" } },
+      mcpServers: { binsight: { type: "stdio" } },
     });
     const doctor = await run(["doctor", "--client", "pi", "--json"]);
     expect(doctor.exitCode).toBe(0);
@@ -369,10 +373,10 @@ cliTest(
     });
     await run(["uninstall", "--json"]);
     expect(
-      JSON.parse(await readFile(config, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(config, "utf8")).mcpServers.binsight,
     ).toBeUndefined();
 
-    const blocked = await createTestTempDirectory("rea-pi-cli-malformed-");
+    const blocked = await createTestTempDirectory("binsight-pi-cli-malformed-");
     const malformedPath = join(blocked, "custom-agent", "mcp.json");
     await mkdir(join(blocked, "custom-agent"));
     const malformed = `{ // Pi loads strict JSON only\n"mcpServers": { "other": { "command": "other" } }\n}\n`;
@@ -406,11 +410,11 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(malformedPath, "utf8")).toBe(malformed);
-    await expect(readFile(`${malformedPath}.rea.backup`)).rejects.toMatchObject(
-      {
-        code: "ENOENT",
-      },
-    );
+    await expect(
+      readFile(`${malformedPath}.binsight.backup`),
+    ).rejects.toMatchObject({
+      code: "ENOENT",
+    });
     const doctorMalformed = await runMalformed([
       "doctor",
       "--client",
@@ -441,7 +445,7 @@ cliTest(
 cliTest(
   "malformed Pi overrides do not block selected Codex setup or doctor and never fall back for Pi",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-pi-invalid-cli-");
+    const home = await createTestTempDirectory("binsight-pi-invalid-cli-");
     const run = (arguments_: readonly string[]) =>
       cli.run({
         arguments: arguments_,

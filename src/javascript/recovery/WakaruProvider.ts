@@ -108,7 +108,7 @@ export class WakaruProvider implements JavaScriptRecoveryPort {
     try {
       checkRecoveryCancellation(options?.signal);
       const engine = await resolveWakaruCommand(this.environment);
-      root = await mkdtemp(join(tmpdir(), "rea-wakaru-"));
+      root = await mkdtemp(join(tmpdir(), "binsight-wakaru-"));
       const inputs = join(root, "inputs");
       const staging = join(root, "modules");
       await mkdir(inputs, { mode: 0o700 });

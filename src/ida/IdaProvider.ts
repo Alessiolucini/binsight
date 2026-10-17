@@ -116,7 +116,7 @@ export class IdaProvider implements AnalysisProviderCandidate {
       return {
         status: "unsupported",
         code: "architecture_unsupported",
-        reason: `REA's IDA adapter has no verified ${
+        reason: `BinSight's IDA adapter has no verified ${
           target.architecture === "mips"
             ? "MIPS"
             : target.architecture === "riscv"
@@ -153,7 +153,7 @@ export class IdaProvider implements AnalysisProviderCandidate {
     if (!config.ok) return config;
     return ok({
       profile: createAnalysisProfile(IDA_PROVIDER_IDENTITY, {
-        version_scope: "rea-ida-adapter",
+        version_scope: "binsight-ida-adapter",
         engine_version: null,
         upstream_distribution_version: null,
         mode: config.value.mode,

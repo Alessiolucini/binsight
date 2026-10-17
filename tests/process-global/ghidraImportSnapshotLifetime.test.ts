@@ -137,7 +137,9 @@ afterEach(async () => {
 });
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-ghidra-import-lifetime-");
+  const root = await createTestTempDirectory(
+    "binsight-ghidra-import-lifetime-",
+  );
   const path = join(root, "source.bin");
   const runtime = join(root, "runtime");
   await mkdir(runtime);

@@ -124,7 +124,7 @@ export const createTestBinarySession = (
 export const createBinarySessionTargets = async (): Promise<
   readonly [string, string]
 > => {
-  const directory = await createTestTempDirectory("rea-binary-session-");
+  const directory = await createTestTempDirectory("binsight-binary-session-");
   const first = join(directory, "first.hop");
   const second = join(directory, "second.hop");
   await Promise.all([writeFile(first, "one"), writeFile(second, "two")]);

@@ -1,6 +1,6 @@
-# Upgrading from REA 6.1 to 6.2
+# Upgrading from BinSight 6.1 to 6.2
 
-REA 6.2 includes stability fixes and changes to public result and saved-data
+BinSight 6.2 includes stability fixes and changes to public result and saved-data
 contracts. The repository uses `always-bump-minor`, including breaking releases;
 the minor version increment does not imply backward compatibility. Refresh cached
 MCP tool definitions after upgrading and adapt custom consumers using this guide.
@@ -30,7 +30,8 @@ and carry their typed JSON diagnostic in a text content block; they omit
 ```javascript
 if (reply.isError === true) {
   const text = reply.content.find((part) => part.type === "text");
-  if (text === undefined) throw new Error("REA error has no text diagnostic");
+  if (text === undefined)
+    throw new Error("BinSight error has no text diagnostic");
   const { error: diagnostic } = JSON.parse(text.text);
   // Handle diagnostic.code, diagnostic.message and diagnostic.details.
 }
@@ -73,7 +74,7 @@ instead of silently discarding them. Preserve an incompatible snapshot and
 choose a new output path when rerunning analysis, for example:
 
 ```bash
-rea analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.2.json
+binsight analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.2.json
 ```
 
 In MCP, open the target without the incompatible `snapshot_path`, run the
@@ -102,7 +103,7 @@ per-path facts that were lost. These changes are part of
 
 ## Process captures and cleanup failures
 
-REA no longer converts legacy v3 process captures on import. Captures require
+BinSight no longer converts legacy v3 process captures on import. Captures require
 explicit selected/launch executable identity and `event_journal`; missing data
 is rejected instead of being filled during parsing. Preserve old captures for
 historical reference and recapture with 6.2 when current comparisons are needed.

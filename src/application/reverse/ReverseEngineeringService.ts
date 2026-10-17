@@ -645,7 +645,7 @@ export class ReverseEngineeringService {
         : { path: absolutePath, sha256: digest, format: "unknown" },
       profile.identity,
       {
-        predicateType: "rea.reverse-engineering.command-observation",
+        predicateType: "binsight.reverse-engineering.command-observation",
         operation,
         parameters: {
           ...(absolutePath === undefined

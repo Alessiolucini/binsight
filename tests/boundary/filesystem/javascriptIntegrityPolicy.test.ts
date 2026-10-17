@@ -69,7 +69,9 @@ it("records an explicitly continued Electron addon mismatch as untrusted evidenc
 });
 
 it("keeps a contradicted nested ASAR opaque during JavaScript reconstruction", async () => {
-  const root = await createTestTempDirectory("rea-mismatched-nested-asar-");
+  const root = await createTestTempDirectory(
+    "binsight-mismatched-nested-asar-",
+  );
   const nestedSource = join(root, "nested-source");
   const outerSource = join(root, "outer-source");
   const archive = join(root, "app.asar");
@@ -106,7 +108,7 @@ it("keeps a contradicted nested ASAR opaque during JavaScript reconstruction", a
 });
 
 it("keeps an ASAR-named file without an ASAR header opaque during JavaScript reconstruction", async () => {
-  const root = await createTestTempDirectory("rea-opaque-asar-name-");
+  const root = await createTestTempDirectory("binsight-opaque-asar-name-");
   await writeFile(join(root, "main.js"), "export const outer = true;\n");
   // Inventory records this file as ordinary bytes and does not expand it.
   await writeFile(join(root, "ordinary.asar"), "ordinary bytes");
@@ -164,7 +166,7 @@ it("retains semantic resource limits alongside recorded integrity contradictions
 });
 
 it("rejects a nested ASAR introduced after inventory as artifact drift", async () => {
-  const root = await createTestTempDirectory("rea-new-nested-asar-");
+  const root = await createTestTempDirectory("binsight-new-nested-asar-");
   const nestedSource = join(root, "nested-source");
   await mkdir(nestedSource);
   await writeFile(join(root, "main.js"), "export const outer = true;\n");

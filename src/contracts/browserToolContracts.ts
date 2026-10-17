@@ -216,7 +216,7 @@ export const BROWSER_TOOL_CONTRACTS = [
     name: "discover_webmcp_tools",
     ...toolContractMetadata("discover_webmcp_tools"),
     description:
-      "Passively inventory every page-registered WebMCP tool and its complete structural input-schema summary using the experimental CDP WebMCP domain. Metadata is page-declared-untrusted; REA never registers or invokes discovered tools.",
+      "Passively inventory every page-registered WebMCP tool and its complete structural input-schema summary using the experimental CDP WebMCP domain. Metadata is page-declared-untrusted; BinSight never registers or invokes discovered tools.",
     kind: "browser-provider",
     inputSchema: discoverWebMcpToolsInputSchema,
     outputSchema: webMcpOutputSchema,

@@ -7,7 +7,7 @@ type Field = ManagedMemberInspection["fields"][number];
 /**
  * The exact signature across builds: raw bytes with type operands resolved to
  * names. Raw bytes name types by build-local rows, so they stand in only when
- * REA could not resolve the operands, or for Evidence recorded before it did.
+ * BinSight could not resolve the operands, or for Evidence recorded before it did.
  * The kind is part of the key: an undecodable blob can hold another
  * signature's resolved preimage, so its raw digest can equal that resolved
  * digest without the two being the same signature.

@@ -147,7 +147,9 @@ describe("canonical CLI catalog", () => {
 
 describe("canonical product catalog drift", () => {
   it("rejects missing and repository-only links in an independently installed skill", async () => {
-    const directory = await createTestTempDirectory("rea-skill-references-");
+    const directory = await createTestTempDirectory(
+      "binsight-skill-references-",
+    );
     const bundle = join(directory, "skill");
     await mkdir(bundle);
     await writeFile(join(directory, "repo-only.md"), "Repository-only guide");
@@ -187,7 +189,9 @@ describe("canonical product catalog drift", () => {
   });
 
   it("fails check mode without rewriting a stale generated artifact", async () => {
-    const directory = await createTestTempDirectory("rea-generated-check-");
+    const directory = await createTestTempDirectory(
+      "binsight-generated-check-",
+    );
     temporaryRoots.push(directory);
     const path = join(directory, "catalog.json");
     await writeFile(path, "stale\n", "utf8");
@@ -212,7 +216,7 @@ describe("canonical product catalog drift", () => {
   });
 
   it("accepts and preserves native generated-file line endings", async () => {
-    const directory = await createTestTempDirectory("rea-generated-eol-");
+    const directory = await createTestTempDirectory("binsight-generated-eol-");
     temporaryRoots.push(directory);
     const path = join(directory, "catalog.json");
     await writeFile(path, "current\r\n", "utf8");

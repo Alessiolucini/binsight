@@ -37,7 +37,7 @@ export const windowsGhidraFixtureOptions = (arguments_) => {
     machine: { x86: 0x14c, x86_64: 0x8664, arm: 0x1c4, arm64: 0xaa64 }[
       architecture
     ],
-    filename: `rea-ghidra-windows${architecture === "x86_64" ? "" : `-${architecture}`}.${dll ? "dll" : "exe"}`,
+    filename: `binsight-ghidra-windows${architecture === "x86_64" ? "" : `-${architecture}`}.${dll ? "dll" : "exe"}`,
     languageId:
       architecture === "arm"
         ? "ARM:LE:32:v8"

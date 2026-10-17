@@ -43,7 +43,7 @@ describe("browser comparison JSON file inputs", () => {
   it(
     "compares screenshot artifacts too large for a command-line argument",
     async () => {
-      const root = await createTestTempDirectory("rea-screenshot-files-");
+      const root = await createTestTempDirectory("binsight-screenshot-files-");
       const artifact = JSON.stringify(
         createWebScreenshotArtifact(noisePng(640, 640)),
       );
@@ -68,7 +68,9 @@ describe("browser comparison JSON file inputs", () => {
   it(
     "reports which screenshot artifact failed validation",
     async () => {
-      const root = await createTestTempDirectory("rea-screenshot-invalid-");
+      const root = await createTestTempDirectory(
+        "binsight-screenshot-invalid-",
+      );
       const valid = createWebScreenshotArtifact(noisePng(2, 2));
       const before = join(root, "before.json");
       await writeFile(before, JSON.stringify({ ...valid, bytes: 1 }));
@@ -108,7 +110,7 @@ describe("browser comparison JSON file inputs", () => {
   it(
     "identifies a missing capture file instead of reporting malformed JSON",
     async () => {
-      const root = await createTestTempDirectory("rea-capture-missing-");
+      const root = await createTestTempDirectory("binsight-capture-missing-");
       const missing = join(root, "before.json");
 
       expect(

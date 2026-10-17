@@ -59,7 +59,9 @@ import { parseMcpToolError } from "../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 
 const fixture = async (abortAt: number, reason?: unknown) => {
-  const root = await createTestTempDirectory("rea-target-admission-cancel-");
+  const root = await createTestTempDirectory(
+    "binsight-target-admission-cancel-",
+  );
   const path = join(root, "sample.bin");
   await writeFile(path, "sample-bytes");
   const controller = new AbortController();

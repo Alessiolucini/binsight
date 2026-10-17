@@ -117,7 +117,7 @@ describe("IDA provider composition", () => {
       engine_version: null,
       upstream_distribution_version: null,
       cache_policy: "live",
-      version_scope: "rea-ida-adapter",
+      version_scope: "binsight-ida-adapter",
     });
     expect(JSON.stringify(resolution)).not.toContain("private-fixture-token");
     expect(producer.connects).toBe(0);

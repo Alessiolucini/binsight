@@ -24,7 +24,7 @@ if (!(args.length === 0 || (args.length === 2 && args[0] === "--pcap")))
 const path = args[1] === undefined ? null : resolve(args[1]);
 // This parent is shared by independent CLI/MCP owners. A leased Windows
 // runtime root would prevent their native admission of its directory handle.
-const root = await mkdtemp(join(tmpdir(), "rea-pcap-verifier-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-pcap-verifier-"));
 const resources = new ArtifactResourceScope();
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),

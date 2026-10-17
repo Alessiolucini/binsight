@@ -24,7 +24,7 @@ const compositeProviderIdentity = (
     .map(({ id }) => id)
     .sort()
     .join("+")}`,
-  name: "REA composite analysis provider",
+  name: "BinSight composite analysis provider",
   version: null,
 });
 

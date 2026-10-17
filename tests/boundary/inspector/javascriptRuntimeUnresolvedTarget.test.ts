@@ -23,7 +23,7 @@ const reconcileInput = (input: unknown) =>
   );
 
 test("keeps unresolved target identity unknown while matching verified loaded scripts", async () => {
-  const root = await createTestTempDirectory("rea-unresolved-runtime-");
+  const root = await createTestTempDirectory("binsight-unresolved-runtime-");
   const entry = join(root, "entry.js");
   const reportedUrl = "file://C:_tools_entry.js";
   const fake = await startFakeV8Inspector({

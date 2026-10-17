@@ -417,7 +417,9 @@ describe("active-target availability over MCP", () => {
     const client = new Client({ name: "availability-test", version: "1" });
     const [clientTransport, serverTransport] =
       InMemoryTransport.createLinkedPair();
-    const directory = await createTestTempDirectory("rea-target-availability-");
+    const directory = await createTestTempDirectory(
+      "binsight-target-availability-",
+    );
     const executable = join(directory, "tool");
     const plist = join(directory, "Info.plist");
     await writeFile(executable, machoImage({}));

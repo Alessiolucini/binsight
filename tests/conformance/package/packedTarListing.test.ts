@@ -15,7 +15,7 @@ const packedBridges = [
 ];
 
 const listing = (lineEnding: string) =>
-  ["package/package.json", ...packedBridges, "package/skills/rea/SKILL.md"]
+  ["package/package.json", ...packedBridges, "package/skills/binsight/SKILL.md"]
     .map((member) => `${member}${lineEnding}`)
     .join("");
 

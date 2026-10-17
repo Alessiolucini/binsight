@@ -209,7 +209,7 @@ export const semanticFixtureInput = (
   const fingerprint = createJavaScriptSemanticFingerprint(
     {
       function_node_id: callable.node_id,
-      algorithm: "rea.javascript-semantic-function",
+      algorithm: "binsight.javascript-semantic-function",
       status: "complete",
       components: {
         parameter_arity: 0,

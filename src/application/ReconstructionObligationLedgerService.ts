@@ -75,7 +75,7 @@ const createLedgerEvidence = (
 ): Evidence => {
   const completeLedger = reconstructionObligationLedgerSchema.parse(ledger);
   return createEvidence(undefined, JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER, {
-    predicateType: "rea.reconstruction-obligation-ledger",
+    predicateType: "binsight.reconstruction-obligation-ledger",
     operation: OPERATION,
     parameters: jsonObjectSchema.parse({
       ledger_id: completeLedger.ledger_id,

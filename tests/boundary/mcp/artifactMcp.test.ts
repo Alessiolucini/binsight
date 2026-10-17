@@ -33,7 +33,7 @@ it.each([
 ])(
   "returns actionable local details for an $label ASAR integrity error",
   async ({ unpacked }) => {
-    const root = await createTestTempDirectory("rea-asar-integrity-mcp-");
+    const root = await createTestTempDirectory("binsight-asar-integrity-mcp-");
     const source = join(root, "source");
     const original = "console.log('ok');\n";
     const changed = "console.log('no');\n";
@@ -101,7 +101,7 @@ it.each([
 );
 
 it("extracts an active archive through MCP when requested", async () => {
-  const root = await createTestTempDirectory("rea-artifact-extract-mcp-");
+  const root = await createTestTempDirectory("binsight-artifact-extract-mcp-");
   const archive = join(root, "fixture.zip");
   const zip = new ZipWriter(new Uint8ArrayWriter());
   await zip.add("main.js", new TextReader("console.log('extract');\n"));
@@ -143,7 +143,9 @@ it("extracts an active archive through MCP when requested", async () => {
 });
 
 it("extracts a macOS app bundle through MCP", async () => {
-  const root = await createTestTempDirectory("rea-artifact-extract-app-mcp-");
+  const root = await createTestTempDirectory(
+    "binsight-artifact-extract-app-mcp-",
+  );
   const contents = join(root, "Fixture.app", "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
   const plist =
@@ -194,7 +196,7 @@ it("extracts a macOS app bundle through MCP", async () => {
 });
 
 it("records an explicitly continued mismatch, preserves verified siblings, and never reports equivalence", async () => {
-  const root = await createTestTempDirectory("rea-asar-continue-mcp-");
+  const root = await createTestTempDirectory("binsight-asar-continue-mcp-");
   const source = join(root, "source");
   await mkdir(source);
   const original = "console.log('ok');\n",
@@ -406,7 +408,7 @@ it("compares inline inventory Evidence without prior session calls", async () =>
 });
 
 it("returns full artifact graphs inline and compares changed inventories", async () => {
-  const directory = await createTestTempDirectory("rea-artifact-mcp-");
+  const directory = await createTestTempDirectory("binsight-artifact-mcp-");
   const archive = join(directory, "fixture.ipa");
   const changedArchive = join(directory, "changed.ipa");
   const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -472,7 +474,7 @@ it("returns full artifact graphs inline and compares changed inventories", async
     const evidence = session.evidenceById(inventoryResult.evidence_id);
     if (evidence === undefined) throw new Error("missing inventory Evidence");
     expect(evidence).toMatchObject({
-      provider: { id: "rea-artifact-graph" },
+      provider: { id: "binsight-artifact-graph" },
       subject: { format: "ipa" },
     });
     const inventoryInspection = z
@@ -541,7 +543,9 @@ it("returns full artifact graphs inline and compares changed inventories", async
 });
 
 it("compares summary Evidence through retained complete inspection parents", async () => {
-  const directory = await createTestTempDirectory("rea-artifact-summary-mcp-");
+  const directory = await createTestTempDirectory(
+    "binsight-artifact-summary-mcp-",
+  );
   const archive = join(directory, "one.zip");
   const changedArchive = join(directory, "two.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());

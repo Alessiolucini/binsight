@@ -1044,7 +1044,7 @@ it("accepts a transport-constraint retained reference as the view source", async
 });
 
 it("projects an actual HAR capture retained by the public MCP workflow", async () => {
-  const root = await createTestTempDirectory("rea-surface-mcp-");
+  const root = await createTestTempDirectory("binsight-surface-mcp-");
   const path = join(root, "surface.har");
   await writeFile(path, JSON.stringify(apiSurfaceHar()));
   const service = new WebNetworkCaptureService({

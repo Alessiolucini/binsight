@@ -15,9 +15,9 @@ describe("Linux Hopper application leases in the launcher", () => {
           targetPath,
           targetKind: "executable",
           loaderArgs: [],
-          bridgeScriptPath: "/rea/hopper_bridge.py",
+          bridgeScriptPath: "/binsight/hopper_bridge.py",
           launchMode: "verified_linux_demo",
-          demoHelperPath: "/rea/hopper-demo-x11.py",
+          demoHelperPath: "/binsight/hopper-demo-x11.py",
         },
         {
           platform: "linux",
@@ -33,8 +33,8 @@ describe("Linux Hopper application leases in the launcher", () => {
       );
       expect(
         await launcher.launch({
-          directory: "/missing/rea-launch",
-          socketPath: "/missing/rea-launch/bridge.sock",
+          directory: "/missing/binsight-launch",
+          socketPath: "/missing/binsight-launch/bridge.sock",
           token: "token",
           runId: "new-session",
         }),
@@ -61,9 +61,9 @@ describe("Linux Hopper application leases in the launcher", () => {
         targetPath: "/target",
         targetKind: "executable",
         loaderArgs: [],
-        bridgeScriptPath: "/rea/hopper_bridge.py",
+        bridgeScriptPath: "/binsight/hopper_bridge.py",
         launchMode: "verified_linux_demo",
-        demoHelperPath: "/rea/helper.py",
+        demoHelperPath: "/binsight/helper.py",
       },
       {
         platform: "linux",
@@ -74,8 +74,8 @@ describe("Linux Hopper application leases in the launcher", () => {
     );
     expect(
       await launcher.launch({
-        directory: "/missing/rea-launch",
-        socketPath: "/missing/rea-launch/bridge.sock",
+        directory: "/missing/binsight-launch",
+        socketPath: "/missing/binsight-launch/bridge.sock",
         token: "token",
         runId: "new-session",
       }),
@@ -94,7 +94,7 @@ describe("Hopper launch leases", () => {
         targetPath: "/target",
         targetKind: "executable",
         loaderArgs: [],
-        bridgeScriptPath: "/rea/hopper_bridge.py",
+        bridgeScriptPath: "/binsight/hopper_bridge.py",
         launchMode: "native",
       },
       {
@@ -110,8 +110,8 @@ describe("Hopper launch leases", () => {
     );
 
     const result = await launcher.launch({
-      directory: "/tmp/rea-launch-test",
-      socketPath: "/tmp/rea-launch-test/bridge.sock",
+      directory: "/tmp/binsight-launch-test",
+      socketPath: "/tmp/binsight-launch-test/bridge.sock",
       token: "token",
       runId: "new-session",
     });
@@ -138,7 +138,7 @@ describe("Hopper launch leases", () => {
           targetPath: "/target",
           targetKind: "executable",
           loaderArgs: [],
-          bridgeScriptPath: "/rea/hopper_bridge.py",
+          bridgeScriptPath: "/binsight/hopper_bridge.py",
           ...(platform === "linux"
             ? {
                 launchMode: "verified_linux_demo" as const,
@@ -160,8 +160,8 @@ describe("Hopper launch leases", () => {
       );
 
       const result = await launcher.launch({
-        directory: "/missing/rea-launch-test",
-        socketPath: "/missing/rea-launch-test/bridge.sock",
+        directory: "/missing/binsight-launch-test",
+        socketPath: "/missing/binsight-launch-test/bridge.sock",
         token: "token",
         runId: "failed-session",
       });

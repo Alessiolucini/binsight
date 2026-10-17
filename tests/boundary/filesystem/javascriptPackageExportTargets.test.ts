@@ -172,7 +172,7 @@ const nativeResultSchema = z.object({
 it.each(cases)(
   "matches Node import and require target selection for $name",
   async ({ name, exports, expected, nodeError, rejectedTarget }) => {
-    const root = await createTestTempDirectory("rea-package-target-");
+    const root = await createTestTempDirectory("binsight-package-target-");
     const files = {
       "main.mjs": 'import value from "fixture"; export default value;',
       "main.cjs": 'module.exports = require("fixture");',

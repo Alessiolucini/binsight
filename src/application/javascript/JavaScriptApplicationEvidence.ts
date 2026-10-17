@@ -74,7 +74,7 @@ const applicationObservation = (
   input: AnalyzeJavaScriptApplicationInput,
   result: JavaScriptApplicationAnalysisResult,
 ): EvidenceObservation => ({
-  predicateType: "rea.javascript-application-analysis",
+  predicateType: "binsight.javascript-application-analysis",
   operation: "analyze_javascript_application",
   parameters: parameters(input),
   result,

@@ -9,7 +9,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "repeated client flags plan and configure each selected client once",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-repeated-clients-");
+    const directory = await createTestTempDirectory(
+      "binsight-repeated-clients-",
+    );
     const arguments_ = [
       "setup",
       "--client",

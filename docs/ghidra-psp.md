@@ -29,8 +29,8 @@ are not silently admitted. File names do not identify a PSP target.
 Install the extension in the selected Ghidra distribution at
 `$GHIDRA_INSTALL_DIR/Ghidra/Extensions/ghidra-allegrex`, with its
 `Module.manifest`, `extension.properties`, language files and loader JARs.
-User-home installations are not searched because REA uses an isolated analysis
-home. REA never downloads, installs, rebuilds or vendors the extension.
+User-home installations are not searched because BinSight uses an isolated analysis
+home. BinSight never downloads, installs, rebuilds or vendors the extension.
 
 The published compatibility experiment used Ghidra **12.1.3**, extension
 **v21.4**, PSPDEV **v20261001** and JDK 21. New public-provider results must be
@@ -40,7 +40,7 @@ tag; the property must match the selected installation. Other same-version
 builds are not described as independently verified merely because they pass
 this metadata check. A malformed or unloadable extension still fails real import.
 
-REA fingerprints installed extension files before resolving the analysis
+BinSight fingerprints installed extension files before resolving the analysis
 profile and checks that identity again immediately before launch. Symlinks,
 nonregular files, missing components and incompatible metadata are refused.
 Inspection is bounded to 1,024 entries, 16 directory levels and 64 MiB, with
@@ -52,8 +52,8 @@ Do not modify the Ghidra installation while a session is running.
 ## Ordinary public interfaces
 
 ```bash
-rea analyze /absolute/path/to/psp.elf --provider ghidra --json
-rea function /absolute/path/to/psp.elf function_name --provider ghidra --json
+binsight analyze /absolute/path/to/psp.elf --provider ghidra --json
+binsight function /absolute/path/to/psp.elf function_name --provider ghidra --json
 ```
 
 MCP uses `open_binary` with an absolute path and `provider_id: "ghidra"`, then
@@ -91,7 +91,7 @@ mode; the PSP report explicitly records carved-PSP coverage as not run.
 
 The maintained PSP fixture builds from `tests/conformance/psp/`, never executes,
 and is independent of commercial game data. PSP GNU tools supply ELF/ABI,
-raw ABI-record, symbol and encoding observations; REA's parsed target and saved
+raw ABI-record, symbol and encoding observations; BinSight's parsed target and saved
 snapshot must agree with the independent ABI declaration. Public CLI/MCP must
 recover known functions, a direct
 call, the immediate `0x1234`, BITREV, a global word and a marker. The verifier

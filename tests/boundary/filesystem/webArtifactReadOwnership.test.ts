@@ -42,7 +42,9 @@ import { webModuleArtifactsFixture } from "../../fixtures/webModuleTrace.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("retains cancelled source read ownership until service close retries it", async () => {
-  const root = await createTestTempDirectory("rea-web-artifact-read-owner-");
+  const root = await createTestTempDirectory(
+    "binsight-web-artifact-read-owner-",
+  );
   onTestFinished(async () => {
     injected.sourcePath = undefined;
     injected.abortController = undefined;

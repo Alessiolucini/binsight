@@ -352,7 +352,7 @@ describe("runtime source and listener identity", () => {
       (command) => command.method === "Runtime.releaseObjectGroup",
     );
     expect(release?.params.objectGroup).toBe(resolve?.params.objectGroup);
-    expect(resolve?.params.objectGroup).toMatch(/^rea-listeners-/u);
+    expect(resolve?.params.objectGroup).toMatch(/^binsight-listeners-/u);
   });
 
   it("returns an explicit missing node without source/handler evaluation", async () => {

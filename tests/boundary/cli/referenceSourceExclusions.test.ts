@@ -20,7 +20,7 @@ describe.skipIf(process.platform === "win32")(
       "imports source beside a link into a default-excluded directory",
       async ({ cli }) => {
         const root = await createTestTempDirectory(
-          "rea-reference-link-exclusion-",
+          "binsight-reference-link-exclusion-",
         );
         await mkdir(join(root, "dist"));
         const source = "export const value = 1;\n";
@@ -69,7 +69,9 @@ describe.skipIf(process.platform === "win32")(
     cliTest(
       "reports project, default, and explicit secret exclusions",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-reference-exclusions-");
+        const root = await createTestTempDirectory(
+          "binsight-reference-exclusions-",
+        );
         const logs = join(root, "logs");
         await mkdir(logs);
         await Promise.all([

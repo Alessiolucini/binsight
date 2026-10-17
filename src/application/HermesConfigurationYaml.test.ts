@@ -10,30 +10,30 @@ import {
 describe("Hermes configuration YAML", () => {
   it("retains a quoted sequence element when replacing its registration", () => {
     const source =
-      "mcp_servers:\n  rea:\n    command: old\n    args:\n      - 'mcp'\n";
+      "mcp_servers:\n  binsight:\n    command: old\n    args:\n      - 'mcp'\n";
     expect(
-      editHermesConfigurationYaml(source, ["mcp_servers", "rea"], {
-        command: "rea",
+      editHermesConfigurationYaml(source, ["mcp_servers", "binsight"], {
+        command: "binsight",
         args: ["mcp"],
       }),
-    ).toBe(source.replace("command: old", "command: rea"));
+    ).toBe(source.replace("command: old", "command: binsight"));
   });
 
   it("retains explicit string tags on unchanged keys and values", () => {
     const source =
-      "%YAML 1.2\n---\nmcp_servers:\n  rea:\n    command: old\n    env:\n      !!str ON: !!str off\n";
+      "%YAML 1.2\n---\nmcp_servers:\n  binsight:\n    command: old\n    env:\n      !!str ON: !!str off\n";
     const written = editHermesConfigurationYaml(
       source,
-      ["mcp_servers", "rea"],
+      ["mcp_servers", "binsight"],
       {
-        command: "rea",
+        command: "binsight",
         env: { ON: "off" },
       },
     );
-    expect(written).toBe(source.replace("command: old", 'command: "rea"'));
+    expect(written).toBe(source.replace("command: old", 'command: "binsight"'));
     expect(
       parse(written.slice("%YAML 1.2\n---\n".length), { version: "1.1" }),
-    ).toMatchObject({ mcp_servers: { rea: { env: { ON: "off" } } } });
+    ).toMatchObject({ mcp_servers: { binsight: { env: { ON: "off" } } } });
   });
 
   it("writes an edited number from its new value", () => {
@@ -140,10 +140,10 @@ describe("Hermes configuration YAML", () => {
 
   it("preserves YAML 1.1 strings on fresh files and honors directives on edits", () => {
     const created = stringifyHermesConfigurationYaml({
-      mcp_servers: { rea: { env: { PROFILE: "off" } } },
+      mcp_servers: { binsight: { env: { PROFILE: "off" } } },
     });
     expect(parse(created, { version: "1.1" })).toMatchObject({
-      mcp_servers: { rea: { env: { PROFILE: "off" } } },
+      mcp_servers: { binsight: { env: { PROFILE: "off" } } },
     });
 
     const original =

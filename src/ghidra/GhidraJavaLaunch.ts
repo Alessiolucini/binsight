@@ -89,7 +89,7 @@ export const ghidraJavaLaunch = async (options: {
   readonly command: string;
   readonly arguments: readonly string[];
   readonly environment: NodeJS.ProcessEnv;
-  /** REA-configured -Xmx value, not effective or observed JVM memory. */
+  /** BinSight-configured -Xmx value, not effective or observed JVM memory. */
   readonly configuredMaxHeap?: string;
 }> => {
   const supportRoot = dirname(options.analyzeHeadlessPath);

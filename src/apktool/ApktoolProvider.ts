@@ -178,7 +178,7 @@ const runApktool = async (
     invocation = apktoolInvocation(selection, arguments_, environment);
   } catch (cause) {
     if (!(cause instanceof WindowsBatchCommandError)) throw cause;
-    const reason = `The apktool batch launcher cannot receive REA's decode paths through cmd.exe: ${cause.message}`;
+    const reason = `The apktool batch launcher cannot receive BinSight's decode paths through cmd.exe: ${cause.message}`;
     return err(
       new AnalysisCapabilityUnavailableError(
         APKTOOL_PROVIDER_IDENTITY.id,
@@ -603,7 +603,7 @@ export class ApktoolProvider {
     },
     signal: AbortSignal | undefined,
   ): Promise<Result<AnalysisExecution, AnalysisError>> {
-    const root = await mkdtemp(join(tmpdir(), "rea-apktool-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-apktool-"));
     this.workspaces.add(root);
     const workspace = join(root, "decoded");
     const snapshot = join(root, "input.apk");

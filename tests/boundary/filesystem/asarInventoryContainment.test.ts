@@ -21,7 +21,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const mainBytes = "module.exports = 'packed member';\n";
 const createNestedAsar = async () => {
-  const root = await createTestTempDirectory("rea-asar-containment-");
+  const root = await createTestTempDirectory("binsight-asar-containment-");
   const source = join(root, "source");
   const application = join(root, "application");
   await mkdir(join(source, "lib"), { recursive: true });
@@ -174,7 +174,7 @@ describe("unexpanded ASAR inventory controls", () => {
   });
 
   it("keeps ASAR-named directories as directory parents", async () => {
-    const root = await createTestTempDirectory("rea-asar-directory-");
+    const root = await createTestTempDirectory("binsight-asar-directory-");
     const path = join(root, "directory.zip");
     await writeOrderedZip(path, ["assets.asar/main.js", "assets.asar/"]);
     const observed = await inventoryArtifact(path);
@@ -200,7 +200,7 @@ describe("unexpanded ASAR inventory controls", () => {
   ])(
     "rejects opaque file-prefix conflicts in either order: %j",
     async (...entries) => {
-      const root = await createTestTempDirectory("rea-asar-prefix-");
+      const root = await createTestTempDirectory("binsight-asar-prefix-");
       const path = join(root, "conflict.zip");
       await writeOrderedZip(path, entries);
       await expect(inventoryArtifact(path)).rejects.toMatchObject({
@@ -210,7 +210,7 @@ describe("unexpanded ASAR inventory controls", () => {
   );
 
   it("records filesystem files without an ASAR header as ordinary bytes", async () => {
-    const root = await createTestTempDirectory("rea-ordinary-asar-");
+    const root = await createTestTempDirectory("binsight-ordinary-asar-");
     await writeFile(join(root, "ordinary.asar"), "ordinary bytes");
     const observed = await inventoryArtifact(root);
     expect(artifactParentPaths(observed)).toEqual({
@@ -225,7 +225,7 @@ describe("unexpanded ASAR inventory controls", () => {
   });
 
   it("keeps filesystem archives with a malformed ASAR header rejected", async () => {
-    const root = await createTestTempDirectory("rea-malformed-asar-");
+    const root = await createTestTempDirectory("binsight-malformed-asar-");
     const json = Buffer.from("{not json");
     const header = Buffer.alloc(16);
     header.writeUInt32LE(4, 0);

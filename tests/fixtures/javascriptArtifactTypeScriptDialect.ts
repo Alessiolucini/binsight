@@ -61,7 +61,9 @@ export const expectValidTypeScriptInput = async (
   path: string,
   source: string,
 ): Promise<void> => {
-  const directory = await createTestTempDirectory("rea-typescript-producer-");
+  const directory = await createTestTempDirectory(
+    "binsight-typescript-producer-",
+  );
   const compiler = resolve("node_modules/typescript/bin/tsc");
   const input = join(directory, path);
   await Promise.all([
@@ -107,7 +109,7 @@ export const createTypeScriptDialectArtifact = async (
   format: "directory" | "asar",
   cases: readonly (typeof typeScriptDialectCases)[number][],
 ): Promise<string> => {
-  const root = await createTestTempDirectory("rea-typescript-dialect-");
+  const root = await createTestTempDirectory("binsight-typescript-dialect-");
   const directory = join(root, "source");
   await mkdir(directory);
   await Promise.all([

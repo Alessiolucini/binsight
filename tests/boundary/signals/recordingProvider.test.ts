@@ -17,7 +17,7 @@ import { createDeferred } from "../../fixtures/binarySession.js";
 
 // A command-boundary simulator: real process ownership/filesystem, not real sigrok coverage.
 const fixture = async (mode = "ok", failCleanup = false) => {
-  const directory = await createTestTempDirectory("rea-signal-test-");
+  const directory = await createTestTempDirectory("binsight-signal-test-");
   const path = join(directory, "recorded bytes.vcd");
   await writeFile(path, "recording bytes");
   const script = join(directory, "producer.mjs");

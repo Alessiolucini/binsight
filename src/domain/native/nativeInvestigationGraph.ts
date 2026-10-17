@@ -400,9 +400,9 @@ export const joinInterfaceBuilderDispatch = (
   return nativeInvestigationGraphSchema.parse({
     ...graph,
     provider: {
-      id: "rea-native-investigation",
+      id: "binsight-native-investigation",
       version: null,
-      tool_version: "rea-native-investigation/1",
+      tool_version: "binsight-native-investigation/1",
     },
     nodes: [...nodes.values()],
     edges,

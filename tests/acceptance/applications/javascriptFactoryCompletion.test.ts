@@ -258,7 +258,7 @@ const factorySource = (scenario: (typeof scenarios)[number]) => {
 const runtimeChannels = (source: string, flag: boolean) => {
   const channels: string[] = [];
   try {
-    // Only this authored fixture executes. REA reads the same bytes as inert
+    // Only this authored fixture executes. BinSight reads the same bytes as inert
     // source; the stub does not establish real Electron runtime behavior.
     runInNewContext(
       source,
@@ -353,7 +353,7 @@ const verifyApplication = (
 cliTest(
   "retains guarded factory fallthrough through CLI and real stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-factory-completion-");
+    const root = await createTestTempDirectory("binsight-factory-completion-");
     const { call } = await connectLocalToolsMcp();
     const contract = toolContract("analyze_javascript_application");
     for (const scenario of scenarios) {
@@ -417,7 +417,7 @@ cliTest(
 cliTest(
   "does not execute unadvanced generator calls through public CLI/MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-generator-call-");
+    const root = await createTestTempDirectory("binsight-generator-call-");
     const { call } = await connectLocalToolsMcp();
     const contract = toolContract("analyze_javascript_application");
     for (const [name, kind, expected, advance] of [

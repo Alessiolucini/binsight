@@ -199,7 +199,7 @@ export const analyzeInterfaceBuilderBundle = async (input: {
   }
   const result = buildInterfaceBuilderAnalysis({
     targetSha256: input.targetSha256,
-    toolVersion: "rea-interface-builder/1",
+    toolVersion: "binsight-interface-builder/1",
     documents,
     limits,
   });

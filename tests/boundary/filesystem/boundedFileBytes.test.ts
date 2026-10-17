@@ -10,7 +10,7 @@ describe("bounded file byte reads", () => {
   it.each([0, 65_536])(
     "accepts a file exactly at the %i byte limit",
     async (limit) => {
-      const root = await createTestTempDirectory("rea-bounded-bytes-");
+      const root = await createTestTempDirectory("binsight-bounded-bytes-");
       const path = join(root, "input");
       const content = Buffer.alloc(limit, 0x61);
       await writeFile(path, content);
@@ -24,7 +24,7 @@ describe("bounded file byte reads", () => {
   );
 
   it("stops after one overflow byte when a file grows beyond its admitted size", async () => {
-    const root = await createTestTempDirectory("rea-growing-bytes-");
+    const root = await createTestTempDirectory("binsight-growing-bytes-");
     const path = join(root, "input");
     await writeFile(path, "0123456789");
     const handle = await open(path, "r");

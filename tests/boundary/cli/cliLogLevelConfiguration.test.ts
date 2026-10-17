@@ -14,7 +14,7 @@ for (const level of ["loud", "INFO"])
         expect(result.exitCode).toBe(1);
         expect(result.stdout).toBe("");
         expect(result.stderr).toBe(
-          'REA configuration is invalid: REA_LOG_LEVEL: Invalid option: expected one of "trace"|"debug"|"info"|"warn"|"error"|"fatal"|"silent".\n',
+          'BinSight configuration is invalid: REA_LOG_LEVEL: Invalid option: expected one of "trace"|"debug"|"info"|"warn"|"error"|"fatal"|"silent".\n',
         );
       }
     },

@@ -18,14 +18,14 @@ import {
 } from "./WindowsPrivateRuntime.js";
 
 const observation = {
-  requestedPath: "C:\\rea-private",
-  finalPath: "C:\\rea-private",
+  requestedPath: "C:\\binsight-private",
+  finalPath: "C:\\binsight-private",
   filesystem: "NTFS",
   volumeSerial: "0123456789abcdef",
   fileId: "0123456789abcdef0123456789abcdef",
   size: 0,
   directory: true,
-  path: "C:\\rea-private",
+  path: "C:\\binsight-private",
   handle: {},
   privateDacl: true,
 };
@@ -45,7 +45,7 @@ describe("Windows private runtime cleanup retry", () => {
       if (operation === "runtime_close" && closes++ === 0) throw conflict;
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "binsight-");
 
     await runtime.close();
 
@@ -100,7 +100,7 @@ describe("Windows private runtime cleanup retry", () => {
         if (operation === "runtime_close" && closes++ === 0) throw denied;
         return null;
       });
-      const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+      const runtime = WindowsPrivateRuntime.create("C:\\", "binsight-");
 
       await expect(runtime.close()).rejects.toBe(denied);
       expect(closes).toBe(1);
@@ -118,7 +118,7 @@ describe("Windows private runtime cleanup retry", () => {
         throw nativeFailure(33);
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "binsight-");
     const first = runtime.close();
     const second = runtime.close();
 
@@ -138,7 +138,7 @@ describe("Windows private runtime cleanup retry", () => {
       }
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "binsight-");
 
     await expect(runtime.close()).rejects.toBe(conflict);
 
@@ -161,7 +161,7 @@ it.each([995, 5])(
       if (operation === "runtime_snapshot") return Promise.reject(failure);
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "binsight-");
     const pending = runtime.snapshot(
       "C:\\target.bin",
       "target.bin",

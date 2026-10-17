@@ -86,7 +86,7 @@ export class NativeModuleResolver implements WebModuleResolutionPort {
           "missing_browser_executable",
           {
             userMessage:
-              "Provide an absolute REA_BROWSER_EXECUTABLE for a caller-supplied Chromium browser supporting import.meta.resolve. REA installs no browser.",
+              "Provide an absolute REA_BROWSER_EXECUTABLE for a caller-supplied Chromium browser supporting import.meta.resolve. BinSight installs no browser.",
           },
         ),
       );
@@ -232,8 +232,10 @@ const resolveInBrowser = async (
     effect: "fulfilled" | "blocked";
   }[] = [];
   const importerUrl = new URL(input.importerUrl).href;
-  const documentUrl = new URL("/.rea-module-resolver/document", importerUrl)
-    .href;
+  const documentUrl = new URL(
+    "/.binsight-module-resolver/document",
+    importerUrl,
+  ).href;
   const transportUrl = new URL(importerUrl);
   transportUrl.hash = "";
   let stubSent = false;

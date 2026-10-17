@@ -12,7 +12,7 @@ const scans = async (kuna: string) =>
   (await fakeKunaCalls(kuna)).filter(({ argv }) => argv[0] === "strings");
 
 it("shares a typed string scan across concurrent searches and exact address reads without analysis", async () => {
-  const { open, kuna } = await session("rea-kuna-strings-", {
+  const { open, kuna } = await session("binsight-kuna-strings-", {
     stringDelayMs: 50,
   });
   const client = open();
@@ -24,12 +24,12 @@ it("shares a typed string scan across concurrent searches and exact address read
     expect(literal.result).toEqual([
       {
         address: "0x3000",
-        value: "REA fixture prompt",
+        value: "BinSight fixture prompt",
         string: {
           encoding: "ascii",
           encoding_status: "observed",
           termination: "present_or_not_required",
-          byte_length: 19,
+          byte_length: 24,
         },
       },
     ]);
@@ -99,7 +99,7 @@ it("shares a typed string scan across concurrent searches and exact address read
 it.each(["not-json", "miscounted"] as const)(
   "does not publish or cache a %s inventory",
   async (strings) => {
-    const { open, kuna } = await session("rea-kuna-strings-invalid-", {
+    const { open, kuna } = await session("binsight-kuna-strings-invalid-", {
       strings,
     });
     const client = open();
@@ -118,7 +118,7 @@ it.each(["not-json", "miscounted"] as const)(
 
 it("parses a scan larger than any fixed output buffer as it streams", async () => {
   const padding = 24 * 1024 * 1024;
-  const { open } = await session("rea-kuna-strings-large-", {
+  const { open } = await session("binsight-kuna-strings-large-", {
     stringPadding: padding,
   });
   const client = open();
@@ -141,7 +141,7 @@ it("parses a scan larger than any fixed output buffer as it streams", async () =
 
 it("stops Kuna at the first contradictory row instead of awaiting the rest", async () => {
   const { open, kuna } = await session(
-    "rea-kuna-strings-reject-",
+    "binsight-kuna-strings-reject-",
     { strings: "invalid-then-hang" },
     { REA_KUNA_PROJECT_TIMEOUT_MS: "60000" },
   );
@@ -168,7 +168,7 @@ it("stops Kuna at the first contradictory row instead of awaiting the rest", asy
 });
 
 it("cancels one waiter without stopping the shared scan, and rebuilds in a fresh session", async () => {
-  const { open, kuna } = await session("rea-kuna-strings-waiters-", {
+  const { open, kuna } = await session("binsight-kuna-strings-waiters-", {
     stringDelayMs: 200,
   });
   const first = open();
@@ -201,7 +201,7 @@ it("cancels one waiter without stopping the shared scan, and rebuilds in a fresh
 });
 
 it("drains a cancelled last scan before retrying", async () => {
-  const { open, kuna } = await session("rea-kuna-strings-retry-", {
+  const { open, kuna } = await session("binsight-kuna-strings-retry-", {
     strings: "hang",
   });
   const client = open();
@@ -228,7 +228,7 @@ it("drains a cancelled last scan before retrying", async () => {
 it("retains metadata admission until a string process stop is proven", async () => {
   const cleanup = unprovenCleanupLauncher("strings");
   const { open, kuna } = await session(
-    "rea-kuna-strings-owner-",
+    "binsight-kuna-strings-owner-",
     { strings: "hang" },
     {},
     cleanup.launcher,
@@ -276,7 +276,7 @@ it("retains metadata admission until a string process stop is proven", async () 
 
 it("uses the whole-program deadline independently of the single-function budget", async () => {
   const { open, kuna } = await session(
-    "rea-kuna-strings-deadline-",
+    "binsight-kuna-strings-deadline-",
     { stringDelayMs: 200 },
     {
       REA_KUNA_TIMEOUT_MS: "20",
@@ -333,7 +333,7 @@ it.each([
   "keeps per-waiter context for $mode failures started by $starter",
   async ({ starter, mode, tag }) => {
     const { open, kuna } = await session(
-      "rea-kuna-shared-string-failure-",
+      "binsight-kuna-shared-string-failure-",
       mode === "oversize"
         ? { stringStderrBytes: KUNA_DIAGNOSTIC_BYTES + 1 }
         : { strings: mode },

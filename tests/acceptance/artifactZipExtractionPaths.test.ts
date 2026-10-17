@@ -16,7 +16,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "refuses NFC-colliding ZIP members without an integrity retry",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-nfc-collision-");
+    const root = await createTestTempDirectory("binsight-zip-nfc-collision-");
     const archive = join(root, "collision.zip");
     const temporary = join(root, "temporary");
     await mkdir(temporary);
@@ -89,7 +89,7 @@ cliTest(
 cliTest(
   "extracts one decomposed ZIP name and distinct names with their exact bytes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-distinct-paths-");
+    const root = await createTestTempDirectory("binsight-zip-distinct-paths-");
     const archive = join(root, "distinct.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("cafe\u0301.txt", new TextReader("decomposed bytes"));

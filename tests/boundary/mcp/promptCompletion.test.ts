@@ -57,7 +57,7 @@ describe("guided prompt completion from live analysis", () => {
           ),
       },
     );
-    directory = await createTestTempDirectory("rea-prompt-completion-");
+    directory = await createTestTempDirectory("binsight-prompt-completion-");
     const target = join(directory, "fixture.hop");
     await writeFile(target, "fixture");
     expect((await session.open(target)).ok).toBe(true);
@@ -369,7 +369,9 @@ type InspectionCorruption =
 const createPagedInspectionEvidence = async (
   corruption?: InspectionCorruption,
 ) => {
-  directory = await createTestTempDirectory("rea-prompt-inspection-pages-");
+  directory = await createTestTempDirectory(
+    "binsight-prompt-inspection-pages-",
+  );
   const path = join(directory, "fixture.app");
   await mkdir(path);
   await Promise.all([

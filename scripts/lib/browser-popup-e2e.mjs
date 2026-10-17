@@ -131,7 +131,7 @@ const verifyTransports = async (executable, origin) => {
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
     REA_LOG_LEVEL: "silent",
-    HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+    HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
   };
   const { stdout } = await promisify(execFile)(
     process.execPath,

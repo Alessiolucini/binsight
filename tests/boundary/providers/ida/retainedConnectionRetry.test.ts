@@ -71,7 +71,7 @@ for await (const line of createInterface({ input: process.stdin })) {
 
 describe("retained headless IDA connection in a long-lived host", () => {
   it("retries cleanup through the detached stdio connection", async () => {
-    const root = await createTestTempDirectory("rea-ida-retry-");
+    const root = await createTestTempDirectory("binsight-ida-retry-");
     const supervisor = join(root, "supervisor.mjs");
     await writeFile(supervisor, FLAKY_INVENTORY_SUPERVISOR);
     const workspaceRoot = join(root, "workspaces");

@@ -150,7 +150,7 @@ describe("browser and Inspector CLI input diagnostics", () => {
     "%s does not echo rejected endpoint credentials",
     async ([command, field], { cli, workspace }) => {
       const endpoint =
-        "http://rea-diagnostic-user:rea-diagnostic-secret@127.0.0.1:9222/";
+        "http://binsight-diagnostic-user:binsight-diagnostic-secret@127.0.0.1:9222/";
       const result = await cli.run({
         arguments: [command, endpoint, "--json"],
         cwd: workspace.root,
@@ -173,8 +173,8 @@ describe("browser and Inspector CLI input diagnostics", () => {
       });
       const output = result.stdout + result.stderr;
       expect(output).not.toContain(endpoint);
-      expect(output).not.toContain("rea-diagnostic-user");
-      expect(output).not.toContain("rea-diagnostic-secret");
+      expect(output).not.toContain("binsight-diagnostic-user");
+      expect(output).not.toContain("binsight-diagnostic-secret");
     },
   );
 

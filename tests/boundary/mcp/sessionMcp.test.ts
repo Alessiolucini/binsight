@@ -55,7 +55,7 @@ afterEach(async () => {
 
 describe("MCP snapshot lifecycle ordering", () => {
   it("saves earlier in-flight observations, blocks later calls, and preserves the session on write failure", async () => {
-    directory = await createTestTempDirectory("rea-mcp-snapshot-order-");
+    directory = await createTestTempDirectory("binsight-mcp-snapshot-order-");
     const started = createDeferred<void>();
     const release = createDeferred<ReturnType<typeof ok>>();
     const { mcp, first, closed } = await createSessionMcpHarness(
@@ -219,7 +219,7 @@ describe("public provider availability", () => {
 
 describe("target-free MCP fixture host isolation", () => {
   it("uses fixed unavailable ports instead of probing installed Android tools", async () => {
-    directory = await createTestTempDirectory("rea-mcp-host-isolation-");
+    directory = await createTestTempDirectory("binsight-mcp-host-isolation-");
     const { mcp } = await createSessionMcpHarness(
       directory,
       provider,
@@ -246,7 +246,7 @@ describe("target-free MCP fixture host isolation", () => {
 
 describe("target-free MCP lifecycle", () => {
   it("takes the session snapshot after Android readiness inspection completes", async () => {
-    directory = await createTestTempDirectory("rea-mcp-status-readiness-");
+    directory = await createTestTempDirectory("binsight-mcp-status-readiness-");
     const targetPath = join(directory, "target.hop");
     await writeFile(targetPath, "fixture target");
     const entered = createDeferred<void>();
@@ -292,7 +292,7 @@ describe("target-free MCP lifecycle", () => {
   });
 
   it("reopens replaced content at one canonical path through MCP", async () => {
-    directory = await createTestTempDirectory("rea-mcp-replaced-target-");
+    directory = await createTestTempDirectory("binsight-mcp-replaced-target-");
     const targetPath = join(directory, "mutable.hop");
     await writeFile(targetPath, "first");
     const closed: string[] = [];
@@ -357,7 +357,7 @@ describe("target-free MCP lifecycle", () => {
 
 describe("target-free MCP workflow", () => {
   it("reports no-target, opens, analyzes, switches, reports status, and closes", async () => {
-    directory = await createTestTempDirectory("rea-mcp-session-");
+    directory = await createTestTempDirectory("binsight-mcp-session-");
     const lifecycle = await createSessionMcpHarness(
       directory,
       provider,
@@ -483,7 +483,9 @@ describe("target-free MCP workflow", () => {
 
 describe("MCP snapshot open ordering", () => {
   it("keeps a snapshot open ahead of later reads and closes on the same connection", async () => {
-    directory = await createTestTempDirectory("rea-mcp-snapshot-open-order-");
+    directory = await createTestTempDirectory(
+      "binsight-mcp-snapshot-open-order-",
+    );
     const { mcp, first, second } = await createSessionMcpHarness(
       directory,
       provider,
@@ -522,7 +524,7 @@ describe("MCP snapshot open ordering", () => {
 
 describe("session filesystem path boundaries over MCP", () => {
   it("rejects relative snapshot and export paths with an absolute-path error", async () => {
-    directory = await createTestTempDirectory("rea-mcp-path-boundary-");
+    directory = await createTestTempDirectory("binsight-mcp-path-boundary-");
     const { mcp, first } = await createSessionMcpHarness(
       directory,
       provider,
@@ -553,7 +555,7 @@ describe("session filesystem path boundaries over MCP", () => {
 
 describe("json depth bounds over MCP", () => {
   it("classifies deeply nested evidence parameters as an input validation error", async () => {
-    directory = await createTestTempDirectory("rea-mcp-depth-bound-");
+    directory = await createTestTempDirectory("binsight-mcp-depth-bound-");
     const { mcp } = await createSessionMcpHarness(
       directory,
       provider,

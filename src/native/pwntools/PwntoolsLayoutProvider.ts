@@ -25,7 +25,7 @@ export class PwntoolsLayoutProvider
     launcher?: PwntoolsLauncher,
     createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-elf-layout-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "binsight-elf-layout-" }),
   ) {
     super(
       {

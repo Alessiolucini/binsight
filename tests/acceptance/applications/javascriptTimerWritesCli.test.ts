@@ -8,7 +8,9 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest(
   "links cancellation to the timer handle reaching its read through the CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-timer-reaching-write-");
+    const root = await createTestTempDirectory(
+      "binsight-timer-reaching-write-",
+    );
     await writeFixtureFiles(root, {
       "app.mjs": `
       function cleared() {

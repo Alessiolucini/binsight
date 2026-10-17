@@ -54,8 +54,8 @@ import { verifyScenarioEnvironment } from "./lib/browser-scenario-environment-e2
 import { verifyScenarioStorage } from "./lib/browser-scenario-storage-e2e.mjs";
 import { verifyScenarioServiceWorkers } from "./lib/browser-scenario-service-workers-e2e.mjs";
 
-const SCENARIO_SECRET_VALUE = "rea-browser-verifier-secret";
-const SCENARIO_URL_SECRET_VALUE = "rea-browser-url-verifier-secret";
+const SCENARIO_SECRET_VALUE = "binsight-browser-verifier-secret";
+const SCENARIO_URL_SECRET_VALUE = "binsight-browser-url-verifier-secret";
 process.env.REA_BROWSER_VERIFIER_SECRET = SCENARIO_SECRET_VALUE;
 process.env.REA_BROWSER_VERIFIER_URL = SCENARIO_URL_SECRET_VALUE;
 const verifierRun = createVerifierRun();
@@ -69,7 +69,7 @@ let pageProxy;
 let report;
 let verificationError;
 try {
-  profile = await mkdtemp(join(tmpdir(), "rea-real-browser-"));
+  profile = await mkdtemp(join(tmpdir(), "binsight-real-browser-"));
   site = await startBrowserVerifierSite();
   browser = spawn(
     executable,
@@ -162,7 +162,7 @@ try {
   const source = withSource.value.scripts.items.find(
     (script) =>
       script.source.included &&
-      script.source.artifact.text.includes("reaSourceMarker"),
+      script.source.artifact.text.includes("binsightSourceMarker"),
   );
   if (source === undefined)
     throw new Error(

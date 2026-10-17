@@ -9,7 +9,7 @@ import { compareTestDiscovery } from "./lib/test-discovery.mjs";
 const execute = promisify(execFile);
 const root = resolve(import.meta.dirname, "..");
 
-const temporary = await mkdtemp(join(tmpdir(), "rea-test-discovery-"));
+const temporary = await mkdtemp(join(tmpdir(), "binsight-test-discovery-"));
 let discovered;
 try {
   const output = join(temporary, "discovery.json");

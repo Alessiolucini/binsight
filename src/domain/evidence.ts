@@ -413,7 +413,7 @@ const normalizeEvidenceObservation = (
       version: provider.version,
     },
     analysis_profile: observation.analysisProfile ?? null,
-    predicate_type: observation.predicateType ?? "rea.analysis",
+    predicate_type: observation.predicateType ?? "binsight.analysis",
     operation: observation.operation,
     parameters: observation.parameters,
     raw_result: observation.rawResult ?? null,

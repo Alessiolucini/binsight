@@ -687,7 +687,7 @@ export class GhidraClient {
     try {
       this.#runtimeRoot = await PrivateRuntimeRoot.create({
         parent: SESSION_ROOT,
-        prefix: "rea-ghidra-",
+        prefix: "binsight-ghidra-",
         platform: this.#options.platform,
       });
     } catch (cause: unknown) {

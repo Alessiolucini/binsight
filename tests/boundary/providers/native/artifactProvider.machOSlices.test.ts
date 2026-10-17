@@ -16,7 +16,7 @@ import type { NativeCommandRunner } from "../../../../src/native/CommandRunner.j
 
 describe("artifact Mach-O slices", () => {
   it("rejects lipo slice sizes that exceed the observed artifact bytes", async () => {
-    const root = await createTestTempDirectory("rea-slices-short-");
+    const root = await createTestTempDirectory("binsight-slices-short-");
     const binary = join(root, "fat");
     await writeFile(binary, Buffer.from("0123456789"));
     const runner: NativeCommandRunner = {
@@ -50,7 +50,7 @@ describe("artifact Mach-O slices", () => {
   });
 
   it("uses lipo metadata to read universal slice ranges", async () => {
-    const root = await createTestTempDirectory("rea-slices-");
+    const root = await createTestTempDirectory("binsight-slices-");
     const binary = join(root, "fat");
     const x86 = machoImage({ cpu: CPU.x86_64 });
     const arm = machoImage({ cpu: CPU.arm64 });
@@ -137,7 +137,7 @@ describe("artifact Mach-O slice integrity", () => {
   ])(
     "rejects lipo %s that disagrees with physical Mach-O facts",
     async (_label, field) => {
-      const root = await createTestTempDirectory("rea-slices-mismatch-");
+      const root = await createTestTempDirectory("binsight-slices-mismatch-");
       const binary = join(root, "fat");
       const thin = machoImage({ cpu: CPU.arm64 });
       await writeFile(binary, fatImage([{ cpu: CPU.arm64, bytes: thin }]));
@@ -172,7 +172,7 @@ describe("artifact Mach-O slice integrity", () => {
   );
 
   it("does not trust lipo after a malformed structural Mach-O parse", async () => {
-    const root = await createTestTempDirectory("rea-slices-malformed-");
+    const root = await createTestTempDirectory("binsight-slices-malformed-");
     const binary = join(root, "fat");
     const thin = machoImage({ cpu: CPU.arm64 });
     new DataView(thin.buffer).setUint32(16, 1, true);
@@ -224,7 +224,7 @@ describe("artifact Mach-O arm64e variant slices", () => {
     cpu: { readonly type: number; readonly subtype: number },
     lipo: (size: number) => string,
   ) => {
-    const root = await createTestTempDirectory("rea-slices-arm64e-");
+    const root = await createTestTempDirectory("binsight-slices-arm64e-");
     const binary = join(root, "fat");
     const x86 = machoImage({ cpu: CPU.x86_64 });
     const arm = machoImage({ cpu });
@@ -296,7 +296,7 @@ describe("artifact Mach-O arm64e variant slices", () => {
 describe("artifact Mach-O LIB64 slices", () => {
   const LIB64 = { type: 0x01000007, subtype: 0x80000003 } as const;
   const lib64Slices = async (x86Subtype: string) => {
-    const root = await createTestTempDirectory("rea-slices-lib64-");
+    const root = await createTestTempDirectory("binsight-slices-lib64-");
     const binary = join(root, "fat");
     const x86 = machoImage({ cpu: LIB64 });
     const arm = machoImage({ cpu: CPU.arm64 });

@@ -19,7 +19,7 @@ const analyzeSource = async (
   source: string,
   extraFiles: Readonly<Record<string, string>> = {},
 ) => {
-  const inputPath = await createTestTempDirectory("rea-js-empty-literal-");
+  const inputPath = await createTestTempDirectory("binsight-js-empty-literal-");
   await writeFile(join(inputPath, "app.js"), `${source}\n`);
   for (const [path, text] of Object.entries(extraFiles))
     await writeFile(join(inputPath, path), text);

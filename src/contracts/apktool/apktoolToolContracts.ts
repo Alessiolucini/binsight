@@ -12,7 +12,7 @@ export const APKTOOL_TOOL_CONTRACTS = [
     name: "inspect_apktool_client",
     ...toolContractMetadata("inspect_apktool_client"),
     description:
-      "Inspect the caller-selected apktool launcher: resolved command, selection source, and version. Decodes nothing. REA never installs Apktool or Java; select a launcher with REA_APKTOOL_COMMAND (absolute) or apktool on PATH.",
+      "Inspect the caller-selected apktool launcher: resolved command, selection source, and version. Decodes nothing. BinSight never installs Apktool or Java; select a launcher with REA_APKTOOL_COMMAND (absolute) or apktool on PATH.",
     kind: "apktool-provider",
     inputSchema: apktoolInputSchemas.inspect_apktool_client,
     outputSchema: evidenceResultOf(apktoolResultSchemas.inspect_apktool_client),

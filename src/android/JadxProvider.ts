@@ -130,7 +130,7 @@ const executionError = (context: {
     );
   if (session !== undefined && !session.initialized()) {
     const stderr = session.transport.diagnostics();
-    const reason = `Java could not start REA's Android bridge using ${session.transport.options.command}: ${cause instanceof Error ? cause.message : String(cause)}.${stderr.length === 0 ? "" : ` Java diagnostics: ${stderr}`} Select a full JDK including jdk.compiler via JAVA_HOME, or a working java on PATH; verify it with java --list-modules. A JRE cannot compile REA's source bridge. If the JDK works, verify the REA bridge and configured JADX JAR installation.`;
+    const reason = `Java could not start BinSight's Android bridge using ${session.transport.options.command}: ${cause instanceof Error ? cause.message : String(cause)}.${stderr.length === 0 ? "" : ` Java diagnostics: ${stderr}`} Select a full JDK including jdk.compiler via JAVA_HOME, or a working java on PATH; verify it with java --list-modules. A JRE cannot compile BinSight's source bridge. If the JDK works, verify the BinSight bridge and configured JADX JAR installation.`;
     return new AnalysisCapabilityUnavailableError(
       "jadx",
       request.operation,
@@ -323,7 +323,7 @@ interface RetainedSession {
   readonly bridgeHash: string;
 }
 
-/** One serialized, immutable APK session per REA instance, retired on idle or shutdown. */
+/** One serialized, immutable APK session per BinSight instance, retired on idle or shutdown. */
 export class JadxProvider implements AndroidAnalysisPort {
   #tail: Promise<void> = Promise.resolve();
   #pendingCleanup: PendingCleanup | undefined;

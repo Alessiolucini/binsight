@@ -18,7 +18,7 @@ import { ArtifactResourceScope } from "../../../src/artifacts/ArtifactResourceSc
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("reads exact binary and empty bytes and rejects symlink/size/cancellation boundaries", async () => {
-  const root = await createTestTempDirectory("rea-stable-artifact-");
+  const root = await createTestTempDirectory("binsight-stable-artifact-");
   const path = join(root, "source.bin");
   await writeFile(path, Buffer.from([0, 255, 254]));
   expect((await readStableArtifact(path, 3)).bytes).toEqual(
@@ -48,7 +48,7 @@ it("reads exact binary and empty bytes and rejects symlink/size/cancellation bou
 const checkChange = async (
   stage: "before-open" | "after-read" | "symlink-replacement",
 ): Promise<void> => {
-  const root = await createTestTempDirectory("rea-stable-read-");
+  const root = await createTestTempDirectory("binsight-stable-read-");
   const path = join(root, "selected");
   await writeFile(path, "original evidence");
   let inspected = 0;
@@ -79,14 +79,14 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("keeps initially missing inputs distinguishable from later changes", async () => {
-  const root = await createTestTempDirectory("rea-stable-missing-");
+  const root = await createTestTempDirectory("binsight-stable-missing-");
   await expect(
     readStableArtifact(join(root, "missing"), 1024),
   ).rejects.toMatchObject({ code: "ENOENT" });
 });
 
 const heldDescriptor = async () => {
-  const root = await createTestTempDirectory("rea-stable-close-owner-");
+  const root = await createTestTempDirectory("binsight-stable-close-owner-");
   const path = join(root, "selected.bin");
   const bytes = Buffer.from([0, 255, 1, 254]);
   await writeFile(path, bytes);

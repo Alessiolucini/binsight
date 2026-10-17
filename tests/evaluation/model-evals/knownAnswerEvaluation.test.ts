@@ -60,7 +60,7 @@ const delivered = (
   item: {
     id: evidence.evidence_id,
     type: "mcp_tool_call",
-    server: "rea",
+    server: "binsight",
     tool: evidence.operation,
     status: "completed",
     result: resultFor(evidence),

@@ -20,7 +20,7 @@ export const mixedArchiveNumberElements = [
   "<integer>9007199254740992<![CDATA[3]]></integer>",
   "<integer><![CDATA[9007199254740992]]>3</integer>",
   "<integer><![CDATA[9007199254740992&#51;]]></integer>",
-  "<integer>9007199254740992<?rea split?>3</integer>",
+  "<integer>9007199254740992<?binsight split?>3</integer>",
   "<integer>9007199254740992<string>3</string></integer>",
   "<integer>9007199254740992x</integer>",
 ] as const;
@@ -84,7 +84,7 @@ type MetadataCase = (typeof archiveNumberMetadataCases)[number];
 
 /** Write one inert archive and retain the original byte digest for assertions. */
 export const keyedArchiveNumberMetadataFixture = async (item: MetadataCase) => {
-  const root = await createTestTempDirectory("rea-keyed-number-metadata-");
+  const root = await createTestTempDirectory("binsight-keyed-number-metadata-");
   const xml = build({
     $archiver: "NSKeyedArchiver",
     $version: 100000,

@@ -19,7 +19,9 @@ cliTest.skipIf(process.versions.bun !== undefined).for([
   "preserves evidence with $laterSources later checkpoints and a $heapMb MiB parent heap",
   { timeout: 90_000 },
   async ({ laterSources, heapMb, methodsCount, retainGraph }, { cli }) => {
-    const root = await createTestTempDirectory("rea-js-checkpoint-reserve-");
+    const root = await createTestTempDirectory(
+      "binsight-js-checkpoint-reserve-",
+    );
     const source = Array.from(
       { length: methodsCount },
       (_, index) =>

@@ -124,7 +124,7 @@ export async function verifyRealHopperFixture({
     oracle.leafProcedure,
     normalizedResult,
   );
-  const comment = "REA real-Hopper conformance verifier";
+  const comment = "BinSight real-Hopper conformance verifier";
   const commentSet = normalizedResult(
     await client.callTool(
       {
@@ -251,7 +251,7 @@ export function requireSafeDiagnostics(
     if (
       diagnostic === null ||
       typeof diagnostic !== "object" ||
-      diagnostic.application !== "rea" ||
+      diagnostic.application !== "binsight" ||
       typeof diagnostic.level !== "number" ||
       diagnostic.level >= 50 ||
       (diagnostic.level >= 40 &&

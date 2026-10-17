@@ -87,7 +87,7 @@ afterEach(async () => {
 });
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-dyld-lifetime-");
+  const root = await createTestTempDirectory("binsight-dyld-lifetime-");
   const path = join(root, "Main");
   const bytes = machoImage({});
   await writeFile(path, bytes);

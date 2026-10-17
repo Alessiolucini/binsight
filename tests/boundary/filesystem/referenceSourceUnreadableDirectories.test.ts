@@ -23,7 +23,9 @@ describe("reference source native unreadable directories", () => {
   it.skipIf(permissionChecksUnavailable).each(["blocked", "src/blocked"])(
     "preserves a partial graph when %s cannot be enumerated",
     async (blocked) => {
-      const root = await createTestTempDirectory("rea-source-unreadable-dir-");
+      const root = await createTestTempDirectory(
+        "binsight-source-unreadable-dir-",
+      );
       const deniedPath = join(root, blocked);
       await mkdir(deniedPath, { recursive: true });
       await writeFile(join(root, "main.ts"), "export const value = 1;\n");
@@ -65,7 +67,9 @@ describe("reference source native unreadable directories", () => {
   it.skipIf(permissionChecksUnavailable)(
     "keeps links into an unreadable subtree uncertain while preserving readable siblings",
     async () => {
-      const root = await createTestTempDirectory("rea-source-unreadable-link-");
+      const root = await createTestTempDirectory(
+        "binsight-source-unreadable-link-",
+      );
       const hidden = join(root, "hidden");
       await mkdir(hidden);
       await writeFile(join(root, "visible.txt"), "visible\n");
@@ -118,7 +122,9 @@ describe("reference source native unreadable directories", () => {
   );
 
   it("keeps readable and empty directories enumerated exactly once", async () => {
-    const root = await createTestTempDirectory("rea-source-readable-dirs-");
+    const root = await createTestTempDirectory(
+      "binsight-source-readable-dirs-",
+    );
     await mkdir(join(root, "src", "empty"), { recursive: true });
     await writeFile(join(root, "src", "main.ts"), "export const value = 1;\n");
     const imported = await importTree(root);

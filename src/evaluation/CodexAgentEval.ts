@@ -8,7 +8,7 @@ import {
 import { canonicalJson } from "../domain/comparisonSemantics.js";
 import { TOOL_CONTRACTS } from "../contracts/toolContracts.js";
 
-/** One REA MCP invocation observed in a Codex JSONL transcript. */
+/** One BinSight MCP invocation observed in a Codex JSONL transcript. */
 interface CodexMcpCall {
   readonly id: string | null;
   readonly server: string | null;
@@ -24,7 +24,7 @@ export interface CodexAgentMetrics {
   readonly naturalUse: boolean;
   readonly correctFirstTool: boolean;
   readonly firstTool: string | null;
-  readonly reaCalls: readonly CodexMcpCall[];
+  readonly binsightCalls: readonly CodexMcpCall[];
   readonly repeatedCallCount: number;
   readonly inputValidationFailureCount: number;
   readonly requiredToolSubsequenceMet: boolean;
@@ -67,7 +67,7 @@ const toolResultError = (
   );
   const direct = record(structured?.error ?? result?.error ?? item.error);
   if (direct !== undefined || structured !== undefined) return direct;
-  // Codex preserves some REA failures only as one complete JSON text block.
+  // Codex preserves some BinSight failures only as one complete JSON text block.
   // A client-truncated preview or SDK prose is not a structured error record.
   const content = result?.content;
   if (!Array.isArray(content) || content.length !== 1) return undefined;
@@ -204,12 +204,12 @@ export const evaluateCodexEvents = (
     consumeEvent(state, event, parsedCalls[index]),
   );
 
-  const reaCalls = state.calls.filter(
-    ({ server }) => server?.toLowerCase() === "rea",
+  const binsightCalls = state.calls.filter(
+    ({ server }) => server?.toLowerCase() === "binsight",
   );
   const signatures = new Map<string, number>();
   let targetRevision = 0;
-  for (const call of reaCalls) {
+  for (const call of binsightCalls) {
     // A status read before and after a successful target lifecycle change is
     // useful verification, not a duplicate analysis or unchanged failed retry.
     const context =
@@ -226,7 +226,7 @@ export const evaluateCodexEvents = (
     (total, count) => total + Math.max(0, count - 1),
     0,
   );
-  const inputValidationFailureCount = reaCalls.filter(
+  const inputValidationFailureCount = binsightCalls.filter(
     (call) =>
       call.errorCode === "invalid_request" ||
       (call.error &&
@@ -235,12 +235,12 @@ export const evaluateCodexEvents = (
         )?.inputSchema.safeParse(call.arguments).success === false),
   ).length;
   const requiredToolSubsequenceMet = containsOrderedSubsequence(
-    reaCalls.filter(({ error }) => !error).map(({ tool }) => tool),
+    binsightCalls.filter(({ error }) => !error).map(({ tool }) => tool),
     options.requiredToolSubsequence ?? [],
   );
   const finalMessage = state.finalMessages.at(-1) ?? "";
   const evidenceIds = [
-    ...new Set(reaCalls.flatMap(({ evidenceIds: ids }) => ids)),
+    ...new Set(binsightCalls.flatMap(({ evidenceIds: ids }) => ids)),
   ];
   const finalCitesEvidence = evidenceIds.some((evidenceId) =>
     finalMessage.includes(evidenceId),
@@ -262,10 +262,10 @@ export const evaluateCodexEvents = (
     options.fixtureClaims,
   );
   return {
-    naturalUse: reaCalls.length > 0,
-    correctFirstTool: (reaCalls[0]?.tool ?? null) === expectedFirstTool,
-    firstTool: reaCalls[0]?.tool ?? null,
-    reaCalls,
+    naturalUse: binsightCalls.length > 0,
+    correctFirstTool: (binsightCalls[0]?.tool ?? null) === expectedFirstTool,
+    firstTool: binsightCalls[0]?.tool ?? null,
+    binsightCalls,
     repeatedCallCount,
     inputValidationFailureCount,
     requiredToolSubsequenceMet,

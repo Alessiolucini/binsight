@@ -104,13 +104,13 @@ it("collects the latest attempt for recent completed CI and Release runs into a 
     "api",
     "--paginate",
     "--slurp",
-    "repos/example/rea/actions/runs/42/attempts/3/jobs?per_page=100",
+    "repos/example/binsight/actions/runs/42/attempts/3/jobs?per_page=100",
   ]);
   expect(calls).toContainEqual([
     "api",
     "--paginate",
     "--slurp",
-    "repos/example/rea/actions/runs/41/attempts/1/jobs?per_page=100",
+    "repos/example/binsight/actions/runs/41/attempts/1/jobs?per_page=100",
   ]);
   const failedReport = JSON.parse(
     await readFile(
@@ -179,7 +179,7 @@ it("retains a partial manifest when its collection budget is exhausted", async (
     const { collectJobTimingsBatch } = await import(${JSON.stringify(pathToFileURL(batchScript).href)});
     let clock = Date.now();
     await collectJobTimingsBatch({
-      repository: "example/rea",
+      repository: "example/binsight",
       outputDirectory: process.env.CI_JOB_TIMINGS_DIRECTORY,
       now: () => clock,
       collect: async () => {
@@ -232,7 +232,9 @@ function completedJobs(
 }
 
 async function createFixture(responses: unknown[]) {
-  const directory = await createTestTempDirectory("rea-ci-job-timings-batch-");
+  const directory = await createTestTempDirectory(
+    "binsight-ci-job-timings-batch-",
+  );
   const fakeBin = join(directory, "bin");
   await mkdir(fakeBin);
   const responsePath = join(directory, "responses.json");
@@ -276,7 +278,7 @@ function fixtureEnvironment(
   return {
     ...process.env,
     PATH: `${fixture.fakeBin}${delimiter}${process.env.PATH ?? ""}`,
-    CI_REPOSITORY: "example/rea",
+    CI_REPOSITORY: "example/binsight",
     CI_JOB_TIMINGS_DIRECTORY: fixture.outputDirectory,
     CI_GH_CALLS: fixture.calls,
     CI_GH_RESPONSES: fixture.responses,

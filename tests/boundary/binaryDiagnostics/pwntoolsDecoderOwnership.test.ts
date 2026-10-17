@@ -17,7 +17,7 @@ it
   .each(["owned", "wrong-token", "wrong-parent"] as const)(
   "cancels an exec wrapper only with current ownership: %s",
   async (identity) => {
-    const { root } = await createTestWorkspace("rea-pwntools-wrapper-");
+    const { root } = await createTestWorkspace("binsight-pwntools-wrapper-");
     onTestFinished(() => removeTestWorkspace(root));
     const path = join(root, "input");
     await writeFile(path, "source-owned-seam-bytes");

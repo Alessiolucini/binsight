@@ -22,7 +22,9 @@ cliTest.skipIf(process.platform === "win32").for([
 ] as const)(
   "preserves $mode $kind selections containing a symlink before a parent segment",
   async ({ kind, mode }, { cli }) => {
-    const root = await createTestTempDirectory("rea-electron-fuses-cli-path-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-fuses-cli-path-",
+    );
     const framework = "Contents/Frameworks/Electron Framework.framework";
     const directory =
       kind === "binary"
@@ -118,7 +120,9 @@ cliTest.skipIf(process.platform === "win32").for([
 cliTest.skipIf(process.platform !== "win32")(
   "retains Windows drive, root, and mixed-separator path resolution",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-fuses-win-path-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-fuses-win-path-",
+    );
     const tail =
       "Fixture.app/Contents\\Frameworks/Electron Framework.framework/Versions\\A/Electron Framework";
     const binary = join(root, tail);
@@ -152,7 +156,7 @@ cliTest.skipIf(process.platform !== "win32")(
 cliTest(
   "reads thin and universal Electron fuse wires through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-fuses-cli-");
+    const root = await createTestTempDirectory("binsight-electron-fuses-cli-");
     const thin = thinFuseImage(OBSIDIAN_FUSE_BYTES);
     const universal = universalFuseImage();
     await writeFile(join(root, "thin"), thin.bytes);
@@ -216,7 +220,9 @@ cliTest(
 cliTest(
   "reports a missing sentinel as unknown fuse state through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-fuses-cli-empty-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-fuses-cli-empty-",
+    );
     const path = join(root, "empty");
     await writeFile(path, sentinelFreeMacho());
     const result = await cli.run({
@@ -237,7 +243,9 @@ cliTest(
 cliTest(
   "resolves an Electron app bundle to its framework binary through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-fuses-cli-app-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-fuses-cli-app-",
+    );
     const image = thinFuseImage(OBSIDIAN_FUSE_BYTES);
     const app = join(root, "Fixture.app");
     const binary = join(
@@ -300,7 +308,7 @@ cliTest.skipIf(process.platform === "win32")(
   "refuses a terminal bundle parent segment after a directory symlink",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-electron-fuses-cli-parent-",
+      "binsight-electron-fuses-cli-parent-",
     );
     const app = join(root, "Fixture.app");
     const binary = join(
@@ -332,7 +340,9 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest(
   "rejects an unrecognized container through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-fuses-cli-text-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-fuses-cli-text-",
+    );
     const path = join(root, "notes.txt");
     await writeFile(path, "This is not an executable container.");
     const result = await cli.run({

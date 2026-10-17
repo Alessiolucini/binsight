@@ -546,7 +546,7 @@ export abstract class KunaJsonDocumentReader<Parsed> extends Writable {
         },
         {
           remediationAction:
-            "Close other targets in this REA process, or start REA with a larger Node.js heap (--max-old-space-size), then reopen the target.",
+            "Close other targets in this BinSight process, or start BinSight with a larger Node.js heap (--max-old-space-size), then reopen the target.",
         },
       );
     this.#nextAdmission = this.#projectedBytes + ADMISSION_INTERVAL_BYTES;

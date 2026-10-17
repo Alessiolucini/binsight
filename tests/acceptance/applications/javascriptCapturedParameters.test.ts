@@ -389,7 +389,7 @@ console.log(JSON.stringify([objectPresent(),objectMissing(),arrayPresent(),array
 cliTest(
   "keeps a captured parameter unknown when comparing export shapes through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-captured-comparison-");
+    const root = await createTestTempDirectory("binsight-captured-comparison-");
     const evidence = [];
     for (const [side, body] of [
       ["left", 'const saved=x; x=2; return {type:"ok",value:saved};'],

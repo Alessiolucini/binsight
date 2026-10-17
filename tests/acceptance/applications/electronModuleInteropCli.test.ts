@@ -63,7 +63,7 @@ const writePoisonedModules = async (root: string): Promise<void> => {
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains converted Electron windows and preload evidence through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-electron-interop-");
+    const root = await createTestTempDirectory("binsight-electron-interop-");
     await writeFile(
       join(root, "package.json"),
       JSON.stringify({ main: "main.cjs" }),

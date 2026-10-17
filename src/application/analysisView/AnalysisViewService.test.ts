@@ -158,7 +158,7 @@ it("projects inline layout Evidence and retains a derived view record", () => {
   if (!result.ok) throw result.error;
   const evidence = parseEvidence(result.value);
   expect(evidence.operation).toBe("inspect_analysis_view");
-  expect(evidence.predicate_type).toBe("rea.analysis-view");
+  expect(evidence.predicate_type).toBe("binsight.analysis-view");
   expect(evidence.confidence).toBe("derived");
   expect(evidence.evidence_links).toEqual([parent.evidence_id]);
   expect(evidence.normalized_result).toMatchObject({

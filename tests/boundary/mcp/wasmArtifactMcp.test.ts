@@ -84,7 +84,7 @@ const assertFirstSummaryDelivery = async (
 it.each(["bin", "hop"])(
   "directs rejected native WASM opening (%s suffix) to the advertised static tool while preserving missing-WABT diagnostics",
   async (extension) => {
-    const directory = await createTestTempDirectory("rea-wasm-recovery-");
+    const directory = await createTestTempDirectory("binsight-wasm-recovery-");
     const path = join(
       await realpath(directory),
       process.platform === "win32"
@@ -673,7 +673,9 @@ it("retries cleanup of the injected WASM module after server shutdown fails", as
   try {
     await server.connect(b);
     await client.connect(a);
-    await expect(server.close()).rejects.toThrow("REA session cleanup failed");
+    await expect(server.close()).rejects.toThrow(
+      "BinSight session cleanup failed",
+    );
     await server.close();
     expect(close).toHaveBeenCalledTimes(2);
   } finally {

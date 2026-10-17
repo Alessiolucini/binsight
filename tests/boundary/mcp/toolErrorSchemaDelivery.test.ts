@@ -10,7 +10,7 @@ import { connectLocalToolsMcp } from "../../fixtures/localToolsMcp.js";
 import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 
 it("delivers typed tool failures without violating the advertised success schema over stdio", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-tool-error-schema-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-tool-error-schema-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const missing = join(root, "not-present.bin");
   const { client, call } = await connectLocalToolsMcp();

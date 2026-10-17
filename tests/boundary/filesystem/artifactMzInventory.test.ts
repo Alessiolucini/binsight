@@ -52,7 +52,7 @@ describe("MZ artifact classification", () => {
   });
 
   it("keeps standalone and embedded DOS identities through inventory", async () => {
-    const directory = await createTestTempDirectory("rea-mz-inventory-");
+    const directory = await createTestTempDirectory("binsight-mz-inventory-");
     const dosPath = join(directory, "LEGACY.EXE");
     const pePath = join(directory, "NATIVE.EXE");
     await writeFile(dosPath, dosFixture());

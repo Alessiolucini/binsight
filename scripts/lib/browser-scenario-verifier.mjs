@@ -18,7 +18,7 @@ const duplicateOriginStorage = (origin) => ({
       origin,
       entries: [
         {
-          name: "rea-first-seed",
+          name: "binsight-first-seed",
           value: {
             source: "literal",
             value: "first",
@@ -30,14 +30,14 @@ const duplicateOriginStorage = (origin) => ({
       origin,
       entries: [
         {
-          name: "rea-second-seed",
+          name: "binsight-second-seed",
           value: {
             source: "literal",
             value: "second",
           },
         },
         {
-          name: "rea-secret-seed",
+          name: "binsight-secret-seed",
           value: { source: "secret", secret_id: "verifier_storage" },
         },
       ],
@@ -218,7 +218,7 @@ const assertFailedNavigation = (error, requestedUrl) => {
 export async function scenarioProfiles() {
   return new Set(
     (await readdir(tmpdir())).filter((entry) =>
-      entry.startsWith("rea-browser-scenario-"),
+      entry.startsWith("binsight-browser-scenario-"),
     ),
   );
 }
@@ -243,14 +243,14 @@ export function assertScenarioCapture(capture) {
       ? final.artifacts.storage.value.local_storage.map(({ name }) => name)
       : [];
   if (
-    !storageNames.includes("rea-first-seed") ||
-    !storageNames.includes("rea-second-seed")
+    !storageNames.includes("binsight-first-seed") ||
+    !storageNames.includes("binsight-second-seed")
   )
     throw new Error("Scenario launch did not retain duplicate-origin seeds");
   const secretSeed =
     final.artifacts.storage.state === "captured"
       ? final.artifacts.storage.value.local_storage.find(
-          ({ name }) => name === "rea-secret-seed",
+          ({ name }) => name === "binsight-secret-seed",
         )
       : undefined;
   if (secretSeed?.value_state !== "redacted-secret")

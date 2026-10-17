@@ -77,7 +77,7 @@ async function runnerFailurePredicate(): Promise<(item: unknown) => unknown> {
 }
 
 describe("scoped factual report", () => {
-  it("requires a validated target clarification and zero REA calls for the negative route", () => {
+  it("requires a validated target clarification and zero BinSight calls for the negative route", () => {
     const clarification = {
       ...routingSuccess,
       expectedFirstTool: null,

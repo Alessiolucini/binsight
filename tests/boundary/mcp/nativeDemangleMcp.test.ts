@@ -22,7 +22,7 @@ describe.skipIf(process.platform !== "darwin")(
       "passes option-like symbols to swift-demangle as symbols",
       async ({ mcp, onTestFinished }) => {
         const target = join(
-          await createTestTempDirectory("rea-demangle-mcp-"),
+          await createTestTempDirectory("binsight-demangle-mcp-"),
           "tool",
         );
         await copyFile("/usr/bin/true", target);
@@ -72,7 +72,7 @@ describe.skipIf(process.platform !== "darwin")(
       "reports undecodable symbols with any Swift mangling prefix as invalid",
       async ({ mcp, onTestFinished }) => {
         const target = join(
-          await createTestTempDirectory("rea-demangle-mcp-"),
+          await createTestTempDirectory("binsight-demangle-mcp-"),
           "tool",
         );
         await copyFile("/usr/bin/true", target);

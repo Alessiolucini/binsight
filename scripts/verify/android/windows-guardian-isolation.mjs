@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { createJadxWorkspaceRoot } from "../../../dist/android/JadxWorkspaceRoot.js";
 
 const source = fileURLToPath(import.meta.url);
-const marker = "REA synthetic guardian isolation test\n";
+const marker = "BinSight synthetic guardian isolation test\n";
 const exists = (path) =>
   stat(path).then(
     () => true,

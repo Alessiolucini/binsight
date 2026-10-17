@@ -29,7 +29,9 @@ it.each([
 ])(
   "preserves export provenance for $expression",
   async ({ expression, resolved }) => {
-    const root = await createTestTempDirectory("rea-js-module-provenance-");
+    const root = await createTestTempDirectory(
+      "binsight-js-module-provenance-",
+    );
     await Promise.all([
       writeFile(
         join(root, "app.js"),

@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "keeps Qwen profile registration and shared skill consistent through setup, doctor and uninstall",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-qwen-profile-");
+    const root = await createTestTempDirectory("binsight-qwen-profile-");
     const home = join(root, "account");
     const profile = join(root, "selected profile");
     const settings = join(profile, "settings.json");
@@ -46,14 +46,16 @@ cliTest(
     const installed = await run(["setup", "--client", "qwen_code", "--yes"]);
     expect(installed.exitCode, installed.stderr).toBe(0);
     expect(installed.json).toMatchObject({ status: "ready" });
-    expect(await readFile(`${settings}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settings}.binsight.backup`, "utf8")).toBe(
+      original,
+    );
     const configured = await readFile(settings, "utf8");
     expect(configured).toContain("// Keep my configuration.");
     expect(parse(configured)).toMatchObject({
       model: { name: "existing" },
       mcpServers: {
         other: { command: "other-server" },
-        rea: {
+        binsight: {
           command:
             process.platform === "win32"
               ? process.execPath

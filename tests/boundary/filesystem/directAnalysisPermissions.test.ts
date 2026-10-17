@@ -29,7 +29,9 @@ afterEach(async () => {
 
 describe("direct analysis snapshot files", () => {
   it("forwards the CLI provider selector ahead of the environment preference", async () => {
-    const directory = await createTestTempDirectory("rea-direct-provider-");
+    const directory = await createTestTempDirectory(
+      "binsight-direct-provider-",
+    );
     const targetPath = join(directory, "fixture.hop");
     await writeFile(targetPath, "fixture");
     vi.stubEnv("HOPPER_LAUNCHER_PATH", process.execPath);
@@ -56,7 +58,9 @@ describe("direct analysis snapshot files", () => {
   });
 
   it("does not replay unbound historical Evidence from a supplied snapshot", async () => {
-    const directory = await createTestTempDirectory("rea-direct-snapshot-");
+    const directory = await createTestTempDirectory(
+      "binsight-direct-snapshot-",
+    );
     const snapshotPath = join(directory, "analysis.json");
     const launcherPath = join(directory, "hopper-launcher");
     await writeFile(launcherPath, "fixture Hopper launcher");

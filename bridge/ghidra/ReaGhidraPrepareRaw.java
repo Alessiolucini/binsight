@@ -44,6 +44,6 @@ public final class ReaGhidraPrepareRaw extends GhidraScript {
         if (!disassemble(entry) || createFunction(entry, "entry") == null) {
             throw new IllegalStateException("Raw binary entry cannot be decoded as a function");
         }
-        currentProgram.getOptions(Program.PROGRAM_INFO).setBoolean("REA raw binary prepared", true);
+        currentProgram.getOptions(Program.PROGRAM_INFO).setBoolean("BinSight raw binary prepared", true);
     }
 }

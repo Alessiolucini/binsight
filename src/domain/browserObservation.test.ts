@@ -155,8 +155,8 @@ describe("browser observation sensitive surfaces and retention", () => {
       redacted: false,
     });
     expect(sanitizeEndpointCandidate(malformed)).toBe(malformed);
-    expect(sanitizeEndpointCandidate("/api/search?q=rea#results")).toBe(
-      "/api/search?q=rea#results",
+    expect(sanitizeEndpointCandidate("/api/search?q=binsight#results")).toBe(
+      "/api/search?q=binsight#results",
     );
   });
 });

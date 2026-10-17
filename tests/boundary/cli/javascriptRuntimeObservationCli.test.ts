@@ -31,7 +31,7 @@ describe("JavaScript runtime observation CLI parity", () => {
   test(
     "returns the same passive Inspector Evidence contracts",
     async () => {
-      const root = await createTestTempDirectory("rea-v8-cli-");
+      const root = await createTestTempDirectory("binsight-v8-cli-");
       temporary.push(root);
       const entry = join(root, "entry.js");
       await writeFile(entry, "export const value = 1;\n");
@@ -47,7 +47,7 @@ describe("JavaScript runtime observation CLI parity", () => {
       );
       expect(listed).toMatchObject({
         operation: "list_javascript_runtime_targets",
-        provider: { id: "rea-v8-inspector" },
+        provider: { id: "binsight-v8-inspector" },
         normalized_result: {
           targets: [{ target_id: inspector.targetId }],
         },
@@ -68,7 +68,7 @@ describe("JavaScript runtime observation CLI parity", () => {
       );
       expect(observed).toMatchObject({
         operation: "observe_javascript_runtime",
-        provider: { id: "rea-v8-inspector" },
+        provider: { id: "binsight-v8-inspector" },
         normalized_result: {
           target: { target_id: inspector.targetId, runtime_kind: "node" },
           scripts: {

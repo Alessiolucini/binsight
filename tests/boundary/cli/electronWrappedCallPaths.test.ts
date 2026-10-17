@@ -65,7 +65,7 @@ for (const fixture of restArrayPropertyCases)
   cliTest(
     `preserves rest-array property identity for ${fixture.name} through the public CLI`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-electron-rest-key-");
+      const root = await createTestTempDirectory("binsight-electron-rest-key-");
       await writeFixtureFiles(root, {
         "main.cjs": `const e = require("electron");
           function make(...items) {
@@ -122,7 +122,9 @@ for (const fixture of restArrayPropertyCases)
   );
 
 const analyze = async (cli: TestCli, extra = "") => {
-  const root = await createTestTempDirectory("rea-electron-wrapped-paths-");
+  const root = await createTestTempDirectory(
+    "binsight-electron-wrapped-paths-",
+  );
   await writeFixtureFiles(root, {
     "preload.js": `const e=require("electron");
       const sender=channel=>(...args)=>e.ipcRenderer.send(channel,...args);
@@ -268,7 +270,7 @@ cliTest(
     for (const surface of ["CLI", "stdio MCP"] as const)
       for (const fixture of cases) {
         const root = await createTestTempDirectory(
-          "rea-electron-early-return-",
+          "binsight-electron-early-return-",
         );
         await writeFixtureFiles(root, {
           "index.js": `const e=require("electron");function f(x){${fixture.body}}f(globalThis.blocked);`,
@@ -312,7 +314,9 @@ cliTest(
 cliTest(
   "traces a nested contextBridge member through a unique IPC channel",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-nested-bridge-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-nested-bridge-",
+    );
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
         contextBridge.exposeInMainWorld("api", {
@@ -378,7 +382,9 @@ cliTest(
 cliTest(
   "preserves exact bridge member segments through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-bridge-segments-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-bridge-segments-",
+    );
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
         const write = () => ipcRenderer.send("write");
@@ -439,7 +445,9 @@ cliTest(
 cliTest(
   "retains a nested bridge path when its IPC handler has no external terminal",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-nested-return-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-nested-return-",
+    );
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
         contextBridge.exposeInMainWorld("api", {
@@ -499,7 +507,7 @@ for (const surface of ["CLI", "stdio MCP"] as const) {
     async ({ cli }) => {
       const analyzeBridge = async (api: string) => {
         const root = await createTestTempDirectory(
-          "rea-electron-spread-bridge-members-",
+          "binsight-electron-spread-bridge-members-",
         );
         await writeFixtureFiles(root, {
           "preload.js": `const { contextBridge } = require("electron");
@@ -538,7 +546,9 @@ for (const surface of ["CLI", "stdio MCP"] as const) {
   cliTest(
     `preserves handler ambiguity and short-circuit factory paths through ${surface}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-electron-branch-paths-");
+      const root = await createTestTempDirectory(
+        "binsight-electron-branch-paths-",
+      );
       await writeFixtureFiles(root, {
         "preload.js": `const e=require("electron");
         e.contextBridge.exposeInMainWorld("empty", {});
@@ -641,7 +651,9 @@ cliTest(
 cliTest(
   "keeps shallow bridge members when a sibling exceeds the nesting limit",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-deep-bridge-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-deep-bridge-",
+    );
     let deepMember = '() => e.ipcRenderer.send("deep:run")';
     for (let index = 0; index < 129; index += 1)
       deepMember = `{ level${index}: ${deepMember} }`;
@@ -686,7 +698,7 @@ cliTest(
   "preserves empty bridge member segments in nested paths",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-electron-empty-bridge-key-",
+      "binsight-electron-empty-bridge-key-",
     );
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
@@ -727,7 +739,9 @@ cliTest(
 cliTest(
   "retains bridge and handler conditions on Electron IPC join edges",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-join-conditions-");
+    const root = await createTestTempDirectory(
+      "binsight-electron-join-conditions-",
+    );
     await writeFixtureFiles(root, {
       "preload.js": `const e=require("electron");
         e.contextBridge.exposeInMainWorld("desktop", {

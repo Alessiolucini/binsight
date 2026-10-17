@@ -48,7 +48,7 @@ const keyedArchive = (nested: boolean) =>
 cliTest.skipIf(process.platform !== "darwin")(
   "retains recognized NIBArchive resource keys and provenance through CLI and MCP without a catalog",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-asset-resource-keys-");
+    const root = await createTestTempDirectory("binsight-asset-resource-keys-");
     const { call } = await connectLocalToolsMcp();
     for (const [name, field, archive, recognized] of [
       ["reported", "NSImageName", reportedArchive, true],

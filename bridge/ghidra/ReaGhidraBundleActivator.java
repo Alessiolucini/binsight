@@ -1,7 +1,7 @@
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-// Compile the no-op activator with REA's scripts. Otherwise Ghidra generates
+// Compile the no-op activator with BinSight's scripts. Otherwise Ghidra generates
 // one afterward and opens a second Java compiler and file manager.
 public final class ReaGhidraBundleActivator implements BundleActivator {
     @Override

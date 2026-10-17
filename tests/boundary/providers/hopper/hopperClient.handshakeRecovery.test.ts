@@ -23,7 +23,7 @@ const stop = async (child: ChildProcess): Promise<void> => {
   await exited;
 };
 
-// The GUI is a sibling owned by the test, never a descendant owned by REA's helper.
+// The GUI is a sibling owned by the test, never a descendant owned by BinSight's helper.
 class ExternalBridgeLauncher implements BridgeLauncher {
   readonly fixture: HopperFixtureLauncher;
   readonly sessions: BridgeSession[] = [];

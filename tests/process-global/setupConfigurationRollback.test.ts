@@ -111,7 +111,7 @@ it("reports a failed config rollback and retains its backup path", async () => {
   state.rejectRemove = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-rollback-");
+  const root = await createTestTempDirectory("binsight-config-rollback-");
   const path = join(root, "client.json");
   const original = '{"keep":true}\n';
   await import("node:fs/promises").then(({ writeFile }) =>
@@ -122,22 +122,22 @@ it("reports a failed config rollback and retains its backup path", async () => {
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["binsight", "mcp"],
   );
 
   expect(result).toEqual({
     status: "failed",
     reason: "rollback",
-    backupPath: `${path}.rea.backup`,
+    backupPath: `${path}.binsight.backup`,
     failure: {
       kind: "restore",
       path,
       detail: "injected restore write failure",
     },
   });
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${path}.binsight.backup`, "utf8")).toBe(original);
   expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
-    mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+    mcpServers: { binsight: { command: "binsight", args: ["mcp"] } },
   });
 });
 
@@ -147,24 +147,24 @@ it("preserves the first backup and reports a verified backup of the current orig
   state.rejectRemove = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-stale-backup-");
+  const root = await createTestTempDirectory("binsight-config-stale-backup-");
   const path = join(root, "client.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   await import("node:fs/promises").then(async ({ writeFile }) => {
     await writeFile(path, currentOriginal);
-    await writeFile(`${path}.rea.backup`, firstOriginal);
+    await writeFile(`${path}.binsight.backup`, firstOriginal);
   });
   state.rejectRestore = true;
 
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["binsight", "mcp"],
   );
   state.rejectRestore = false;
 
-  const recoveryPath = `${path}.rea.backup.${createHash("sha256")
+  const recoveryPath = `${path}.binsight.backup.${createHash("sha256")
     .update(currentOriginal, "utf8")
     .digest("hex")}.recovery`;
   expect(result).toMatchObject({
@@ -177,7 +177,7 @@ it("preserves the first backup and reports a verified backup of the current orig
       detail: "injected restore write failure",
     },
   });
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(firstOriginal);
+  expect(await readFile(`${path}.binsight.backup`, "utf8")).toBe(firstOriginal);
   expect(await readFile(recoveryPath, "utf8")).toBe(currentOriginal);
 });
 
@@ -188,26 +188,28 @@ it("does not write config when a recovery copy disappears before verification", 
   state.removeCopiedRecovery = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-vanished-recovery-");
+  const root = await createTestTempDirectory(
+    "binsight-config-vanished-recovery-",
+  );
   const path = join(root, "client.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   await import("node:fs/promises").then(async ({ writeFile }) => {
     await writeFile(path, currentOriginal);
-    await writeFile(`${path}.rea.backup`, firstOriginal);
+    await writeFile(`${path}.binsight.backup`, firstOriginal);
   });
   state.removeCopiedRecovery = true;
 
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["binsight", "mcp"],
   );
   state.removeCopiedRecovery = false;
 
   expect(result).toEqual({ status: "failed", reason: "backup" });
   expect(await readFile(path, "utf8")).toBe(currentOriginal);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(firstOriginal);
+  expect(await readFile(`${path}.binsight.backup`, "utf8")).toBe(firstOriginal);
 });
 
 it("does not roll back or remove config when its initial read cleanup fails", async () => {
@@ -215,7 +217,9 @@ it("does not roll back or remove config when its initial read cleanup fails", as
   state.rejectRestore = false;
   state.rejectRemove = false;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-initial-cleanup-");
+  const root = await createTestTempDirectory(
+    "binsight-config-initial-cleanup-",
+  );
   const path = join(root, "client.json");
   const original = '{"keep":true}\n';
   await import("node:fs/promises").then(({ writeFile }) =>
@@ -233,7 +237,7 @@ it("does not roll back or remove config when its initial read cleanup fails", as
     configureClientConfiguration(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["binsight", "mcp"],
     ),
   ).rejects.toBe(failure);
   expect(await readFile(path, "utf8")).toBe(original);
@@ -245,14 +249,16 @@ it("reports first-run rollback removal failure without a backup", async () => {
   state.rejectRemove = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-first-run-rollback-");
+  const root = await createTestTempDirectory(
+    "binsight-config-first-run-rollback-",
+  );
   const path = join(root, "client.json");
   state.rejectRemove = true;
 
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["binsight", "mcp"],
   );
   state.rejectRemove = false;
 
@@ -267,7 +273,7 @@ it("reports first-run rollback removal failure without a backup", async () => {
   });
   expect(result).not.toHaveProperty("backupPath");
   expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
-    mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+    mcpServers: { binsight: { command: "binsight", args: ["mcp"] } },
   });
 });
 
@@ -276,7 +282,9 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
   state.rejectRestore = false;
   state.rejectRemove = false;
   state.initialCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-readback-cleanup-");
+  const root = await createTestTempDirectory(
+    "binsight-config-readback-cleanup-",
+  );
   const path = join(root, "client.json");
   const original = '{"keep":true}\n';
   await import("node:fs/promises").then(({ writeFile }) =>
@@ -301,7 +309,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
     await host.configureClient(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["binsight", "mcp"],
     );
   } catch (cause: unknown) {
     caught = cause;
@@ -311,7 +319,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
 
   if (!(caught instanceof ConfigurationError)) throw caught;
   expect(caught.message).toContain("injected restore write failure");
-  expect(caught.message).toContain(`${path}.rea.backup`);
+  expect(caught.message).toContain(`${path}.binsight.backup`);
   const cleanupOwnerError = caught.cause;
   if (!(cleanupOwnerError instanceof RegularFileCleanupFailure))
     throw new Error("Configuration failure lost its read owner");
@@ -321,5 +329,5 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
     cleanupCause: expect.any(AggregateError),
   });
   expect(cleanupOwnerError.owner).toBe(owner);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${path}.binsight.backup`, "utf8")).toBe(original);
 });

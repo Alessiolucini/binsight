@@ -19,7 +19,9 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "returns a capture_path invalid_request for a named pipe without waiting or publishing output",
   async () => {
-    const root = await createTestTempDirectory("rea-script-selection-mcp-");
+    const root = await createTestTempDirectory(
+      "binsight-script-selection-mcp-",
+    );
     const capturePath = join(root, "capture.pipe");
     const outputDirectory = join(root, "export");
     await promisify(execFile)("mkfifo", [capturePath]);

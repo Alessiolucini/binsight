@@ -38,7 +38,7 @@ const pageSchema = z.object({
 /** A two-document app; each nib is a real rooted UIKit outlet archive. */
 const fixtureApp = async (): Promise<string> => {
   const app = join(
-    await createTestTempDirectory("rea-ib-summary-mcp-"),
+    await createTestTempDirectory("binsight-ib-summary-mcp-"),
     "Fixture.app",
   );
   const contents = join(app, "Contents");

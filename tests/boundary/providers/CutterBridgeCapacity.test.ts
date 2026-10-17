@@ -31,7 +31,7 @@ const descriptor = async (directory: string, port: number): Promise<string> => {
 };
 
 it("reports descriptor capacity without opening candidates or claiming no live sessions", async () => {
-  const directory = await createTestTempDirectory("rea-cutter-capacity-");
+  const directory = await createTestTempDirectory("binsight-cutter-capacity-");
   await chmod(directory, 0o700);
   const selectedSession = await descriptor(directory, 1);
   for (let index = 1; index < 257; index += 1) await descriptor(directory, 1);
@@ -63,7 +63,7 @@ it("reports descriptor capacity without opening candidates or claiming no live s
 });
 
 it("bounds simultaneous socket probes while examining every admitted descriptor", async () => {
-  const directory = await createTestTempDirectory("rea-cutter-probes-");
+  const directory = await createTestTempDirectory("binsight-cutter-probes-");
   await chmod(directory, 0o700);
   const sockets = new Set<Socket>();
   let peak = 0;
@@ -99,7 +99,7 @@ it("bounds simultaneous socket probes while examining every admitted descriptor"
 });
 
 it("rejects expanded authenticated frames before dispatch and retains no cleanup owner", async () => {
-  const directory = await createTestTempDirectory("rea-cutter-frame-");
+  const directory = await createTestTempDirectory("binsight-cutter-frame-");
   await chmod(directory, 0o700);
   const sessionId = await descriptor(directory, 1);
   const service = new CutterBridgeService(

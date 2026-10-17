@@ -10,7 +10,7 @@ it
   .each(["cafe\u0301.js", "chunk\\name.js"])(
   "refuses an unsupported Wakaru multi-input spelling %s before snapshotting",
   async (name) => {
-    const root = await createTestTempDirectory("rea-recovery-input-path-");
+    const root = await createTestTempDirectory("binsight-recovery-input-path-");
     const selected = join(root, name);
     const ordinary = join(root, "main.js");
     const staging = join(root, "snapshots");
@@ -38,7 +38,7 @@ it
 it.skipIf(process.platform === "win32")(
   "keeps ordinary slash layout and safely renames a single literal input",
   async () => {
-    const root = await createTestTempDirectory("rea-recovery-input-path-");
+    const root = await createTestTempDirectory("binsight-recovery-input-path-");
     const literal = join(root, "chunk\\name.js");
     const slash = join(root, "chunk", "name.js");
     const main = join(root, "main.js");

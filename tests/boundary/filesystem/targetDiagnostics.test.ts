@@ -15,7 +15,7 @@ describe("executable format refusal diagnostics", () => {
   ] as const)(
     "retains unsupported PE machine %i in the refusal",
     async (machine, expectedMachine) => {
-      const directory = await createTestTempDirectory("rea-target-pe-machine-");
+      const directory = await createTestTempDirectory("bs-target-pe-machine-");
       const path = join(directory, "unsupported.exe");
       const bytes = pe(0x014c);
       bytes.writeUInt16LE(machine, 0x44);
@@ -37,7 +37,7 @@ describe("executable format refusal diagnostics", () => {
     "reports unsupported %s executables without path advice",
     async (signature) => {
       const directory = await createTestTempDirectory(
-        `rea-target-${signature.toLowerCase()}-`,
+        `bs-target-${signature.toLowerCase()}-`,
       );
       const path = join(directory, "unsupported.exe");
       const bytes = Buffer.alloc(0x80 + 24);
@@ -81,7 +81,7 @@ describe("target route diagnostics", () => {
   it.each(["module.wasm", "module.bin", "misleading.js", "misleading.hop"])(
     "identifies a WASM v1 header in %s without suggesting native provider installation",
     async (name) => {
-      const directory = await createTestTempDirectory("rea-wasm-target-");
+      const directory = await createTestTempDirectory("bs-wasm-target-");
       const path = join(directory, name);
       const bytes = Buffer.from([0, 0x61, 0x73, 0x6d, 1, 0, 0, 0]);
       await writeFile(path, bytes);
@@ -118,7 +118,7 @@ describe("target route diagnostics", () => {
   ])(
     "does not infer supported WASM encoding from a suffix or incomplete header",
     async (...bytes) => {
-      const directory = await createTestTempDirectory("rea-wasm-unknown-");
+      const directory = await createTestTempDirectory("bs-wasm-unknown-");
       const path = join(directory, "module.wasm");
       await writeFile(path, Buffer.from(bytes));
       const result = await parseBinaryTarget(path);
@@ -136,7 +136,7 @@ describe("target route diagnostics", () => {
   );
 
   it("preserves an explicit raw-binary selection even when the bytes have a WASM header", async () => {
-    const directory = await createTestTempDirectory("rea-wasm-explicit-raw-");
+    const directory = await createTestTempDirectory("bs-wasm-explicit-raw-");
     const path = join(directory, "module.wasm");
     await writeFile(path, Buffer.from([0, 0x61, 0x73, 0x6d, 1, 0, 0, 0]));
     expect(
@@ -157,7 +157,7 @@ describe("target route diagnostics", () => {
     });
   });
   it("identifies the directory opening constraint and gives the direct analysis route", async () => {
-    const directory = await createTestTempDirectory("rea-js-target-");
+    const directory = await createTestTempDirectory("bs-js-target-");
     await writeFile(join(directory, "index.js"), "export const answer = 42;\n");
     const result = await parseBinaryTarget(directory);
     if (result.ok) throw new Error("directory was admitted as a file");
@@ -200,7 +200,7 @@ describe("target route diagnostics", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "preserves a real filesystem permission denial",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-denied-");
+      const directory = await createTestTempDirectory("bs-target-denied-");
       const path = join(directory, "index.js");
       await writeFile(path, "export const answer = 42;");
       await chmod(path, 0o000);
@@ -232,7 +232,7 @@ describe("raw-binary load rejection diagnostics", () => {
     options: Parameters<typeof parseBinaryTarget>[1],
     bytes = Buffer.alloc(64),
   ) => {
-    const directory = await createTestTempDirectory("rea-raw-load-");
+    const directory = await createTestTempDirectory("bs-raw-load-");
     const path = join(directory, "image.bin");
     await writeFile(path, bytes);
     const result = await parseBinaryTarget(path, options);
@@ -351,7 +351,7 @@ describe("caller-selected and inferred target interpretation", () => {
   it.each(["archive.hop", "archive.HOP"])(
     "preserves inferred database routing for ZIP content named %s",
     async (name) => {
-      const directory = await createTestTempDirectory("rea-zip-database-");
+      const directory = await createTestTempDirectory("bs-zip-database-");
       const bytes = Buffer.alloc(22);
       bytes.writeUInt32LE(0x06054b50, 0);
       const zipPath = join(directory, "archive.zip");
@@ -371,7 +371,7 @@ describe("caller-selected and inferred target interpretation", () => {
   );
 
   it("preserves explicit DOS COM interpretation for bytes with a WASM header", async () => {
-    const directory = await createTestTempDirectory("rea-wasm-explicit-com-");
+    const directory = await createTestTempDirectory("bs-wasm-explicit-com-");
     const path = join(directory, "module.hop");
     await writeFile(path, Buffer.from([0, 0x61, 0x73, 0x6d, 1, 0, 0, 0]));
     expect(
@@ -385,7 +385,7 @@ describe("caller-selected and inferred target interpretation", () => {
     "preserves explicitly selected database routing for %s",
     async (name) => {
       const directory = await createTestTempDirectory(
-        "rea-wasm-explicit-database-",
+        "bs-wasm-explicit-database-",
       );
       const path = join(directory, name);
       await writeFile(path, Buffer.from([0, 0x61, 0x73, 0x6d, 1, 0, 0, 0]));
@@ -401,7 +401,7 @@ describe("caller-selected and inferred target interpretation", () => {
   it.each(["ordinary.hop", "ordinary.HOP"])(
     "retains automatic database routing for non-WASM %s",
     async (name) => {
-      const directory = await createTestTempDirectory("rea-ordinary-database-");
+      const directory = await createTestTempDirectory("bs-ordinary-database-");
       const path = join(directory, name);
       await writeFile(path, "existing database content");
       expect(await parseBinaryTarget(path)).toMatchObject({

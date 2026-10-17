@@ -210,7 +210,7 @@ cliTest(
   "preserves workflow identity validation through CLI and inline, retained and mixed MCP inputs",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-application-input-identities-",
+      "binsight-application-input-identities-",
     );
     const left = join(root, "left"),
       right = join(root, "right");

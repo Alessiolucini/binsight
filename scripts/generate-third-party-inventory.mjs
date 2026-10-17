@@ -37,7 +37,7 @@ const runtimeFingerprint = createHash("sha256")
   .update(JSON.stringify(runtime))
   .digest("hex");
 const source = [
-  "REA npm dependency inventory",
+  "BinSight npm dependency inventory",
   "Prepared from the root package-lock.json; refresh this inventory when locked dependencies change.",
   "License identifiers are upstream lockfile declarations, not a legal assessment.",
   "Runtime includes transitive and optional platform packages; development includes build, test and website tooling.",

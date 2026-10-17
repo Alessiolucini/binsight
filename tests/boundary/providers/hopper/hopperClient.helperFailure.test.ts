@@ -81,7 +81,9 @@ const projectPrimaryStartupFailure = (error: AnalysisError) => {
 };
 
 it("does not equate an owned native helper exit with an external GUI exit", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-helper-failure-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-helper-failure-",
+  );
   const targetPath = join(directory, "target");
   await writeFile(targetPath, "fixture target");
   const launcher = new HopperApplicationLauncher({
@@ -94,7 +96,7 @@ it("does not equate an owned native helper exit with an external GUI exit", asyn
       'process.stderr.write("Hopper has not been found.\\n", () => process.exit(3))',
       "--",
     ],
-    bridgeScriptPath: "/rea/hopper_bridge.py",
+    bridgeScriptPath: "/binsight/hopper_bridge.py",
     launchMode: "native",
   });
   const client = trackFailedHelperClient(launcher);
@@ -123,7 +125,7 @@ it.skipIf(process.platform !== "darwin")(
   "releases the runtime and target lease after a provenance-verified Spotlight exit, then retries",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-hopper-native-not-found-",
+      "binsight-hopper-native-not-found-",
     );
     const targetPath = join(directory, "target");
     await writeFile(targetPath, "fixture target");
@@ -141,7 +143,7 @@ it.skipIf(process.platform !== "darwin")(
         targetPath,
         targetKind: "executable",
         loaderArgs,
-        bridgeScriptPath: "/rea/hopper_bridge.py",
+        bridgeScriptPath: "/binsight/hopper_bridge.py",
         launchMode: "native",
       },
       { verifyNativeHelper: async () => "verified" },

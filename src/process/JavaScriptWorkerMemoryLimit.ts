@@ -6,7 +6,7 @@ const MIB = 1024 * 1024;
  * Commit reserved for Bun itself above a worker's heap budget.
  *
  * Measured on Windows x64 (Bun 1.4.2, 32 logical processors) as the peak Job
- * Object commit of each REA worker on a trivial input: `bun -e 1` commits
+ * Object commit of each BinSight worker on a trivial input: `bun -e 1` commits
  * 52 MiB, while the source-map codec (278-368 MiB), HAR decoder (300-345 MiB)
  * and JavaScript analysis worker (321-346 MiB) commit up to 368 MiB before any
  * real workload because JavaScriptCore commits parsed and compiled module code

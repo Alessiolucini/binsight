@@ -16,7 +16,7 @@ export const pwntoolsInputBytesSchema = z
 
 const CONSTRAINT =
   `REA_PWNTOOLS_MAX_INPUT_BYTES must be a decimal integer from 1 to ` +
-  `${String(MAXIMUM_INPUT_BYTES)} bytes, and REA never installs Python or packages.`;
+  `${String(MAXIMUM_INPUT_BYTES)} bytes, and BinSight never installs Python or packages.`;
 
 /** Resolved input bound, or the reason the caller's override cannot be used. */
 export type PwntoolsInputBytes =

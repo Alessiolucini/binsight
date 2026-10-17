@@ -16,7 +16,7 @@ const scenarios = [
   "supplemental-binary-table",
 ] as const;
 const fixture = async (scenario: (typeof scenarios)[number]) => {
-  const root = await createTestTempDirectory("rea-integer-ambiguity-");
+  const root = await createTestTempDirectory("binsight-integer-ambiguity-");
   const fields =
     scenario === "integer-collision"
       ? { first: "__FIRST__", second: "__SECOND__" }

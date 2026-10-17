@@ -36,7 +36,7 @@ it.each([
 ])(
   "reports changed observed method %s despite identical CIL",
   async (_name, flagOffset, flags) => {
-    const directory = await createTestTempDirectory("rea-managed-flags-");
+    const directory = await createTestTempDirectory("binsight-managed-flags-");
     const leftPath = join(directory, "left.dll");
     const rightPath = join(directory, "right.dll");
     const left = buildManagedPeFixture();
@@ -524,7 +524,9 @@ describe("managed member comparison path workflow", () => {
   });
 
   it("compares two local paths and returns derived Evidence", async () => {
-    const directory = await createTestTempDirectory("rea-managed-compare-");
+    const directory = await createTestTempDirectory(
+      "binsight-managed-compare-",
+    );
     const leftPath = join(directory, "left.dll");
     const rightPath = join(directory, "right.dll");
     await writeFile(leftPath, buildManagedPeFixture());
@@ -559,7 +561,9 @@ describe("managed member comparison path workflow", () => {
   });
 
   it("reports an unopenable path with the path that failed", async () => {
-    const directory = await createTestTempDirectory("rea-managed-missing-");
+    const directory = await createTestTempDirectory(
+      "binsight-managed-missing-",
+    );
     const leftPath = join(directory, "missing.dll");
     const rightPath = join(directory, "right.dll");
     await writeFile(rightPath, buildManagedPeFixture());
@@ -585,7 +589,7 @@ describe("managed comparison post-admission read failures", () => {
     "classifies a %s-side %s during the post-resolution read",
     async (side, _name, code) => {
       const directory = await createTestTempDirectory(
-        "rea-managed-read-failure-",
+        "binsight-managed-read-failure-",
       );
       const leftPath = join(directory, "left.dll");
       const rightPath = join(directory, "right.dll");
@@ -634,7 +638,7 @@ describe("managed comparison post-admission read failures", () => {
 describe("managed comparison snapshot admission and cleanup", () => {
   it("rejects a sparse oversized snapshot through the default reader before reading it", async () => {
     const directory = await createTestTempDirectory(
-      "rea-managed-oversized-snapshot-",
+      "binsight-managed-oversized-snapshot-",
     );
     const leftPath = join(directory, "oversized.dll");
     const rightPath = join(directory, "right.dll");
@@ -672,7 +676,7 @@ describe("managed comparison snapshot admission and cleanup", () => {
 
   it("retries a transient snapshot close failure through the same resource owner", async () => {
     const directory = await createTestTempDirectory(
-      "rea-managed-compare-close-",
+      "binsight-managed-compare-close-",
     );
     const leftPath = join(directory, "left.dll");
     const rightPath = join(directory, "right.dll");
@@ -708,7 +712,7 @@ describe("managed comparison snapshot admission and cleanup", () => {
 
   it("projects persistent snapshot cleanup failure and retains its exact owner", async () => {
     const directory = await createTestTempDirectory(
-      "rea-managed-compare-cleanup-",
+      "binsight-managed-compare-cleanup-",
     );
     const leftPath = join(directory, "left.dll");
     const rightPath = join(directory, "right.dll");
@@ -748,7 +752,7 @@ describe("managed comparison snapshot admission and cleanup", () => {
 describe("managed comparison target identity", () => {
   it("rejects a file that changes after target identity is resolved", async () => {
     const directory = await createTestTempDirectory(
-      "rea-managed-compare-race-",
+      "binsight-managed-compare-race-",
     );
     const leftPath = join(directory, "left.dll");
     const rightPath = join(directory, "right.dll");

@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 
-/** Owned synthetic site keeps source bytes, repeated URLs and expected execution independent of REA. */
+/** Owned synthetic site keeps source bytes, repeated URLs and expected execution independent of BinSight. */
 export async function startBrowserRuntimeSite() {
   let origin;
   let evidenceRequests = 0;

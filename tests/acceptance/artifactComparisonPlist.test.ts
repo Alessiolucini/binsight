@@ -16,7 +16,9 @@ const plist =
   '<?xml version="1.0"?><plist version="1.0"><dict><key>label</key><string>hello</string></dict></plist>';
 
 it("compares identical complete plist inventories across CLI and MCP and creates no unknowns", async () => {
-  const root = await createTestTempDirectory("rea-plist-compare-acceptance-");
+  const root = await createTestTempDirectory(
+    "binsight-plist-compare-acceptance-",
+  );
   const leftPath = join(root, "left.plist");
   const rightPath = join(root, "right.plist");
   await Promise.all([writeFile(leftPath, plist), writeFile(rightPath, plist)]);

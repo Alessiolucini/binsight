@@ -3,7 +3,7 @@ import type {
   CapabilityDescriptor,
 } from "../application/AnalysisProvider.js";
 
-/** This version identifies REA's adapter, not IDA or the upstream MCP server. */
+/** This version identifies BinSight's adapter, not IDA or the upstream MCP server. */
 export const IDA_PROVIDER_IDENTITY = Object.freeze({
   id: "ida",
   name: "IDA MCP adapter",
@@ -42,11 +42,11 @@ export const idaProfileAdmits = (
 
 /** Shared limitations of observations from an externally mutable analysis database. */
 export const IDA_LIMITATIONS = Object.freeze([
-  "Provider version identifies the REA IDA adapter. IDA engine and upstream distribution versions are unknown unless separately observed; MCP serverInfo is reported independently.",
+  "Provider version identifies the BinSight IDA adapter. IDA engine and upstream distribution versions are unknown unless separately observed; MCP serverInfo is reported independently.",
   "Results describe the current IDA analysis database. Input identity does not prove an unmodified database; patches, annotations, analysis completeness, and database revision remain unknown.",
   "Live results are never replayed from analysis snapshots. Target checks before and after a request do not provide an atomic lock against external GUI changes.",
   "Caller cancellation drains the in-flight MCP request before cleanup; it does not prove that IDA engine work was interrupted.",
-  "Headless workers are released through the upstream database lifecycle. Abrupt termination of REA, its proxy, or the supervisor cannot prove worker cleanup; inspect upstream inventory after an interrupted process.",
+  "Headless workers are released through the upstream database lifecycle. Abrupt termination of BinSight, its proxy, or the supervisor cannot prove worker cleanup; inspect upstream inventory after an interrupted process.",
   "Complete function body ranges, typed references, unresolved indirect calls, referenced data, and basic blocks are unavailable in this adapter. Empty unsupported dossier facets are unknown, not observed absence.",
 ]);
 

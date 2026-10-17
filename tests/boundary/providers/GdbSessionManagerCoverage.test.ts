@@ -926,7 +926,7 @@ it("does not infer detached state when the inferior verifier observes an exited 
 });
 
 it("retains the GDB session while an unknown descendant holds output after leader exit", async () => {
-  directory ??= await mkdtemp(join(tmpdir(), "rea-gdb-coverage-"));
+  directory ??= await mkdtemp(join(tmpdir(), "binsight-gdb-coverage-"));
   const tty = join(directory, "inferior-output");
   await writeFile(tty, "");
   const fake = createFakeSpawner((_child, token, command) => {
@@ -1164,7 +1164,7 @@ const startWithVerifiedInferiorTty = async (
 };
 
 const createProvider = async (body: string): Promise<string> => {
-  directory ??= await mkdtemp(join(tmpdir(), "rea-gdb-coverage-"));
+  directory ??= await mkdtemp(join(tmpdir(), "binsight-gdb-coverage-"));
   const provider = join(directory, `fake-gdb-${managers.length}.mjs`);
   await writeFile(provider, `#!${process.execPath}\n${body}`);
   await chmod(provider, 0o700);
@@ -2916,7 +2916,7 @@ it("preserves the protocol failure when an incomplete stop adds uncertainty", as
       resources: [started.value.session_id],
     });
     expect(failed.error.partialObservation).toMatchObject({
-      predicate_type: "rea.debugger.console-observation",
+      predicate_type: "binsight.debugger.console-observation",
       raw_result: {
         records: ['~"protocol output before failure"'],
         completion_status: "unknown",

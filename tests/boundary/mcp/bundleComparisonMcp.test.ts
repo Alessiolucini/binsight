@@ -41,7 +41,7 @@ const sourceEvidence = (label: string) =>
 
 describe("bundle comparison MCP semantic status", () => {
   it("keeps display-only metadata out of deltas and preserves semantic changes", async () => {
-    const root = await createTestTempDirectory("rea-bundle-metadata-mcp-");
+    const root = await createTestTempDirectory("binsight-bundle-metadata-mcp-");
     roots.push(root);
     const leftPath = join(root, "left.json");
     const displayPath = join(root, "display.json");
@@ -142,7 +142,7 @@ describe("bundle comparison MCP semantic status", () => {
 
 describe("bundle comparison MCP integration", () => {
   it("reads caller-selected bundle files and returns complete Evidence", async () => {
-    const root = await createTestTempDirectory("rea-bundle-mcp-");
+    const root = await createTestTempDirectory("binsight-bundle-mcp-");
     roots.push(root);
     const leftPath = join(root, "left.json");
     const rightPath = join(root, "right.json");
@@ -184,8 +184,8 @@ describe("bundle comparison MCP integration", () => {
   });
 
   it("reads a bundle path outside any configured roots", async () => {
-    const root = await createTestTempDirectory("rea-bundle-root-");
-    const outside = await createTestTempDirectory("rea-bundle-outside-");
+    const root = await createTestTempDirectory("binsight-bundle-root-");
+    const outside = await createTestTempDirectory("binsight-bundle-outside-");
     roots.push(root, outside);
     const leftPath = join(root, "left.json");
     const rightPath = join(outside, "right.json");
@@ -213,7 +213,7 @@ describe("bundle comparison MCP integration", () => {
   });
 
   it("explains that a single Evidence record is not a bundle", async () => {
-    const root = await createTestTempDirectory("rea-bundle-record-");
+    const root = await createTestTempDirectory("binsight-bundle-record-");
     roots.push(root);
     const record = sourceEvidence("single");
     const recordPath = join(root, "record.json");

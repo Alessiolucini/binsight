@@ -32,7 +32,7 @@ const runCli = async (...arguments_) => {
   return JSON.parse(stdout);
 };
 
-const projectRoot = await mkdtemp(join(tmpdir(), "rea-cutter-smoke-"));
+const projectRoot = await mkdtemp(join(tmpdir(), "binsight-cutter-smoke-"));
 const projectPath = join(projectRoot, "smoke.rzdb");
 const rizinQuote = (value) =>
   `"${value.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
@@ -59,7 +59,7 @@ try {
   assert.equal(
     discovery.discovery_status,
     "sessions_found",
-    "Open upstream Cutter with the REA plugin before running this smoke test.",
+    "Open upstream Cutter with the BinSight plugin before running this smoke test.",
   );
   assert.ok(discovery.sessions.length > 0);
   const session = discovery.sessions[0];
@@ -89,7 +89,10 @@ try {
     "ij",
     "--json",
   );
-  assert.equal(inspection.predicate_type, "rea.cutter.command-observation");
+  assert.equal(
+    inspection.predicate_type,
+    "binsight.cutter.command-observation",
+  );
   assert.ok(
     Object.hasOwn(inspection, "raw_result"),
     "Cutter ij result was not retained as Evidence.",
@@ -103,7 +106,7 @@ try {
     },
   );
   const mcpClient = new Client({
-    name: "rea-cutter-upstream-smoke",
+    name: "binsight-cutter-upstream-smoke",
     version: "1",
   });
   const [clientTransport, serverTransport] =
@@ -140,7 +143,7 @@ try {
     await mcpServer.close();
   }
 
-  const annotation = `rea-smoke-${randomUUID()}`;
+  const annotation = `binsight-smoke-${randomUUID()}`;
   await runCli(
     "cutter-command",
     session.session_id,
@@ -182,7 +185,7 @@ try {
     String(session.document_generation),
     "CC. @ entry0",
   );
-  assert.equal(recovered.predicate_type, "rea.cutter.command-observation");
+  assert.equal(recovered.predicate_type, "binsight.cutter.command-observation");
   assert.ok(
     String(recovered.raw_result).includes(annotation),
     "The saved project did not preserve the analysis comment after reopening.",

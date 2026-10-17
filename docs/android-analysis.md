@@ -1,6 +1,6 @@
 # Static Android APK analysis
 
-REA wraps an existing headless JADX engine through `src/android/`. Its source is
+BinSight wraps an existing headless JADX engine through `src/android/`. Its source is
 kept as an unmodified, commit-pinned Git submodule; see
 [upstream provenance](https://github.com/morluto/rea/blob/main/third_party/README.md). CLI and MCP use the same
 application workflow and return artifact-bound Evidence inline.
@@ -9,8 +9,8 @@ This family is present on repository main and in npm 4.1.0. Check the
 [released package boundary](installation.md#released-package-and-main) and the
 connected server's tool list before selecting it.
 
-On Linux, JADX launches an REA-owned process and requires a procps-compatible
-`ps` on REA's `PATH`; see the shared
+On Linux, JADX launches an BinSight-owned process and requires a procps-compatible
+`ps` on BinSight's `PATH`; see the shared
 [Linux process prerequisite](installation.md#linux-owned-process-prerequisite).
 
 ## Optional package delivery
@@ -61,15 +61,15 @@ export REA_JADX_MCP_JAR="$PWD/jadx-headless-mcp-0.7.1-all.jar"
 On Windows, run the equivalent in PowerShell:
 
 ```powershell
-$jar = Join-Path $HOME '.local\share\rea\android\jadx-headless-mcp-0.7.1-all.jar'
+$jar = Join-Path $HOME '.local\share\binsight\android\jadx-headless-mcp-0.7.1-all.jar'
 New-Item -ItemType Directory -Force (Split-Path $jar) | Out-Null
 Invoke-WebRequest -Uri 'https://github.com/1013503897/jadx-headless-mcp/releases/download/v0.7.1/jadx-headless-mcp-0.7.1-all.jar' -OutFile $jar
-if ((Get-FileHash -Algorithm SHA256 $jar).Hash.ToLowerInvariant() -ne '6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75') { throw 'JADX JAR SHA-256 does not match REA pinned metadata' }
+if ((Get-FileHash -Algorithm SHA256 $jar).Hash.ToLowerInvariant() -ne '6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75') { throw 'JADX JAR SHA-256 does not match BinSight pinned metadata' }
 $env:REA_JADX_MCP_JAR = $jar
 ```
 
-REA runs its packaged Java metadata bridge in source-file mode against the
-unmodified engine JAR. REA does not install Java, an Android SDK, JADX, a device
+BinSight runs its packaged Java metadata bridge in source-file mode against the
+unmodified engine JAR. BinSight does not install Java, an Android SDK, JADX, a device
 service or an emulator. Set the path in the shell or MCP server environment:
 
 ```sh
@@ -78,7 +78,7 @@ export REA_JADX_MCP_JAR=/absolute/path/jadx-headless-mcp-0.7.1-all.jar
 export JAVA_HOME=/absolute/path/existing-jdk
 ```
 
-On Windows x64, use a REA package with its matching bundled Windows native
+On Windows x64, use a BinSight package with its matching bundled Windows native
 controls **including owned protocol stdin support**. This Windows boundary is
 new on repository main; an older released package can still reject this host.
 PowerShell accepts paths containing spaces without additional escaping
@@ -87,16 +87,16 @@ inside these environment values:
 ```powershell
 $env:REA_JADX_MCP_JAR = 'D:\tools\jadx-headless-mcp-0.7.1-all.jar'
 $env:JAVA_HOME = 'D:\tools\jdk-21'
-rea inspect-android-package 'D:\targets\Example.apk'
+binsight inspect-android-package 'D:\targets\Example.apk'
 ```
 
-REA selects `JAVA_HOME\bin\java.exe`, or resolves `java.exe` on the selected
+BinSight selects `JAVA_HOME\bin\java.exe`, or resolves `java.exe` on the selected
 Windows `PATH`. A missing or mismatched native artifact reports the package
 prerequisite rather than attempting an unowned Java launch. Windows arm64 is
 outside this provider's current native boundary.
 
 Readiness checks the selected JAR's ZIP directory for the classes consumed by
-REA's metadata bridge, as well as Java's compiler and version modules. It does
+BinSight's metadata bridge, as well as Java's compiler and version modules. It does
 not load an APK or execute engine code. Invalid archives and missing bridge
 classes report JAR-specific recovery; classpath inventory alone does not prove
 that every class or engine operation will load successfully. Discovery limits
@@ -113,14 +113,14 @@ the pinned JADX 0.7.1 JAR; see the real verification lane below.
 ## Answer an analyst question
 
 ```sh
-rea inspect-android-package /path/Example.apk
-rea search-android-classes /path/Example.apk MainActivity
-rea inspect-android-class /path/Example.apk example.MainActivity
-rea inspect-android-method /path/Example.apk example.MainActivity onCreate
-rea inspect-android-method /path/Example.apk example.MainActivity select --overload-index 1
-rea trace-android-references /path/Example.apk example.MainActivity
-rea trace-android-references /path/Example.apk example.MainActivity --method-name onCreate
-rea trace-android-references /path/Example.apk example.MainActivity --method-name select --overload-index 1
+binsight inspect-android-package /path/Example.apk
+binsight search-android-classes /path/Example.apk MainActivity
+binsight inspect-android-class /path/Example.apk example.MainActivity
+binsight inspect-android-method /path/Example.apk example.MainActivity onCreate
+binsight inspect-android-method /path/Example.apk example.MainActivity select --overload-index 1
+binsight trace-android-references /path/Example.apk example.MainActivity
+binsight trace-android-references /path/Example.apk example.MainActivity --method-name onCreate
+binsight trace-android-references /path/Example.apk example.MainActivity --method-name select --overload-index 1
 ```
 
 Equivalent MCP methods are `inspect_android_package`, `search_android_classes`,
@@ -140,13 +140,13 @@ Every request includes `path`. Class/method operations use `class_name`,
 }
 ```
 
-Use `inspect_android_class` to choose an overload. REA rejects an ambiguous
+Use `inspect_android_class` to choose an overload. BinSight rejects an ambiguous
 method request rather than silently selecting the first match. Method reference
 queries accept the same `overload_index`; the bridge resolves the selected
 method node and the result reports its index and displayed signature. These
 indices are tied to the current artifact and engine, not stable across builds.
 
-The engine's smali fallback also joins same-name overloads; REA rejects that
+The engine's smali fallback also joins same-name overloads; BinSight rejects that
 fallback for an overloaded method instead of attributing all bodies to one
 selected overload. Native/abstract methods with no decompiled body report
 `body_status: "not_available"` without inferring which implementation flag caused it.
@@ -220,7 +220,7 @@ only when that destination directory cannot keep both names. Project that
 Evidence with the execution-free inventory tool:
 
 ```sh
-rea project-android-application-graph '{"inventory_evidence":[<inventory_artifact Evidence>]}'
+binsight project-android-application-graph '{"inventory_evidence":[<inventory_artifact Evidence>]}'
 ```
 
 ```json
@@ -250,35 +250,35 @@ managed declaration names, loads, or calls the native library.
 
 ## Resource and lifecycle limits
 
-REA retains one serialized session with private, immutable APK, engine JAR and
+BinSight retains one serialized session with private, immutable APK, engine JAR and
 metadata-bridge copies. Matching requests reuse the loaded engine. APK/engine
 digests and JVM configuration are checked before reuse; changed inputs retire
 the previous session. Sessions are cleaned after 60 seconds of inactivity, on
 target/configuration changes, failure, timeout, cancellation, MCP disconnect or
 server shutdown. One-shot CLI commands always join cleanup before returning.
-REA never writes to the original APK or launches target code.
+BinSight never writes to the original APK or launches target code.
 
 On Windows, stdin writes preserve stream backpressure and run outside the Node
 event loop. Cancellation terminates the retained job, including descendants,
-before workspace cleanup. On Windows, a detached REA helper owns the private
+before workspace cleanup. On Windows, a detached BinSight helper owns the private
 workspace's native directory handle. An abrupt CLI/server owner termination
 closes the Java job and the helper's input pipe; the helper then removes the
 workspace by handle. The real Windows lane checks both effects. If the helper
 also dies or the host loses power before it finishes, private files can remain.
 
-If Java cannot start the bridge, REA reports the selected executable and retained
+If Java cannot start the bridge, BinSight reports the selected executable and retained
 startup diagnostics. Select a full JDK through `JAVA_HOME` or `PATH`, and use
 `java --list-modules` to confirm `jdk.compiler` is present. A runnable JRE alone
 cannot compile the bridge. Missing or ambiguous class and method selections are
 input failures; discover names with `search_android_classes` and
 `inspect_android_class` before correcting the selected argument.
 
-If process cleanup cannot be confirmed, REA retains the workspace and reports its
+If process cleanup cannot be confirmed, BinSight retains the workspace and reports its
 location. That provider instance blocks subsequent engine launches until the
 caller resolves the reported resources and starts a fresh instance.
 
 The provider uses one JADX analysis worker independently of JVM processor and
-garbage-collector settings. REA supplies no default heap or visible-CPU override;
+garbage-collector settings. BinSight supplies no default heap or visible-CPU override;
 Java uses its normal ergonomics and inherits caller JVM settings. Optional
 provider settings add explicit JVM arguments:
 
@@ -290,8 +290,8 @@ export REA_JADX_ACTIVE_PROCESSOR_COUNT=4
 export JAVA_TOOL_OPTIONS=-Xmx8g
 ```
 
-Both REA settings must be positive safe integers; processor counts must also fit
-the JVM's signed 32-bit range. REA preserves
+Both BinSight settings must be positive safe integers; processor counts must also fit
+the JVM's signed 32-bit range. BinSight preserves
 `JAVA_TOOL_OPTIONS`, `JDK_JAVA_OPTIONS` and `_JAVA_OPTIONS` rather than replacing
 them. Java's standard precedence applies: explicit command-line heap settings
 override `JAVA_TOOL_OPTIONS`, while `_JAVA_OPTIONS` can override command-line
@@ -299,7 +299,7 @@ settings. Evidence reports the worker's observed `Runtime.maxMemory()` rounded
 down to MiB and retains exact bytes, Java version and visible processors in its
 raw runtime response. The observed allocatable heap can differ from configured
 `-Xmx`, especially with Serial GC. Heap is not a total RSS cap: the JVM also
-uses native memory. Independent REA instances have independent queues. Whole
+uses native memory. Independent BinSight instances have independent queues. Whole
 operations have a **120-second** execution deadline by default, starting after
 they reach the queue's front. For a known slow cold load, such as a large
 multidex APK, select another finite deadline:
@@ -311,7 +311,7 @@ export REA_JADX_OPERATION_TIMEOUT_MS=600000
 The value must be a decimal millisecond count from 1 to 2147483647; anything
 else is refused before Java starts. The same deadline bounds each upstream
 call, a timeout reports the selected value, and a passing JADX configuration
-check in `rea doctor` reports the effective `operation_timeout_ms`. Explicit
+check in `binsight doctor` reports the effective `operation_timeout_ms`. Explicit
 cancellation still ends the operation immediately, and partial observations
 and owned-process cleanup are unchanged. Raising the deadline does not extend
 the bridge's 30-second startup handshake or the upstream **90-second**
@@ -353,7 +353,7 @@ result or power-loss recovery.
 The download script verifies fixed SHA-256 values, reuses matching files and
 refuses to overwrite a different existing file. APK/JAR files live under ignored
 `_reference/` and are excluded from package contents. The lane exercises actual
-REA CLI and MCP results with the real engine, separately from synthetic protocol
+BinSight CLI and MCP results with the real engine, separately from synthetic protocol
 regressions. It needs no Gradle build, emulator, Android SDK or Ghidra.
 
 Direct invoke sites retain exact DEX code-unit offsets separately from each

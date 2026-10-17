@@ -43,7 +43,7 @@ export const verifyJavaScriptReturnShapes = async (
   check: (fields: JavaScriptReturnFields) => void,
   fileName = "app.js",
 ): Promise<void> => {
-  const root = await createTestTempDirectory("rea-return-shapes-");
+  const root = await createTestTempDirectory("binsight-return-shapes-");
   await writeFile(join(root, fileName), source);
   const cliResponse = await cli.run({
     arguments: [

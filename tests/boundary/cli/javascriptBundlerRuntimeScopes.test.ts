@@ -29,7 +29,9 @@ const appB = runtimeSource("webpackChunkAppB", "b");
 cliTest(
   "keeps source-derived runtime, module and chunk tuples collision-free",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-bundler-runtime-tuple-");
+    const root = await createTestTempDirectory(
+      "binsight-bundler-runtime-tuple-",
+    );
     const registrations = [
       {
         runtime: "webpackChunkA",
@@ -127,7 +129,9 @@ for (const scenario of [
   cliTest(
     `keeps bundled relationships within their runtime for ${scenario.name}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-bundler-runtime-scope-");
+      const root = await createTestTempDirectory(
+        "binsight-bundler-runtime-scope-",
+      );
       await writeFixtureFiles(root, { "bundle.js": scenario.source });
       const output = await cli.run({
         arguments: ["analyze-javascript-application", root, "--json"],
@@ -206,7 +210,9 @@ for (const scenario of [
 cliTest(
   "shares module IDs across chunks only within the same runtime",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-bundler-shared-runtime-");
+    const root = await createTestTempDirectory(
+      "binsight-bundler-shared-runtime-",
+    );
     await writeFixtureFiles(root, {
       "bundle.js": `
     globalThis.webpackChunkApp.push([["main"], {1: (module, exports, req) => { req(2); }} , (req) => req(1)]);

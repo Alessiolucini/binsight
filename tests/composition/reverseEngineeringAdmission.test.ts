@@ -7,7 +7,7 @@ import { expect, it } from "vitest";
 import { TestReverseEngineeringService } from "../support/reverseEngineeringService.js";
 
 it("bounds concurrent reverse-engineering provider calls", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-capacity-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-reverse-capacity-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   let release!: () => void;

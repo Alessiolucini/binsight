@@ -198,7 +198,7 @@ const registerElectronTargetList = (
                 await context.provider.close?.();
               },
             },
-            "rea-cdp-electron",
+            "binsight-cdp-electron",
             "list_electron_targets",
             undefined,
             signal,
@@ -240,7 +240,7 @@ const registerElectronPageInspection = (
                 await context.provider.close?.();
               },
             },
-            "rea-cdp-electron",
+            "binsight-cdp-electron",
             "inspect_electron_page",
             undefined,
             signal,

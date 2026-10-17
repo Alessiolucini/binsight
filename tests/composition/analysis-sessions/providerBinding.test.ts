@@ -385,7 +385,7 @@ const capability = (
 });
 
 const databaseTarget = async (): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-provider-binding-");
+  const directory = await createTestTempDirectory("binsight-provider-binding-");
   const path = join(directory, "fixture.hop");
   await writeFile(path, "fixture");
   return path;

@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "decodes a rooted UIKit keyed-archive outlet through CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-cli-uikit-outlet-");
+    const root = await createTestTempDirectory("binsight-cli-uikit-outlet-");
     const app = join(root, "UIKitFixture.app");
     const contents = join(app, "Contents");
     const resources = join(contents, "Resources");

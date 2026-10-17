@@ -9,7 +9,7 @@ const inventoriesOf = async (kuna: string) =>
   (await fakeKunaCalls(kuna)).filter(({ argv }) => argv[0] === "functions");
 
 it("resolves a cold request from the export's inventory without a second run", async () => {
-  const { kuna, open } = await session("rea-kuna-export-inventory-", {
+  const { kuna, open } = await session("binsight-kuna-export-inventory-", {
     project: "hang",
     inventoryDelayMs: 200,
   });
@@ -32,7 +32,7 @@ it("resolves a cold request from the export's inventory without a second run", a
 });
 
 it("gives a session that joins a running export the inventory it already listed", async () => {
-  const { kuna, open } = await session("rea-kuna-joined-inventory-", {
+  const { kuna, open } = await session("binsight-kuna-joined-inventory-", {
     project: "hang",
   });
   const first = open();
@@ -52,7 +52,7 @@ it("gives a session that joins a running export the inventory it already listed"
 });
 
 it("runs its own inventory when the export ends before listing", async () => {
-  const { kuna, open } = await session("rea-kuna-inventory-fallback-", {
+  const { kuna, open } = await session("binsight-kuna-inventory-fallback-", {
     inventory: "not-json",
   });
   const client = open();
@@ -75,7 +75,7 @@ it("runs its own inventory when the export ends before listing", async () => {
 });
 
 it("lets a listing that arrives while the export starts wait for its inventory", async () => {
-  const { kuna, open } = await session("rea-kuna-starting-inventory-", {
+  const { kuna, open } = await session("binsight-kuna-starting-inventory-", {
     project: "hang",
   });
   const client = open();

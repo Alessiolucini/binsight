@@ -8,8 +8,8 @@ import type { ProviderIdentity } from "../AnalysisProvider.js";
 
 /** Provider identity for analyst-authored residual-unknown mutations. */
 const UNKNOWN_REGISTRY_PROVIDER: ProviderIdentity = {
-  id: "rea-unknown-registry",
-  name: "REA residual unknown registry",
+  id: "binsight-unknown-registry",
+  name: "BinSight residual unknown registry",
   version: "1",
 };
 
@@ -26,7 +26,7 @@ export const unknownMutationEvidence = (
   mutation: UnknownMutation,
 ): Evidence =>
   createEvidence(target, UNKNOWN_REGISTRY_PROVIDER, {
-    predicateType: "rea.residual-unknown-mutation",
+    predicateType: "binsight.residual-unknown-mutation",
     operation: mutation.operation,
     parameters: { ...mutation.input },
     result:

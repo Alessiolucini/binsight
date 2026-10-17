@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { connectLocalToolsMcp } from "../../fixtures/localToolsMcp.js";
 
 const analyzeThroughCliAndMcp = async (source: string) => {
-  const root = await createTestTempDirectory("rea-child-ownership-");
+  const root = await createTestTempDirectory("binsight-child-ownership-");
   const app = join(root, "app");
   const home = join(root, "home");
   await mkdir(app);

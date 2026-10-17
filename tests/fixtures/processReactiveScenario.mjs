@@ -6,7 +6,10 @@ import { WebSocket } from "ws";
 process.stdout.write("Ready\n");
 const worker = spawn(
   process.execPath,
-  ["-e", 'process.title = "rea-reactive-worker"; setTimeout(() => {}, 750);'],
+  [
+    "-e",
+    'process.title = "binsight-reactive-worker"; setTimeout(() => {}, 750);',
+  ],
   { stdio: "ignore" },
 );
 // "Collecting" must reach the capture coordinator as an observation *after*

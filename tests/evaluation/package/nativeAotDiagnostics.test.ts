@@ -25,7 +25,7 @@ it.skipIf(!supportedHost).each(["restore", "publish"])(
   "redacts authenticated feed URLs from the uncaught %s diagnostic",
   async (operation) => {
     const directory = await createTestTempDirectory(
-      "rea-nativeaot-diagnostic-",
+      "binsight-nativeaot-diagnostic-",
     );
     const hook = join(directory, "child-output.cjs");
     await writeFile(
@@ -88,7 +88,7 @@ require("node:module").syncBuiltinESMExports();
 it.skipIf(supportedHost)(
   "refuses unsupported fixture hosts before tooling or output creation",
   async () => {
-    const directory = await createTestTempDirectory("rea-nativeaot-host-");
+    const directory = await createTestTempDirectory("binsight-nativeaot-host-");
     const hook = join(directory, "unexpected-child.cjs");
     await writeFile(
       hook,

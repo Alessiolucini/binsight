@@ -24,7 +24,7 @@ import {
   withArtifactRegularFile,
 } from "../artifacts/ArtifactFileOperation.js";
 
-/** Installed processor code and data, distinct from REA's analysis-extension ABI. */
+/** Installed processor code and data, distinct from BinSight's analysis-extension ABI. */
 export const ghidraPspExtensionSchema = z.strictObject({
   id: z.literal("ghidra-allegrex"),
   root: z.string().refine(isAbsolute),
@@ -237,7 +237,7 @@ const ghidraPspInspectionError = (cause: unknown): AnalysisError => {
   const cleanup =
     cause instanceof ArtifactReaderFailure ? cause.cleanup : undefined;
   const primary = artifactFilePrimaryFailure(cause);
-  const reason = `PSP_EXTENSION_UNAVAILABLE: ${primary instanceof Error ? primary.message : String(primary)} Use a compatible caller-installed ghidra-allegrex under GHIDRA_INSTALL_DIR/Ghidra/Extensions; REA does not install it.`;
+  const reason = `PSP_EXTENSION_UNAVAILABLE: ${primary instanceof Error ? primary.message : String(primary)} Use a compatible caller-installed ghidra-allegrex under GHIDRA_INSTALL_DIR/Ghidra/Extensions; BinSight does not install it.`;
   const error =
     cause instanceof ArtifactReaderFailure && cause.reason === "cancelled"
       ? new AnalysisCancelledError("resolve_analysis_profile", {

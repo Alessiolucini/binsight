@@ -48,7 +48,7 @@ const instructionReferenceCoverage =
   "exact-address-incoming-without-synthetic-entry-v2";
 
 /**
- * The processor language REA pins for this target, or undefined when Ghidra may
+ * The processor language BinSight pins for this target, or undefined when Ghidra may
  * select from the header. The committed profile and the session readback both
  * compare against this single owner rather than re-deriving a lane.
  */

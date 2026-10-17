@@ -23,7 +23,7 @@ const writeRizin = async (directory: string, output: string): Promise<void> => {
 };
 
 it("uses the server-selected environment unless a provider environment overrides it", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-env-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-reverse-env-"));
   const selectedPath = join(directory, "selected");
   const overridePath = join(directory, "override");
   const artifactPath = join(directory, "sample.bin");

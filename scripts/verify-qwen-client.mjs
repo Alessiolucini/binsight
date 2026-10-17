@@ -20,7 +20,7 @@ import {
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const lab = await mkdtemp(join(tmpdir(), "rea-qwen-client-"));
+const lab = await mkdtemp(join(tmpdir(), "binsight-qwen-client-"));
 const client = "qwen";
 const mode = process.argv[2] ?? "call";
 assert(
@@ -78,7 +78,7 @@ const original = JSON.stringify(
       folderTrust: { enabled: false },
     },
     telemetry: { enabled: false },
-    model: { name: "rea-client-fixture" },
+    model: { name: "binsight-client-fixture" },
     mcpServers: { other: { command: "unrelated-server", disabled: true } },
   },
   null,
@@ -110,13 +110,13 @@ for (const step of [
   );
 }
 assert.equal(
-  await readFile(join(profile, "settings.json.rea.backup"), "utf8"),
+  await readFile(join(profile, "settings.json.binsight.backup"), "utf8"),
   original,
 );
 const configured = JSON.parse(
   await readFile(join(profile, "settings.json"), "utf8"),
 );
-assert.deepEqual(configured.model, { name: "rea-client-fixture" });
+assert.deepEqual(configured.model, { name: "binsight-client-fixture" });
 assert.equal(configured.skills, undefined);
 assert.deepEqual(configured.mcpServers.other, {
   command: "unrelated-server",
@@ -289,7 +289,7 @@ const fixture = await createOpenAiModelFixture({
       message = call(shell.name, {
         command: `node -e "eval(Buffer.from('${encodedScript}','base64').toString('utf8'))"`,
         description:
-          "Read the complete saved REA Evidence and verify the fixture facts.",
+          "Read the complete saved BinSight Evidence and verify the fixture facts.",
       });
     } else if (selected)
       message = call(selected.name, {
@@ -306,7 +306,7 @@ const fixture = await createOpenAiModelFixture({
       message = call(search.name, { query: "analyze_javascript_application" });
     } else
       throw new Error(
-        `REA analysis tool not exposed; tools: ${tools.map((t) => t.name).join(", ")}`,
+        `BinSight analysis tool not exposed; tools: ${tools.map((t) => t.name).join(", ")}`,
       );
     return message;
   },
@@ -315,7 +315,7 @@ const endpoint = fixture.baseUrl;
 const prompt =
   mode === "chat"
     ? "Say hello briefly."
-    : `Use REA to analyze the JavaScript directory ${target}. Report the result.`;
+    : `Use BinSight to analyze the JavaScript directory ${target}. Report the result.`;
 const env = {
   ...baseEnvironment,
   OPENAI_API_KEY: "local-fixture-key",
@@ -327,11 +327,11 @@ const args = [
   "--openai-base-url",
   endpoint,
   "--model",
-  "rea-client-fixture",
+  "binsight-client-fixture",
   "--approval-mode",
   mode === "chat" ? "default" : "yolo",
   "--allowed-mcp-server-names",
-  "rea",
+  "binsight",
   "--output-format",
   "stream-json",
   "--max-session-turns",
@@ -362,7 +362,7 @@ try {
   assert.deepEqual(
     observed,
     TOOL_CONTRACTS.map((c) => `mcp__rea__${c.name}`).sort(),
-    "Qwen must discover the complete REA catalog",
+    "Qwen must discover the complete BinSight catalog",
   );
   assert.equal(fixture.failure, undefined);
   assert(finalSeen);

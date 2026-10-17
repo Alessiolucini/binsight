@@ -22,7 +22,7 @@ class CdpTransportCleanupFailure extends ProviderCleanupError {
       readonly cause: unknown;
     },
   ) {
-    super("rea-cdp-browser", failure.resources, failure.diagnostics, {
+    super("binsight-cdp-browser", failure.resources, failure.diagnostics, {
       operation: failure.operation,
       cause: failure.cause,
     });
@@ -53,7 +53,7 @@ interface OwnedConnection {
   failure: ProviderCleanupError | undefined;
 }
 
-/** Retains exact REA-owned CDP transports until their close is observed. */
+/** Retains exact BinSight-owned CDP transports until their close is observed. */
 export class CdpTargetSessionOwner {
   readonly #connections = new Map<CdpConnection, OwnedConnection>();
   #closing = false;
@@ -71,7 +71,7 @@ export class CdpTargetSessionOwner {
   ): Promise<CdpConnection> {
     if (this.#closing)
       throw new ProviderCleanupError(
-        "rea-cdp-browser",
+        "binsight-cdp-browser",
         [resource],
         { reason: "CDP provider is closing and cannot admit another session." },
         { operation },
@@ -79,7 +79,7 @@ export class CdpTargetSessionOwner {
     await this.retryPending();
     if (this.#closing)
       throw new ProviderCleanupError(
-        "rea-cdp-browser",
+        "binsight-cdp-browser",
         [resource],
         { reason: "CDP provider is closing and cannot admit another session." },
         { operation },
@@ -265,7 +265,7 @@ const aggregateCleanupFailures = (
       operation: "close_cdp_transports",
       cause: new AggregateError(
         failures,
-        "One or more REA-owned CDP transports remain open.",
+        "One or more BinSight-owned CDP transports remain open.",
       ),
       diagnostics: {
         failures: failures.map(({ message, diagnostics }) => ({

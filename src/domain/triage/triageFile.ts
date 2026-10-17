@@ -55,7 +55,7 @@ const stringsSummarySchema = z.strictObject({
   tag_summary: z.record(z.string(), z.number().int().nonnegative()),
 });
 
-/** A suggested follow-up REA operation and why it is worth running next. */
+/** A suggested follow-up BinSight operation and why it is worth running next. */
 export const nextProbeSchema = z.strictObject({
   operation: z.string().min(1),
   rationale: z.string().min(1),

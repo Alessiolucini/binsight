@@ -74,7 +74,7 @@ export class FridaScriptLoadCancelledError extends AnalysisCancelledError {
 }
 
 export interface FridaSessionStatus extends FridaSessionObservation {
-  /** True only after REA has successfully resumed this spawned target. */
+  /** True only after BinSight has successfully resumed this spawned target. */
   readonly targetResumeObserved: boolean;
   readonly scripts: readonly {
     readonly scriptId: string;

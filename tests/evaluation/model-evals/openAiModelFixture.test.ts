@@ -4,7 +4,7 @@ import { createOpenAiModelFixture } from "../../../scripts/verify/clients/model-
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("routes OpenAI fixture requests by pathname, not query", async () => {
-  const directory = await createTestTempDirectory("rea-model-fixture-");
+  const directory = await createTestTempDirectory("binsight-model-fixture-");
   let calls = 0;
   const fixture = await createOpenAiModelFixture({
     directory,
@@ -23,7 +23,7 @@ it("routes OpenAI fixture requests by pathname, not query", async () => {
             ? {
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify({
-                  model: "rea-client-fixture",
+                  model: "binsight-client-fixture",
                   messages: [{ role: "user", content: "hi" }],
                 }),
               }

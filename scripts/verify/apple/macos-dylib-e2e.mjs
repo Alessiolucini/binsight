@@ -185,8 +185,8 @@ export async function verifyDylibResolution(app) {
   assert.equal(trace.coverage.status, "complete");
   assert.deepEqual(trace.roots.map(({ image }) => image).sort(), [
     "Contents/Frameworks/Core.framework/Versions/A/XPCServices/FwSvc.xpc/Contents/MacOS/FwSvc",
-    "Contents/Helpers/rea-tool",
-    "Contents/Library/LaunchServices/com.example.rea.helper",
+    "Contents/Helpers/binsight-tool",
+    "Contents/Library/LaunchServices/com.example.binsight.helper",
     "Contents/Library/LoginItems/Login.app/Contents/MacOS/Login",
     MAIN,
     "Contents/PlugIns/Ext.appex/Contents/MacOS/Ext",

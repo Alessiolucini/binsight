@@ -28,7 +28,7 @@ import * as boundedFileBytes from "../../../../src/process/BoundedFileBytes.js";
 describe("managed static snapshot capacity failure", () => {
   it("preserves a typed capacity failure when closing the admitted file also fails", async () => {
     const directory = await createTestTempDirectory(
-      "rea-managed-capacity-cleanup-",
+      "binsight-managed-capacity-cleanup-",
     );
     const path = join(directory, "sparse.exe");
     await writeFile(path, Buffer.alloc(0));
@@ -74,7 +74,7 @@ describe("managed static snapshot capacity failure", () => {
 describe("managed static snapshot cancellation", () => {
   it("preserves cancellation when snapshot cleanup also fails", async () => {
     const directory = await createTestTempDirectory(
-      "rea-managed-cancel-cleanup-",
+      "binsight-managed-cancel-cleanup-",
     );
     const path = join(directory, "fixture.exe");
     await writeFile(path, buildManagedPeFixture());
@@ -140,7 +140,7 @@ describe("managed static snapshot cancellation", () => {
 
 describe("managed static file ownership", () => {
   it("retains the same failed file owner, blocks reads, and retries it on client close", async () => {
-    const directory = await createTestTempDirectory("rea-managed-close-");
+    const directory = await createTestTempDirectory("binsight-managed-close-");
     const bytes = buildManagedPeFixture();
     const path = join(directory, "fixture.exe");
     await writeFile(path, bytes);
@@ -192,7 +192,9 @@ describe("managed static file ownership", () => {
 
 describe("managed static provider path boundary", () => {
   it("executes as a read-only auxiliary provider with digest, cancellation, and format boundaries", async () => {
-    const directory = await createTestTempDirectory("rea-managed-provider-");
+    const directory = await createTestTempDirectory(
+      "binsight-managed-provider-",
+    );
     const bytes = buildManagedPeFixture();
     const path = join(directory, "fixture.exe");
     await writeFile(path, bytes);
@@ -206,7 +208,7 @@ describe("managed static provider path boundary", () => {
       classification: { status: "managed", runtime_family: "modern-dotnet" },
       artifact: { path, sha256: parsed.value.sha256, format: "pe" },
     });
-    expect(observed.value.provider.id).toBe("rea-dotnet-static");
+    expect(observed.value.provider.id).toBe("binsight-dotnet-static");
     expect(observed.value.subject).toMatchObject({ path, format: "pe" });
 
     const members = await client.execute("inspect_managed_members", {});
@@ -280,7 +282,9 @@ describe("managed static provider path boundary", () => {
   });
 
   it("retains a source location for every managed P/Invoke mapping", async () => {
-    const directory = await createTestTempDirectory("rea-managed-pinvoke-");
+    const directory = await createTestTempDirectory(
+      "binsight-managed-pinvoke-",
+    );
     const bytes = buildManagedPeFixture({
       pinvoke: { moduleName: "user32.dll", importName: "MessageBoxW" },
     });
@@ -318,7 +322,9 @@ const asManagedNativeBoundaryResult = (execution: AnalysisExecution) =>
   managedNativeBoundaryInspectionSchema.parse(execution.result);
 
 it("preserves custom attribute value evidence through the filesystem provider when its constructor is invalid", async () => {
-  const directory = await createTestTempDirectory("rea-managed-attribute-");
+  const directory = await createTestTempDirectory(
+    "binsight-managed-attribute-",
+  );
   const path = join(directory, "fixture.exe");
   await writeFile(path, buildManagedPeFixture({ customAttributeTypeRaw: 19 }));
   const parsed = await parseBinaryTarget(path);
@@ -369,7 +375,7 @@ it("preserves custom attribute value evidence through the filesystem provider wh
 });
 
 it("retains U+FEFF metadata through the filesystem target and provider", async () => {
-  const directory = await createTestTempDirectory("rea-managed-bom-");
+  const directory = await createTestTempDirectory("binsight-managed-bom-");
   const path = join(directory, "fixture.exe");
   await writeFile(
     path,
@@ -400,7 +406,9 @@ it("retains U+FEFF metadata through the filesystem target and provider", async (
 });
 
 it("keeps non-CIL implementation bytes unknown through the real file provider", async () => {
-  const directory = await createTestTempDirectory("rea-managed-native-body-");
+  const directory = await createTestTempDirectory(
+    "binsight-managed-native-body-",
+  );
   const path = join(directory, "fixture.exe");
   const bytes = buildManagedPeFixture();
   await writeFile(path, bytes);

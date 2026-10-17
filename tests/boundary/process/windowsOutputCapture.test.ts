@@ -48,7 +48,7 @@ describe.skipIf(process.platform !== "win32")(
         const launched = await spawnOwnedProviderProcess({
           command: process.execPath,
           arguments: ["-e", script],
-          runId: `rea-windows-output-${randomUUID()}`,
+          runId: `binsight-windows-output-${randomUUID()}`,
         });
         const supervisor = new ProviderProcessSupervisor(
           {

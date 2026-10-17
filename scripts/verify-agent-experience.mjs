@@ -40,7 +40,7 @@ if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 10_000)
 // Keep the disposable account in a private cache, then remove the owned run.
 const evaluationParent = resolve(
   process.env.REA_AGENT_EVAL_ROOT ??
-    join(homedir(), ".cache", "rea-agent-evaluations"),
+    join(homedir(), ".cache", "binsight-agent-evaluations"),
 );
 await mkdir(evaluationParent, { recursive: true, mode: 0o700 });
 const evaluationRoot = await mkdtemp(join(evaluationParent, "run-"));
@@ -113,7 +113,9 @@ try {
     "utf8",
   );
   if (!installedSkill.includes(`  version: "${PRODUCT_IDENTITY.skillVersion}"`))
-    throw new Error("Setup did not install the current packaged REA skill");
+    throw new Error(
+      "Setup did not install the current packaged BinSight skill",
+    );
   const requestedScenarioIds = new Set(
     (process.env.REA_AGENT_EVAL_SCENARIOS ?? "")
       .split(",")
@@ -165,7 +167,7 @@ try {
         "trace_application_feature",
         "trace_javascript_semantics",
       ],
-      prompt: `Use REA on the shipped Electron application at ${targets.notesElectron} to investigate its notes export API, preload exposure and main handler. Do not read target files directly or launch Electron. Use the returned application Evidence to trace the exact notes:export IPC channel in both directions, then query semantic relations for the property invoke with forward influence, excluding ambiguous dynamic edges and without an expected sink. Report the selected static facts, source locations and coverage limits using the closed claim contract.`,
+      prompt: `Use BinSight on the shipped Electron application at ${targets.notesElectron} to investigate its notes export API, preload exposure and main handler. Do not read target files directly or launch Electron. Use the returned application Evidence to trace the exact notes:export IPC channel in both directions, then query semantic relations for the property invoke with forward influence, excluding ambiguous dynamic edges and without an expected sink. Report the selected static facts, source locations and coverage limits using the closed claim contract.`,
     },
     {
       id: "javascript-module-view",
@@ -181,7 +183,7 @@ try {
         ["node", "identity"],
         ["observations", "recorded"],
       ],
-      prompt: `Inspect the recorded module identity, exports and observations for main.js in the shipped JavaScript tree ${targets.largeJavascript}. Use REA without directly reading target files or executing the target. Keep results focused on that module, cite Evidence, and state the limits of what its module view establishes.`,
+      prompt: `Inspect the recorded module identity, exports and observations for main.js in the shipped JavaScript tree ${targets.largeJavascript}. Use BinSight without directly reading target files or executing the target. Keep results focused on that module, cite Evidence, and state the limits of what its module view establishes.`,
     },
     {
       id: "missing-target",
@@ -212,7 +214,7 @@ try {
         ["static", "inferred"],
         ["runtime", "behavioral probes"],
       ],
-      prompt: `Without directly reading target files, compare the default export in parser.mjs between ${targets.javascriptShapeLeft} and ${targets.javascriptShapeRight}. Use REA to analyze each shipped artifact and then compare its exact static export return shapes. State the exact heading-shape change, cite produced Evidence, and distinguish static inference from runtime semantics.`,
+      prompt: `Without directly reading target files, compare the default export in parser.mjs between ${targets.javascriptShapeLeft} and ${targets.javascriptShapeRight}. Use BinSight to analyze each shipped artifact and then compare its exact static export return shapes. State the exact heading-shape change, cite produced Evidence, and distinguish static inference from runtime semantics.`,
     },
     {
       id: "managed",
@@ -320,7 +322,7 @@ try {
     };
     results.push(result);
     process.stderr.write(
-      `${scenario.id}: first=${metrics.firstTool ?? "none"}, calls=${String(metrics.reaCalls.length)}, repeats=${String(metrics.repeatedCallCount)}, validation_failures=${String(metrics.inputValidationFailureCount)}, input_tokens=${String(metrics.inputTokens)}\n`,
+      `${scenario.id}: first=${metrics.firstTool ?? "none"}, calls=${String(metrics.binsightCalls.length)}, repeats=${String(metrics.repeatedCallCount)}, validation_failures=${String(metrics.inputValidationFailureCount)}, input_tokens=${String(metrics.inputTokens)}\n`,
     );
   }
 

@@ -12,7 +12,7 @@ The command builds the redistributable native conformance fixtures, inventories
 the native executable through the public CLI, analyzes the generated JavaScript
 CLI and Electron fixtures through both CLI and MCP, evaluates an internal
 nine-stage conformance report, and proves stale/tampered replay rejection. The
-report evaluator is part of the repository verifier, not a public REA tool. It
+report evaluator is part of the repository verifier, not a public BinSight tool. It
 prints one compact JSON summary.
 
 Set `REA_READINESS_REPORT_PATH` to retain the complete machine-readable report:

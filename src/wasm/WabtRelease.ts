@@ -1,7 +1,7 @@
 /** Exact upstream release whose producer output is admitted by this adapter. */
 export const WABT_PROVIDER_IDENTITY = {
   id: "wabt-artifact",
-  name: "REA WABT artifact adapter",
+  name: "BinSight WABT artifact adapter",
   version: "wabt@1.0.42",
 } as const;
 export const WABT_LIMITS = {

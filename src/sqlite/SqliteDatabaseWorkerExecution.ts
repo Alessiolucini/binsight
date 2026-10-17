@@ -146,7 +146,7 @@ export const executeSqliteDatabaseWorker = async (request: {
       ],
       cwd: request.root,
       expectedCommand: null,
-      runId: `rea-sqlite-database-${randomUUID()}`,
+      runId: `binsight-sqlite-database-${randomUUID()}`,
       hostEnvironment: environment,
     },
     {

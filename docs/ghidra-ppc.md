@@ -44,8 +44,8 @@ implicitly gain PowerPC support. Windows Ghidra P0 remains PE x86/x86-64 only.
 With a caller-installed Ghidra and compatible JDK on a supported Linux/macOS host:
 
 ```bash
-rea analyze /absolute/path/to/ppc.elf --provider ghidra --json
-rea function /absolute/path/to/ppc.elf function_name --provider ghidra --json
+binsight analyze /absolute/path/to/ppc.elf --provider ghidra --json
+binsight function /absolute/path/to/ppc.elf function_name --provider ghidra --json
 ```
 
 MCP uses the existing tools, including `open_binary` with an absolute path and
@@ -60,7 +60,7 @@ target, LLD, GNU `readelf`, Ghidra and its compatible JDK; ordinary host-native
 checks do not acquire these tools. `REA_PPC_CLANG` selects Clang and
 `REA_PPC_READELF` selects GNU readelf (for example
 `/opt/homebrew/opt/binutils/bin/readelf` on macOS). These are test-time
-prerequisites, not REA runtime providers.
+prerequisites, not BinSight runtime providers.
 
 ```bash
 GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra npm run verify:ghidra:ppc
@@ -68,7 +68,7 @@ GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra npm run verify:ghidra:ppc
 
 The lane compiles the fixture for a 750-family core (`-mcpu=750`) and never
 executes it. GNU readelf independently supplies header facts and symbol
-addresses, compared with the production REA target resolver before provider
+addresses, compared with the production BinSight target resolver before provider
 startup. Its version, bounded command output and selected tool path are
 retained in the verification report. The parser deliberately recognizes only
 this fixture's GNU output, rejecting missing, ambiguous or unexpected fields

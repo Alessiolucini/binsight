@@ -35,7 +35,7 @@ const entrypoint =
   process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const run = createVerifierRun();
 const runtime = await PrivateRuntimeRoot.create({
-  prefix: "rea-history-verifier-",
+  prefix: "binsight-history-verifier-",
 });
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
@@ -71,7 +71,7 @@ try {
         ),
       ],
       cwd: runtime.path,
-      runId: `rea-history-fixture-${randomUUID()}`,
+      runId: `binsight-history-fixture-${randomUUID()}`,
       hostEnvironment: environment,
     },
     { timeoutMs: 30_000, diagnosticBytes: 1024 * 1024 },
@@ -995,8 +995,8 @@ function assertSensitiveLimitations(evidence, literals) {
   assert.equal(
     result.decoder.name,
     result.format === "har"
-      ? "REA HAR capture adapter"
-      : "REA offline native mitmproxy adapter",
+      ? "BinSight HAR capture adapter"
+      : "BinSight offline native mitmproxy adapter",
   );
   const texts = [
     evidence.limitations,

@@ -24,7 +24,7 @@ const invalidEnvironment = (
 ): ClientConfigurationFileError => ({
   kind: "malformed",
   path,
-  detail: `Configuration ${path} has an invalid REA server environment: ${error.settings.map(({ setting, constraint }) => `${setting}: ${constraint}`).join("; ")}. Repair it before rerunning setup.`,
+  detail: `Configuration ${path} has an invalid BinSight server environment: ${error.settings.map(({ setting, constraint }) => `${setting}: ${constraint}`).join("; ")}. Repair it before rerunning setup.`,
 });
 
 /** A named source failure that setup can explain without losing the bad path. */

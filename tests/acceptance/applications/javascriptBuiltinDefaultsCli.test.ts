@@ -13,7 +13,7 @@ import { connectLocalToolsMcp } from "../../fixtures/localToolsMcp.js";
 const execute = promisify(execFile);
 
 it("preserves earlier and sibling effects without inventing replaced cached-module or process effects", async () => {
-  const root = await createTestTempDirectory("rea-builtin-identity-");
+  const root = await createTestTempDirectory("binsight-builtin-identity-");
   await writeFile(
     join(root, "app.cjs"),
     `
@@ -127,7 +127,7 @@ it("preserves earlier and sibling effects without inventing replaced cached-modu
 }, 60000);
 
 it("excludes monkey-patched CommonJS effects from CLI and MCP evidence", async () => {
-  const root = await createTestTempDirectory("rea-builtin-mutated-");
+  const root = await createTestTempDirectory("binsight-builtin-mutated-");
   await writeFile(
     join(root, "app.cjs"),
     `
@@ -178,7 +178,7 @@ it("excludes monkey-patched CommonJS effects from CLI and MCP evidence", async (
 }, 60000);
 
 it("retains CommonJS builtin effects and handle links through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-builtin-commonjs-");
+  const root = await createTestTempDirectory("binsight-builtin-commonjs-");
   await writeFile(
     join(root, "app.cjs"),
     `
@@ -260,7 +260,7 @@ it.each([
 ])(
   "retains filesystem effects in the public CLI with %s",
   async (declaration) => {
-    const root = await createTestTempDirectory("rea-builtin-default-cli-");
+    const root = await createTestTempDirectory("binsight-builtin-default-cli-");
     await writeFile(
       join(root, "app.js"),
       `${declaration} const text=fs.readFileSync('config.json','utf8'); const stream=fs.createReadStream('config.json'); stream.destroy();`,
@@ -298,7 +298,7 @@ it.each([
 );
 
 it("keeps only direct logical defaults and actual argv elements in the public CLI graph", async () => {
-  const root = await createTestTempDirectory("rea-builtin-default-cli-");
+  const root = await createTestTempDirectory("binsight-builtin-default-cli-");
   const manyDefaults = Array.from(
     { length: 400 },
     (_, index) =>

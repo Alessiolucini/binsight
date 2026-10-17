@@ -80,8 +80,8 @@ const inventory = (digit: string) => {
 };
 
 const provider = {
-  id: "rea-artifact",
-  name: "REA artifact graph",
+  id: "binsight-artifact",
+  name: "BinSight artifact graph",
   version: "1",
 } as const;
 

@@ -33,7 +33,10 @@ import {
 /** One owned engine connection; its wire protocol stays inside the Android adapter. */
 export class JadxSession {
   readonly transport: JadxMcpTransport;
-  readonly #client = new Client({ name: "rea-android-adapter", version: "1" });
+  readonly #client = new Client({
+    name: "binsight-android-adapter",
+    version: "1",
+  });
   #loaded: ReturnType<typeof jadxLoadSchema.parse> | undefined;
   #connected = false;
   #partialContext:
@@ -190,7 +193,7 @@ export class JadxSession {
     };
   }
 
-  /** Whether the selected Java runtime established the REA bridge protocol. */
+  /** Whether the selected Java runtime established the BinSight bridge protocol. */
   initialized(): boolean {
     return this.#connected;
   }

@@ -51,7 +51,7 @@ cliTest(
     const [left, right] = sources;
     if (left === undefined || right === undefined)
       throw new Error("Missing paired fixture");
-    const root = await createTestTempDirectory("rea-wasm-comparison-");
+    const root = await createTestTempDirectory("binsight-wasm-comparison-");
     const path = join(root, "input.json");
     const input = { left, right, scope: "both" };
     await writeFile(path, JSON.stringify(input));

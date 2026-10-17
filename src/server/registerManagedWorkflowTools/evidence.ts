@@ -13,7 +13,7 @@ const parseExpectedEvidence = (
     for (const record of evidence)
       if (
         !expectedOperations.includes(record.operation) ||
-        record.predicate_type !== "rea.analysis"
+        record.predicate_type !== "binsight.analysis"
       )
         throw new TypeError(
           `Expected ${expectedOperations.join(" or ")} Evidence, received ${record.operation}`,

@@ -23,8 +23,8 @@ assert(
   "Run as a disposable account whose actual OS home matches REA_VERIFY_COMMANDCODE_ACCOUNT_HOME; do not override HOME",
 );
 assert.equal(
-  await readFile(join(account, ".rea-client-verification"), "utf8"),
-  "Disposable REA client verification account\n",
+  await readFile(join(account, ".binsight-client-verification"), "utf8"),
+  "Disposable BinSight client verification account\n",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
@@ -35,7 +35,7 @@ assert(
   "Usage: verify-commandcode-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(account, "rea-commandcode-client-"));
+const lab = await mkdtemp(join(account, "binsight-commandcode-client-"));
 const workspace = join(lab, "workspace");
 const target = join(workspace, "fixture α测试");
 const profile = join(account, ".commandcode");
@@ -114,7 +114,7 @@ const validateCatalog = async (text) => {
   assert.deepEqual(
     entries.map((entry) => entry[1]).sort(),
     expectedNames,
-    "Native exact-name search must return every REA input schema",
+    "Native exact-name search must return every BinSight input schema",
   );
   for (const entry of entries) {
     const schema = JSON.parse(entry[2]);
@@ -144,7 +144,7 @@ const fixture = await createOpenAiModelFixture({
       assert.deepEqual(
         names,
         expectedNames,
-        "Default native deferred-tool prompt must advertise the complete REA inventory",
+        "Default native deferred-tool prompt must advertise the complete BinSight inventory",
       );
       assert.equal(
         tools.filter((tool) => tool.name.startsWith("mcp__rea__")).length,
@@ -273,11 +273,14 @@ await writeFile(
   join(profile, "providers.json"),
   JSON.stringify({
     provider: {
-      "rea-local": {
+      "binsight-local": {
         baseURL: fixture.baseUrl,
         apiKey: false,
         models: {
-          "rea-client-fixture": { contextWindow: 1_000_000, maxOutput: 4096 },
+          "binsight-client-fixture": {
+            contextWindow: 1_000_000,
+            maxOutput: 4096,
+          },
         },
       },
     },
@@ -293,7 +296,7 @@ const original =
     2,
   ) + "\n";
 await writeFile(configPath, original);
-const rea = (args) =>
+const binsight = (args) =>
   exec(
     process.execPath,
     [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
@@ -312,7 +315,7 @@ try {
     ["setup", "--client", "commandcode", "--yes"],
     ["doctor", "--client", "commandcode", "--skill"],
   ]) {
-    const response = await rea(args);
+    const response = await binsight(args);
     await writeFile(
       join(lab, `${args[0]}${args.includes("--dry-run") ? "-plan" : ""}.json`),
       response.stdout,
@@ -339,7 +342,10 @@ try {
       );
     }
   }
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   const configured = await readFile(configPath, "utf8");
   assert.equal(JSON.parse(configured).preserved, "keep unrelated settings");
   assert.equal(
@@ -347,11 +353,14 @@ try {
     "unrelated-server",
   );
   const repeated = JSON.parse(
-    (await rea(["setup", "--client", "commandcode", "--yes"])).stdout,
+    (await binsight(["setup", "--client", "commandcode", "--yes"])).stdout,
   );
   assert.deepEqual(repeated.appliedActions, []);
   assert.equal(await readFile(configPath, "utf8"), configured);
-  assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+  assert.equal(
+    await readFile(`${configPath}.binsight.backup`, "utf8"),
+    original,
+  );
   expectedSkill = (await readFile(join(skillDirectory, "SKILL.md"), "utf8"))
     .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "")
     .trim();
@@ -361,9 +370,9 @@ try {
       "-p",
       mode === "chat"
         ? "Say hello briefly."
-        : `Use the REA skill to analyze ${target}.`,
+        : `Use the BinSight skill to analyze ${target}.`,
       "-m",
-      "rea-local/rea-client-fixture",
+      "binsight-local/binsight-client-fixture",
       "--local-only",
       "--skip-onboarding",
       "--trust",

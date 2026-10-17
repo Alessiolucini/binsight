@@ -25,7 +25,7 @@ vi.mock(
 afterEach(() => vi.restoreAllMocks());
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-adb-hash-consumer-");
+  const root = await createTestTempDirectory("binsight-adb-hash-consumer-");
   const binary = join(root, "adb");
   vi.mocked(execFileOutput).mockImplementation(async () => {
     const stdout = `Android Debug Bridge version 1.0.41\nVersion 34.0.5-stub\nInstalled as ${binary}\n`;

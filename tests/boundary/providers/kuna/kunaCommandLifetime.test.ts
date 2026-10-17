@@ -51,7 +51,7 @@ test.skipIf(process.platform === "win32")(
   "releases completed native outputs after requests settle",
   async () => {
     const { kuna, cacheRoot, target } = await session(
-      "rea-kuna-command-retention-",
+      "binsight-kuna-command-retention-",
     );
     const result = spawnSync(
       process.execPath,

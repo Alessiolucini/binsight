@@ -70,7 +70,7 @@ export class HistoricalCaptureDecoder {
     readonly environment: Readonly<NodeJS.ProcessEnv>,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-web-capture-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "binsight-web-capture-" }),
     resources = new ArtifactResourceScope(),
   ) {
     this.#resources = resources;
@@ -158,7 +158,7 @@ export class HistoricalCaptureDecoder {
       const completed = await runOwnedCommand(
         {
           ...command,
-          runId: `rea-web-capture-${randomUUID()}`,
+          runId: `binsight-web-capture-${randomUUID()}`,
           cwd: runtime.path,
           hostEnvironment: environment,
         },
@@ -364,8 +364,8 @@ const nodeMemoryLimitation = (): string => {
   if (NODE_CAPTURE_HEAP_ENFORCED)
     return `HAR/SAZ/qlog use a ${String(NODE_CAPTURE_HEAP_LIMITS.oldGenerationMiB)} MiB Node old-generation heap`;
   return NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES === null
-    ? "HAR/SAZ/qlog run on Bun, which does not enforce REA's V8 heap flags"
-    : `HAR/SAZ/qlog run on Bun, which does not enforce REA's V8 heap flags, under a ${String(NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES)}-byte Windows Job Object commit limit`;
+    ? "HAR/SAZ/qlog run on Bun, which does not enforce BinSight's V8 heap flags"
+    : `HAR/SAZ/qlog run on Bun, which does not enforce BinSight's V8 heap flags, under a ${String(NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES)}-byte Windows Job Object commit limit`;
 };
 
 const replyFailureReason = (cause: unknown): string => {

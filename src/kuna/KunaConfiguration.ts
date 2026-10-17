@@ -34,11 +34,11 @@ const DEFAULT_CACHE_MAX_BYTES = 4 * 1024 ** 3;
 /** One project needs its .c, .h, .asm, inventory and manifest; refuse smaller caps. */
 const MIN_CACHE_MAX_BYTES = 1024 ** 2;
 
-/** Caller-selected Kuna installation and REA-owned project cache policy. */
+/** Caller-selected Kuna installation and BinSight-owned project cache policy. */
 export interface KunaConfiguration {
   /** Caller-selected executable path, preserved exactly as configured. */
   readonly command: string;
-  /** REA-owned cache root; Kuna's own spec cache lives beneath it too. */
+  /** BinSight-owned cache root; Kuna's own spec cache lives beneath it too. */
   readonly cacheRoot: string;
   readonly cacheMaxBytes: number;
   readonly projectTimeoutMs: number;
@@ -65,18 +65,18 @@ const positiveInteger = (value: string): number | undefined =>
     ? Number(value)
     : undefined;
 
-/** Per-user cache directory that REA owns for Kuna on this host. */
+/** Per-user cache directory that BinSight owns for Kuna on this host. */
 const defaultCacheRoot = (
   environment: Readonly<NodeJS.ProcessEnv>,
   platform: NodeJS.Platform,
 ): string => {
   const home = homeDirectoryFromEnvironment(environment, platform);
   if (platform === "darwin")
-    return join(home, "Library", "Caches", "rea", "kuna");
+    return join(home, "Library", "Caches", "binsight", "kuna");
   const xdg = environment.XDG_CACHE_HOME;
   return join(
     xdg !== undefined && isAbsolute(xdg) ? xdg : join(home, ".cache"),
-    "rea",
+    "binsight",
     "kuna",
   );
 };

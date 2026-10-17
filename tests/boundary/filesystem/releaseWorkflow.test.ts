@@ -116,7 +116,7 @@ it("keeps main pushes proposal-only and gates merged-release automation", async 
   });
   expect(action?.with?.["skip-github-pull-request"]).not.toBe(true);
   expect(action?.if).toBe("steps.editorial.outputs.frozen != 'true'");
-  expect(proposal.steps[0]?.run).toContain("rea:release-notes-finalized");
+  expect(proposal.steps[0]?.run).toContain("binsight:release-notes-finalized");
   expect(proposal.steps[0]?.run).toContain("--paginate");
   const merged = workflow.jobs["merged-release"];
   expect(merged.if).toContain("github.event.pull_request.merged == true");
@@ -240,7 +240,9 @@ it.skipIf(process.platform === "win32").each([
           (phase === "publish" && step.if === "inputs.phase == 'publish'"),
       )
       .map((step) => z.string().parse(step.run));
-    const directory = await createTestTempDirectory("rea-release-credential-");
+    const directory = await createTestTempDirectory(
+      "binsight-release-credential-",
+    );
     const output = join(directory, "github-output");
     await writeFile(
       join(directory, "gh"),
@@ -732,7 +734,7 @@ it("rehearses the qualified archive before npm authority and retains registry ve
     step.run?.includes("scripts/ci/verified-package.mjs validate"),
   );
   const runtime = action.runs.steps.findIndex(
-    (step) => step.with?.name === "rea-test-runtime",
+    (step) => step.with?.name === "binsight-test-runtime",
   );
   expect(archive).toBeGreaterThanOrEqual(0);
   expect(validation).toBeGreaterThan(archive);

@@ -47,7 +47,7 @@ describe("real Hopper fixture binding", () => {
       /digest/u,
     );
 
-    const outside = await createTestTempDirectory("rea-hopper-outside-");
+    const outside = await createTestTempDirectory("binsight-hopper-outside-");
     try {
       await writeFile(join(outside, "c"), "primary");
       await rm(join(root ?? "", "c"));
@@ -80,7 +80,7 @@ describe("real Hopper fixture binding", () => {
 });
 
 const fixtureManifest = async (): Promise<string> => {
-  root = await createTestTempDirectory("rea-hopper-fixture-");
+  root = await createTestTempDirectory("binsight-hopper-fixture-");
   const primary = Buffer.from("primary");
   const secondary = Buffer.from("secondary");
   await Promise.all([

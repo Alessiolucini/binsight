@@ -50,7 +50,7 @@ export class WabtArtifactProvider implements WasmArtifactPort {
     readonly launcher?: Launcher,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-wabt-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "binsight-wabt-" }),
   ) {}
   /** Retry retained cleanup without discarding roots that still cannot be removed. */
   async close(): Promise<void> {
@@ -188,7 +188,7 @@ export class WabtArtifactProvider implements WasmArtifactPort {
             arguments: args,
             ...(root === undefined ? {} : { cwd: root.path }),
             expectedCommand: command.path,
-            runId: `rea-wabt-${randomUUID()}`,
+            runId: `binsight-wabt-${randomUUID()}`,
             hostEnvironment: this.environment,
           },
           {

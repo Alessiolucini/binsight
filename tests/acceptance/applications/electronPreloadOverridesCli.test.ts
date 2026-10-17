@@ -61,7 +61,7 @@ const scenarios = [
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "reports effective preload overrides through %s without executing source",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-preload-overrides-");
+    const root = await createTestTempDirectory("binsight-preload-overrides-");
     const sourceLines = scenarios.map(
       ({ preferences }) =>
         `new BrowserWindow({webPreferences:{${preferences}}});`,
@@ -179,7 +179,9 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves asserted inline options and unresolved overrides through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-asserted-window-options-");
+    const root = await createTestTempDirectory(
+      "binsight-asserted-window-options-",
+    );
     const scenarios = [
       {
         sourceLine:

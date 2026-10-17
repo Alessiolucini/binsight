@@ -10,7 +10,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains configuration sources consumed by member access through %s",
   async (surface, { cli, processes }) => {
-    const root = await createTestTempDirectory("rea-config-reads-");
+    const root = await createTestTempDirectory("binsight-config-reads-");
     await writeFixtureFiles(root, {
       "entry.mjs": [
         "const length = process.env.REA_ENDPOINT.length;",
@@ -80,7 +80,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "does not claim an argv value after an unknown object selection escapes through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-config-escape-");
+    const root = await createTestTempDirectory("binsight-config-escape-");
     await writeFixtureFiles(root, {
       "entry.mjs": [
         'throw new Error("static fixture must never execute");',

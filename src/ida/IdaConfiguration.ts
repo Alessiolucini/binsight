@@ -10,7 +10,7 @@ const common = {
   timeoutMs: z.number().int().positive().max(2_147_483_647).default(300_000),
   workspaceRoot: z
     .string()
-    .refine(isAbsolute, "workspaceRoot must be absolute on the REA host")
+    .refine(isAbsolute, "workspaceRoot must be absolute on the BinSight host")
     .optional(),
 };
 const registrationSchema = z
@@ -46,7 +46,7 @@ const registrationSchema = z
     "The native IDA MCP protocol requires attached mode",
   );
 
-/** An upstream MCP registration plus REA's database lifecycle selection. */
+/** An upstream MCP registration plus BinSight's database lifecycle selection. */
 export type IdaConfiguration = z.infer<typeof registrationSchema>;
 
 /** Select a protocol without changing existing attached/headless registrations. */

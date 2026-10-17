@@ -13,7 +13,7 @@ export const binarySessionInputSchema = z.strictObject({
   expected_server_path: localPathStringSchema
     .refine(isAbsolute, {
       message:
-        "expected_server_path must be an absolute local filesystem path (for example /opt/rea/dist/main.js)",
+        "expected_server_path must be an absolute local filesystem path (for example /opt/binsight/dist/main.js)",
     })
     .describe(
       "Absolute local filesystem path expected for the running server; relative paths are rejected.",

@@ -21,7 +21,7 @@ const requests = [
 cliTest.skipIf(process.platform === "win32").for(["CLI", "stdio MCP"] as const)(
   "keeps ESM root URL suffixes out of dependency filesystem lookup through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-root-suffix-");
+    const root = await createTestTempDirectory("binsight-package-root-suffix-");
     const sources = {
       "main.mjs": requests
         .map(({ specifier }) => `import ${JSON.stringify(specifier)};`)

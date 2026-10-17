@@ -18,7 +18,7 @@ it.each(["after", "before"] as const)(
   async (partialSide) => {
     // Enumeration order is filesystem-dependent. Choose a genuinely omitted
     // entry by comparing a complete snapshot with a capacity-limited one.
-    const root = await createTestTempDirectory("rea-fs-partial-absence-");
+    const root = await createTestTempDirectory("binsight-fs-partial-absence-");
     await writeFile(join(root, "a1.txt"), "first");
     await writeFile(join(root, "a2.txt"), "second");
     await writeFile(join(root, "z.txt"), "target");
@@ -55,7 +55,7 @@ it.each(["after", "before"] as const)(
 );
 
 it("preserves proven deletion in an exhausted root while another root is partial", async () => {
-  const root = await createTestTempDirectory("rea-fs-multiple-roots-");
+  const root = await createTestTempDirectory("binsight-fs-multiple-roots-");
   const complete = join(root, "complete");
   const partial = join(root, "partial");
   await mkdir(complete);
@@ -81,7 +81,7 @@ it("preserves proven deletion in an exhausted root while another root is partial
 });
 
 it("distinguishes unavailable content hashes from completed path enumeration", async () => {
-  const root = await createTestTempDirectory("rea-fs-hash-coverage-");
+  const root = await createTestTempDirectory("binsight-fs-hash-coverage-");
   await writeFile(join(root, "removed.txt"), "larger than the byte budget");
   const scenario = parseProcessScenario({
     executable: process.execPath,
@@ -103,7 +103,9 @@ it("distinguishes unavailable content hashes from completed path enumeration", a
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "retains readable entries and marks an unreadable directory subtree unknown",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-unreadable-directory-");
+    const root = await createTestTempDirectory(
+      "binsight-fs-unreadable-directory-",
+    );
     const visible = join(root, "a-visible.txt");
     const blocked = join(root, "z-blocked");
     await writeFile(visible, "visible");
@@ -142,7 +144,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "retains unreadable-file and sibling observations in a complete snapshot",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-unreadable-file-");
+    const root = await createTestTempDirectory("binsight-fs-unreadable-file-");
     const unreadable = join(root, "unreadable.txt");
     const readable = join(root, "readable.txt");
     await writeFile(unreadable, "permission denied");
@@ -207,7 +209,7 @@ it.each([
 ])(
   "keeps content equality unknown when $name snapshots omit its digest",
   async ({ beforeOmitted, afterOmitted, contents }) => {
-    const root = await createTestTempDirectory("rea-fs-content-unknown-");
+    const root = await createTestTempDirectory("binsight-fs-content-unknown-");
     const budgetFile = join(root, "a.txt");
     const file = join(root, "b.txt");
     await writeFile(file, "before");
@@ -245,7 +247,7 @@ it.each([
 );
 
 it("preserves observed content and metadata changes without treating missing hashes as equality", async () => {
-  const root = await createTestTempDirectory("rea-fs-observed-changes-");
+  const root = await createTestTempDirectory("binsight-fs-observed-changes-");
   for (const name of ["changed", "stable", "unhashed", "retyped"])
     await writeFile(join(root, name), "before");
   const scenario = parseProcessScenario({
@@ -290,7 +292,7 @@ it("preserves observed content and metadata changes without treating missing has
 it.skipIf(process.platform === "win32")(
   "preserves an observed permission change when file digests are omitted",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-mode-change-");
+    const root = await createTestTempDirectory("binsight-fs-mode-change-");
     const file = join(root, "file");
     await writeFile(file, "before", { mode: 0o600 });
     const scenario = parseProcessScenario({
@@ -311,7 +313,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "compares directories and symlink targets without requiring file content hashes",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-nonfile-effects-");
+    const root = await createTestTempDirectory("binsight-fs-nonfile-effects-");
     await mkdir(join(root, "empty"));
     await writeFile(join(root, "a.txt"), "before");
     await writeFile(join(root, "b.txt"), "unused");
@@ -342,7 +344,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "keeps the observed symlink target when dot segments resolve to the same path",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-symlink-spelling-");
+    const root = await createTestTempDirectory("binsight-fs-symlink-spelling-");
     await mkdir(join(root, "aaa"));
     await writeFile(join(root, "target"), "content");
     // Equal length, so only the target spelling distinguishes the links;
@@ -372,7 +374,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("preserves creation when the selected root was observed missing before capture", async () => {
-  const root = await createTestTempDirectory("rea-fs-missing-root-");
+  const root = await createTestTempDirectory("binsight-fs-missing-root-");
   const file = join(root, "created.txt");
   const scenario = parseProcessScenario({
     executable: process.execPath,

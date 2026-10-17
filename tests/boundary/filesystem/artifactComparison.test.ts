@@ -19,8 +19,8 @@ import { createEvidence, type Evidence } from "../../../src/domain/evidence.js";
 import { jsonValueSchema } from "../../../src/domain/jsonValue.js";
 
 const PROVIDER = {
-  id: "rea-artifact-graph",
-  name: "REA artifact graph",
+  id: "binsight-artifact-graph",
+  name: "BinSight artifact graph",
   version: "1",
 } as const;
 
@@ -104,7 +104,7 @@ const inspectPages = (
 };
 
 const changedArtifactComparison = async () => {
-  const parent = await createTestTempDirectory("rea-artifact-compare-");
+  const parent = await createTestTempDirectory("binsight-artifact-compare-");
   const leftPath = join(parent, "left.app");
   const rightPath = join(parent, "right.app");
   await Promise.all([mkdir(leftPath), mkdir(rightPath)]);
@@ -126,7 +126,9 @@ const changedArtifactComparison = async () => {
 
 describe("leaf artifact comparison", () => {
   it("rejects inventory Evidence without required producer coverage", async () => {
-    const root = await createTestTempDirectory("rea-artifact-plist-compare-");
+    const root = await createTestTempDirectory(
+      "binsight-artifact-plist-compare-",
+    );
     const leftPath = join(root, "left.plist");
     const xml =
       '<?xml version="1.0"?><plist version="1.0"><dict><key>label</key><string>hello</string></dict></plist>';
@@ -153,7 +155,9 @@ describe("leaf artifact comparison", () => {
   });
 
   it("keeps content and executable changes visible for complete plist roots", async () => {
-    const root = await createTestTempDirectory("rea-artifact-plist-deltas-");
+    const root = await createTestTempDirectory(
+      "binsight-artifact-plist-deltas-",
+    );
     const leftPath = join(root, "left.plist");
     const rightPath = join(root, "right.plist");
     const plist = (label: string) =>
@@ -199,7 +203,7 @@ describe("leaf artifact comparison", () => {
 
 describe("artifact inspection inventory substeps", () => {
   it("assembles every paged inventory substep and retains its outer Evidence once", async () => {
-    const root = await createTestTempDirectory("rea-inspect-pages-");
+    const root = await createTestTempDirectory("binsight-inspect-pages-");
     const path = join(root, "fixture.app");
     await mkdir(path);
     await Promise.all([
@@ -220,7 +224,7 @@ describe("artifact inspection inventory substeps", () => {
   });
 
   it("rejects inspection substeps with different inventory manifests", async () => {
-    const root = await createTestTempDirectory("rea-inspect-mixed-pages-");
+    const root = await createTestTempDirectory("binsight-inspect-mixed-pages-");
     const firstPath = join(root, "first.plist");
     const secondPath = join(root, "second.plist");
     await Promise.all([
@@ -244,7 +248,9 @@ describe("artifact inspection inventory substeps", () => {
   });
 
   it("rejects inspection coverage counts that disagree with retained substeps", async () => {
-    const root = await createTestTempDirectory("rea-inspect-count-mismatch-");
+    const root = await createTestTempDirectory(
+      "binsight-inspect-count-mismatch-",
+    );
     const path = join(root, "fixture.app");
     await mkdir(path);
     await Promise.all([
@@ -260,7 +266,9 @@ describe("artifact inspection inventory substeps", () => {
   });
 
   it("authenticates later inventory substeps instead of silently ignoring them", async () => {
-    const root = await createTestTempDirectory("rea-inspect-invalid-page-");
+    const root = await createTestTempDirectory(
+      "binsight-inspect-invalid-page-",
+    );
     const path = join(root, "fixture.app");
     await mkdir(path);
     await writeFile(join(path, "main.js"), "main();");
@@ -286,7 +294,7 @@ describe("artifact inspection inventory substeps", () => {
 
 describe("artifact inventory coverage", () => {
   it("uses current unknown coverage without deriving it from limitation prose", async () => {
-    const root = await createTestTempDirectory("rea-artifact-coverage-");
+    const root = await createTestTempDirectory("binsight-artifact-coverage-");
     const path = join(root, "complete.plist");
     await writeFile(
       path,
@@ -325,7 +333,9 @@ describe("artifact inventory coverage", () => {
   });
 
   it("rejects inventory fragments that disagree on producer coverage", async () => {
-    const parent = await createTestTempDirectory("rea-artifact-page-coverage-");
+    const parent = await createTestTempDirectory(
+      "binsight-artifact-page-coverage-",
+    );
     const path = join(parent, "fixture.app");
     await mkdir(path);
     await writeFile(join(path, "main.js"), "main();");
@@ -432,7 +442,7 @@ describe("artifact comparison", () => {
   });
 
   it("reports incomplete inventory as truncated, never unchanged", async () => {
-    const root = await createTestTempDirectory("rea-artifact-truncated-");
+    const root = await createTestTempDirectory("binsight-artifact-truncated-");
     await writeFile(join(root, "one.txt"), "one");
     const complete = await observe(root);
     const completeInventory = artifactInventoryResultSchema.parse(
@@ -470,7 +480,9 @@ describe("artifact comparison", () => {
 
 describe("artifact comparison completeness", () => {
   it("does not infer child changes from root-only coverage", async () => {
-    const root = await createTestTempDirectory("rea-artifact-root-coverage-");
+    const root = await createTestTempDirectory(
+      "binsight-artifact-root-coverage-",
+    );
     const leftPath = join(root, "left.app");
     const rightPath = join(root, "right.app");
     await Promise.all([mkdir(leftPath), mkdir(rightPath)]);
@@ -525,7 +537,7 @@ describe("artifact comparison completeness", () => {
   });
 
   it("compares every graph member for inventories larger than 500 entries", async () => {
-    const root = await createTestTempDirectory("rea-artifact-pages-");
+    const root = await createTestTempDirectory("binsight-artifact-pages-");
     const entryCount = 501;
     await Promise.all(
       Array.from({ length: entryCount }, async (_, index) =>
@@ -572,7 +584,9 @@ describe("artifact comparison completeness", () => {
 
 describe("artifact source-map relationship coverage", () => {
   it("preserves unknown source-map relationships for duplicate ZIP paths", async () => {
-    const root = await createTestTempDirectory("rea-duplicate-source-map-");
+    const root = await createTestTempDirectory(
+      "binsight-duplicate-source-map-",
+    );
     const path = join(root, "duplicate-source-map.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("main.js", new TextReader("first();"), { level: 0 });
@@ -623,7 +637,7 @@ describe("artifact source-map relationship coverage", () => {
 describe("duplicate archive occurrence ownership", () => {
   it("keeps directory ancestry unknown when ZIP directory paths repeat", async () => {
     const root = await createTestTempDirectory(
-      "rea-artifact-duplicate-directory-",
+      "binsight-artifact-duplicate-directory-",
     );
     const path = join(root, "duplicate-directories.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -666,7 +680,9 @@ describe("duplicate archive occurrence ownership", () => {
   });
 
   it("retains duplicate path occurrences across pages and leaves pairing unknown", async () => {
-    const root = await createTestTempDirectory("rea-artifact-duplicate-pages-");
+    const root = await createTestTempDirectory(
+      "binsight-artifact-duplicate-pages-",
+    );
     const archives = [join(root, "left.zip"), join(root, "right.zip")] as const;
     for (const [index, path] of archives.entries()) {
       const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -752,7 +768,9 @@ describe("duplicate archive occurrence ownership", () => {
 
 describe("artifact comparison fragment integrity", () => {
   it("assembles real inventory fragments and retains every citation", async () => {
-    const parent = await createTestTempDirectory("rea-artifact-fragments-");
+    const parent = await createTestTempDirectory(
+      "binsight-artifact-fragments-",
+    );
     const leftPath = join(parent, "left.app");
     const rightPath = join(parent, "right.app");
     await Promise.all([mkdir(leftPath), mkdir(rightPath)]);
@@ -834,7 +852,7 @@ describe("artifact comparison fragment integrity", () => {
   }, 15_000);
 
   it("rejects non-inventory and tampered Evidence", async () => {
-    const root = await createTestTempDirectory("rea-artifact-invalid-");
+    const root = await createTestTempDirectory("binsight-artifact-invalid-");
     const evidence = await observe(root);
     expect(() =>
       compareArtifacts({ ...evidence, operation: "binary_overview" }, evidence),
@@ -864,7 +882,7 @@ describe("artifact comparison fragment integrity", () => {
 
 describe("ZIP non-entry coverage", () => {
   it("retains pre-directory APK block changes under current ZIP coverage", async () => {
-    const root = await createTestTempDirectory("rea-apk-block-compare-");
+    const root = await createTestTempDirectory("binsight-apk-block-compare-");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("classes.dex", new TextReader("unchanged entry"));
     const zip = Buffer.from(await writer.close());

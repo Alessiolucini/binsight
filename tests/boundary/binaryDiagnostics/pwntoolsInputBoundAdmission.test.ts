@@ -16,7 +16,7 @@ const ARTIFACT_BYTES = DEFAULT_INPUT_BYTES + 1;
 
 /** Sparse regular file just larger than the shipped input bound. */
 const oversizedArtifact = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-pwntools-input-bound-");
+  const root = await createTestTempDirectory("binsight-pwntools-input-bound-");
   const path = join(root, "recorded-core");
   const handle = await open(path, "w");
   await handle.truncate(ARTIFACT_BYTES);

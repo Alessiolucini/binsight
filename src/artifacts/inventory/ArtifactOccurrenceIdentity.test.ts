@@ -15,7 +15,9 @@ import { createTestTempDirectory } from "../../../tests/fixtures/temporaryDirect
 const names = ["main.js", "payload.bin", "addon.node"];
 
 const observeArchive = async (order: readonly string[]) => {
-  const directory = await createTestTempDirectory("rea-occurrence-identity-");
+  const directory = await createTestTempDirectory(
+    "binsight-occurrence-identity-",
+  );
   const path = join(directory, "fixture.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   for (const name of order)
@@ -27,7 +29,7 @@ const observeArchive = async (order: readonly string[]) => {
   const inventory = await inventoryArtifact(path);
   const evidence = createEvidence(
     { path, sha256: inventory.manifest.root_sha256, format: "zip" },
-    { id: "rea-artifact-graph", name: "artifact inventory", version: "1" },
+    { id: "binsight-artifact-graph", name: "artifact inventory", version: "1" },
     {
       operation: "inventory_artifact",
       parameters: {},
@@ -99,7 +101,9 @@ describe("content identity and occurrence facts", () => {
   ] as const)(
     "keeps the Apple JavaScript component with %s byte-identical text resource",
     async (_label, resources) => {
-      const directory = await createTestTempDirectory("rea-apple-identity-");
+      const directory = await createTestTempDirectory(
+        "binsight-apple-identity-",
+      );
       const path = join(directory, "fixture.zip");
       const writer = new ZipWriter(new Uint8ArrayWriter());
       await writer.add(
@@ -120,7 +124,7 @@ describe("content identity and occurrence facts", () => {
           createEvidence(
             { path, sha256: inventory.manifest.root_sha256, format: "zip" },
             {
-              id: "rea-artifact-graph",
+              id: "binsight-artifact-graph",
               name: "artifact inventory",
               version: "1",
             },
@@ -142,7 +146,7 @@ describe("content identity and occurrence facts", () => {
   );
 
   it("keeps framework and ordinary directory roles separate for identical trees", async () => {
-    const root = await createTestTempDirectory("rea-directory-roles-");
+    const root = await createTestTempDirectory("binsight-directory-roles-");
     for (const name of ["Widget.framework", "resources"])
       await mkdir(join(root, name));
     const inventory = await inventoryArtifact(root);
@@ -160,7 +164,7 @@ describe("content identity and occurrence facts", () => {
   });
 
   it("reports only an occurrence permission change for identical content", async () => {
-    const root = await createTestTempDirectory("rea-permission-identity-");
+    const root = await createTestTempDirectory("binsight-permission-identity-");
     const path = join(root, "payload.bin");
     await writeFile(path, "same content\n", { mode: 0o600 });
     const before = await inventoryArtifact(root);
@@ -196,7 +200,7 @@ describe("directly selected executable formats", () => {
   ] as const)(
     "keeps a Mach-O executable kind separate from mode %s, directly and in a bundle",
     async (_label, mode) => {
-      const root = await createTestTempDirectory("rea-direct-macho-");
+      const root = await createTestTempDirectory("binsight-direct-macho-");
       const directory = join(root, "Demo.app", "Contents", "MacOS");
       await mkdir(directory, { recursive: true });
       const path = join(directory, "demo");

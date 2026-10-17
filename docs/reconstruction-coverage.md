@@ -1,6 +1,6 @@
 # Reconstruction coverage
 
-`rea evaluate-reconstruction-coverage coverage.json --json` evaluates an inline
+`binsight evaluate-reconstruction-coverage coverage.json --json` evaluates an inline
 coverage workspace and its selected `boundary_id`. MCP exposes the same input
 through `evaluate_reconstruction_coverage`. Results contain a status, reasons,
 recommended probes and Evidence references; the supplied bundle retains the

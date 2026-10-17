@@ -19,7 +19,7 @@ import { err, ok, type Result } from "../../domain/result.js";
 import { createElectronActiveEvidence } from "./ElectronActiveEvidence.js";
 
 const OPERATION = "capture_electron_scenario" as const;
-const PROVIDER_ID = "rea-playwright-electron-active";
+const PROVIDER_ID = "binsight-playwright-electron-active";
 
 const resolveInputPath = async (
   field: "executable_path" | "application_path" | "application_root",

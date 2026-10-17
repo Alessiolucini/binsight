@@ -14,7 +14,7 @@ import { browserScenarioCaptureSchema } from "../domain/browserScenarioCapture.j
 import { completeProviderEvidence } from "./ProviderOperationExecution.js";
 
 const OPERATION = "capture_browser_scenario" as const;
-const PROVIDER_ID = "rea-playwright-browser-scenario";
+const PROVIDER_ID = "binsight-playwright-browser-scenario";
 
 /** Execute one controlled browser scenario using its explicit request scope. */
 export const captureBrowserScenario = async (

@@ -16,7 +16,9 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "keeps a dylib's own install name out of its dependencies",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-dylib-identity-");
+        const directory = await createTestTempDirectory(
+          "binsight-dylib-identity-",
+        );
         const source = join(directory, "library.c");
         const library = join(directory, "libprobe.dylib");
         await writeFile(source, "int exported_value(void) { return 42; }\n");

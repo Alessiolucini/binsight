@@ -111,7 +111,7 @@ export const systemNoFollowOpenCapability = (
 };
 
 const probeSymlinkCreation = async (): Promise<WindowsCapabilityOutcome> => {
-  const root = await mkdtemp(join(tmpdir(), "rea-symlink-probe-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-symlink-probe-"));
   const target = join(root, "target");
   const link = join(root, "link");
   try {

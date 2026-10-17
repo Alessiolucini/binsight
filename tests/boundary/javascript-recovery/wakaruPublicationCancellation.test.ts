@@ -96,7 +96,7 @@ import { WakaruProvider } from "../../../src/javascript/recovery/WakaruProvider.
 it.skipIf(process.platform === "win32")(
   "keeps mid-commit output-tree cancellation typed through the provider",
   async () => {
-    const root = await createTestTempDirectory("rea-wakaru-cancel-");
+    const root = await createTestTempDirectory("binsight-wakaru-cancel-");
     const sourcePath = join(root, "source.js");
     const output = join(root, "output");
     await writeFile(sourcePath, "module.exports = 42;");

@@ -17,12 +17,14 @@ cliTest.for([
   "analyzes selected $format sources through $command with complete artifact identity",
   { timeout: 60_000 },
   async ({ format, command }, { cli }) => {
-    const directory = await createTestTempDirectory("rea-js-source-selection-");
+    const directory = await createTestTempDirectory(
+      "binsight-js-source-selection-",
+    );
     const files = await writeJavaScriptSourceSelectionFixture(directory);
     let input = directory;
     if (format === "asar") {
       input = join(
-        await createTestTempDirectory("rea-js-selected-asar-"),
+        await createTestTempDirectory("binsight-js-selected-asar-"),
         "app.asar",
       );
       await createPackageWithOptions(directory, input, {});
@@ -121,7 +123,7 @@ cliTest(
   "rejects source selection when an explicit provider chooses the native lane",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-js-source-native-refusal-",
+      "binsight-js-source-native-refusal-",
     );
     await writeJavaScriptSourceSelectionFixture(directory);
     const response = await cli.run({

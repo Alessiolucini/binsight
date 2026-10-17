@@ -77,7 +77,7 @@ const applicationWithUnknowns = (keys: readonly string[]) => {
     limitations: base.limitations,
   });
   const application = createEvidence(undefined, MANAGED_WORKFLOW_PROVIDER, {
-    predicateType: "rea.managed-application-graph",
+    predicateType: "binsight.managed-application-graph",
     operation: "project_managed_application_graph",
     parameters: {},
     result: jsonValueSchema.parse({

@@ -10,12 +10,14 @@ import { createTestTempDirectory } from "./temporaryDirectory.js";
 export const SOURCE = `const worker = new Worker(new URL("./worker.js", import.meta.url));\nexport const observed = worker;\n`;
 
 export const applicationFixture = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-runtime-reconciliation-");
+  const root = await createTestTempDirectory(
+    "binsight-runtime-reconciliation-",
+  );
   await Promise.all([
     writeFile(
       join(root, "package.json"),
       JSON.stringify({
-        name: "rea-runtime-reconciliation-fixture",
+        name: "binsight-runtime-reconciliation-fixture",
         version: "1.0.0",
         renderer: "index.html",
       }),
@@ -123,8 +125,8 @@ export const electronRuntimeEvidence = (
       limitations: ["Synthetic passive capture fixture."],
     },
     {
-      id: "rea-cdp-electron",
-      name: "REA Electron file-page CDP observation provider",
+      id: "binsight-cdp-electron",
+      name: "BinSight Electron file-page CDP observation provider",
       version: "1",
     },
   );

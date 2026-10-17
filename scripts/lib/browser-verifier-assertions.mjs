@@ -101,7 +101,7 @@ function assertObservationMetadata(result, origin) {
     throw new Error(
       "Real Chrome relative DOM URL did not use the document base",
     );
-  if (!result.storage.local_storage_keys.includes("rea-storage-key"))
+  if (!result.storage.local_storage_keys.includes("binsight-storage-key"))
     throw new Error("Real Chrome local-storage key inventory was missing");
   if (
     result.storage.content_fingerprints.filter(
@@ -111,9 +111,9 @@ function assertObservationMetadata(result, origin) {
     throw new Error(
       "Real Chrome root and current-page cookie fingerprints were missing",
     );
-  if (!result.storage.indexed_db_names.includes("rea-browser-db"))
+  if (!result.storage.indexed_db_names.includes("binsight-browser-db"))
     throw new Error("Real Chrome IndexedDB name inventory was missing");
-  if (!result.storage.cache_names.includes("rea-browser-cache"))
+  if (!result.storage.cache_names.includes("binsight-browser-cache"))
     throw new Error("Real Chrome cache name inventory was missing");
   if (
     !result.metadata.responses.some(({ csp }) =>

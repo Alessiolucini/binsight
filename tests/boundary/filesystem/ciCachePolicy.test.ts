@@ -60,7 +60,7 @@ describe("hosted npm download-cache policy", () => {
     const command = z.string().parse(policy?.run);
 
     const outputDirectory = await createTestTempDirectory(
-      "rea-ci-cache-policy-",
+      "binsight-ci-cache-policy-",
     );
     const npmStub = join(outputDirectory, "npm");
     await writeFile(

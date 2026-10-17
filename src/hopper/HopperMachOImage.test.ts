@@ -108,7 +108,7 @@ const requireResolved = (
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports a FAT64 source that became unreadable as a host read denial",
   async () => {
-    const directory = await createTestTempDirectory("rea-hopper-fat64-");
+    const directory = await createTestTempDirectory("binsight-hopper-fat64-");
     const path = join(directory, "universal");
     await writeFile(path, Buffer.alloc(64));
     await chmod(path, 0);
@@ -135,7 +135,9 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 );
 
 it("rejects an ELF target before attempting FAT source preparation", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-mips-boundary-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-mips-boundary-",
+  );
   // No file is created: format validation must precede any filesystem lookup.
   const path = join(directory, "mips.elf");
   const result = await resolveHopperMachOImage({
@@ -157,7 +159,9 @@ it("rejects an ELF target before attempting FAT source preparation", async () =>
 });
 
 it("selects the plain-arm64-decodable arm64e slice from an Apple-style FAT32 container", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-arm64e-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-arm64e-",
+  );
   // /bin/* system binaries: x86_64, arm64e (cpusubtype 2), arm64e.x1 (subtype 12).
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
@@ -180,7 +184,7 @@ it("selects the plain-arm64-decodable arm64e slice from an Apple-style FAT32 con
 
 it("ranks capability-bearing arm64 subtypes by base and retains raw identity", async () => {
   const directory = await createTestTempDirectory(
-    "rea-hopper-fat32-capabilities-",
+    "binsight-hopper-fat32-capabilities-",
   );
   const fixture = buildFat32Container([
     {
@@ -204,7 +208,7 @@ it("ranks capability-bearing arm64 subtypes by base and retains raw identity", a
 
 it("fails closed when capability variants share the preferred arm64e base", async () => {
   const directory = await createTestTempDirectory(
-    "rea-hopper-fat32-capability-ambiguity-",
+    "binsight-hopper-fat32-capability-ambiguity-",
   );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: 0x80000002 },
@@ -222,7 +226,9 @@ it("fails closed when capability variants share the preferred arm64e base", asyn
 });
 
 it("prefers cpusubtype 2 over 12 regardless of FAT32 table order", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-order-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-order-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
@@ -238,7 +244,9 @@ it("prefers cpusubtype 2 over 12 regardless of FAT32 table order", async () => {
 });
 
 it("prefers a plain arm64 slice over arm64e in a FAT32 container", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-plain-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-plain-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: 0 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
@@ -254,7 +262,9 @@ it("prefers a plain arm64 slice over arm64e in a FAT32 container", async () => {
 });
 
 it("keeps a lone arm64e.x1 FAT32 slice selectable to preserve today's open behavior", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-lone-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-lone-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
   ]);
@@ -266,7 +276,9 @@ it("keeps a lone arm64e.x1 FAT32 slice selectable to preserve today's open behav
 });
 
 it("still fails closed when two arm64e.x1 FAT32 slices compete", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-ambig-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-ambig-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
@@ -282,7 +294,9 @@ it("still fails closed when two arm64e.x1 FAT32 slices compete", async () => {
 });
 
 it("selects the single x86_64 slice of a FAT32 container for an x86_64 target", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-intel-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-intel-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
     { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
@@ -299,7 +313,7 @@ it("selects the single x86_64 slice of a FAT32 container for an x86_64 target", 
 });
 
 it("parses a little-endian FAT32 table without tying it to slice byte order", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-le-");
+  const directory = await createTestTempDirectory("binsight-hopper-fat32-le-");
   const fixture = buildFat32Container(
     [
       { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
@@ -320,7 +334,9 @@ it("parses a little-endian FAT32 table without tying it to slice byte order", as
 });
 
 it("rejects a FAT32 slice whose declared range extends beyond the file", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-range-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-range-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
   ]);
@@ -336,7 +352,9 @@ it("rejects a FAT32 slice whose declared range extends beyond the file", async (
 });
 
 it("copies exactly the selected FAT32 slice bytes and verifies the source", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-copy-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-copy-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
@@ -362,7 +380,9 @@ it("copies exactly the selected FAT32 slice bytes and verifies the source", asyn
 });
 
 it("rejects FAT32 preparation when the source table changed after resolution", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-race-");
+  const directory = await createTestTempDirectory(
+    "binsight-hopper-fat32-race-",
+  );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },

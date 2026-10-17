@@ -26,7 +26,7 @@ const client = new Client({ name: "qlog-producer-verifier", version: "1" });
 const environment = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   REA_LOG_LEVEL: "silent",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
 };
 const transport = new StdioClientTransport({
   command: process.execPath,

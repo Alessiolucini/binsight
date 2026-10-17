@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "retains a configured Hopper path in host diagnostics without launching it",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-doctor-hopper-home-");
+    const home = await createTestTempDirectory("binsight-doctor-hopper-home-");
     const launcher = `${home}/bin/../bin/hopper`;
     const launchMarker = join(home, "hopper-was-launched");
     await mkdir(join(home, "bin"), { recursive: true });

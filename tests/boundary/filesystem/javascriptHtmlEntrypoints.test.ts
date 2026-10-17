@@ -30,7 +30,7 @@ const cases = [
 it.each(cases)(
   "projects local loads from actual HTML attributes in %s",
   async (html, expected) => {
-    const root = await createTestTempDirectory("rea-html-entrypoints-");
+    const root = await createTestTempDirectory("binsight-html-entrypoints-");
     await Promise.all([
       writeFile(join(root, "index.html"), html),
       writeFile(join(root, "actual.js"), "globalThis.ownedActual = true;"),
@@ -48,7 +48,9 @@ it.each(cases)(
 );
 
 it("preserves source digest, opening-tag range and decoded local base resolution", async () => {
-  const root = await createTestTempDirectory("rea-html-entrypoint-evidence-");
+  const root = await createTestTempDirectory(
+    "binsight-html-entrypoint-evidence-",
+  );
   const opening = '<script title=">" src="actual&#46;js">';
   const prefix = '<base data-href="decoy/"><base href=assets/>\n';
   const html = `${prefix}${opening}</script>`;
@@ -125,7 +127,9 @@ const coordinateCases = [
 it.each(coordinateCases)(
   "retains parse5 source coordinates for resolved and unresolved scripts with $name",
   async ({ prefix, opening }) => {
-    const root = await createTestTempDirectory("rea-html-coordinate-evidence-");
+    const root = await createTestTempDirectory(
+      "binsight-html-coordinate-evidence-",
+    );
     const html = `${prefix}${opening}</script><script src="missing.js"></script>`;
     const expected = htmlScriptRanges(html);
     expect(expected).toHaveLength(2);
@@ -193,7 +197,7 @@ const htmlScriptRanges = (html: string) => {
 };
 
 it("reports unanalyzed inline HTML scripts instead of claiming complete coverage", async () => {
-  const root = await createTestTempDirectory("rea-html-inline-scripts-");
+  const root = await createTestTempDirectory("binsight-html-inline-scripts-");
   const html = [
     "<!doctype html><html><head>",
     '<script src="cordova.js"></script>',
@@ -269,7 +273,9 @@ it("reports unanalyzed inline HTML scripts instead of claiming complete coverage
 });
 
 it("keeps complete coverage when HTML has only external scripts and data blocks", async () => {
-  const root = await createTestTempDirectory("rea-html-no-inline-scripts-");
+  const root = await createTestTempDirectory(
+    "binsight-html-no-inline-scripts-",
+  );
   await Promise.all([
     writeFile(
       join(root, "index.html"),
@@ -291,7 +297,9 @@ it("keeps complete coverage when HTML has only external scripts and data blocks"
 it.each(coordinateCases)(
   "retains parse5 source coordinates for inline script bodies with $name",
   async ({ prefix }) => {
-    const root = await createTestTempDirectory("rea-html-inline-coordinates-");
+    const root = await createTestTempDirectory(
+      "binsight-html-inline-coordinates-",
+    );
     const html = `${prefix}<script>\r\nrun();\rnext();\n</script>`;
     await writeFile(join(root, "index.html"), html);
 
@@ -334,7 +342,9 @@ const inlineBodyRange = (html: string) => {
 };
 
 it("bounds retained inline script locations and names the omitted remainder", async () => {
-  const root = await createTestTempDirectory("rea-html-many-inline-scripts-");
+  const root = await createTestTempDirectory(
+    "binsight-html-many-inline-scripts-",
+  );
   const count = 5_000;
   await writeFile(
     join(root, "index.html"),

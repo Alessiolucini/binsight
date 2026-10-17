@@ -81,7 +81,7 @@ beforeAll(async () => {
   const root =
     process.platform === "win32" ? join(process.cwd(), "build") : tmpdir();
   await mkdir(root, { recursive: true });
-  installDir = await mkdtemp(join(root, "rea-ghidra-riscv-languages-"));
+  installDir = await mkdtemp(join(root, "binsight-ghidra-riscv-languages-"));
   // The simulated Linux host needs a POSIX absolute path. A current-drive root
   // path also reaches this real fixture on Windows without changing admission.
   if (process.platform === "win32")

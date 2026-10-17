@@ -229,7 +229,9 @@ it("retains the injected EVM owner and retries failed cleanup on server shutdown
       arguments: { path: "/artifacts/source-owned.hex", encoding: "hex" },
     });
     expect(response.isError).not.toBe(true);
-    await expect(server.close()).rejects.toThrow("REA session cleanup failed");
+    await expect(server.close()).rejects.toThrow(
+      "BinSight session cleanup failed",
+    );
     await server.close();
     expect(close).toHaveBeenCalledTimes(2);
   } finally {

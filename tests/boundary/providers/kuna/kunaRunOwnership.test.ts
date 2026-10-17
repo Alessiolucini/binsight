@@ -32,7 +32,7 @@ it.each(["procedure_callees", "xrefs"] as const)(
         return acquire.call(this, signal);
       });
     const { open, kuna } = await session(
-      "rea-kuna-shared-run-budget-",
+      "binsight-kuna-shared-run-budget-",
       { project: "hang" },
       {},
       async (options) => {
@@ -83,7 +83,7 @@ it.each(["procedure_callees", "xrefs"] as const)(
 it("keeps an admission lease until retained native cleanup is proven", async () => {
   const unproven = unprovenCleanupLauncher("functions");
   const { target, kuna, cacheRoot } = await session(
-    "rea-kuna-retained-run-slot-",
+    "binsight-kuna-retained-run-slot-",
     { inventory: "hang" },
   );
   const installed = await inspectKunaInstallation({

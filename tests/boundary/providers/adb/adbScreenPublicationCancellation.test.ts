@@ -35,7 +35,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 afterEach(() => vi.restoreAllMocks());
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-adb-screen-cancel-");
+  const root = await createTestTempDirectory("binsight-adb-screen-cancel-");
   const binary = join(root, "adb");
   const stdout = `Android Debug Bridge version 1.0.41\nVersion 34.0.5-stub\nInstalled as ${binary}\n`;
   vi.mocked(execFileOutput).mockResolvedValue({
@@ -151,7 +151,10 @@ test.each([1, 2])(
     vi.mocked(open).mockImplementation(async (...args) => {
       const path = String(args[0]);
       const handle = await actualFs.open(...args);
-      if (basename(path) === "screen.png" && path.includes(".rea-screen-")) {
+      if (
+        basename(path) === "screen.png" &&
+        path.includes(".binsight-screen-")
+      ) {
         stagedPath = path;
         stagedRoot = dirname(path);
         rawHandle = handle;
@@ -225,7 +228,7 @@ test.each([1, 2])(
 test("retains the committed receipt and cleanup observation when cancellation races with root cleanup", async () => {
   const f = await fixture();
   const runtime = await PrivateRuntimeRoot.create({
-    prefix: "rea-adb-receipt-",
+    prefix: "binsight-adb-receipt-",
   });
   const controller = new AbortController();
   const abortReason = new Error("caller stopped after screen commit");
@@ -697,7 +700,7 @@ test("resolves the provider close aggregate after its failed root owner recovers
 test("retains incomplete cleanup on a cancelled capture while keeping cancellation typed", async () => {
   const f = await fixture();
   const runtime = await PrivateRuntimeRoot.create({
-    prefix: "rea-adb-cancel-",
+    prefix: "binsight-adb-cancel-",
   });
   const controller = new AbortController();
   let closeAttempts = 0;

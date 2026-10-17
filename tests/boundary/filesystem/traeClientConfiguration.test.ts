@@ -79,7 +79,7 @@ describe("Trae configuration paths", () => {
 
 describe("Trae JSON registration", () => {
   const traeClient = async () => {
-    const home = await createTestTempDirectory("rea-trae-");
+    const home = await createTestTempDirectory("binsight-trae-");
     const client = traePath(home, process.platform);
     if (client?.markerPath === undefined)
       throw new Error("missing Trae client");
@@ -87,7 +87,7 @@ describe("Trae JSON registration", () => {
     return { home, client };
   };
 
-  it("upserts rea into mcpServers while preserving unrelated settings", async () => {
+  it("upserts binsight into mcpServers while preserving unrelated settings", async () => {
     const { home, client } = await traeClient();
     await writeFile(
       client.configPath,
@@ -103,7 +103,7 @@ describe("Trae JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -132,7 +132,7 @@ describe("Trae JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.unrelated).toEqual({ setting: true });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -145,13 +145,13 @@ describe("Trae JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.binsight).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the binsight entry on uninstall", async () => {
     const { home, client } = await traeClient();
     await writeFile(
       client.configPath,
@@ -168,6 +168,6 @@ describe("Trae JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toBeUndefined();
+    expect(parsed.mcpServers.binsight).toBeUndefined();
   });
 });

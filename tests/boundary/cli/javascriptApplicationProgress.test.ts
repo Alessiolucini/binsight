@@ -25,7 +25,7 @@ for (const command of ["analyze-javascript-application", "analyze"]) {
   cliTest(
     `${command} reports real analysis phases on stderr and preserves stdout Evidence`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-js-cli-progress-");
+      const root = await createTestTempDirectory("binsight-js-cli-progress-");
       await writeFile(join(root, "main.js"), "fetch('');\n");
       const direct = await analyzeJavaScriptApplication({ input_path: root });
       if (!direct.ok) throw direct.error;
@@ -54,7 +54,9 @@ for (const command of ["analyze-javascript-application", "analyze"]) {
 cliTest(
   "keeps a failed analysis distinct from a completed result",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-cli-progress-failure-");
+    const root = await createTestTempDirectory(
+      "binsight-js-cli-progress-failure-",
+    );
     const output = await cli.run({
       arguments: [
         "analyze-javascript-application",
@@ -77,7 +79,7 @@ for (const extension of ["mts", "cts"]) {
     cliTest(
       `${command} returns facts for a selected ${extension} source`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-nodenext-cli-");
+        const root = await createTestTempDirectory("binsight-nodenext-cli-");
         const path = `selected.${extension}`;
         await writeFile(
           join(root, path),
@@ -110,7 +112,9 @@ for (const command of ["analyze-javascript-application", "analyze"]) {
   cliTest(
     `${command} retains HTML source ranges after a bare carriage return`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-html-coordinate-cli-");
+      const root = await createTestTempDirectory(
+        "binsight-html-coordinate-cli-",
+      );
       const opening = '<script src="actual.js">';
       await Promise.all([
         writeFile(

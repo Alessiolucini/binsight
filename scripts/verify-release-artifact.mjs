@@ -20,7 +20,7 @@ if (
   );
 const source = resolve(tarball);
 const verifierRun = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-release-rehearsal-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-release-rehearsal-"));
 const environment = {
   ...process.env,
   npm_config_cache: join(workspace, "npm-cache"),
@@ -43,5 +43,5 @@ try {
   await rm(workspace, { recursive: true, force: true });
 }
 process.stdout.write(
-  `${JSON.stringify({ verifier_run: await completeVerifierRun(verifierRun), package: "rea-agents", version, source, ...result })}\n`,
+  `${JSON.stringify({ verifier_run: await completeVerifierRun(verifierRun), package: "binsight", version, source, ...result })}\n`,
 );

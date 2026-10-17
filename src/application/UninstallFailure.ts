@@ -1,6 +1,6 @@
 import type { UninstallResult } from "./Uninstall.js";
 
-/** Whether any requested REA-owned uninstall action failed. */
+/** Whether any requested BinSight-owned uninstall action failed. */
 export const isUninstallFailure = (result: UninstallResult): boolean => {
   const status = result.status;
   switch (status) {

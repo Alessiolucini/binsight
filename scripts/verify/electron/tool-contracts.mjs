@@ -23,7 +23,7 @@ export async function verifyElectronToolContracts({
   repositoryRoot,
 }) {
   const root = await realpath(
-    await mkdtemp(join(tmpdir(), "rea-electron-e2e-")),
+    await mkdtemp(join(tmpdir(), "binsight-electron-e2e-")),
   );
   const main = join(root, "main.cjs");
   const preload = join(root, "preload.cjs");
@@ -76,7 +76,7 @@ bridge.exposeInMainWorld("fixture", {
     env: {
       PATH: process.env.PATH,
       REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured/hopper",
+      HOPPER_LAUNCHER_PATH: "/binsight-unconfigured/hopper",
     },
     stderr: "pipe",
   });
@@ -391,7 +391,7 @@ async function verifyCancellation({ input, ready, entrypoint, root }) {
     const error = JSON.parse(stdout);
     assert.ok(["cancelled", "cleanup_incomplete"].includes(error.code), stdout);
     assert.equal(error.category, "cancelled", stdout);
-    assert.doesNotMatch(error.message, /rea doctor/u);
+    assert.doesNotMatch(error.message, /binsight doctor/u);
     assert.equal(
       error.details?.partial_observation?.kind,
       "electron-active-observation",

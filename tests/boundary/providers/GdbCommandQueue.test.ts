@@ -21,7 +21,9 @@ afterEach(async () => {
 });
 
 it("bounds active and queued GDB commands, including cancelled placeholders", async () => {
-  directory = await mkdtemp(join(tmpdir(), "rea-gdb-command-queue-limit-"));
+  directory = await mkdtemp(
+    join(tmpdir(), "binsight-gdb-command-queue-limit-"),
+  );
   const provider = join(directory, "fake-gdb-queue.mjs");
   const activePath = join(directory, "active-command");
   const releasePath = join(directory, "release-command");

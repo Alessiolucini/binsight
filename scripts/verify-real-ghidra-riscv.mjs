@@ -55,7 +55,7 @@ assert.equal(installation.providerVersion, "12.1.4");
 const execute = promisify(execFile);
 const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-riscv-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-riscv-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
@@ -75,7 +75,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-riscv-proof", version: "1" });
+const client = new Client({ name: "binsight-real-riscv-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);

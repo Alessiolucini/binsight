@@ -47,7 +47,7 @@ if (installation.status !== "available")
 const execute = promisify(execFile);
 const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-ppc-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "binsight-ppc-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
@@ -58,7 +58,7 @@ const env = {
   REA_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/binsight-unconfigured-deep-provider/hopper",
 };
 for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
   if (process.env[setting] !== undefined) env[setting] = process.env[setting];
@@ -74,7 +74,7 @@ try {
     assert.deepEqual(
       resolved.value.powerpc,
       independent.powerpc,
-      "REA ELF interpretation disagrees with GNU readelf",
+      "BinSight ELF interpretation disagrees with GNU readelf",
     );
     assert.equal(resolved.value.sha256, fixture.sha256);
     const snapshotPath = join(workspace, "ppc.snapshot.json");
@@ -84,7 +84,10 @@ try {
       env,
       stderr: "pipe",
     });
-    const client = new Client({ name: "rea-real-ppc-proof", version: "1" });
+    const client = new Client({
+      name: "binsight-real-ppc-proof",
+      version: "1",
+    });
     let stderr = "";
     transport.stderr?.on("data", (chunk) => {
       stderr = (stderr + chunk.toString()).slice(-65536);
@@ -147,7 +150,7 @@ try {
       });
       assert.equal(
         marker.bytes_hex,
-        Buffer.from("rea-ppc-source-owned-fixture\0").toString("hex"),
+        Buffer.from("binsight-ppc-source-owned-fixture\0").toString("hex"),
       );
       const callees = await call("procedure_callees", {
         procedure: entry.address,

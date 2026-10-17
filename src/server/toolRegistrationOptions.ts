@@ -11,7 +11,7 @@ export const applicationValidatedInputSchema = (
 ): StandardSchemaWithJSON => ({
   "~standard": {
     ...schema["~standard"],
-    vendor: "rea-application",
+    vendor: "binsight-application",
     validate: (value: unknown) => ({ value }),
   },
 });

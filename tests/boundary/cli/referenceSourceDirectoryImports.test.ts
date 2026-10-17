@@ -21,7 +21,7 @@ interface ReferenceSourceDirectoryFixture {
 const prepareReferenceSourceDirectoryFixture =
   async (): Promise<ReferenceSourceDirectoryFixture> => {
     const workspace = await createTestTempDirectory(
-      "rea-reference-directory-imports-",
+      "binsight-reference-directory-imports-",
     );
     const root = join(workspace, "source");
     const outside = join(workspace, "outside", "index.js");

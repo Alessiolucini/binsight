@@ -21,7 +21,7 @@ let stdoutClosed = false;
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 // Windows home lookup throws for an empty USERPROFILE. Dependencies resolve
-// home during import, before REA's own resolver can apply its account fallback.
+// home during import, before BinSight's own resolver can apply its account fallback.
 if (process.platform === "win32" && process.env.USERPROFILE === "") {
   delete process.env.USERPROFILE;
 }
@@ -29,7 +29,7 @@ if (process.platform === "win32" && process.env.USERPROFILE === "") {
 // Playwright's registry assumes one of its three desktop host platforms when
 // it chooses the browser cache directory. Termux reports `android`, although
 // its Node runtime and filesystem are POSIX-compatible. Keep the cache path
-// explicit so REA can start on Termux. Browser launch still requires a
+// explicit so BinSight can start on Termux. Browser launch still requires a
 // caller-supplied Android-compatible Chromium executable.
 if (
   process.platform === "android" &&
@@ -52,7 +52,7 @@ const runtimeFiles = isMcpMode
 
 if (!(await compiledRuntimeExists(runtimeFiles))) {
   process.stderr.write(
-    `REA's compiled runtime is missing. Run \`npm ci && npm run build:cached\` in ${packageRoot} to install dependencies and build REA, then restart it. If this is an installed package, reinstall rea-agents.\n`,
+    `BinSight's compiled runtime is missing. Run \`npm ci && npm run build:cached\` in ${packageRoot} to install dependencies and build BinSight, then restart it. If this is an installed package, reinstall binsight.\n`,
   );
   process.exitCode = 1;
 } else if (isMcpMode) {
@@ -111,7 +111,7 @@ if (!(await compiledRuntimeExists(runtimeFiles))) {
 }
 
 /**
- * A reader that closes the pipe early, as `rea ... | head` does, has declined
+ * A reader that closes the pipe early, as `binsight ... | head` does, has declined
  * the rest of the output. Stop writing without reporting a failure, and exit
  * with the status a SIGPIPE-terminated writer reports. MCP stdio keeps its own
  * client lifecycle.

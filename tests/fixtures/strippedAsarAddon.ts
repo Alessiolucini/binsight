@@ -14,7 +14,7 @@ interface AdditionalAsarFile {
 export const createStrippedAsarAddon = async (
   additionalFiles: readonly AdditionalAsarFile[] = [],
 ) => {
-  const root = await createTestTempDirectory("rea-stripped-asar-addon-");
+  const root = await createTestTempDirectory("binsight-stripped-asar-addon-");
   const source = join(root, "source");
   const archive = join(root, "app.asar");
   const addon = "node_modules/btime/binding.node";

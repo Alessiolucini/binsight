@@ -1,9 +1,9 @@
 # Electron file-page observation
 
-REA can attach to an Electron/Chromium CDP endpoint and inspect existing `file://` renderer pages without evaluating JavaScript or invoking Electron APIs. The request supplies the endpoint directly; REA accepts only literal-port loopback HTTP endpoints. Selecting an endpoint exposes every Electron target it serves, including local file paths and page metadata.
+BinSight can attach to an Electron/Chromium CDP endpoint and inspect existing `file://` renderer pages without evaluating JavaScript or invoking Electron APIs. The request supplies the endpoint directly; BinSight accepts only literal-port loopback HTTP endpoints. Selecting an endpoint exposes every Electron target it serves, including local file paths and page metadata.
 
 Disconnecting the inspection's page session can clear caller-owned
-`navigator.platform` emulation inside Chromium. REA cannot restore another
+`navigator.platform` emulation inside Chromium. BinSight cannot restore another
 client's complete user-agent/client-hint configuration. Use a disposable target
 or let the owning client reapply its configuration; see the shared
 [CDP state limitation](browser-observation.md#provider-authorities).
@@ -24,7 +24,7 @@ when both Evidence sets already exist.
 ## Target boundary
 
 The request supplies a literal-port loopback endpoint and, for inspection, a
-target ID. REA accepts local hostless `file://` URLs that resolve to regular
+target ID. BinSight accepts local hostless `file://` URLs that resolve to regular
 files, including pages a packaged application serves from inside `app.asar`.
 For those, the first `.asar` path component that is a regular file is the
 archive, the remainder must name a regular file in its header, and the reported
@@ -37,11 +37,11 @@ metadata.
 
 `list_electron_targets` returns every eligible target served by the supplied endpoint in one inline array.
 
-For the MCP follow-up call, pass the same literal-loopback endpoint and the selected target ID to `inspect_electron_page`. REA rediscovers targets and validates the ID against the live endpoint before inspection.
+For the MCP follow-up call, pass the same literal-loopback endpoint and the selected target ID to `inspect_electron_page`. BinSight rediscovers targets and validates the ID against the live endpoint before inspection.
 
 ```bash
-rea list-electron-targets http://127.0.0.1:9223 --json
-rea inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
+binsight list-electron-targets http://127.0.0.1:9223 --json
+binsight inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
   --observation-ms 100 --json
 ```
 
@@ -49,7 +49,7 @@ Script content is excluded by default. Setting `include_script_sources` in the
 request returns the selected target's script sources:
 
 ```bash
-rea inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
+binsight inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
   --include-script-sources \
   --json
 ```
@@ -60,7 +60,7 @@ completeness, and content-addressed script artifacts. Script metadata
 retains its execution-context frame ID when CDP supplies one. The capture also
 inventories worker, service-worker, and shared-worker targets with
 validated opener-target and parent-frame IDs. Worker discovery uses passive
-target metadata; REA does not attach to or execute code in those targets.
+target metadata; BinSight does not attach to or execute code in those targets.
 Collection counts and aggregate script-source bytes are not capped. Like every
 target, frame, script, and resource, a worker URL must resolve to a local
 file before it is retained. Relationship IDs improve
@@ -75,7 +75,7 @@ invoke Electron IPC, close a target, or terminate the application.
 The scenario request supplies the Electron executable and application entry
 point, plus any arguments and actions. The application root defaults to the
 entry point's parent directory and can be supplied when the app uses a different
-root. REA launches that executable through
+root. BinSight launches that executable through
 the official Playwright Electron API and owns its lifetime. It accepts click/wait actions,
 window-targeted renderer reload/crash actions, and synthetic `open-url` or
 `second-instance` deep-link delivery. It records capture-scoped window and
@@ -95,7 +95,7 @@ and network privileges, so lifecycle ownership does not make it a sandbox.
 The CLI and MCP surfaces accept the same schema. For a JSON request file:
 
 ```bash
-rea capture-electron-scenario scenario.json --json
+binsight capture-electron-scenario scenario.json --json
 ```
 
 The result records action status and targets, correlated app/window/WebContents,
@@ -111,7 +111,7 @@ startup, including the initial state snapshot, has a 60-second deadline.
 Actions wait until completion or request cancellation; a click whose target
 never appears, or a `wait` without `window_index` in an app that opens no
 window, remains pending until cancelled. After cancellation, the final state
-read has 5 seconds before REA keeps the initial snapshot instead; the
+read has 5 seconds before BinSight keeps the initial snapshot instead; the
 cancellation keeps the caller's reason and records that expiry in its
 diagnostics.
 CLI SIGINT/SIGTERM requests cancellation and awaits owned-process cleanup.

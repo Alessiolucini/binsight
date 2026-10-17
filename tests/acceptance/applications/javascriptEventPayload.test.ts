@@ -14,7 +14,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "retains large event names and emitter-scoped listener ownership through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-event-payload-");
+    const root = await createTestTempDirectory("binsight-event-payload-");
     const name = "payload/ğ".repeat(80_000);
     const lookalike = `value-sha256:${createHash("sha256").update(JSON.stringify(name)).digest("hex")}`;
     const source = [

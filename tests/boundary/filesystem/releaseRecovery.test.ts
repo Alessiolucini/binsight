@@ -19,7 +19,7 @@ const job = (name: string, conclusion = "success") => ({
   steps: [],
 });
 const selection = () => ({
-  repository: "fixture/rea",
+  repository: "fixture/binsight",
   version: "6.5.0",
   tagSha: sourceSha,
   run: {
@@ -28,11 +28,11 @@ const selection = () => ({
     path: ".github/workflows/release.yml",
     event: "pull_request",
     status: "completed",
-    repository: { full_name: "fixture/rea" },
-    head_repository: { full_name: "fixture/rea" },
+    repository: { full_name: "fixture/binsight" },
+    head_repository: { full_name: "fixture/binsight" },
   },
   release: {
-    tag_name: "rea-agents-6.5.0",
+    tag_name: "binsight-6.5.0",
     draft: false,
     published_at: "2026-10-14T12:32:45Z",
   },
@@ -97,7 +97,7 @@ it("refuses absent or ambiguous qualification and unsuccessful npm publication",
 
 it("refuses foreign runs, unrelated workflows and unpublished releases", () => {
   const foreign = selection();
-  foreign.run.head_repository.full_name = "outside/rea";
+  foreign.run.head_repository.full_name = "outside/binsight";
   expect(() => selectRecoveryRelease(foreign)).toThrow();
   const unrelated = selection();
   unrelated.run.path = ".github/workflows/ci.yml";
@@ -106,12 +106,12 @@ it("refuses foreign runs, unrelated workflows and unpublished releases", () => {
   draft.release.draft = true;
   expect(() => selectRecoveryRelease(draft)).toThrow();
   const wrongTag = selection();
-  wrongTag.release.tag_name = "rea-agents-6.6.0";
+  wrongTag.release.tag_name = "binsight-6.6.0";
   expect(() => selectRecoveryRelease(wrongTag)).toThrow();
 });
 
 it("requires npm bytes to match the retained archive and original source/run", async () => {
-  const directory = await createTestTempDirectory("rea-release-recovery-");
+  const directory = await createTestTempDirectory("binsight-release-recovery-");
   const archive = "original qualified archive";
   await writeFile(join(directory, "package.tgz"), archive);
   await writeFile(
@@ -183,7 +183,7 @@ it("limits recovery to verification and dependent MCP publication from the relea
     actions: "read",
   });
   const steps = workflow.jobs.verify.steps;
-  for (const name of ["verified-release-package", "rea-test-runtime"])
+  for (const name of ["verified-release-package", "binsight-test-runtime"])
     expect(
       steps.find((candidate) => candidate.with?.name === name)?.with,
     ).toMatchObject({

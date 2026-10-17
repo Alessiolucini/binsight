@@ -1,7 +1,7 @@
 # Client and agent verification
 
 Use these optional lanes to verify an installed client or evaluate an agent's
-REA workflow. [Testing REA](testing.md) provides the normal development commands
+BinSight workflow. [Testing BinSight](testing.md) provides the normal development commands
 and provider lanes. Each record below states its host, client version, model
 fixture, and remaining coverage; a native-client run with a loopback model does
 not establish live model-service acceptance.
@@ -11,12 +11,12 @@ not establish live model-service acceptance.
 A separate probe of the published `@earendil-works/pi-codemode` 1.1.0 and 1.2.0
 declaration renderers rendered the full `compare_web_captures` input as
 `args: unknown`: its generated TypeScript type exceeds Pi's 16,000-character
-default. REA keeps the full advertisement's fields by inlining references when
+default. BinSight keeps the full advertisement's fields by inlining references when
 the shared form would exceed Pi's 32-reference expansion limit; retaining that
 shared form would leave later fields unknown instead. The existing
 `REA_MCP_INPUT_SCHEMA_PROFILE=compact` profile lets callers stay below
 its character limit by advertising reduced nested validation structure, while
-REA continues to validate calls against the complete canonical input schema.
+BinSight continues to validate calls against the complete canonical input schema.
 Compact applies to the server's advertised inputs and is not an automatic
 full-profile fallback; see the [compact input schema profile](mcp-contracts.md#compact-input-schema-profile)
 for details of its reduced forms.
@@ -33,12 +33,12 @@ and [renderer usage notes](https://github.com/earendil-works/pi/blob/b45e0ebcc5a
 The optional `verify:qwen-client`, `verify:pi-client`, and `verify:hermes-client`
 lanes require an installed native client. Select its executable with
 `REA_VERIFY_QWEN_COMMAND`, `REA_VERIFY_PI_COMMAND`, or `REA_VERIFY_HERMES_COMMAND`.
-They configure disposable profiles through the public REA CLI, preserve caller
+They configure disposable profiles through the public BinSight CLI, preserve caller
 settings and backups, and exercise real stdio MCP calls and skill loading. The
 `call` mode checks complete catalog discovery and actual JavaScript Evidence;
-pass `-- chat` to check plain chat with REA enabled. Qwen also reads the full
+pass `-- chat` to check plain chat with BinSight enabled. Qwen also reads the full
 result that its client offloads, and Pi exercises default codemode execution.
-Use `REA_VERIFY_RUNTIME_ROOT` to select a production-only installed REA package.
+Use `REA_VERIFY_RUNTIME_ROOT` to select a production-only installed BinSight package.
 Receipts retain client versions, result digests, host coverage and owned-process
 cleanup. These lanes use a deterministic loopback model and do not prove live
 model-provider compatibility. Pi and Hermes remain POSIX-only. Qwen, Pi and Hermes
@@ -69,9 +69,9 @@ shim reaches `PATH`.
 The optional lane uses native `GEMINI_CLI_HOME` discovery in an isolated
 Git project, checks setup plans, backups and idempotence, activates the installed
 personal skill, validates all forwarded input JSON Schemas against their declared
-dialect, forwards the complete REA catalog and checks full JavaScript
-Evidence for a Unicode path. Use `-- chat` for ordinary chat with REA enabled,
-or `REA_VERIFY_RUNTIME_ROOT` for a production-only installed REA package.
+dialect, forwards the complete BinSight catalog and checks full JavaScript
+Evidence for a Unicode path. Use `-- chat` for ordinary chat with BinSight enabled,
+or `REA_VERIFY_RUNTIME_ROOT` for a production-only installed BinSight package.
 The local fixture exercises the real Gemini API adapter, including its
 `untrusted_context` tool-result envelope. Token counts are synthetic; live
 Google API compatibility remains unverified. The lane disables
@@ -102,7 +102,7 @@ preferences and backups, checks idempotent setup, waits through the native
 `WaitForMcpServers` tool when discovery is pending, and validates the complete
 catalog and forwarded input schemas. Call mode loads the personal skill through
 native `Skill`, checks its full body and verifies named-schema JavaScript Evidence
-for a Unicode path. Use `-- chat` for ordinary chat with REA enabled, or
+for a Unicode path. Use `-- chat` for ordinary chat with BinSight enabled, or
 `REA_VERIFY_RUNTIME_ROOT` for a production-only installed package. The local
 Anthropic Messages/SSE fixture preserves native resource-hint envelopes in its
 request artifacts. Usage is synthetic; live Anthropic API and bare-mode
@@ -131,8 +131,8 @@ The same native client passed full-profile chat and analysis with the actual
 wire model `gpt-4.1` under a distinct BYOK model ID:
 
 ```bash
-REA_VERIFY_COPILOT_MODEL=rea-gpt-4.1 REA_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- chat
-REA_VERIFY_COPILOT_MODEL=rea-gpt-4.1 REA_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- call
+REA_VERIFY_COPILOT_MODEL=binsight-gpt-4.1 REA_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- chat
+REA_VERIFY_COPILOT_MODEL=binsight-gpt-4.1 REA_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- call
 ```
 
 These runs retain full canonical input/output schemas, all tools, installed-skill
@@ -162,9 +162,9 @@ Linux x64 1.0.50 binary); select it with `REA_VERIFY_GROK_COMMAND`. This optiona
 POSIX lane isolates `GROK_HOME`, an independent Git workspace and additional
 skill roots, disables foreign configuration discovery, guards setup writes,
 preserves unrelated registrations/backups and checks idempotence. Call mode
-loads the full skill through native `read_file`, queries all REA names and input
+loads the full skill through native `read_file`, queries all BinSight names and input
 schemas through native `search_tool`, and calls analysis through `use_tool`.
-If discovery reports `partial`, the native agent diagnoses REA registration and
+If discovery reports `partial`, the native agent diagnoses BinSight registration and
 retries discovery. No startup-timeout override or fixed readiness delay is used.
 A larger Unicode-path fixture exercises native result offloading: the full
 retained Evidence is validated against its named schema, then native terminal
@@ -182,15 +182,15 @@ skill discovery remain unverified.
 sessions use the actual OS home, so provision a disposable POSIX account rather
 than overriding `HOME`. Set `REA_VERIFY_COMMANDCODE_ACCOUNT_HOME` to that account's
 actual home and create `.rea-client-verification` there with exactly
-`Disposable REA client verification account` followed by a newline. The lane
-owns that account's `.commandcode` configuration and shared REA skill. Build the
+`Disposable BinSight client verification account` followed by a newline. The lane
+owns that account's `.commandcode` configuration and shared BinSight skill. Build the
 runtime as the checkout owner, then run `node scripts/verify-commandcode-client.mjs`
 as the disposable account; the npm shortcut also needs a writable checkout.
 The verifier does not create accounts or install clients. It guards setup
 targets, preserves an unrelated registration and backups, checks idempotence,
 and verifies native default shared-skill discovery and complete activation.
 Default deferred-schema delivery stays enabled: the native prompt advertises
-every REA tool, exact-name `search_tools` returns every input schema, and a native
+every BinSight tool, exact-name `search_tools` returns every input schema, and a native
 shell query recovers the saved catalog's count and digest when the client spills
 it. Actual analysis of a Unicode-path fixture delivers full named-schema Evidence
 to the next model request. Use `-- chat` for ordinary chat or
@@ -205,8 +205,8 @@ and Windows remain unverified.
 18.8.7 binary); select it with `REA_VERIFY_OMP_COMMAND`. This optional POSIX lane
 isolates the default agent, global config and XDG roots, guards setup targets,
 preserves unrelated registrations and backups, and checks idempotence. It
-compares native rejection of an invalid profile with REA's refusal to plan
-fallback writes. OMP's default `xd://` interface mounts the complete REA catalog
+compares native rejection of an invalid profile with BinSight's refusal to plan
+fallback writes. OMP's default `xd://` interface mounts the complete BinSight catalog
 as devices: call mode reads the complete installed skill and tool documentation,
 then dispatches analysis through native `write`. It checks full named-schema
 JavaScript Evidence with a Unicode path in the next model request. Device
@@ -232,7 +232,7 @@ the installed skill without a `DSH_AGENTS_HOME` override. A separate Git root pr
 masking a missing installation. The default `call` mode checks skill loading,
 complete catalog discovery, the actual forwarded input schemas and regexes,
 and full JavaScript Evidence for a Unicode path. Use `-- chat` for ordinary
-chat with REA enabled, or `REA_VERIFY_RUNTIME_ROOT` for an installed package.
+chat with BinSight enabled, or `REA_VERIFY_RUNTIME_ROOT` for an installed package.
 The fixture uses Harness's custom OpenAI adapter and the one-million-token
 context capacity declared by its default DeepSeek Flash model; it does not
 establish live DeepSeek API or native Windows coverage. Receipts include
@@ -240,7 +240,7 @@ request artifacts, result digests and owned-process lineage.
 
 The DSH acceptance journey also exercises public setup, approval, doctor,
 generated-launcher MCP startup and uninstall without an installed Harness.
-That journey proves REA workflow behavior, not native Cordis expression
+That journey proves BinSight workflow behavior, not native Cordis expression
 evaluation. Filesystem regressions retain tagged values and unrelated rows
 across alias dependencies and check refusal of unsafe YAML without mutation.
 
@@ -380,7 +380,7 @@ without changing its loaded bytes. `verify:hopper:fat64` additionally checks
 FAT64 preparation through Hopper's native Mach-O loader, source-container
 mappings, profile identity,
 malformed and ambiguous slice rejection, and temporary-image lifetime. Both
-lanes have been verified on Hopper 6.1.0-demo; this establishes REA's prepared
+lanes have been verified on Hopper 6.1.0-demo; this establishes BinSight's prepared
 FAT64 workflow, not native FAT64-loader support.
 Cross-architecture fixture compilation is not required by `verify:hopper`.
 
@@ -424,14 +424,14 @@ The complete `verify:browser` lane includes these same checks.
 
 After building, `verify:browser:dom` checks empty and HTML-whitespace form
 destinations against a native Chrome DOM-property oracle through CLI and stdio
-MCP. It requires `REA_BROWSER_EXECUTABLE` and accepts an optional installed REA
+MCP. It requires `REA_BROWSER_EXECUTABLE` and accepts an optional installed BinSight
 entrypoint. The full browser lane includes the same public-adapter assertions
 before other fixtures navigate the selected page.
 
 `verify:browser:scripts` checks active script capture → exact-byte export →
 existing static JavaScript analysis through CLI and stdio MCP, including
 manifest readback, competing query variants, and resolved relative imports.
-It uses an installed browser and accepts an optional installed REA entrypoint.
+It uses an installed browser and accepts an optional installed BinSight entrypoint.
 The complete `verify:browser` lane also exercises passive script export through
 both public adapters. See [website script export](website-script-export.md).
 
@@ -458,14 +458,14 @@ disposable HOME and CODEX_HOME under `~/.cache/rea-agent-evaluations/`. Set
 directory: current Codex refuses helper aliases under `/tmp`, preventing shell
 commands and skill reads even if MCP works. Each owned run directory is removed
 after verification unless fixture retention is requested. The lane
-installs the packaged skill and MCP registration through public `rea setup`,
+installs the packaged skill and MCP registration through public `binsight setup`,
 rather than copying a skill into a project that also inherits the caller's
 skills and configuration. Only authentication is copied, when present, and it
 is removed even with `REA_AGENT_EVAL_KEEP_FIXTURES=true`. No user configuration,
 rules, plugins or history is copied; shell snapshots and additional agents are
 disabled. Existing API-key environment authentication remains available.
 The native missing-provider scenario preapproves only `open_binary` and
-`close_binary` in the disposable client so it reaches REA's actual provider
+`close_binary` in the disposable client so it reaches BinSight's actual provider
 boundary instead of stopping at Codex approval. This does not validate a real
 native engine or authorize arbitrary runtime execution.
 
@@ -480,7 +480,7 @@ limit for the whole process tree when testing on a constrained host; a Node
 heap limit alone does not bound client and child-process memory.
 
 `missing-target` leaves desktop fixtures visible without selecting one in the
-request. It requires zero REA calls and a structured request for an app name or
+request. It requires zero BinSight calls and a structured request for an app name or
 artifact path. Its `expectedFirstTool` is `null`, and
 `targetClarificationPassed` grades that limited routing outcome independently
 of analysis prose heuristics. Analyzing a nearby example cannot pass this case.
@@ -489,7 +489,7 @@ The packaged desktop, parser-comparison, and managed scenarios assess a closed s
 known fixture claims. Each final answer must be a strict JSON manifest containing
 exactly the requested claim IDs, values, Evidence IDs, and Evidence authority and
 confidence. Golden values are not included in the prompt. The evaluator checks
-exact values against both the fixture oracle and authenticated successful REA
+exact values against both the fixture oracle and authenticated successful BinSight
 results; an Evidence ID by itself is insufficient. Missing, duplicate, extra,
 contradictory, incorrectly sourced, or unsupported claims fail the scenario.
 
@@ -526,8 +526,8 @@ its heuristic gate does not establish full-producer factual correctness.
 All scenarios retain routing, workflow, validation, repetition, process-exit,
 and token-use gates. Configured factual scenarios additionally require a factual
 pass. Their answer-text heuristics are diagnostic and do not affect the gate.
-Validation counts include complete text-only REA `invalid_request` envelopes
-and failed SDK calls whose arguments violate the named current REA contract.
+Validation counts include complete text-only BinSight `invalid_request` envelopes
+and failed SDK calls whose arguments violate the named current BinSight contract.
 Client approval rejections and provider unavailability remain distinct failures;
 truncated JSON previews are not parsed into invented error codes.
 Repeated `binary_session` observations separated by a successful `open_binary`
@@ -542,7 +542,7 @@ tool results and final answers for review.
 
 Report schema version 4 adds negative routing scenarios with nullable
 `expectedFirstTool` and a `targetClarificationPassed` outcome. Consumers must
-allow an expected absence of REA calls; this does not make an analysis scenario
+allow an expected absence of BinSight calls; this does not make an analysis scenario
 pass without its required tools. Version 3 changed the top-level
 `factualCorrectness` from a constant
 string to an assessment summary with status, scope, and assessed/passed/failed/

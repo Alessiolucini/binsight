@@ -11,7 +11,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "setup dry run resolves empty home values without writing to the cwd",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-empty-home-dry-run-");
+    const directory = await createTestTempDirectory(
+      "binsight-empty-home-dry-run-",
+    );
     const workingDirectory = join(directory, "cwd");
     await mkdir(workingDirectory);
     const hostHome = userInfo().homedir;
@@ -68,7 +70,7 @@ cliTest.skipIf(process.platform === "win32")(
   "setup, doctor, and uninstall use the nonempty fallback home when HOME is empty",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-empty-home-lifecycle-",
+      "binsight-empty-home-lifecycle-",
     );
     const home = join(directory, "fallback-home");
     const workingDirectory = join(directory, "cwd");
@@ -118,7 +120,7 @@ cliTest.skipIf(process.platform === "win32")(
     const remainingConfig = parse(
       await readFile(join(home, ".cursor", "mcp.json"), "utf8"),
     );
-    expect(remainingConfig).not.toHaveProperty("mcpServers.rea");
+    expect(remainingConfig).not.toHaveProperty("mcpServers.binsight");
     await expect(
       access(
         join(

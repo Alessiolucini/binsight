@@ -127,12 +127,12 @@ const checkObjc = (metadata, mode) => {
     ) ||
     category?.class_name !== "NSString" ||
     category.class_source !== "external" ||
-    !category.instance_methods.includes("reaFixtureLength") ||
+    !category.instance_methods.includes("binsightFixtureLength") ||
     !metadata.objc_dispatch_implementations.some(
       (item) =>
         item.class_name === "NSString" &&
         item.category === "ReaDispatchAdditions" &&
-        item.selector === "reaFixtureLength",
+        item.selector === "binsightFixtureLength",
     ) ||
     objcCoverage?.status !== "complete" ||
     fixupCoverage(metadata)?.reason?.startsWith(mode.fixups) !== true ||
@@ -182,7 +182,7 @@ const checkSwift = (metadata, mode) => {
     );
 };
 
-const root = await mkdtemp(join(tmpdir(), "rea-dispatch-"));
+const root = await mkdtemp(join(tmpdir(), "binsight-dispatch-"));
 let report;
 try {
   const results = [];

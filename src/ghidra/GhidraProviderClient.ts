@@ -572,7 +572,7 @@ export const createGhidraProviderClient = (input: {
       ? windowsP0Limitations
       : installation.platform === "darwin"
         ? [
-            "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+            "macOS sessions require a matching executable Ghidra native decompiler; BinSight checks for it but does not build native components or change Gatekeeper quarantine state.",
           ]
         : [];
   const client = clientFactory({

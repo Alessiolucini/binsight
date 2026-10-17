@@ -1,4 +1,4 @@
-name: Publish REA website
+name: Publish BinSight website
 
 on:
   workflow_dispatch:

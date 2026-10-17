@@ -54,7 +54,7 @@ interface Contribution {
 
 /**
  * Identify the compiler, linker, packer, protector, installer, language and
- * bundler markers present in one file by a REA-authored signature table:
+ * bundler markers present in one file by a BinSight-authored signature table:
  * packer and protector section names, whole-file byte and ASCII markers, the
  * Microsoft Rich header, and GCC/Clang `.comment` banners. An entropy-assisted
  * packing assessment is layered on top. Detection only: the file is read once,
@@ -409,7 +409,7 @@ const limitations = (
   coverage: Coverage,
 ): string[] => {
   const notes = [
-    "Toolchain identifications are inferred from a REA-authored table of public byte and structural markers; a marker is consistent with a tool having produced the file and is not proof that it did.",
+    "Toolchain identifications are inferred from a BinSight-authored table of public byte and structural markers; a marker is consistent with a tool having produced the file and is not proof that it did.",
     "Detection only: no section, archive or packed region is unpacked, decompressed or executed; the file is read once (bounded at 256 MiB) with no network or temporary files.",
     "Markers can be stripped from a file a tool did produce and can be embedded by unrelated code or data, so an absent indicator is not proof the tool was not used.",
     "The packing assessment is an entropy-and-structure heuristic; entropy cannot distinguish compressed from encrypted data, and ordinary resources or media can raise whole-file entropy without packing.",

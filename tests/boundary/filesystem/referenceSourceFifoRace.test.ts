@@ -8,7 +8,7 @@ import { processTest } from "../../support/process/processFixture.js";
 processTest.skipIf(process.platform === "win32")(
   "rejects a FIFO replacing an admitted source file without waiting for a writer",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-reference-fifo-race-");
+    const root = await createTestTempDirectory("binsight-reference-fifo-race-");
     const probe = fileURLToPath(
       new URL("../../fixtures/referenceReaderFifoProbe.mjs", import.meta.url),
     );

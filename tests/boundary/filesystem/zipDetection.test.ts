@@ -26,7 +26,7 @@ describe("ZIP signature detection", () => {
   ] as const)(
     "routes representative ZIP signature $signature through inventory and target parsing",
     async ({ signature, archive }) => {
-      const root = await createTestTempDirectory("rea-zip-signature-");
+      const root = await createTestTempDirectory("binsight-zip-signature-");
       const path = join(root, "input");
       await writeFile(path, Buffer.from(signature));
       expect(
@@ -44,7 +44,7 @@ describe("ZIP signature detection", () => {
   );
 
   it("uses ZIP magic before the filename suffix", async () => {
-    const root = await createTestTempDirectory("rea-zip-suffix-");
+    const root = await createTestTempDirectory("binsight-zip-suffix-");
     const apk = join(root, "renamed.apk");
     const program = join(root, "program.apk");
     await writeFile(apk, Buffer.from([0x50, 0x4b, 0x03, 0x04]));
@@ -58,7 +58,7 @@ describe("ZIP signature detection", () => {
   });
 
   it("requires container magic for asar, pkg, and dmg suffixes", async () => {
-    const root = await createTestTempDirectory("rea-container-magic-");
+    const root = await createTestTempDirectory("binsight-container-magic-");
     const asar = join(root, "app.asar");
     const textAsar = join(root, "notes.asar");
     const pkg = join(root, "install.pkg");
@@ -120,7 +120,7 @@ describe("ZIP signature detection", () => {
   it.each([[], [0x50], [0x50, 0x4b], [0x50, 0x4b, 0x03]])(
     "rejects an incomplete signature %j",
     async (...bytes) => {
-      const root = await createTestTempDirectory("rea-zip-short-");
+      const root = await createTestTempDirectory("binsight-zip-short-");
       const path = join(root, "input");
       await writeFile(path, Buffer.from(bytes));
       expect(
@@ -139,7 +139,7 @@ describe("nested container family", () => {
   };
 
   it("takes ZIP families from member bytes, not member suffixes", async () => {
-    const root = await createTestTempDirectory("rea-nested-zip-family-");
+    const root = await createTestTempDirectory("binsight-nested-zip-family-");
     const path = join(root, "outer.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("inner-text.apk", new TextReader("just some text\n"));
@@ -176,7 +176,9 @@ describe("nested container family", () => {
   it.skipIf(process.platform === "win32")(
     "does not name a container family for a symlink it did not follow",
     async () => {
-      const root = await createTestTempDirectory("rea-nested-symlink-family-");
+      const root = await createTestTempDirectory(
+        "binsight-nested-symlink-family-",
+      );
       const directory = join(root, "application");
       await mkdir(directory);
       await writeFile(join(directory, "real.apk"), await plainZip());
@@ -207,7 +209,7 @@ describe("package signature byte identity", () => {
   ])(
     "rejects high-bit aliases of $extension magic at both admission boundaries",
     async ({ extension, signature, offset, size }) => {
-      const root = await createTestTempDirectory("rea-package-magic-");
+      const root = await createTestTempDirectory("binsight-package-magic-");
       const path = join(root, `input.${extension}`);
       const bytes = Buffer.alloc(size);
       bytes.write(signature, offset, "ascii");

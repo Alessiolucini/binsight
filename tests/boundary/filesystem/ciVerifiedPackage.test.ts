@@ -81,7 +81,7 @@ async function createFixture({
   manifestContents,
   writeManifest = true,
 }: FixtureOptions = {}) {
-  const directory = await createTestTempDirectory("rea-verified-package-");
+  const directory = await createTestTempDirectory("binsight-verified-package-");
   await workflowGit(directory, ["init", "--initial-branch=main"]);
   await writeFile(
     join(directory, "package.json"),

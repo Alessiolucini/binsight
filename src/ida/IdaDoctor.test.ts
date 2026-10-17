@@ -11,7 +11,7 @@ afterEach(async () => {
     await rm(root, { recursive: true, force: true });
 });
 it("keeps IDA configuration for setup without copying transport credentials or claiming runtime verification", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-ida-doctor-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-ida-doctor-"));
   roots.push(root);
   const path = join(root, "registration.json");
   await writeFile(

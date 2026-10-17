@@ -15,7 +15,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "compares Evidence bundles without unexplained display-only changes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-bundle-comparison-cli-");
+    const root = await createTestTempDirectory(
+      "binsight-bundle-comparison-cli-",
+    );
     const leftPath = join(root, "left.json");
     const displayPath = join(root, "display.json");
     const changedPath = join(root, "changed.json");

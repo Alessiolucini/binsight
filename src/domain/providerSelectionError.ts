@@ -81,7 +81,7 @@ const providerSelectionUserMessage = (
     case "unknown_provider":
       return `The requested analysis provider is unknown. Choose one of: ${options.candidateIds.join(", ") || "no configured providers"}.`;
     case "provider_unavailable":
-      return "The selected analysis provider is unavailable. Review the reported local diagnostics or run `rea doctor`, then retry.";
+      return "The selected analysis provider is unavailable. Review the reported local diagnostics or run `binsight doctor`, then retry.";
     case "target_unsupported":
       return "The selected analysis provider does not support this target. Choose another provider or open a supported extracted binary.";
     case "invalid_options":

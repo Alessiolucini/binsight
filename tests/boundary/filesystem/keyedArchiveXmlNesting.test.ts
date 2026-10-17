@@ -11,7 +11,7 @@ import { deeplyNestedXmlPlist } from "../../fixtures/keyedArchiveXmlNesting.js";
 it.each([129, 3000])(
   "reports XML nesting of %i levels as the keyed archive decode limit",
   async (depth) => {
-    const root = await createTestTempDirectory("rea-keyed-depth-");
+    const root = await createTestTempDirectory("binsight-keyed-depth-");
     await writeFile(join(root, "Deep.plist"), deeplyNestedXmlPlist(depth));
     const rejected = await inspectBundleKeyedArchive({
       bundlePath: root,
@@ -43,7 +43,9 @@ it.each(["(}", "{)", "(@", "{key @", "(x @", "(x ", "{key ", "{key = x,"])(
       throw new Error(
         "Malformed control must fail in the pinned syntax decoder",
       );
-    const root = await createTestTempDirectory("rea-keyed-openstep-malformed-");
+    const root = await createTestTempDirectory(
+      "binsight-keyed-openstep-malformed-",
+    );
     await writeFile(join(root, "Malformed.plist"), text);
     const rejected = await inspectBundleKeyedArchive({
       bundlePath: root,
@@ -59,7 +61,7 @@ it.each(["(}", "{)", "(@", "{key @", "(x @", "(x ", "{key ", "{key = x,"])(
 );
 
 it("retains the limit classification for syntactically valid deep OpenStep values", async () => {
-  const root = await createTestTempDirectory("rea-keyed-openstep-limit-");
+  const root = await createTestTempDirectory("binsight-keyed-openstep-limit-");
   await writeFile(
     join(root, "Deep.plist"),
     "(".repeat(129) + "x" + ")".repeat(129),
@@ -84,7 +86,7 @@ it.each([
   "retains the named OpenStep depth limit after a completed %s",
   async (_name, document) => {
     const root = await createTestTempDirectory(
-      "rea-keyed-openstep-sibling-depth-",
+      "binsight-keyed-openstep-sibling-depth-",
     );
     const deep = "(".repeat(30000) + "x" + ")".repeat(30000);
     await writeFile(join(root, "Deep.plist"), document(deep));

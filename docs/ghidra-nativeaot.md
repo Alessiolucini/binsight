@@ -1,6 +1,6 @@
 # Optional NativeAOT metadata recovery
 
-REA has a built-in read-only snapshot parser for x64 PE targets with .NET 8 RTR
+BinSight has a built-in read-only snapshot parser for x64 PE targets with .NET 8 RTR
 9.1 metadata. It parses the exact admitted Ghidra session snapshot and uses an
 in-memory overlay for rehydrated metadata; it does not define Ghidra DataTypes,
 labels, functions, or memory bytes. The hydration semantics are adapted from
@@ -40,13 +40,13 @@ export REA_GHIDRA_NATIVEAOT_JAR="$PWD/_reference/nativeaot-integration/extension
 ```
 
 The build requires a clean pinned upstream checkout, compiles unchanged upstream
-Java plus the REA facade, uses a fresh classes directory, and writes the JAR and
+Java plus the BinSight facade, uses a fresh classes directory, and writes the JAR and
 build manifest under ignored `_reference/`. `REA_NATIVEAOT_BUILD_ROOT` can select
 another local output directory; `REA_NATIVEAOT_SOURCE` can select an equivalent
 clean pinned source checkout. Neither output nor compiled fixture belongs in Git
-or the npm package. An installed REA accepts an existing explicitly supplied JAR.
+or the npm package. An installed BinSight accepts an existing explicitly supplied JAR.
 
-REA commits the actual JAR SHA-256 into the analysis profile, copies identical
+BinSight commits the actual JAR SHA-256 into the analysis profile, copies identical
 bytes into the owned runtime, rechecks the digest before loading, and closes the
 classloader/project on session close. Profiles cannot enable code absent from
 explicit local configuration. JARs execute within Ghidra; supply a build you trust.
@@ -90,9 +90,9 @@ The built-in CLI path uses a MethodTable address returned by the parser or
 another observation:
 
 ```sh
-rea inspect-native-load-image ./NativeAotFixture --provider ghidra --json
-rea inspect-native-data-type ./NativeAotFixture --address 0xMETHODTABLE_ADDRESS --provider ghidra --json
-rea function ./NativeAotFixture 0xADDRESS --provider ghidra --json
+binsight inspect-native-load-image ./NativeAotFixture --provider ghidra --json
+binsight inspect-native-data-type ./NativeAotFixture --address 0xMETHODTABLE_ADDRESS --provider ghidra --json
+binsight function ./NativeAotFixture 0xADDRESS --provider ghidra --json
 ```
 
 The generated `/NativeAOT/...` category path belongs to the optional headless
@@ -125,7 +125,7 @@ transaction. That workflow may change analysis-memory bytes, never the original
 executable file. It is unavailable on Windows P0, which has no database
 mutation authority.
 
-REA preserves pre-recovery calling conventions and uses the loaded compiler
+BinSight preserves pre-recovery calling conventions and uses the loaded compiler
 specification default for newly created methods. The upstream universal
 `__thiscall` assignment is not treated as x64 ABI authority. Parameters and
 method prototypes remain inferences; verify them against instructions/call sites.

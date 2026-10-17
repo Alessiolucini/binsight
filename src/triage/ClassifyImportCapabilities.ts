@@ -78,7 +78,7 @@ const matchRule = (
 const LIMITATIONS: readonly string[] = [
   "Capabilities are inferred from the import table and are stated as imports consistent with a behavior, never as proof that the behavior occurs or is reachable.",
   "Only statically declared imports are examined. Imports resolved at runtime (for example through GetProcAddress or dlsym) are not classified; unresolved_dynamic reports whether such resolution is imported.",
-  `Classification uses REA capability taxonomy version ${CAPABILITY_TAXONOMY_VERSION}; an absent capability means no matching import was observed, not that the behavior is impossible.`,
+  `Classification uses BinSight capability taxonomy version ${CAPABILITY_TAXONOMY_VERSION}; an absent capability means no matching import was observed, not that the behavior is impossible.`,
   "Import names are read without executing the target, without network access and without writing files.",
 ];
 

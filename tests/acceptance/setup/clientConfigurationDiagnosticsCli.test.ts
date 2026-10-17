@@ -99,7 +99,7 @@ for (const scenario of cases)
     `setup and uninstall explain ${scenario.client} configuration ${scenario.text}`,
     async ({ cli }) => {
       const home = await createTestTempDirectory(
-        "rea-client-config-diagnostic-",
+        "binsight-client-config-diagnostic-",
       );
       const config = join(home, scenario.path);
       await mkdir(dirname(config), { recursive: true });

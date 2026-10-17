@@ -58,7 +58,9 @@ const readers = [
 it.each(readers)(
   "retains %s reader admission and stat owners",
   async (_, createReader) => {
-    const root = await createTestTempDirectory("rea-owned-reader-cleanup-");
+    const root = await createTestTempDirectory(
+      "binsight-owned-reader-cleanup-",
+    );
     const path = join(root, "source");
     await writeFile(path, "fixture source");
 

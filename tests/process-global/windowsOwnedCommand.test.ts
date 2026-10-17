@@ -193,7 +193,9 @@ it("supervises protocol stdin errors until the owned job and stream close", asyn
 it.runIf(process.platform === "win32")(
   "supervises native protocol stdin through Job Object close",
   async () => {
-    const directory = await createTestTempDirectory("rea-owned-stdin-probe-");
+    const directory = await createTestTempDirectory(
+      "binsight-owned-stdin-probe-",
+    );
     const WindowsOwnedProcess = await loadWindowsOwnedProcessClass();
     const child = new WindowsOwnedProcess(
       process.execPath,
@@ -243,7 +245,9 @@ it.runIf(process.platform === "win32")(
 it.runIf(process.platform === "win32")(
   "keeps native Job Object ownership after the leader exits",
   async () => {
-    const directory = await createTestTempDirectory("rea-owned-tree-probe-");
+    const directory = await createTestTempDirectory(
+      "binsight-owned-tree-probe-",
+    );
     const activityPath = join(directory, "descendant-activity.log");
     const readyPath = join(directory, "descendant-ready");
     const exitedPath = join(directory, "descendant-exited");

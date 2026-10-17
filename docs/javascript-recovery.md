@@ -7,7 +7,7 @@ never executes the selected or recovered application code.
 
 ## Caller-supplied engine
 
-REA accepts Wakaru **^1.13.0** on Linux x64. The report parser is verified with
+BinSight accepts Wakaru **^1.13.0** on Linux x64. The report parser is verified with
 Wakaru **1.14.0**. Another release in that range is accepted, the observed
 version is reported, and a limitation records that the parser was not verified
 against that release. Wakaru changes `--version`, `--json` and `provenance.json`
@@ -17,9 +17,9 @@ so the parser keeps unknown report fields and reported module statuses.
 
 Set `REA_WAKARU_COMMAND` to the absolute path of an executable supplied by the
 caller. The adapter uses util-linux `prlimit` (default `/usr/bin/prlimit`;
-override with an absolute `REA_JAVASCRIPT_PRLIMIT_COMMAND`). REA does not install
+override with an absolute `REA_JAVASCRIPT_PRLIMIT_COMMAND`). BinSight does not install
 either tool. Engine configuration is checked only when recovery is requested;
-other REA capabilities remain available without it.
+other BinSight capabilities remain available without it.
 
 Unmodified upstream source is retained in `third_party/wakaru`, pinned to
 `8219bf5016a063d7fb215101a8c45d5959ec733f` (v1.14.0, Apache-2.0).
@@ -50,11 +50,11 @@ Both give the same binary (SHA-256
 ## Recover and analyze
 
 ```sh
-rea recover-javascript-sources /tmp/web-scripts/app.js /tmp/recovered-app --json
-rea analyze-javascript-application /tmp/recovered-app/modules --json
+binsight recover-javascript-sources /tmp/web-scripts/app.js /tmp/recovered-app --json
+binsight analyze-javascript-application /tmp/recovered-app/modules --json
 
 # Recover related code-split chunks together; repeat --additional-path.
-rea recover-javascript-sources /tmp/web-scripts/main.js /tmp/recovered-chunks \
+binsight recover-javascript-sources /tmp/web-scripts/main.js /tmp/recovered-chunks \
   --additional-path /tmp/web-scripts/runtime.js \
   --additional-path /tmp/web-scripts/shared.js \
   --additional-path /tmp/web-scripts/checkout.chunk.js --json
@@ -81,7 +81,7 @@ invocation, allowing cross-chunk module IDs to resolve. Inputs must be distinct;
 `additional_paths` accepts up to 16 additional files. The engine writes only to
 its own staging directory. Reported module paths, input identities, UTF-8 byte
 ranges, regular files and emitted map representations are validated before
-publication. REA writes verified bytes to an exclusively owned output tree and
+publication. BinSight writes verified bytes to an exclusively owned output tree and
 rolls it back on failure. It also checks that the original source and engine
 bytes remain unchanged before committing. The existing output is never overwritten.
 

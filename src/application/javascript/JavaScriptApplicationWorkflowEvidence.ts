@@ -16,7 +16,7 @@ export const createApplicationFeatureTraceEvidence = (
   result: ApplicationFeatureTraceResult,
 ): Evidence =>
   createEvidence(undefined, JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER, {
-    predicateType: "rea.application-feature-trace",
+    predicateType: "binsight.application-feature-trace",
     operation: "trace_application_feature",
     parameters,
     result,
@@ -34,7 +34,7 @@ export const createJavaScriptSemanticTraceEvidence = (
   result: JavaScriptSemanticTraceResult,
 ): Evidence =>
   createEvidence(undefined, JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER, {
-    predicateType: "rea.javascript-semantic-trace",
+    predicateType: "binsight.javascript-semantic-trace",
     operation: "trace_javascript_semantics",
     parameters,
     result,
@@ -52,7 +52,7 @@ export const createApplicationVersionComparisonEvidence = (
   result: ApplicationVersionComparisonResult,
 ): Evidence =>
   createEvidence(undefined, JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER, {
-    predicateType: "rea.application-version-comparison",
+    predicateType: "binsight.application-version-comparison",
     operation: "compare_application_versions",
     parameters,
     result,
@@ -70,7 +70,7 @@ export const createSourceToBundleComparisonEvidence = (
   result: SourceToBundleComparisonResult,
 ): Evidence =>
   createEvidence(undefined, JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER, {
-    predicateType: "rea.source-to-bundle-comparison",
+    predicateType: "binsight.source-to-bundle-comparison",
     operation: "compare_source_to_bundle",
     parameters,
     result,
@@ -88,7 +88,7 @@ export const createJavaScriptExportShapeComparisonEvidence = (
   result: JavaScriptExportShapeComparisonResult,
 ): Evidence =>
   createEvidence(undefined, JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER, {
-    predicateType: "rea.javascript-export-shape-comparison",
+    predicateType: "binsight.javascript-export-shape-comparison",
     operation: "compare_javascript_export_shapes",
     parameters,
     result,

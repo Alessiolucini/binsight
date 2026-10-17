@@ -96,7 +96,7 @@ const readBundle = async (
     );
   }
   for (const record of bundle.records) {
-    if (record.predicate_type !== "rea.process-capture") continue;
+    if (record.predicate_type !== "binsight.process-capture") continue;
     try {
       parseProcessCapture(record.normalized_result);
     } catch (cause: unknown) {

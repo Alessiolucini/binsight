@@ -223,7 +223,9 @@ const expectTrace = (trace: Trace, scenario: SeedScenario): void => {
 cliTest(
   "matches feature seeds against node IDs and preserved route values through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-feature-seed-selection-");
+    const root = await createTestTempDirectory(
+      "binsight-feature-seed-selection-",
+    );
     await writeFile(
       join(root, "routes.js"),
       `const notificationRoute = { path: "/accounts/preferences/notifications" };\nconst tinyRoute = { path: "/tiny" };\nmodule.exports = { notificationRoute, tinyRoute };\n`,

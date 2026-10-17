@@ -29,7 +29,7 @@ export const createBomArtifact = async (
   format: "directory" | "asar",
   files: Readonly<Record<string, string | Buffer>>,
 ): Promise<string> => {
-  const root = await createTestTempDirectory("rea-bom-artifact-");
+  const root = await createTestTempDirectory("binsight-bom-artifact-");
   const directory = join(root, "source");
   await mkdir(directory);
   await Promise.all(

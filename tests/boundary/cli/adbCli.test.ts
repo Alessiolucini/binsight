@@ -24,7 +24,7 @@ it.skipIf(process.platform === "win32").each([
   { exit: 1, stdout: "unexpected probe output", stderr: "", overwrite: false },
   { exit: 2, stdout: "", stderr: "", overwrite: false },
 ])("refuses an ambiguous destination probe before push: %j", async (probe) => {
-  const workspace = await createTestWorkspace("rea-adb-probe-cli-");
+  const workspace = await createTestWorkspace("binsight-adb-probe-cli-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const source = await workspace.write("payload.bin", "replacement");
   await workspace.write("device-file", "original");
@@ -169,7 +169,7 @@ it.each([
 it.skipIf(process.platform === "win32")(
   "preserves requested reinstall mode without claiming prior package state",
   async () => {
-    const workspace = await createTestWorkspace("rea-adb-install-state-");
+    const workspace = await createTestWorkspace("binsight-adb-install-state-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const apk = await workspace.write("app with spaces.apk", "apk");
     const adb = await workspace.write(
@@ -302,7 +302,7 @@ it("requires the output directory option on pull", async () => {
 it.skipIf(process.platform === "win32")(
   "refuses a trailing device separator through the CLI before adb or output effects",
   async () => {
-    const workspace = await createTestWorkspace("rea-adb-cli-pull-");
+    const workspace = await createTestWorkspace("binsight-adb-cli-pull-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const adb = await workspace.write(
       "adb",

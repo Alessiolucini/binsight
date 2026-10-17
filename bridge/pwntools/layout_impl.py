@@ -1,6 +1,6 @@
 """Offline adapter to unchanged pwntools 4.15.0; never use libs/maps/libc.
 
-Owned request/snapshot/reply paths are supplied by REA. No host target-process launch,
+Owned request/snapshot/reply paths are supplied by BinSight. No host target-process launch,
 user configuration initialization, debugger startup, or dependency installation.
 """
 import base64

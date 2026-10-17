@@ -39,7 +39,7 @@ it("routes universal Mach-O extraction through slice inventory", async () => {
     "unavailable",
     "fixture reached universal slice inventory",
   );
-  const root = await createTestTempDirectory("rea-extract-universal-");
+  const root = await createTestTempDirectory("binsight-extract-universal-");
   const image = join(root, "Universal");
   await writeFile(image, Buffer.from([0xca, 0xfe, 0xba, 0xbe, 0, 0, 0, 0]));
   const output = join(root, "output");

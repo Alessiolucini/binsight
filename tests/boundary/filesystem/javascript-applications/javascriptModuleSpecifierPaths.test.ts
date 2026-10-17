@@ -31,7 +31,9 @@ describe("prefix-only Node builtins", () => {
   it.each(["import", "require"] as const)(
     "resolves ordinary packages named test, sqlite and sea for %s",
     async (moduleKind) => {
-      const root = await createTestTempDirectory("rea-prefix-only-builtins-");
+      const root = await createTestTempDirectory(
+        "binsight-prefix-only-builtins-",
+      );
       const names = ["test", "sqlite", "sea"];
       for (const name of [...names, "fs"]) {
         const directory = join(root, "node_modules", name);
@@ -167,7 +169,7 @@ describe("ESM module URL decoding", () => {
       ["./name%3F%23.mjs", "name?#.mjs"],
       ["./percent%2520.mjs?cache=1#v2", "percent%20.mjs"],
     ] as const;
-    const root = await createTestTempDirectory("rea-module-url-");
+    const root = await createTestTempDirectory("binsight-module-url-");
     const main = join(root, "main.mjs");
     await writeFile(
       main,
@@ -261,7 +263,7 @@ const packageEntryUrlCases = [
 it.each(["import", "require"] as const)(
   "matches Node %s across package exports and main path representations",
   async (moduleKind) => {
-    const root = await createTestTempDirectory("rea-package-export-url-");
+    const root = await createTestTempDirectory("binsight-package-export-url-");
     for (const [
       index,
       [field, declaredPath, target],

@@ -27,7 +27,7 @@ import { OwnedFileHandle } from "../../../src/filesystem/OwnedFileHandle.js";
 const linux = it.skipIf(process.platform !== "linux");
 
 linux("refuses a directory configured as the mitmdump executable", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-mitmdump-command-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-mitmdump-command-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const command = join(root, "mitmdump");
   await mkdir(command);
@@ -44,7 +44,9 @@ linux("refuses a directory configured as the mitmdump executable", async () => {
 });
 
 linux("allows a symlink to a regular mitmdump executable", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-mitmdump-command-symlink-"));
+  const root = await mkdtemp(
+    join(tmpdir(), "binsight-mitmdump-command-symlink-"),
+  );
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const command = join(root, "mitmdump");
   const target = join(root, "mitmdump-bin");
@@ -62,7 +64,7 @@ linux("allows a symlink to a regular mitmdump executable", async () => {
 it.each([true, false])(
   "binds decoder replies to the complete selected provider identity (matching name: %s)",
   async (matching) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-capture-identity-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-capture-identity-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "capture.har");
     const text = JSON.stringify(historicalHar());
@@ -98,7 +100,7 @@ it.each([true, false])(
 );
 
 it("classifies an oversized selected capture before creating an owned decoder", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-limit-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-historical-limit-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, "");
@@ -140,7 +142,7 @@ it("classifies an oversized selected capture before creating an owned decoder", 
 });
 
 it("retains a failed capture reader and retries it before a fresh load", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-capture-reader-close-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-capture-reader-close-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -200,7 +202,7 @@ it("retains a failed capture reader and retries it before a fresh load", async (
 });
 
 it("does not misclassify decoder filesystem failures as missing selected input", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-command-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-historical-command-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -240,7 +242,9 @@ it("does not misclassify decoder filesystem failures as missing selected input",
 it.each(["missing-capture", "missing-reply", "failed-command"])(
   "redacts declared paths and diagnostics while preserving the %s failure",
   async (mode) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-sensitive-"));
+    const root = await mkdtemp(
+      join(tmpdir(), "binsight-historical-sensitive-"),
+    );
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "explicit-private-value.har");
     if (mode !== "missing-capture")
@@ -289,7 +293,7 @@ it.each(["missing-capture", "missing-reply", "failed-command"])(
 );
 
 it("reports an absent owned reply as output failure and removes its private snapshot root", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-decoder-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-historical-decoder-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -325,7 +329,7 @@ it("reports an absent owned reply as output failure and removes its private snap
 });
 
 it("cancels after snapshot acquisition before launch and removes private input declarations", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-cancel-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-historical-cancel-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -372,7 +376,7 @@ it.each([
 ])(
   "preserves $reason decoder failures through the public error boundary",
   async ({ reason, tag }) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-reply-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-historical-reply-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "input.har");
     await writeFile(path, JSON.stringify(historicalHar()));
@@ -463,7 +467,7 @@ it.each([
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports a real filesystem permission denial separately from missing capture input",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-denied-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-historical-denied-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "unreadable.har");
     await writeFile(path, JSON.stringify(historicalHar()), { mode: 0o000 });
@@ -506,7 +510,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 it.each(["format", "process"])(
   "preserves the structured %s failure when runtime cleanup fails",
   async (kind) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-cleanup-"));
+    const root = await mkdtemp(join(tmpdir(), "binsight-historical-cleanup-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "capture-private.har");
     await writeFile(path, JSON.stringify(historicalHar()));
@@ -541,7 +545,7 @@ it.each(["format", "process"])(
       process.env,
       async () => {
         const runtime = await PrivateRuntimeRoot.create({
-          prefix: "rea-cleanup-proof-",
+          prefix: "binsight-cleanup-proof-",
         });
         onTestFinished(() => runtime.close());
         return {

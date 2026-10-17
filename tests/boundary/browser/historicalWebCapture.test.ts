@@ -50,7 +50,9 @@ it.each([
 ])(
   "excludes normalized HAR numbers through CLI and MCP: $encoded",
   async ({ encoded, literal }) => {
-    const root = await createTestTempDirectory("rea-har-normalized-number-");
+    const root = await createTestTempDirectory(
+      "binsight-har-normalized-number-",
+    );
     const path = join(root, "capture.har");
     const original = JSON.stringify(historicalHar())
       .replace('"log":{', `"_number":${encoded},"log":{`)
@@ -105,11 +107,11 @@ it.each([
 );
 
 it("retains Playwright IPv6 spelling through public CLI and MCP workflows", async () => {
-  const root = await createTestTempDirectory("rea-har-ipv6-");
+  const root = await createTestTempDirectory("binsight-har-ipv6-");
   const path = join(root, "capture.har");
   const original = JSON.stringify(historicalHar())
     .replace(
-      '"name":"rea-source-owned-fixture","version":"1"',
+      '"name":"binsight-source-owned-fixture","version":"1"',
       '"name":"Playwright","version":"1.58.2"',
     )
     .replace(
@@ -144,7 +146,7 @@ it("retains Playwright IPv6 spelling through public CLI and MCP workflows", asyn
 });
 
 it("excludes declared binary lengths through CLI, MCP and retained capture pages", async () => {
-  const root = await createTestTempDirectory("rea-har-byte-length-");
+  const root = await createTestTempDirectory("binsight-har-byte-length-");
   const path = join(root, "capture.har");
   const fixture = historicalHar();
   const entry = fixture.log.entries[0];
@@ -229,7 +231,7 @@ it("excludes declared binary lengths through CLI, MCP and retained capture pages
 }, 60_000);
 
 it("reads actual upstream HAR packages in an owned process and retains selected producer order", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-history-har-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-history-har-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const fixture = historicalHar();
   const first = fixture.log.entries[0];
@@ -252,7 +254,7 @@ it("reads actual upstream HAR packages in an owned process and retains selected 
 });
 
 it("keeps malformed JSON separate from absent external mitmproxy capability", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-history-errors-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-history-errors-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "capture.har");
   await writeFile(path, "{malformed-private-json");
@@ -271,7 +273,7 @@ it("keeps malformed JSON separate from absent external mitmproxy capability", as
 });
 
 it("reports the actual HAR decoder nesting constraint as a typed selected-input issue", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-history-depth-"));
+  const root = await mkdtemp(join(tmpdir(), "binsight-history-depth-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   let extension: unknown = "leaf";
   for (let depth = 0; depth < 66; depth++) extension = { child: extension };

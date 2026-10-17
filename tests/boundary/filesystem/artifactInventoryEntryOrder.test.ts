@@ -28,7 +28,7 @@ describe("artifact inventory entry order", () => {
   it.each(permutations.map((entries) => ({ entries })))(
     "parents ZIP entries correctly for $entries",
     async ({ entries }) => {
-      const root = await createTestTempDirectory("rea-entry-order-");
+      const root = await createTestTempDirectory("binsight-entry-order-");
       const archive = join(root, "ordered.zip");
       const referencePath = join(root, "reference.zip");
       await writeOrderedZip(archive, [...entries, "empty/"]);
@@ -70,7 +70,7 @@ describe("artifact inventory entry order", () => {
   );
 
   it("resolves deep ZIP members without inventing missing directories", async () => {
-    const root = await createTestTempDirectory("rea-deep-archive-parent-");
+    const root = await createTestTempDirectory("binsight-deep-archive-parent-");
     const archive = join(root, "deep.zip");
     // Fits the ZIP filename field while exceeding the formerly expensive depth.
     const members = ["data.txt", "second.txt", "third.bin"].map(
@@ -114,7 +114,9 @@ describe("artifact inventory entry order", () => {
   ])(
     "uses only observed directory parents for $entries",
     async ({ entries, parents }) => {
-      const root = await createTestTempDirectory("rea-implicit-directory-");
+      const root = await createTestTempDirectory(
+        "binsight-implicit-directory-",
+      );
       const archive = join(root, "implicit.zip");
       await writeOrderedZip(archive, entries);
       expect(artifactParentPaths(await inventoryArtifact(archive))).toEqual(
@@ -132,7 +134,7 @@ describe("entry-order validation and reader controls", () => {
     ["pkg", "pkg/data.txt"],
     ["../escape.txt"],
   ])("keeps invalid/colliding paths rejected for %j", async (...entries) => {
-    const root = await createTestTempDirectory("rea-entry-order-invalid-");
+    const root = await createTestTempDirectory("binsight-entry-order-invalid-");
     const archive = join(root, "invalid.zip");
     await writeOrderedZip(archive, entries);
     await expect(inventoryArtifact(archive)).rejects.toMatchObject({
@@ -141,7 +143,7 @@ describe("entry-order validation and reader controls", () => {
   });
 
   it("keeps case-distinct directory names separate in either entry order", async () => {
-    const root = await createTestTempDirectory("rea-entry-order-case-");
+    const root = await createTestTempDirectory("binsight-entry-order-case-");
     const archive = join(root, "case-distinct.zip");
     const entries = ["pkg/", "pkg/data.txt", "PKG/", "PKG/other.txt"];
     const parents = {
@@ -160,7 +162,9 @@ describe("entry-order validation and reader controls", () => {
   });
 
   it("retains case-distinct file prefixes without inventing a directory", async () => {
-    const root = await createTestTempDirectory("rea-entry-order-case-prefix-");
+    const root = await createTestTempDirectory(
+      "binsight-entry-order-case-prefix-",
+    );
     const archive = join(root, "case-prefix.zip");
     for (const entries of [
       ["Foo", "foo/bar"],
@@ -182,7 +186,7 @@ describe("entry-order validation and reader controls", () => {
 
   it("retains high-cardinality case-folded directories and their descendants", async () => {
     const root = await createTestTempDirectory(
-      "rea-entry-order-case-capacity-",
+      "binsight-entry-order-case-capacity-",
     );
     const archive = join(root, "case-capacity.zip");
     const variants = Array.from({ length: 256 }, (_, mask) =>
@@ -236,7 +240,7 @@ describe("entry-order validation and reader controls", () => {
   });
 
   it("preserves ordinary directory and ASAR structure", async () => {
-    const root = await createTestTempDirectory("rea-entry-order-readers-");
+    const root = await createTestTempDirectory("binsight-entry-order-readers-");
     const directory = join(root, "source");
     await mkdir(join(directory, "pkg", "sub"), { recursive: true });
     await mkdir(join(directory, "empty"));

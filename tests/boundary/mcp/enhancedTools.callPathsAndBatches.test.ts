@@ -123,7 +123,7 @@ describe("enhanced MCP graph caveats", () => {
     expect(graph.structuredContent).toMatchObject({
       limitations: [
         "Artifact identity is unavailable for this observation.",
-        "Derived by an REA composed workflow.",
+        "Derived by an BinSight composed workflow.",
         `Fixture analysis provider (fixture 1) procedure_callees: ${caveat}`,
         `Fixture analysis provider (fixture 1) procedure_callees: ${leafCaveat}`,
       ],
@@ -509,11 +509,11 @@ describe("enhanced MCP batches", () => {
             category: "execution_failure",
             details: { operation: "decompile", reason: "failed" },
             message:
-              "Analysis returned an unreadable result. Run `rea doctor` and review the reported details; repeating the unchanged request is not expected to succeed.",
+              "Analysis returned an unreadable result. Run `binsight doctor` and review the reported details; repeating the unchanged request is not expected to succeed.",
             retryable: false,
             remediation: {
               action:
-                "Analysis returned an unreadable result. Run `rea doctor` and review the reported details; repeating the unchanged request is not expected to succeed.",
+                "Analysis returned an unreadable result. Run `binsight doctor` and review the reported details; repeating the unchanged request is not expected to succeed.",
             },
           },
         },

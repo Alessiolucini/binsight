@@ -203,7 +203,7 @@ export async function verifyDyldEnvironment(root) {
   );
   await writeFile(source.library, "int value(void) { return 7; }");
   // A per-workspace name avoids collisions with real files in filesystem root.
-  const name = `rea-${basename(root)}-child`;
+  const name = `binsight-${basename(root)}-child`;
   const libraryName = `@loader_path/${name}.dylib`;
   const frameworkName = `@loader_path/${name}.framework/${name}`;
 

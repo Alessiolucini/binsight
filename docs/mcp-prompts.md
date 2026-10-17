@@ -1,6 +1,6 @@
 # Guided MCP prompts and completion
 
-REA exposes six provider-neutral investigation workflows through the MCP
+BinSight exposes six provider-neutral investigation workflows through the MCP
 `prompts` capability. They complement the generated tool catalog; they do not add, remove, or
 invoke tools by themselves.
 
@@ -15,7 +15,7 @@ invoke tools by themselves.
 | `audit_residual_unknowns`         | Audit current residual-unknown heads and evidence-qualified resolution.              |
 | `prepare_bounded_process_capture` | Design a bounded controlled process experiment before execution.                     |
 
-Every rendered prompt provides optional starting points using current REA tool
+Every rendered prompt provides optional starting points using current BinSight tool
 names. Agents can call tools directly, skip irrelevant suggestions, and inspect
 provider or target state only when it helps answer the request or a tool
 requires it. The prompts also ask agents to keep observations, inferences, and
@@ -29,7 +29,7 @@ For a JavaScript/Electron application directory, `investigate_feature` points
 directly to `analyze_javascript_application` with `input_path`; it does not
 require `open_binary`. When that Evidence, or `inspect_binary_layout` Evidence,
 is already retained, it suggests `inspect_analysis_view` before tracing a
-feature seed. The CLI equivalent is `rea analyze <directory>`.
+feature seed. The CLI equivalent is `binsight analyze <directory>`.
 `open_binary` and the doctor target check admit files and macOS app bundles.
 A directory outside that opening route is reported with an available analysis
 action; this does not establish support for every directory format.
@@ -64,7 +64,7 @@ cached prompt catalog.
 ## Session-aware completion
 
 MCP `completion/complete` completes guided-prompt arguments; it does not define
-completion for arbitrary tool-call arguments. REA attaches completion to
+completion for arbitrary tool-call arguments. BinSight attaches completion to
 optional prompt arguments that accept a session value. Suggestions provide
 identifiers only; they do not retrieve or replace the inline Evidence result.
 
@@ -120,7 +120,7 @@ unreachable when more than 100 matches share its normalized prefix.
 
 ## Lifecycle and safety
 
-Completion has no cache in REA. Opening or switching a target changes document
+Completion has no cache in BinSight. Opening or switching a target changes document
 and procedure suggestions on the next request. Closing the binary clears its
 Evidence ledger and residual-unknown registry, so identifiers from the closed
 session are no longer suggested. Provider errors, unsupported operations, and

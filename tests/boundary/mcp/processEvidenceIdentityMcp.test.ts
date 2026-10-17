@@ -27,8 +27,8 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 import { verifyReconstruction } from "../../../src/domain/reconstructionVerification.js";
 const providerNames = [
-  "REA process capture",
-  "REA deterministic process harness",
+  "BinSight process capture",
+  "BinSight deterministic process harness",
 ];
 
 const captureEvidence = (
@@ -36,7 +36,7 @@ const captureEvidence = (
   result: Evidence["normalized_result"] = EMPTY_PROCESS_CAPTURE_EXAMPLE,
 ) =>
   createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "binsight.process-capture",
     operation: "capture_process_scenario",
     parameters: { side },
     result,
@@ -84,8 +84,8 @@ const connectedComparison = async () => {
   expect(response.isError, JSON.stringify(response)).not.toBe(true);
   const comparison = inlineEvidence(response);
   expect(comparison.provider).toEqual({
-    id: "rea-process",
-    name: "REA process capture",
+    id: "binsight-process",
+    name: "BinSight process capture",
     version: "3",
   });
   expect(comparison.normalized_result).toMatchObject({ status: "unchanged" });
@@ -155,7 +155,7 @@ const expectConsumerResults = async (client: Client, comparison: Evidence) => {
 
 it("feeds the exact public CLI/MCP process comparison into all three MCP consumers", async () => {
   const { client, left, right, comparison } = await connectedComparison();
-  const root = await createTestTempDirectory("rea-process-identity-");
+  const root = await createTestTempDirectory("binsight-process-identity-");
   const leftPath = join(root, "left.json");
   const rightPath = join(root, "right.json");
   await Promise.all([
@@ -304,7 +304,7 @@ it("separately rejects a tampered digest before admission to any consumer or ses
     ...comparison,
     provider: {
       ...comparison.provider,
-      name: "REA deterministic process harness",
+      name: "BinSight deterministic process harness",
     },
   };
   const digestMismatch = /semantic identifier does not match/u;
@@ -372,7 +372,7 @@ it("keeps withheld ownership unknown through CLI and MCP comparison", async () =
   expect(response.isError, JSON.stringify(response)).not.toBe(true);
   const comparison = inlineEvidence(response);
   expect(comparison.normalized_result).toMatchObject({ status: "unknown" });
-  const root = await createTestTempDirectory("rea-withheld-ownership-");
+  const root = await createTestTempDirectory("binsight-withheld-ownership-");
   const leftPath = join(root, "left.json");
   const rightPath = join(root, "right.json");
   await writeFile(leftPath, JSON.stringify(left));

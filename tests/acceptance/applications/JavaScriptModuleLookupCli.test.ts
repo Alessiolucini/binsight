@@ -11,7 +11,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 const execute = promisify(execFile);
 
 const createModuleLookupFixture = async () => {
-  const root = await createTestTempDirectory("rea-module-lookup-");
+  const root = await createTestTempDirectory("binsight-module-lookup-");
   await writeFixtureFiles(root, {
     "package.json": JSON.stringify({
       name: "module-lookup-fixture",

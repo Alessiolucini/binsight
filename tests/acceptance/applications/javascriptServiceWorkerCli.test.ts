@@ -8,7 +8,9 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest(
   "attributes service-worker module URLs through the compiled CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-service-worker-identity-");
+    const root = await createTestTempDirectory(
+      "binsight-service-worker-identity-",
+    );
     await writeFixtureFiles(root, {
       "app/module.mjs":
         'navigator.serviceWorker.register(new URL("./sw.js?version=2", import.meta.url));',

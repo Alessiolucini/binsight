@@ -111,16 +111,18 @@ describe("parseApktoolYml", () => {
 describe("parseManifestPackage", () => {
   it("reads the package attribute from a decoded manifest", () => {
     const manifest =
-      '<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" package="com.rea.apktool.probe" platformBuildVersionCode="34">';
+      '<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" package="com.binsight.apktool.probe" platformBuildVersionCode="34">';
     expect(parseManifestPackage(`${manifest}</manifest>`)).toBe(
-      "com.rea.apktool.probe",
+      "com.binsight.apktool.probe",
     );
   });
 
   it("reads package with reordered or single-quoted XML attributes", () => {
     expect(
-      parseManifestPackage("<manifest debug='false' package='org.rea.app' />"),
-    ).toBe("org.rea.app");
+      parseManifestPackage(
+        "<manifest debug='false' package='org.binsight.app' />",
+      ),
+    ).toBe("org.binsight.app");
   });
 
   it("reports null when no package attribute exists", () => {

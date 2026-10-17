@@ -1,4 +1,4 @@
-# REA roadmap
+# BinSight roadmap
 
 The [platform tracker](https://github.com/morluto/rea/issues/32),
 [process/Hopper tracker](https://github.com/morluto/rea/issues/48), and

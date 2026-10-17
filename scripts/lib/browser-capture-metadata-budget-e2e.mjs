@@ -9,7 +9,7 @@ const SCRIPT_COUNT = 5;
 
 /** Verify real Chrome scriptParsed metadata is bounded before public capture retention. */
 export async function verifyBrowserCaptureMetadataBudget(endpoint) {
-  const marker = "rea-capture-metadata-budget";
+  const marker = "binsight-capture-metadata-budget";
   let page = "";
   let pageReady = false;
   let fixtureOrigin = "";

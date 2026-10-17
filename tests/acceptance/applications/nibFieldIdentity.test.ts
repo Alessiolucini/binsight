@@ -15,7 +15,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "preserves literal NIB fields and UTF-8 names through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-nib-field-identity-");
+    const root = await createTestTempDirectory("binsight-nib-field-identity-");
     const app = join(root, "Fixture.app");
     const contents = join(app, "Contents");
     await mkdir(join(contents, "Resources"), { recursive: true });
@@ -26,7 +26,7 @@ cliTest(
     );
     await writeFile(
       join(contents, "Info.plist"),
-      "<plist><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.rea.nib-fields</string></dict></plist>",
+      "<plist><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.binsight.nib-fields</string></dict></plist>",
     );
     const archive = encodeNibArchiveFixture({
       classes: ["UIView", "\uFEFFCustomView"],

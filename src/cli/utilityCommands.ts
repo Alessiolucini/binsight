@@ -323,7 +323,7 @@ const runReferenceSourceImport = async (
       imported: await importReferenceSource(
         {
           root,
-          caller: "rea-cli",
+          caller: "binsight-cli",
           policy,
           importer: PRODUCT_IDENTITY.packageName,
           importerVersion: PRODUCT_IDENTITY.packageVersion,

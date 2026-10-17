@@ -30,7 +30,7 @@ const SCRIPT_COUNT = 40;
 const NATIVE_COUNT = 40;
 
 async function createCompleteAppleProjection() {
-  const root = await createTestTempDirectory("rea-apple-complete-");
+  const root = await createTestTempDirectory("binsight-apple-complete-");
   const path = join(root, "Complete.ipa");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   for (let index = 0; index < FRAMEWORK_COUNT; index++) {
@@ -76,7 +76,9 @@ async function createCompleteAppleProjection() {
 
 describe("Apple application projection", () => {
   it("retains complete traversal and case-collision limits for a real IPA", async () => {
-    const root = await createTestTempDirectory("rea-apple-case-collision-");
+    const root = await createTestTempDirectory(
+      "binsight-apple-case-collision-",
+    );
     const path = join(root, "CaseCollision.ipa");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add(
@@ -112,7 +114,7 @@ describe("Apple application projection", () => {
   });
 
   it("projects deterministic IPA components and bridge hypotheses from exact inventory Evidence", async () => {
-    const root = await createTestTempDirectory("rea-apple-");
+    const root = await createTestTempDirectory("binsight-apple-");
     const path = join(root, "Fixture.ipa");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("Payload/Fixture.app/", undefined, { directory: true });
@@ -188,8 +190,9 @@ describe("Apple application projection", () => {
   });
 
   it("reports a ZIP without an application bundle instead of guessing one", async () => {
-    const inventory =
-      await createNonApplicationZipInventory("rea-apple-empty-");
+    const inventory = await createNonApplicationZipInventory(
+      "binsight-apple-empty-",
+    );
     const projection = appleApplicationProjectionResultSchema.parse(
       requireSuccessfulProjection(
         projectAppleApplicationEvidence({ inventory_evidence: [inventory] }),
@@ -206,7 +209,7 @@ describe("Apple application projection", () => {
   });
 
   it("rejects inventories of non-Apple package formats", async () => {
-    const root = await createTestTempDirectory("rea-apple-invalid-");
+    const root = await createTestTempDirectory("binsight-apple-invalid-");
     const path = join(root, "fixture.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("AndroidManifest.xml", new TextReader("<manifest/>"));
@@ -225,7 +228,7 @@ describe("Apple application projection", () => {
 
 describe("macOS application projection", () => {
   it("projects a macOS .app directory inventory with nested bundle roles", async () => {
-    const root = await createTestTempDirectory("rea-apple-macos-");
+    const root = await createTestTempDirectory("binsight-apple-macos-");
     const app = join(root, "Fixture.app");
     // A complete thin arm64 header, as target admission requires.
     const machO = thinMach(0xcffaedfe, 0x0100000c);
@@ -315,7 +318,7 @@ describe("Apple application projection completeness", () => {
   });
 
   it("retains long ZIP application roots when the IPA omits directory entries", async () => {
-    const root = await createTestTempDirectory("rea-apple-root-");
+    const root = await createTestTempDirectory("binsight-apple-root-");
     const path = join(root, "Fixture.ipa");
     const applicationRoot = `Payload/${"LongApp".repeat(750)}.app`;
     const writer = new ZipWriter(new Uint8ArrayWriter());

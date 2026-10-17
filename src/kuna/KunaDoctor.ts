@@ -98,7 +98,7 @@ export const inspectKunaProvider = async (
         detail: `${value.executable} reports Kuna ${value.version} (sha256 ${value.sha256})${
           value.verified
             ? "."
-            : `; REA verified ${KUNA_VERIFIED_VERSION}, so this release's project layout is unverified.`
+            : `; BinSight verified ${KUNA_VERIFIED_VERSION}, so this release's project layout is unverified.`
         }`,
         remediation: null,
         classification: "config_drift",
@@ -162,7 +162,7 @@ const cacheCheck = async (
         code: "open_options_invalid",
         detail: `The Kuna cache root ${cacheRoot} exists but is not a directory.`,
         remediation:
-          "Set REA_KUNA_CACHE_DIR to a directory REA may own, or remove the conflicting file.",
+          "Set REA_KUNA_CACHE_DIR to a directory BinSight may own, or remove the conflicting file.",
         classification: "config_drift",
         details,
       };
@@ -175,7 +175,7 @@ const cacheCheck = async (
             name: "cache",
             ok: true,
             code: null,
-            detail: `REA creates the Kuna project cache at ${cacheRoot} on first use.`,
+            detail: `BinSight creates the Kuna project cache at ${cacheRoot} on first use.`,
             remediation: null,
             classification: "config_drift",
             details,
@@ -184,9 +184,9 @@ const cacheCheck = async (
             name: "cache",
             ok: false,
             code: "open_options_invalid",
-            detail: `REA cannot create the Kuna cache root ${cacheRoot}: ${creatable.reason}`,
+            detail: `BinSight cannot create the Kuna cache root ${cacheRoot}: ${creatable.reason}`,
             remediation:
-              "Set REA_KUNA_CACHE_DIR to a directory the REA process user can create or write.",
+              "Set REA_KUNA_CACHE_DIR to a directory the BinSight process user can create or write.",
             classification: "config_drift",
             details,
           };
@@ -195,9 +195,9 @@ const cacheCheck = async (
       name: "cache",
       ok: false,
       code: "open_options_invalid",
-      detail: `REA cannot write the Kuna cache root ${cacheRoot}: ${cause instanceof Error ? cause.message : String(cause)}`,
+      detail: `BinSight cannot write the Kuna cache root ${cacheRoot}: ${cause instanceof Error ? cause.message : String(cause)}`,
       remediation:
-        "Set REA_KUNA_CACHE_DIR to a directory the REA process user can write.",
+        "Set REA_KUNA_CACHE_DIR to a directory the BinSight process user can write.",
       classification: "config_drift",
       details,
     };
@@ -213,7 +213,7 @@ const cacheCheck = async (
   };
 };
 
-/** Whether the nearest existing ancestor is a directory REA may create entries in. */
+/** Whether the nearest existing ancestor is a directory BinSight may create entries in. */
 const nearestDirectoryWritable = async (
   path: string,
 ): Promise<

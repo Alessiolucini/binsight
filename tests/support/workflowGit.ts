@@ -15,7 +15,7 @@ export async function workflowGit(
     "git",
     [
       "-c",
-      "user.name=REA fixture",
+      "user.name=BinSight fixture",
       "-c",
       "user.email=fixture@example.invalid",
       "-c",

@@ -7,7 +7,7 @@ import { reconstructJavaScriptArtifact } from "../../support/javascriptApplicati
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("creates source-map graph relationships only for real comments", async () => {
-  const root = await createTestTempDirectory("rea-source-map-comments-");
+  const root = await createTestTempDirectory("binsight-source-map-comments-");
   const path = join(root, "documentation.js");
   const quoted = 'const documentation = "//# sourceMappingURL=ghost.map ";';
   await writeFile(path, quoted);

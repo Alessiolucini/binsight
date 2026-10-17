@@ -39,7 +39,7 @@ it("threads the selected host and environment into system diagnostics", async ()
         };
       if (command === "which")
         return {
-          stdout: "/selected/bin/rea\n",
+          stdout: "/selected/bin/binsight\n",
           stderr: "",
           stdoutBytes: 18,
           stderrBytes: 0,
@@ -94,7 +94,7 @@ it.each([
 ])(
   "locates the Hopper cask from its Caskroom receipt without a cask command (%j)",
   async (config, expectedAppdir) => {
-    const root = await createTestTempDirectory("rea-doctor-caskroom-");
+    const root = await createTestTempDirectory("binsight-doctor-caskroom-");
     const caskroom = join(root, "Caskroom");
     const metadata = join(caskroom, "hopper-disassembler", ".metadata");
     await mkdir(metadata, { recursive: true });
@@ -126,7 +126,7 @@ it.each([
 );
 
 it("reports no Homebrew Hopper when the cask has no receipt", async () => {
-  const caskroom = await createTestTempDirectory("rea-doctor-caskroom-");
+  const caskroom = await createTestTempDirectory("binsight-doctor-caskroom-");
   const calls: (readonly string[])[] = [];
   const host = systemDoctorHost({
     platform: "darwin",

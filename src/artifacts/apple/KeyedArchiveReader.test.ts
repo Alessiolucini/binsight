@@ -82,7 +82,7 @@ describe("inert keyed archive decoding", () => {
     });
     expect(graph.objects.map(({ value }) => value)).toEqual(["$null", "value"]);
     expect(graph.limitations).toContain(
-      "1 dictionary entry keyed __proto__ was omitted because REA results cannot represent that key.",
+      "1 dictionary entry keyed __proto__ was omitted because BinSight results cannot represent that key.",
     );
   });
   it("reports a binary archive dictionary keyed __proto__ as omitted", () => {
@@ -101,7 +101,7 @@ describe("inert keyed archive decoding", () => {
 
     const graph = decodeKeyedArchiveBytes(encoded, { offset: 0, limit: 2 });
     expect(graph.limitations).toContain(
-      "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
   });
   it("does not report a binary __proto__ value as an omitted key", () => {
@@ -116,7 +116,7 @@ describe("inert keyed archive decoding", () => {
       { offset: 0, limit: 2 },
     );
     expect(graph.limitations).not.toContain(
-      "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
   });
   it("rejects missing roots, malformed plist, and non-keyed archives", () => {
@@ -300,7 +300,7 @@ describe("binary plist reference preflight", () => {
       selection,
     );
     expect(graph.limitations).toContain(
-      "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
   });
 
@@ -320,7 +320,7 @@ describe("binary plist reference preflight", () => {
     }
     const nestedGraph = decodeKeyedArchiveBytes(nested, selection);
     expect(nestedGraph.limitations).toContain(
-      "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
 
     const shadowedValue = keyedRoot([
@@ -337,10 +337,10 @@ describe("binary plist reference preflight", () => {
     Buffer.from("__proto__").copy(shadowedValue, keyOffset);
     const shadowedGraph = decodeKeyedArchiveBytes(shadowedValue, selection);
     expect(shadowedGraph.limitations).toContain(
-      "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
     expect(shadowedGraph.limitations).not.toContain(
-      "1 dictionary entry keyed __proto__ was omitted because REA results cannot represent that key.",
+      "1 dictionary entry keyed __proto__ was omitted because BinSight results cannot represent that key.",
     );
   });
 
@@ -355,7 +355,7 @@ describe("binary plist reference preflight", () => {
       selection,
     );
     expect(graph.limitations).toContain(
-      "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
   });
 
@@ -370,7 +370,7 @@ describe("binary plist reference preflight", () => {
       selection,
     );
     expect(graph.limitations).toContain(
-      "Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
   });
 });

@@ -230,7 +230,7 @@ describe("complete frame and DOM comparison", () => {
 describe("DOM evidence through the public CLI", () => {
   it("preserves omissions and independently proven frame changes", async () => {
     const { state, inspect } = await startBrowser();
-    const root = await createTestTempDirectory("rea-dom-comparison-");
+    const root = await createTestTempDirectory("binsight-dom-comparison-");
     const before = join(root, "before.json");
     const after = join(root, "after.json");
     await writeFile(before, JSON.stringify({ inspection: await inspect() }));

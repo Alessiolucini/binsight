@@ -9,7 +9,7 @@ import {
 
 const CONSTRAINT =
   "REA_PWNTOOLS_MAX_INPUT_BYTES must be a decimal integer from 1 to " +
-  "1073741824 bytes, and REA never installs Python or packages.";
+  "1073741824 bytes, and BinSight never installs Python or packages.";
 
 describe("pwntools input bound", () => {
   it("keeps the shipped default when the override is absent", () => {

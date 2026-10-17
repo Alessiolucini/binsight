@@ -21,7 +21,7 @@ const linked = await execFileAsync("ldd", [launcher]);
 if (`${linked.stdout}\n${linked.stderr}`.includes("not found"))
   throw new Error("Hopper has unresolved shared-library dependencies");
 const alternateDirectory = await mkdtemp(
-  join(tmpdir(), "rea-real-hopper-launcher-"),
+  join(tmpdir(), "binsight-real-hopper-launcher-"),
 );
 const alternateLauncher = join(alternateDirectory, "Hopper-alternate");
 try {

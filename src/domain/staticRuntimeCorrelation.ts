@@ -149,17 +149,17 @@ type ComparisonIdentity = readonly [string | readonly string[], string, string];
 
 const EXPECTED: Readonly<Record<string, ComparisonIdentity>> = {
   compare_artifacts: [
-    "rea.artifact-comparison",
-    "rea-artifact-comparison",
-    "REA artifact comparison",
+    "binsight.artifact-comparison",
+    "binsight-artifact-comparison",
+    "BinSight artifact comparison",
   ],
   compare_functions: [
-    "rea.function-comparison",
-    "rea-function-comparison",
-    "REA function comparison",
+    "binsight.function-comparison",
+    "binsight-function-comparison",
+    "BinSight function comparison",
   ],
   compare_process_captures: [
-    "rea.process-comparison",
+    "binsight.process-comparison",
     PROCESS_PROVIDER.id,
     PROCESS_PROVIDER.name,
   ],

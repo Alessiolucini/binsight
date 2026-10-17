@@ -57,13 +57,13 @@ const buildBundle = async (
 };
 
 const host = () =>
-  systemMacHopperInstallHost("/home/rea-test", { ...process.env });
+  systemMacHopperInstallHost("/home/binsight-test", { ...process.env });
 
 describe("macOS Hopper publisher verification", () => {
   itDarwin(
     "rejects an ad-hoc signed bundle carrying the pinned bundle identifier",
     async () => {
-      const root = await createTestTempDirectory("rea-hopper-publisher-");
+      const root = await createTestTempDirectory("binsight-hopper-publisher-");
       const app = await buildBundle(root, HOPPER_PUBLISHER.bundleIdentifier);
       // The pre-pinned checks accept this bundle: `codesign --verify` succeeds
       // for ad-hoc signatures and the identifier clause alone also matches.
@@ -75,7 +75,7 @@ describe("macOS Hopper publisher verification", () => {
   );
 
   itDarwin("rejects an unsigned bundle before any copy", async () => {
-    const root = await createTestTempDirectory("rea-hopper-unsigned-");
+    const root = await createTestTempDirectory("binsight-hopper-unsigned-");
     const app = await buildBundle(root, HOPPER_PUBLISHER.bundleIdentifier, {
       sign: false,
     });
@@ -83,7 +83,7 @@ describe("macOS Hopper publisher verification", () => {
   });
 
   itDarwin("rejects a bundle modified after it was signed", async () => {
-    const root = await createTestTempDirectory("rea-hopper-tampered-");
+    const root = await createTestTempDirectory("binsight-hopper-tampered-");
     const app = await buildBundle(root, HOPPER_PUBLISHER.bundleIdentifier);
     await appendFile(join(app, ...executableSegments), "appended\n");
     await expect(host().validBundle(app)).resolves.toBe("invalid_signature");
@@ -99,7 +99,7 @@ describe("macOS Hopper publisher verification", () => {
     "withholds native-helper provenance from custom signed or modified executables",
     async () => {
       const root = await createTestTempDirectory(
-        "rea-hopper-helper-publisher-",
+        "binsight-hopper-helper-publisher-",
       );
       const app = await buildBundle(root, "hopper");
       const executable = join(app, ...executableSegments);

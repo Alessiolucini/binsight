@@ -48,7 +48,7 @@ describe.skipIf(process.platform !== "darwin")(
       "retains complete inspect_macho Evidence and pages its exact rows",
       async ({ mcp, onTestFinished }) => {
         const target = join(
-          await createTestTempDirectory("rea-macho-summary-mcp-"),
+          await createTestTempDirectory("binsight-macho-summary-mcp-"),
           "ls",
         );
         await copyFile("/bin/ls", target);
@@ -159,7 +159,7 @@ mcpTest(
   "refuses summary delivery before analysis when the server retains no Evidence",
   async ({ mcp, onTestFinished }) => {
     const target = join(
-      await createTestTempDirectory("rea-summary-preflight-"),
+      await createTestTempDirectory("binsight-summary-preflight-"),
       "tool",
     );
     await writeFile(target, thinMach(0xfeedfacf, 0x0100000c));

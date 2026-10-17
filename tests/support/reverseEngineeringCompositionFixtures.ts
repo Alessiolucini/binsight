@@ -7,7 +7,7 @@ export const createArtifact = async (): Promise<{
   directory: string;
   path: string;
 }> => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-edge-"));
+  const directory = await mkdtemp(join(tmpdir(), "binsight-reverse-edge-"));
   const path = join(directory, "sample.bin");
   await writeFile(path, "initial artifact");
   return { directory, path };

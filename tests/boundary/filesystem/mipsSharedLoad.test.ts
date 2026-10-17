@@ -53,7 +53,7 @@ const fixture = (little: boolean, count = 2): Buffer => {
   return bytes;
 };
 const resolve = async (bytes: Buffer) => {
-  const directory = await createTestTempDirectory("rea-mips-shared-test-");
+  const directory = await createTestTempDirectory("binsight-mips-shared-test-");
   const path = join(directory, "shared.elf");
   await writeFile(path, bytes);
   const result = await parseBinaryTarget(path);

@@ -67,12 +67,12 @@ it.each(["alpha", "beta"])(
     const beta = new ProviderCleanupError("beta", ["beta-file"], {});
     const third = new ProviderCleanupError("third", ["third-file"], {});
     const children = new ProviderCleanupError(
-      "rea",
+      "binsight",
       ["alpha-file", "beta-file"],
       {},
     ).bindCleanupDependencies([alpha, beta]);
     const outer = new ProviderCleanupError(
-      "rea",
+      "binsight",
       ["alpha-file", "beta-file", "third-file"],
       {},
     ).bindCleanupDependencies([children, third]);

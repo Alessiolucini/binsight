@@ -42,7 +42,7 @@ describe("macOS Hopper launcher paths", () => {
   });
 
   it("finds renamed user bundles through the runtime filesystem scan", async () => {
-    const temporary = await mkdtemp(join(tmpdir(), "rea-hopper-paths-"));
+    const temporary = await mkdtemp(join(tmpdir(), "binsight-hopper-paths-"));
     const appDirectory = join(temporary, "Applications", "Hopper Preview.app");
     try {
       await mkdir(appDirectory, { recursive: true });

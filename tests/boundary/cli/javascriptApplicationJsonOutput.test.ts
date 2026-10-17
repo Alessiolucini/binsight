@@ -30,7 +30,7 @@ for (const scenario of [
   cliTest(
     `${scenario.command} preserves representative ${scenario.format} output`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-js-json-output-");
+      const root = await createTestTempDirectory("binsight-js-json-output-");
       await writeFile(join(root, "main.js"), "fetch('');\n");
       const direct = await analyzeJavaScriptApplication({ input_path: root });
       if (!direct.ok) throw direct.error;
@@ -85,7 +85,9 @@ for (const scenario of [
 cliTest(
   "preserves a complete empty filtered JSON document",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-json-empty-filter-");
+    const root = await createTestTempDirectory(
+      "binsight-js-json-empty-filter-",
+    );
     await writeFile(join(root, "main.js"), "export const value = 1;\n");
     const output = await cli.run({
       arguments: [
@@ -104,7 +106,7 @@ cliTest(
 cliTest(
   "preserves a typed failed analysis in the JSON result",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-json-failure-");
+    const root = await createTestTempDirectory("binsight-js-json-failure-");
     const output = await cli.run({
       arguments: [
         "analyze-javascript-application",
@@ -122,7 +124,9 @@ cliTest(
 cliTest(
   "preserves JSON omission for inherited filter methods",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-json-inherited-filter-");
+    const root = await createTestTempDirectory(
+      "binsight-js-json-inherited-filter-",
+    );
     await writeFile(join(root, "main.js"), "export const value = 1;\n");
     const output = await cli.run({
       arguments: [
@@ -141,7 +145,7 @@ cliTest(
 cliTest(
   "honors caller-selected semantic node limits across files and records them in Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-node-budgets-");
+    const root = await createTestTempDirectory("binsight-js-node-budgets-");
     await writeFile(join(root, "first.js"), "external;\n".repeat(40));
     await writeFile(join(root, "second.js"), "another;\n".repeat(40));
     const output = await cli.run({

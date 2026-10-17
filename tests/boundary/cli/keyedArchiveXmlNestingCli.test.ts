@@ -23,7 +23,7 @@ for (const [name, xml] of [
   cliTest(
     `compiled CLI reports deeply nested XML ${name} as the decode limit`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-keyed-cli-depth-");
+      const root = await createTestTempDirectory("binsight-keyed-cli-depth-");
       const path = join(root, "Deep.plist");
       await writeFile(path, xml);
       const output = await cli.run({
@@ -48,7 +48,7 @@ for (const [name, xml] of [
 cliTest(
   "compiled CLI decodes a shallow archive with opaque DOCTYPE markup",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-cli-doctype-");
+    const root = await createTestTempDirectory("binsight-keyed-cli-doctype-");
     const path = join(root, "Shallow.plist");
     const archive = build({
       $archiver: "NSKeyedArchiver",

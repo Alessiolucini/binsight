@@ -167,7 +167,7 @@ export class DarwinProcessOwnershipInspectionError extends Error {
   }
 }
 
-/** Explicit, bounded outcome from compiling REA's Darwin ownership helper. */
+/** Explicit, bounded outcome from compiling BinSight's Darwin ownership helper. */
 export interface DarwinCompilerOutcome {
   readonly outcome:
     | "exited"
@@ -365,7 +365,7 @@ export type DarwinProcessReaderCompiler =
       readonly sdkRoot: string;
     };
 
-/** Compile and retain the narrow Darwin sysctl reader for this REA process. */
+/** Compile and retain the narrow Darwin sysctl reader for this BinSight process. */
 export const createDarwinProcessRunTokenReader = (
   options: {
     readonly compiler?: DarwinProcessReaderCompiler;
@@ -447,7 +447,7 @@ export const createDarwinProcessRunTokenReader = (
         );
       }
       operationRoot = {
-        path: await mkdtemp(join(tmpdir(), "rea-process-token-")),
+        path: await mkdtemp(join(tmpdir(), "binsight-process-token-")),
       };
       root = operationRoot;
       process.once("exit", cleanupAtExit);
@@ -467,7 +467,7 @@ export const createDarwinProcessRunTokenReader = (
       if (compiler.kind === "swiftc")
         compilerEnvironment.SDKROOT = compiler.sdkRoot;
       if (moduleCachePath === "") {
-        // Use Swift's reusable default cache for REA's internal helper compilation.
+        // Use Swift's reusable default cache for BinSight's internal helper compilation.
         delete compilerEnvironment.CLANG_MODULE_CACHE_PATH;
       } else {
         await mkdir(moduleCachePath, { recursive: true });

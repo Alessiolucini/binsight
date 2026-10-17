@@ -5,7 +5,7 @@ import type { AndroidOperation } from "../domain/android/androidAnalysis.js";
 import { dexDescriptorSchema } from "../domain/android/androidAnalysis.js";
 
 const count = z.number().int().nonnegative();
-/** Selector failures authored by REA's bridge, separate from arbitrary engine errors. */
+/** Selector failures authored by BinSight's bridge, separate from arbitrary engine errors. */
 export const jadxInputFailureSchema = z.strictObject({
   kind: z.literal("invalid-input"),
   field: z.enum(["class_name", "method_name", "overload_index"]),

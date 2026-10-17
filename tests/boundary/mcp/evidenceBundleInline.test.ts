@@ -56,7 +56,7 @@ it("returns the complete session Evidence bundle in the tool result", async () =
 });
 
 it("rejects bundle field stripping at MCP import without changing retained evidence", async () => {
-  const root = await createTestTempDirectory("rea-evidence-bundle-mcp-");
+  const root = await createTestTempDirectory("binsight-evidence-bundle-mcp-");
   const sourceSession = createBundleSourceSession();
   const targetSession = createTestBinarySession(() => ({
     execute: () => Promise.resolve(observed(null)),
@@ -166,7 +166,7 @@ const createBundleSourceSession = () => {
       authority: "controlled-replay",
     }),
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "binsight.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: jsonValueSchema.parse(EMPTY_PROCESS_CAPTURE_EXAMPLE),

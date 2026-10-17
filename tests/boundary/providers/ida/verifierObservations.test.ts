@@ -236,7 +236,7 @@ it.each([
               ? ["--expected-string", "a.b", "--expected-xref", "0x1004"]
               : []),
           ],
-          runId: `rea-ida-verifier-${randomUUID()}`,
+          runId: `binsight-ida-verifier-${randomUUID()}`,
           cwd: process.cwd(),
           env: {
             REA_IDA_MCP_CONFIG: upstream.config,

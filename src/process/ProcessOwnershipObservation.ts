@@ -370,10 +370,10 @@ export const createSystemProcessOwnershipHost = (
         try {
           const processes = await listProcesses(signal);
           if (!processes.some(({ pid }) => pid === process.pid))
-            throw new Error("ps did not report REA's current process");
+            throw new Error("ps did not report BinSight's current process");
         } catch (cause: unknown) {
           if (isExpectedAbort(cause, signal)) throw cause;
-          const reason = `Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: ${errorMessage(cause)}`;
+          const reason = `Linux process ownership inspection requires a procps-compatible ps on BinSight's PATH before launching a child: ${errorMessage(cause)}`;
           throw new AnalysisCapabilityUnavailableError(
             "process-ownership",
             "prepare_owned_process",
@@ -549,7 +549,7 @@ export const signalProcessWithStartIdentity = async (
   }
 };
 
-/** Prepare native token inspection before REA launches a captured child. */
+/** Prepare native token inspection before BinSight launches a captured child. */
 export const prepareProcessOwnershipInspection = async (
   signal?: AbortSignal,
 ): Promise<void> => {

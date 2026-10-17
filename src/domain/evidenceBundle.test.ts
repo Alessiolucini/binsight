@@ -74,7 +74,7 @@ const makeUnknown = (
         : [{ type: "depends-on", unknown_id: dependency }],
   });
   const mutation = createEvidence(undefined, provider, {
-    predicateType: "rea.residual-unknown-mutation",
+    predicateType: "binsight.residual-unknown-mutation",
     operation: "record_unknown",
     parameters: { domain: input.domain, severity: input.severity },
     result: {
@@ -101,7 +101,7 @@ describe("evidenceBundleForTarget", () => {
       { ...ANALYSIS_SNAPSHOT_TARGET, sha256: foreignDigest },
       provider,
       {
-        predicateType: "rea.residual-unknown-mutation",
+        predicateType: "binsight.residual-unknown-mutation",
         operation: "update_unknown",
         parameters: {
           unknown_id: first.unknown.unknown_id,

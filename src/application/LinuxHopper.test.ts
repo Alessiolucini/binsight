@@ -36,10 +36,12 @@ describe("Linux package-manager command display", () => {
       formatCommandForDisplay("pkexec", [
         "pacman",
         "-U",
-        "/tmp/rea test/hopper.arch",
+        "/tmp/binsight test/hopper.arch",
         "apostrophe'path",
       ]),
-    ).toBe('pkexec pacman -U "/tmp/rea test/hopper.arch" "apostrophe\'path"');
+    ).toBe(
+      'pkexec pacman -U "/tmp/binsight test/hopper.arch" "apostrophe\'path"',
+    );
   });
 });
 
@@ -58,7 +60,7 @@ class RecordingLinuxHost implements LinuxHopperInstallHost {
   cacheWritable = true;
   verifiedBeforeInstall = false;
   packageFailure: LinuxPackageInstallFailure = {
-    command: "pacman -U --noconfirm /tmp/rea test/hopper.arch",
+    command: "pacman -U --noconfirm /tmp/binsight test/hopper.arch",
     exitCode: 1,
     stdout: "",
     stderr: "error: failed to prepare transaction",
@@ -78,7 +80,7 @@ class RecordingLinuxHost implements LinuxHopperInstallHost {
     return Promise.resolve({ ok: this.archiveOk, bytes: this.archive });
   };
   createTemporaryDirectory = (): Promise<string> =>
-    Promise.resolve("/tmp/rea test");
+    Promise.resolve("/tmp/binsight test");
   writeArchive = (): Promise<void> => Promise.resolve();
   verifyArchive = (family: LinuxPackageFamily, release: LinuxHopperRelease) => {
     if (
@@ -203,7 +205,7 @@ describe("Linux Hopper host classification", () => {
     "ID=derivative\nID_LIKE='debian'\n",
     "ID='debian'\nVERSION_ID='13'\n",
   ])(
-    "hosts REA on a distribution Hopper has no tested package for: %s",
+    "hosts BinSight on a distribution Hopper has no tested package for: %s",
     (document) => {
       const distribution = parseLinuxDistribution(document);
       expect(distribution.hopperSetupSupported).toBe(false);
@@ -275,9 +277,9 @@ describe("Linux Hopper package installation", () => {
         launcherPath: "/opt/hopper/bin/Hopper",
       });
       expect(host.installed).toEqual([
-        { family, archive: `/tmp/rea test/hopper.${family}` },
+        { family, archive: `/tmp/binsight test/hopper.${family}` },
       ]);
-      expect(host.cleaned).toEqual(["/tmp/rea test"]);
+      expect(host.cleaned).toEqual(["/tmp/binsight test"]);
     },
   );
 });
@@ -297,7 +299,7 @@ describe("Linux Hopper installation failure classification", () => {
         verificationFailure: { reason, message: expect.any(String) },
       });
       expect(host.installed).toEqual([]);
-      expect(host.cleaned).toEqual(["/tmp/rea test"]);
+      expect(host.cleaned).toEqual(["/tmp/binsight test"]);
     },
   );
   it.each([
@@ -332,13 +334,13 @@ describe("Linux Hopper installation failure classification", () => {
         : {}),
     });
     if (host.installed.length > 0)
-      expect(host.cleaned).toEqual(["/tmp/rea test"]);
+      expect(host.cleaned).toEqual(["/tmp/binsight test"]);
   });
 });
 
 describe("Linux Hopper cleanup and failure details", () => {
   it("preserves a publisher descriptor cleanup failure during launcher status inspection", async () => {
-    const directory = await createTestTempDirectory("rea-hopper-status-");
+    const directory = await createTestTempDirectory("binsight-hopper-status-");
     const launcher = join(directory, "Hopper");
     await writeFile(launcher, "fixture launcher");
     const host = systemLinuxHopperInstallHost({
@@ -372,7 +374,7 @@ describe("Linux Hopper cleanup and failure details", () => {
     const host = new RecordingLinuxHost();
     host.installSucceeds = false;
     host.packageFailure = {
-      command: "pkexec pacman -U --noconfirm /tmp/rea test/hopper.arch",
+      command: "pkexec pacman -U --noconfirm /tmp/binsight test/hopper.arch",
       exitCode: 1,
       stdout: "loading packages...",
       stderr:
@@ -384,7 +386,7 @@ describe("Linux Hopper cleanup and failure details", () => {
       reason: "authorization_or_package_manager",
       packageFailure: host.packageFailure,
     });
-    expect(host.cleaned).toEqual(["/tmp/rea test"]);
+    expect(host.cleaned).toEqual(["/tmp/binsight test"]);
   });
 
   it("preserves a successful install result when temporary cleanup fails", async () => {
@@ -394,7 +396,7 @@ describe("Linux Hopper cleanup and failure details", () => {
       status: "installed",
       launcherPath: "/opt/hopper/bin/Hopper",
       cleanupFailure: {
-        path: "/tmp/rea test",
+        path: "/tmp/binsight test",
         reason: "temporary path is busy",
       },
     });
@@ -409,7 +411,7 @@ describe("Linux Hopper cleanup and failure details", () => {
       reason: "authorization_or_package_manager",
       packageFailure: host.packageFailure,
       cleanupFailure: {
-        path: "/tmp/rea test",
+        path: "/tmp/binsight test",
         reason: "temporary path is busy",
       },
     });
@@ -435,7 +437,7 @@ describe("Linux Hopper cancellation", () => {
 describe("Linux Hopper temporary cleanup ownership", () => {
   it("retains a failed cleanup for a later successful retry", async () => {
     const owner = new LinuxHopperTemporaryCleanupOwner();
-    owner.retain({ path: "/tmp/rea-hopper", reason: "busy" });
+    owner.retain({ path: "/tmp/binsight-hopper", reason: "busy" });
     let attempts = 0;
 
     expect(
@@ -443,7 +445,7 @@ describe("Linux Hopper temporary cleanup ownership", () => {
         attempts += 1;
         throw new Error("still busy");
       }),
-    ).toContain("/tmp/rea-hopper");
+    ).toContain("/tmp/binsight-hopper");
     expect(
       await owner.retry(async () => {
         attempts += 1;

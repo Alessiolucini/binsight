@@ -11,7 +11,7 @@ import { analyzeJavaScriptArtifactFiles } from "../../../../src/application/java
 import { buildJavaScriptArtifactGraph } from "../../../../src/application/javascript/JavaScriptArtifactGraphBuilder.js";
 
 it("keeps ambiguous endpoint candidates inferred through artifact graph projection", async () => {
-  const root = await createTestTempDirectory("rea-js-endpoint-certainty-");
+  const root = await createTestTempDirectory("binsight-js-endpoint-certainty-");
   await writeFile(join(root, "app.js"), 'form.get("shared"); fetch("shared");');
   const snapshot = await scanCanonicalArtifactInventory(root, {});
   const reader = createJavaScriptArtifactReader(root, "directory");
@@ -77,7 +77,7 @@ it("keeps ambiguous endpoint candidates inferred through artifact graph projecti
 
 it("preserves partial and exact endpoint identity through graph projection", async () => {
   const root = await createTestTempDirectory(
-    "rea-js-endpoint-partial-identity-",
+    "binsight-js-endpoint-partial-identity-",
   );
   await writeFile(
     join(root, "app.js"),

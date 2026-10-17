@@ -190,7 +190,7 @@ const encodeNibArchiveWithSharedDataValue = (input: {
 
 describe("compiled Interface Builder bundle reader", () => {
   it("reads nib plist archives and reports provenance", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const nib = join(
       bundle,
@@ -248,7 +248,7 @@ describe("compiled Interface Builder bundle reader", () => {
   });
 
   it("projects compiled AppKit actions from the control to their target", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -328,7 +328,7 @@ describe("compiled Interface Builder bundle reader", () => {
 
 describe("keyed archive hierarchy coverage", () => {
   it("projects a deep keyed-archive hierarchy through NSArray wrappers", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -361,7 +361,7 @@ describe("keyed archive hierarchy coverage", () => {
   });
 
   it("preserves source order for children in an archived collection", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -401,7 +401,7 @@ describe("keyed archive hierarchy coverage", () => {
   it.skipIf(process.platform !== "darwin")(
     "projects a deep NSView archive produced by Foundation NSKeyedArchiver",
     async () => {
-      const root = await createTestTempDirectory("rea-ib-test-");
+      const root = await createTestTempDirectory("binsight-ib-test-");
       const bundle = join(root, "Example.app");
       const resources = join(bundle, "Contents", "Resources");
       await mkdir(resources, { recursive: true });
@@ -442,7 +442,7 @@ describe("keyed archive hierarchy coverage", () => {
 
 describe("compiled Interface Builder bundle reader cancellation", () => {
   it("honors cancellation during directory traversal", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const controller = new AbortController();
     controller.abort();
     await expect(
@@ -457,7 +457,7 @@ describe("compiled Interface Builder bundle reader cancellation", () => {
 
 describe("flat Interface Builder plist values", () => {
   it("decodes flat nib archives that hold data and date values", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources", "English.lproj");
     await mkdir(resources, { recursive: true });
@@ -501,7 +501,9 @@ describe("flat Interface Builder plist values", () => {
 
 describe("bounded Interface Builder archive decoding", () => {
   it("marks repeated NIB hierarchy references partial at the caller object limit", async () => {
-    const root = await createTestTempDirectory("rea-ib-repeated-hierarchy-");
+    const root = await createTestTempDirectory(
+      "binsight-ib-repeated-hierarchy-",
+    );
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     const depth = 8;
@@ -553,7 +555,7 @@ describe("bounded Interface Builder archive decoding", () => {
   });
 
   it("rejects a binary plist expansion before recursively materializing repeated references", async () => {
-    const root = await createTestTempDirectory("rea-ib-expansion-test-");
+    const root = await createTestTempDirectory("binsight-ib-expansion-test-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     await writeFile(
@@ -584,7 +586,9 @@ describe("bounded Interface Builder archive decoding", () => {
 
 describe("binary plist data expansion budget", () => {
   it("reserves copied binary plist data for every expanded reference", async () => {
-    const root = await createTestTempDirectory("rea-ib-binary-data-budget-");
+    const root = await createTestTempDirectory(
+      "binsight-ib-binary-data-budget-",
+    );
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     await writeFile(
@@ -645,7 +649,7 @@ describe("NIB projection byte amplification", () => {
     ];
 
     for (const { name, archive } of cases) {
-      const root = await createTestTempDirectory(`rea-ib-${name}-budget-`);
+      const root = await createTestTempDirectory(`binsight-ib-${name}-budget-`);
       const bundle = join(root, "Example.app");
       await mkdir(bundle, { recursive: true });
       await writeFile(join(bundle, `${name}.nib`), archive);
@@ -671,7 +675,9 @@ describe("NIB projection byte amplification", () => {
   });
 
   it("retains a single large base64 data field within the representation budget", async () => {
-    const root = await createTestTempDirectory("rea-ib-large-data-positive-");
+    const root = await createTestTempDirectory(
+      "binsight-ib-large-data-positive-",
+    );
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     const archive = encodeNibArchiveFixture({
@@ -705,7 +711,7 @@ describe("NIB projection byte amplification", () => {
 cliTest(
   "compiled CLI preserves distinct NIB keys and class identity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-nib-name-identity-");
+    const root = await createTestTempDirectory("binsight-nib-name-identity-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -748,7 +754,9 @@ cliTest(
 cliTest(
   "compiled CLI preserves a good archive and reports repeated key and data omissions",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ib-cli-amplification-");
+    const root = await createTestTempDirectory(
+      "binsight-ib-cli-amplification-",
+    );
     const bundle = join(root, "Example.app");
     const contents = join(bundle, "Contents");
     const resources = join(bundle, "Contents", "Resources");
@@ -840,7 +848,7 @@ describe("binary Interface Builder archive omissions", () => {
     expect(encoded.indexOf(placeholder, start + placeholder.length)).toBe(-1);
     Buffer.from("__proto__").copy(encoded, start);
 
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -858,14 +866,14 @@ describe("binary Interface Builder archive omissions", () => {
       }),
     );
     expect(result.limitations).toContain(
-      "Contents/Resources/Prototype.nib: Dictionary entries keyed __proto__ were omitted because REA results cannot represent that key.",
+      "Contents/Resources/Prototype.nib: Dictionary entries keyed __proto__ were omitted because BinSight results cannot represent that key.",
     );
   });
 });
 
 describe("aggregate Interface Builder archive retention budget", () => {
   it("keeps earlier documents when the aggregate decode reservation is exhausted", async () => {
-    const root = await createTestTempDirectory("rea-ib-budget-test-");
+    const root = await createTestTempDirectory("binsight-ib-budget-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -910,7 +918,7 @@ describe("aggregate Interface Builder archive retention budget", () => {
 
 describe("Interface Builder XML plist depth", () => {
   it("bounds XML archives by plist value depth, not element depth", async () => {
-    const root = await createTestTempDirectory("rea-ib-depth-test-");
+    const root = await createTestTempDirectory("binsight-ib-depth-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -961,7 +969,7 @@ describe("Interface Builder XML plist depth", () => {
 
 describe("bounded Interface Builder archive decoding", () => {
   it("counts malformed archives against the document limit", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -986,7 +994,7 @@ describe("bounded Interface Builder archive decoding", () => {
   });
 
   it("marks archive decoding partial when __proto__ entries are omitted", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1009,12 +1017,12 @@ describe("bounded Interface Builder archive decoding", () => {
     );
     expect(result.graph.truncated).toBe(true);
     expect(result.limitations).toContain(
-      "Contents/Resources/Prototype.nib: 1 dictionary entry keyed __proto__ was omitted because REA results cannot represent that key.",
+      "Contents/Resources/Prototype.nib: 1 dictionary entry keyed __proto__ was omitted because BinSight results cannot represent that key.",
     );
   });
 
   it("decodes an archive whose date the decoder cannot represent", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1043,7 +1051,7 @@ describe("bounded Interface Builder archive decoding", () => {
   it.skipIf(!xcodeIbtoolAvailable)(
     "decodes an Xcode-compiled storyboard NIB and recovers its UI routes",
     async () => {
-      const root = await createTestTempDirectory("rea-ib-compiled-test-");
+      const root = await createTestTempDirectory("binsight-ib-compiled-test-");
       const bundle = join(root, "Example.app");
       const resources = join(bundle, "Contents", "Resources");
       const source = join(
@@ -1121,7 +1129,7 @@ describe("bounded Interface Builder archive decoding", () => {
 
 describe("NIBArchive UIKit event connections", () => {
   it("projects a runtime event connection and its event mask", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("binsight-ib-test-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     await writeFile(
@@ -1189,7 +1197,7 @@ describe("NIBArchive UIKit event connections", () => {
   });
 
   it("reports a runtime connection with no resolvable owner as an omission", async () => {
-    const root = await createTestTempDirectory("rea-ib-ownerless-");
+    const root = await createTestTempDirectory("binsight-ib-ownerless-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     // The connector is recognized by class, but carries no UISource reference,
@@ -1251,7 +1259,7 @@ describe("NIBArchive UIKit event connections", () => {
 
 describe("NIBArchive ownerless connector accounting", () => {
   it("keeps a connection dropped by the limit reported as a limit", async () => {
-    const root = await createTestTempDirectory("rea-ib-ownerless-limit-");
+    const root = await createTestTempDirectory("binsight-ib-ownerless-limit-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     // Two resolvable connectors and one ownerless connector with the limit

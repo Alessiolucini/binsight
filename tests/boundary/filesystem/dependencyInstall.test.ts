@@ -20,7 +20,7 @@ const fixture = async (
   installedVersion?: string,
   omitDevDependency = false,
 ) => {
-  const root = await createTestTempDirectory("rea-deps-");
+  const root = await createTestTempDirectory("binsight-deps-");
   await mkdir(join(root, "node_modules"));
   await writeFile(
     join(root, "package-lock.json"),
@@ -177,7 +177,7 @@ describe("dependency install freshness", () => {
 });
 
 const createBuildCacheFixture = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-build-cache-guard-");
+  const root = await createTestTempDirectory("binsight-build-cache-guard-");
   const packageJson = asRecord(
     JSON.parse(await readFile(join(sourceRoot, "package.json"), "utf8")),
   );

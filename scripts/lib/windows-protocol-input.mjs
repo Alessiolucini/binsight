@@ -181,7 +181,7 @@ async function verifyNativePendingWrite(native, workspace) {
     );
     assert.throws(
       () => native.call("process_stdin_write", [{}, Buffer.from("forged")]),
-      /does not belong to REA/u,
+      /does not belong to BinSight/u,
     );
   } finally {
     // The worker retains its handle/buffer after the JS resource closes.

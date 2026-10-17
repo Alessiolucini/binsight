@@ -52,7 +52,7 @@ it.each([
   async (scenario) => {
     // Synthetic transcripts exercise grading; they are not real-provider or
     // resource measurements. Real DOS transcripts are replayed separately.
-    const root = await createTestTempDirectory("rea-dos-grader-");
+    const root = await createTestTempDirectory("binsight-dos-grader-");
     const trial = join(root, "trial");
     const referenceDirectory = join(root, "reference");
     await mkdir(trial);
@@ -271,7 +271,7 @@ it.each(["references", "item", "coverage", "limitations", "unknowns"])(
     if (change === "unknowns")
       rightAnswer.retained_views[0].unknowns.push("unresolved");
 
-    const root = await createTestTempDirectory("rea-native-comparison-");
+    const root = await createTestTempDirectory("binsight-native-comparison-");
     const left = join(root, "left");
     const right = join(root, "right");
     const summary = {

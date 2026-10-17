@@ -11,7 +11,9 @@ import { reconstructJavaScriptArtifact } from "../../../src/application/javascri
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("retains a failed nested reader through blocked work and scope cleanup", async () => {
-  const root = await createTestTempDirectory("rea-js-nested-reader-cleanup-");
+  const root = await createTestTempDirectory(
+    "binsight-js-nested-reader-cleanup-",
+  );
   const bundle = join(root, "bundle");
   const contents = join(root, "asar-contents");
   const archive = join(bundle, "app.asar");

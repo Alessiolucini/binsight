@@ -131,7 +131,7 @@ describe("analyzeGenerateSbom", () => {
     expect(spdxOnly.cyclonedx).toBeNull();
     expect(spdxOnly.spdx?.spdxVersion).toBe("SPDX-2.3");
     expect(spdxOnly.spdx?.documentNamespace).toMatch(
-      /^urn:rea:sbom:[0-9a-f]{64}$/u,
+      /^urn:binsight:sbom:[0-9a-f]{64}$/u,
     );
   });
 

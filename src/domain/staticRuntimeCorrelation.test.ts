@@ -22,7 +22,7 @@ const capture = (digit: string): Evidence =>
     undefined,
     { id: "fixture", name: "Fixture", version: "1" },
     {
-      predicateType: "rea.process-capture",
+      predicateType: "binsight.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: { digit },
@@ -68,12 +68,12 @@ const processComparison = (
   return createEvidence(
     undefined,
     {
-      id: "rea-process",
-      name: "REA deterministic process harness",
+      id: "binsight-process",
+      name: "BinSight deterministic process harness",
       version: "3",
     },
     {
-      predicateType: "rea.process-comparison",
+      predicateType: "binsight.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_id: leftCapture.evidence_id,
@@ -135,7 +135,7 @@ it("keeps text, assembly and unavailable CFG caveats on their selected correlati
   const right = FUNCTION_COMPARISON_EXAMPLE.right;
   const computed = compareFunctions(left, right);
   const comparison = createEvidence(undefined, staticComparison.provider, {
-    predicateType: "rea.function-comparison",
+    predicateType: "binsight.function-comparison",
     operation: "compare_functions",
     parameters: {
       left_evidence_id: left.evidence_id,

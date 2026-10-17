@@ -28,6 +28,8 @@ import {
   NPX_REGISTRATION_COMMAND,
 } from "../../fixtures/clientEnvironment.js";
 
+const backupOf = (path: string): string => `${path}.binsight.backup`;
+
 const command = NPX_REGISTRATION_COMMAND;
 
 beforeEach(clearClientLocationEnvironment);
@@ -52,7 +54,7 @@ describe("additional client configuration dialects", () => {
   it("does not uninstall a Node registration whose relative script only matches this process cwd", async () => {
     if (CURRENT_ENTRYPOINT_PATH === undefined)
       throw new Error("test runner entrypoint is unavailable");
-    const home = await createTestTempDirectory("rea-relative-uninstall-");
+    const home = await createTestTempDirectory("bs-relative-uninstall-");
     const cursor = supportedClients(home).find(({ name }) => name === "cursor");
     if (cursor === undefined) throw new Error("missing Cursor client");
     await mkdir(cursor.markerPath ?? home, { recursive: true });
@@ -63,7 +65,7 @@ describe("additional client configuration dialects", () => {
     };
     await writeFile(
       cursor.configPath,
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { binsight: registration } }),
     );
 
     expect(
@@ -79,11 +81,11 @@ describe("additional client configuration dialects", () => {
     const after = parseJsonc(await readFile(cursor.configPath, "utf8")) as {
       readonly mcpServers: Readonly<Record<string, unknown>>;
     };
-    expect(after.mcpServers.rea).toEqual(registration);
+    expect(after.mcpServers.binsight).toEqual(registration);
   });
 
   it("treats an empty XDG config home as unset for OpenCode setup", async () => {
-    const home = await createTestTempDirectory("rea-opencode-empty-xdg-");
+    const home = await createTestTempDirectory("bs-opencode-empty-xdg-");
     const client = supportedClients(home, "linux", {
       XDG_CONFIG_HOME: "",
     }).find(({ name }) => name === "opencode");
@@ -108,7 +110,7 @@ describe("additional client configuration dialects", () => {
     "omp",
     "pi",
   ] as const)("registers, reads back, and uninstalls %s", async (name) => {
-    const home = await createTestTempDirectory("rea-client-dialect-");
+    const home = await createTestTempDirectory("bs-client-dialect-");
     const client = getClients(home).find(
       (candidate) => candidate.name === name,
     );
@@ -179,7 +181,7 @@ describe("additional client configuration dialects", () => {
 
 describe("OpenCode JSONC registration edits", () => {
   it("preserves OpenCode JSONC comments and sibling registrations during update and removal", async () => {
-    const home = await createTestTempDirectory("rea-opencode-jsonc-");
+    const home = await createTestTempDirectory("bs-opencode-jsonc-");
     const client = getClients(home).find(({ name }) => name === "opencode");
     if (client === undefined) throw new Error("missing OpenCode client");
     await mkdir(client.markerPath ?? home, { recursive: true });
@@ -197,7 +199,7 @@ describe("OpenCode JSONC registration edits", () => {
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: backupOf(client.configPath),
     });
     const updated = await readFile(client.configPath, "utf8");
     const errors: ParseError[] = [];
@@ -209,9 +211,7 @@ describe("OpenCode JSONC registration edits", () => {
     expect(updated).toContain("// An independently managed server.");
     expect(parsed.model).toBe("provider/model");
     expect((parsed.mcp as Record<string, unknown>).other).toBeDefined();
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
-      original,
-    );
+    expect(await readFile(backupOf(client.configPath), "utf8")).toBe(original);
 
     expect((await systemUninstallHost(home).removeClient(client)).status).toBe(
       "removed",
@@ -224,16 +224,16 @@ describe("OpenCode JSONC registration edits", () => {
     expect(removedErrors).toEqual([]);
     expect(removedText).toContain("// Client-wide preferences stay intact.");
     expect(removedText).toContain("// An independently managed server.");
-    expect((removed.mcp as Record<string, unknown>).rea).toBeUndefined();
+    expect((removed.mcp as Record<string, unknown>).binsight).toBeUndefined();
     expect((removed.mcp as Record<string, unknown>).other).toBeDefined();
   });
 
   it("rejects malformed OpenCode JSONC without creating a backup or changing bytes", async () => {
-    const home = await createTestTempDirectory("rea-opencode-invalid-");
+    const home = await createTestTempDirectory("bs-opencode-invalid-");
     const client = getClients(home).find(({ name }) => name === "opencode");
     if (client === undefined) throw new Error("missing OpenCode client");
     await mkdir(client.markerPath ?? home, { recursive: true });
-    const invalid = '{ "mcp": { /* broken */ "rea": [ }';
+    const invalid = '{ "mcp": { /* broken */ "binsight": [ }';
     await writeFile(client.configPath, invalid);
 
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -313,7 +313,7 @@ it.each([
     afterRegistration,
     expectedComment,
   }) => {
-    const home = await createTestTempDirectory("rea-cursor-jsonc-remove-");
+    const home = await createTestTempDirectory("bs-cursor-jsonc-remove-");
     const client = supportedClients(home).find(({ name }) => name === "cursor");
     if (client === undefined) throw new Error("missing Cursor client");
     await mkdir(client.markerPath ?? home, { recursive: true });
@@ -329,7 +329,7 @@ ${hasBeforeSibling ? '    "before": { "command": "before" },\n' : ""}  }
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: backupOf(client.configPath),
     });
 
     const configured = await readFile(client.configPath, "utf8");
@@ -368,7 +368,7 @@ ${hasBeforeSibling ? '    "before": { "command": "before" },\n' : ""}  }
       edited.slice(registrationEnd);
     await writeFile(client.configPath, edited);
 
-    const backup = await readFile(`${client.configPath}.rea.backup`, "utf8");
+    const backup = await readFile(backupOf(client.configPath), "utf8");
     const removed = await systemUninstallHost(home).removeClient(client);
     expect(removed.status).toBe("removed");
     const removedText = await readFile(client.configPath, "utf8");
@@ -386,7 +386,7 @@ ${hasBeforeSibling ? '    "before": { "command": "before" },\n' : ""}  }
         "// Keep the comment before the registration.",
       );
     expect(
-      (document.mcpServers as Record<string, unknown>).rea,
+      (document.mcpServers as Record<string, unknown>).binsight,
     ).toBeUndefined();
     if (hasBeforeSibling)
       expect(document.mcpServers).toMatchObject({
@@ -398,16 +398,12 @@ ${hasBeforeSibling ? '    "before": { "command": "before" },\n' : ""}  }
       });
     if (!hasBeforeSibling && !hasAfterSibling)
       expect(document.mcpServers).toEqual({});
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
-      backup,
-    );
+    expect(await readFile(backupOf(client.configPath), "utf8")).toBe(backup);
 
     const repeated = await systemUninstallHost(home).removeClient(client);
     expect(repeated.status).toBe("skipped");
     expect(await readFile(client.configPath, "utf8")).toBe(removedText);
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
-      backup,
-    );
+    expect(await readFile(backupOf(client.configPath), "utf8")).toBe(backup);
   },
 );
 
@@ -431,8 +427,8 @@ const openCodeClient = async (prefix: string) => {
 const legacyEntry = JSON.stringify({ type: "local", command, enabled: true });
 
 describe("OpenCode V2 native server table", () => {
-  it("registers in mcp.servers, replaces REA's V1 entry, and uninstalls", async () => {
-    const { home, client } = await openCodeClient("rea-opencode-v2-");
+  it("registers in mcp.servers, replaces BinSight's V1 entry, and uninstalls", async () => {
+    const { home, client } = await openCodeClient("bs-opencode-v2-");
     await writeFile(
       client.configPath,
       `{
@@ -443,7 +439,7 @@ describe("OpenCode V2 native server table", () => {
       // An independently managed server.
       "other": { "type": "local", "command": ["node", "other.js"] },
     },
-    "rea": ${legacyEntry},
+    "binsight": ${legacyEntry},
   },
 }\n`,
     );
@@ -461,7 +457,7 @@ describe("OpenCode V2 native server table", () => {
       timeout: { catalog: 30000 },
       servers: {
         other: { type: "local", command: ["node", "other.js"] },
-        rea: { type: "local", command: [...command] },
+        binsight: { type: "local", command: [...command] },
       },
     });
     expect(await readClientRegistrationStatuses(home)).toEqual(
@@ -485,12 +481,12 @@ describe("OpenCode V2 native server table", () => {
     });
   });
 
-  it("updates and removes REA's entry after OpenCode migrates it to mcp.servers", async () => {
-    const { home, client } = await openCodeClient("rea-opencode-migrated-");
+  it("updates and removes BinSight's entry after OpenCode migrates it to mcp.servers", async () => {
+    const { home, client } = await openCodeClient("bs-opencode-migrated-");
     const stale = ["npx", "-y", `${PRODUCT_IDENTITY.packageName}@3.2.0`, "mcp"];
     await writeFile(
       client.configPath,
-      `${JSON.stringify({ mcp: { servers: { rea: { type: "local", command: stale } } } })}\n`,
+      `${JSON.stringify({ mcp: { servers: { binsight: { type: "local", command: stale } } } })}\n`,
     );
 
     expect(await readClientRegistrationStatuses(home)).toEqual(
@@ -504,7 +500,7 @@ describe("OpenCode V2 native server table", () => {
     expect(
       parseOpenCode(await readFile(client.configPath, "utf8")).mcp,
     ).toEqual({
-      servers: { rea: { type: "local", command: [...command] } },
+      servers: { binsight: { type: "local", command: [...command] } },
     });
     expect((await systemUninstallHost(home).removeClient(client)).status).toBe(
       "removed",
@@ -517,10 +513,10 @@ describe("OpenCode V2 native server table", () => {
   });
 
   it("reports and removes a V1 entry that OpenCode still loads beside mcp.servers", async () => {
-    const { home, client } = await openCodeClient("rea-opencode-mixed-");
+    const { home, client } = await openCodeClient("bs-opencode-mixed-");
     await writeFile(
       client.configPath,
-      `{ "mcp": { "servers": {}, "rea": ${legacyEntry} } }\n`,
+      `{ "mcp": { "servers": {}, "binsight": ${legacyEntry} } }\n`,
     );
 
     expect(await readClientRegistrationStatuses(home)).toEqual(
@@ -543,11 +539,11 @@ describe("OpenCode V2 native server table", () => {
   });
 
   it("treats a V2 table holding a server named type as native", async () => {
-    const { home, client } = await openCodeClient("rea-opencode-type-server-");
+    const { home, client } = await openCodeClient("bs-opencode-type-server-");
     const typeServer = { type: "local", command: ["node", "type.js"] };
     await writeFile(
       client.configPath,
-      `${JSON.stringify({ mcp: { servers: { type: typeServer, rea: { type: "local", command } } } })}\n`,
+      `${JSON.stringify({ mcp: { servers: { type: typeServer, binsight: { type: "local", command } } } })}\n`,
     );
 
     expect(await readClientRegistrationStatuses(home)).toEqual(
@@ -570,7 +566,7 @@ describe("OpenCode V2 native server table", () => {
   });
 
   it("keeps a V1 server named servers in the V1 table", async () => {
-    const { client } = await openCodeClient("rea-opencode-v1-servers-");
+    const { client } = await openCodeClient("bs-opencode-v1-servers-");
     const servers = { type: "local", command: ["node", "servers.js"] };
     await writeFile(
       client.configPath,
@@ -584,7 +580,7 @@ describe("OpenCode V2 native server table", () => {
       parseOpenCode(await readFile(client.configPath, "utf8")).mcp,
     ).toEqual({
       servers,
-      rea: { type: "local", command: [...command], enabled: true },
+      binsight: { type: "local", command: [...command], enabled: true },
     });
   });
 });
@@ -670,7 +666,7 @@ describe("platform-aware client config paths", () => {
   });
 
   it("prefers an existing OpenCode JSONC file and honors explicit harness roots", async () => {
-    const home = await createTestTempDirectory("rea-config-overrides-");
+    const home = await createTestTempDirectory("bs-config-overrides-");
     const opencodeDirectory = join(home, ".config/opencode");
     await mkdir(opencodeDirectory, { recursive: true });
     await writeFile(join(opencodeDirectory, "opencode.jsonc"), "{}\n");
@@ -706,16 +702,19 @@ describe("platform-aware client config paths", () => {
 });
 
 describe("client registration command ownership", () => {
-  it("recognizes prior exact REA releases while rejecting foreign package commands", () => {
-    expect(isOwnedClientRegistrationCommand(["rea", "mcp"], undefined)).toBe(
-      true,
-    );
-    const cwdMatchingEntry = resolve("./rea");
+  it("recognizes prior exact BinSight releases while rejecting foreign package commands", () => {
     expect(
-      classifyClientRegistrationCommand(["./rea", "mcp"], cwdMatchingEntry),
+      isOwnedClientRegistrationCommand(["binsight", "mcp"], undefined),
+    ).toBe(true);
+    const cwdMatchingEntry = resolve("./binsight");
+    expect(
+      classifyClientRegistrationCommand(
+        ["./binsight", "mcp"],
+        cwdMatchingEntry,
+      ),
     ).toBe("unknown");
     expect(
-      isOwnedClientRegistrationCommand(["./rea", "mcp"], cwdMatchingEntry),
+      isOwnedClientRegistrationCommand(["./binsight", "mcp"], cwdMatchingEntry),
     ).toBe(false);
     expect(
       isOwnedClientRegistrationCommand(

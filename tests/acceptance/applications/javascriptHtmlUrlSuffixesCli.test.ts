@@ -8,7 +8,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "admits HTML script pathnames without treating URL suffixes as paths through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-html-url-suffixes-");
+    const root = await createTestTempDirectory("binsight-html-url-suffixes-");
     const cases = [
       {
         source: "query.html",

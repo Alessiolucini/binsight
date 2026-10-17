@@ -854,7 +854,7 @@ export const captureProcessScenario = async (
   if (ownershipReason !== undefined)
     return err(
       new AnalysisCapabilityUnavailableError(
-        "rea-process",
+        "binsight-process",
         "capture_process_scenario",
         ownershipReason,
         { userMessage: ownershipReason },

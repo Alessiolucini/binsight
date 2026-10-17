@@ -65,7 +65,7 @@ export const nativeCallObservationInputSchema = z.strictObject({
       z.string().regex(/^[^\x00]*$/u, "Environment values cannot contain NUL"),
     )
     .default({})
-    .describe("Overrides on top of the environment REA runs with."),
+    .describe("Overrides on top of the environment BinSight runs with."),
   working_directory: localPathStringSchema.optional(),
   duration_ms: z
     .number()
@@ -179,7 +179,7 @@ export const nativeCallObservationResultSchema = z.strictObject({
     ]),
     exit_status: z.number().int().nullable(),
     exit_description: z.string().nullable(),
-    /** REA confirmed the process is gone when observation ended. */
+    /** BinSight confirmed the process is gone when observation ended. */
     terminated: z.boolean(),
     elapsed_ms: z.number().nonnegative(),
     stdout: nativeCapturedOutputSchema,

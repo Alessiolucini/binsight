@@ -23,7 +23,7 @@ export const createOpenAiModelFixture = async ({
             object: "list",
             data: [
               {
-                id: "rea-client-fixture",
+                id: "binsight-client-fixture",
                 object: "model",
                 owned_by: "local-fixture",
               },
@@ -89,7 +89,7 @@ export const createOpenAiModelFixture = async ({
         requestIndex: requests.length,
       });
       const base = {
-        id: `chatcmpl-rea-${requests.length}`,
+        id: `chatcmpl-binsight-${requests.length}`,
         object: "chat.completion",
         created: Math.floor(Date.now() / 1000),
         model: body.model,
