@@ -262,14 +262,14 @@ Register with the variable unset:
 <!-- x-release-please-start-version -->
 
 ```bash
-claude mcp add --scope local binsight -- npx -y binsight@6.5.1 mcp
+claude mcp add --scope local binsight -- npx -y binsight@6.6.0 mcp
 ```
 
 On native Windows, use the same project directory and wrap the package-runner
 shim so the stdio client can launch it:
 
 ```powershell
-claude mcp add --scope local binsight -- cmd.exe /d /c npx -y binsight@6.5.1 mcp
+claude mcp add --scope local binsight -- cmd.exe /d /c npx -y binsight@6.6.0 mcp
 ```
 
 <!-- x-release-please-end -->
@@ -1147,7 +1147,7 @@ For a client that requires manual configuration, use:
   "mcpServers": {
     "binsight": {
       "command": "npx",
-      "args": ["-y", "binsight@6.5.1", "mcp"]
+      "args": ["-y", "binsight@6.6.0", "mcp"]
     }
   }
 }

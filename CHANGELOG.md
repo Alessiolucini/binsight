@@ -1,5 +1,23 @@
 # Changelog
 
+## [6.6.0](https://github.com/Alessiolucini/binsight/compare/binsight-6.5.1...binsight-6.6.0) (2026-10-18)
+
+
+### Features
+
+* **browser:** expand inspect_web_page coverage to OOPIF iframes and workers via auto-attach ([93bddc9](https://github.com/Alessiolucini/binsight/commit/93bddc9c985b4592270be3704fa23b6e40575f32))
+
+
+### Bug Fixes
+
+* **browser:** gate dropped-origin names behind include_disallowed_origin_hints ([9a8d242](https://github.com/Alessiolucini/binsight/commit/9a8d2427234bc56a72b4b78eff36d24b42fe343d))
+* **browser:** web-capture ergonomics — text locator, source-map status, cross-platform recovery, screenshot output path, origin visibility ([c02b7fa](https://github.com/Alessiolucini/binsight/commit/c02b7fa8942136dd21ced3f98e7840b61986f434))
+* **browser:** web-capture ergonomics — text locator, source-map status, cross-platform recovery, screenshot output path, origin visibility ([2649299](https://github.com/Alessiolucini/binsight/commit/2649299bfef05176476d18a76ae37d7d82ad1029))
+* **native:** restore reaFixtureLength in the Apple dispatch verifier ([99239ee](https://github.com/Alessiolucini/binsight/commit/99239ee3a67a0d89ba8f470d866567404e880a9f))
+* **native:** restore reaFixtureLength in the Apple dispatch verifier ([240e058](https://github.com/Alessiolucini/binsight/commit/240e05833adac582995f2849fba7aa8e2823746f))
+* **process:** retry temp-dir cleanup in the Windows npm-invocation test ([452eb61](https://github.com/Alessiolucini/binsight/commit/452eb61f8b3a27f767ccb17bbf4c621981869061))
+* **signals:** restore the REA UART payload in the signal-recording verifier ([1a25087](https://github.com/Alessiolucini/binsight/commit/1a250870842055811a5d232da6ef809464af5d7a))
+
 ## [6.5.1](https://github.com/Alessiolucini/binsight/compare/binsight-6.5.0...binsight-6.5.1) (2026-10-17)
 
 ### Bug Fixes
