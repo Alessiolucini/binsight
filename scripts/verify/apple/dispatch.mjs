@@ -127,12 +127,12 @@ const checkObjc = (metadata, mode) => {
     ) ||
     category?.class_name !== "NSString" ||
     category.class_source !== "external" ||
-    !category.instance_methods.includes("binsightFixtureLength") ||
+    !category.instance_methods.includes("reaFixtureLength") ||
     !metadata.objc_dispatch_implementations.some(
       (item) =>
         item.class_name === "NSString" &&
         item.category === "ReaDispatchAdditions" &&
-        item.selector === "binsightFixtureLength",
+        item.selector === "reaFixtureLength",
     ) ||
     objcCoverage?.status !== "complete" ||
     fixupCoverage(metadata)?.reason?.startsWith(mode.fixups) !== true ||
