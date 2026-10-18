@@ -43,13 +43,42 @@ export interface CaptureContext {
   readonly progress?: ProgressReporter;
 }
 
-interface CaptureState {
+export interface CaptureState {
   readonly context: CaptureContext;
   readonly events: CdpCaptureEvents;
   readonly allowedOrigins: ReadonlySet<string>;
   readonly limitations: string[];
   readonly startedAt: string;
+  /** CDP sessions BinSight auto-attached to during this capture (OOPIF
+   * iframes, dedicated/shared/service workers). Populated as
+   * `Target.attachedToTarget` events arrive on the main session; drained on
+   * `Target.detachedFromTarget`. Used by the event listener to route child
+   * events into the main inventory with session-scoped script-ids. */
+  readonly childSessions: Map<string, ChildSessionAttachment>;
+  /** True once the main session has issued `Target.setAutoAttach`. */
+  autoAttachEnabled: boolean;
+  /** Counts of scripts/exceptions seen per attached child-target type, for
+   * surfacing in limitations. */
+  readonly childScriptCounts: Map<string, number>;
+  /** Reasons we could not attach a child session, for surfacing. */
+  readonly childAttachFailures: string[];
 }
+
+interface ChildSessionAttachment {
+  readonly sessionId: string;
+  readonly targetId: string;
+  readonly type: string;
+  readonly url: string | null;
+}
+
+/** CDP target types for which script coverage expands beyond the main page. */
+const AUTO_ATTACHABLE_TARGET_TYPES: ReadonlySet<string> = new Set([
+  "iframe",
+  "worker",
+  "shared_worker",
+  "service_worker",
+  "webview",
+]);
 
 interface CapturedSections {
   readonly attachedUrl: string;
@@ -73,10 +102,6 @@ export const capturePage = async (
 ): Promise<CapturedPage> => {
   const allowedOrigins = new Set(context.input.allowed_origins);
   const events = new CdpCaptureEvents(context.input, allowedOrigins);
-  const removeListener = context.connection.onEvent((event) => {
-    if (event.sessionId !== context.sessionId) return;
-    events.ingest(event);
-  });
   const state: CaptureState = {
     context,
     events,
@@ -93,12 +118,177 @@ export const capturePage = async (
         : []),
     ],
     startedAt: new Date().toISOString(),
+    childSessions: new Map(),
+    autoAttachEnabled: false,
+    childScriptCounts: new Map(),
+    childAttachFailures: [],
   };
+  const removeListener = context.connection.onEvent((event) => {
+    routeCdpEvent(event, state);
+  });
   try {
     return await captureAuthorizedPage(state);
   } finally {
     removeListener();
   }
+};
+
+/** Route a CDP event to the main inventory, remapping scripts seen on an
+ * auto-attached child session (OOPIF iframe or worker) so their script-ids
+ * do not collide with the main session's. Also handles `Target.*` events
+ * on the main session to open/close child sessions. Exported for tests. */
+export const routeCdpEvent = (
+  event: {
+    readonly method: string;
+    readonly params: unknown;
+    readonly sessionId?: string;
+  },
+  state: CaptureState,
+): void => {
+  const sessionId = event.sessionId;
+  if (sessionId === state.context.sessionId) {
+    if (event.method === "Target.attachedToTarget") {
+      handleTargetAttached(event.params, state);
+      // Fall through so events.ingest observes the main-session copy of the
+      // event too (future handlers may want it). The child-session work above
+      // is fire-and-forget on a separate CDP command.
+    } else if (event.method === "Target.detachedFromTarget") {
+      handleTargetDetached(event.params, state);
+    }
+    state.events.ingest(event);
+    return;
+  }
+  if (sessionId === undefined) return;
+  const attachment = state.childSessions.get(sessionId);
+  if (attachment === undefined) return;
+  const remapped = remapChildEvent(event, attachment);
+  if (remapped === undefined) return;
+  if (event.method === "Debugger.scriptParsed")
+    state.childScriptCounts.set(
+      attachment.type,
+      (state.childScriptCounts.get(attachment.type) ?? 0) + 1,
+    );
+  state.events.ingest(remapped);
+};
+
+/** Clone a child-session event so its `scriptId` / `executionContextId` are
+ * namespaced by the child session, avoiding collisions in the main inventory's
+ * per-id maps. Returns `undefined` for event methods we deliberately drop
+ * (e.g. further `Target.*` nested events we handle separately). Exported
+ * for tests. */
+export const remapChildEvent = (
+  event: {
+    readonly method: string;
+    readonly params: unknown;
+    readonly sessionId?: string;
+  },
+  attachment: ChildSessionAttachment,
+):
+  | {
+      readonly method: string;
+      readonly params: unknown;
+      readonly sessionId?: string;
+    }
+  | undefined => {
+  // We intentionally only forward the small set of handlers the main
+  // CdpCaptureEvents.ingest reacts to for a child session: script metadata,
+  // execution-context lifecycle, and page errors. Network, websockets and
+  // console are left to the main session only — their request/connection ids
+  // live on the main session's scope and we have not enabled Network on the
+  // child.
+  const forwarded: ReadonlySet<string> = new Set([
+    "Debugger.scriptParsed",
+    "Runtime.executionContextCreated",
+    "Runtime.executionContextDestroyed",
+    "Runtime.executionContextsCleared",
+  ]);
+  if (!forwarded.has(event.method)) return undefined;
+  const params = event.params;
+  if (typeof params !== "object" || params === null) return event;
+  const scoped: Record<string, unknown> = {
+    ...(params as Record<string, unknown>),
+  };
+  const prefix = `${attachment.type}:${attachment.sessionId}:`;
+  if (typeof scoped.scriptId === "string")
+    scoped.scriptId = `${prefix}${scoped.scriptId}`;
+  const context = (scoped as { context?: Record<string, unknown> }).context;
+  if (context && typeof context.id === "number")
+    scoped.context = { ...context, id: Number.MAX_SAFE_INTEGER - context.id };
+  return { ...event, params: scoped };
+};
+
+/** React to `Target.attachedToTarget`: validate the target type, record the
+ * child session, and (fire-and-forget) enable Runtime+Debugger on it so the
+ * child's scripts stream into the main inventory. Exported for tests. */
+export const handleTargetAttached = (
+  params: unknown,
+  state: CaptureState,
+): void => {
+  if (typeof params !== "object" || params === null) return;
+  const payload = params as Record<string, unknown>;
+  const sessionId = payload.sessionId;
+  const targetInfo = payload.targetInfo as Record<string, unknown> | undefined;
+  if (typeof sessionId !== "string" || sessionId.length === 0) return;
+  if (!targetInfo) return;
+  const type = typeof targetInfo.type === "string" ? targetInfo.type : "";
+  const targetId =
+    typeof targetInfo.targetId === "string" ? targetInfo.targetId : "";
+  const url = typeof targetInfo.url === "string" ? targetInfo.url : null;
+  if (!AUTO_ATTACHABLE_TARGET_TYPES.has(type)) return;
+  if (state.childSessions.has(sessionId)) return;
+  const attachment: ChildSessionAttachment = { sessionId, targetId, type, url };
+  state.childSessions.set(sessionId, attachment);
+  // The user explicitly asked for cross-origin coverage via auto-attach, so
+  // treat the child target's origin as in-scope — otherwise its scripts would
+  // be dropped by the main session's `disallowed_origin` filter the moment
+  // they arrive. The allowedOrigins Set is shared with CdpCaptureEvents by
+  // reference, so this add is seen immediately by handleScriptParsed.
+  if (typeof url === "string" && url.length > 0) {
+    try {
+      const origin = new URL(url).origin;
+      (state.allowedOrigins as Set<string>).add(origin);
+    } catch {
+      // A target with an unparseable URL (chrome:// or similar) stays
+      // without an added origin; its scripts will still be filtered out,
+      // which is fine — we don't want to open the gate wider than needed.
+    }
+  }
+  const { connection, signal } = state.context;
+  void (async () => {
+    try {
+      await connection.send("Runtime.enable", {}, sessionId, signal);
+      await connection.send("Debugger.enable", {}, sessionId, signal);
+      // Propagate auto-attach recursively so nested OOPIFs / nested workers
+      // are also reached. Flatten keeps all sessions on one WebSocket.
+      await connection.send(
+        "Target.setAutoAttach",
+        { autoAttach: true, waitForDebuggerOnStart: false, flatten: true },
+        sessionId,
+        signal,
+      );
+    } catch (cause: unknown) {
+      // A failure here is non-fatal: the capture still returns everything
+      // the main session saw, plus a limitation naming the lost coverage.
+      state.childAttachFailures.push(
+        `${type} (${targetId}): ${cause instanceof Error ? cause.message : String(cause)}`,
+      );
+      state.childSessions.delete(sessionId);
+    }
+  })();
+};
+
+/** React to `Target.detachedFromTarget`: drop the session so later events
+ * from it are ignored. We do not need to disable domains on the child —
+ * the detach already tore the session down. Exported for tests. */
+export const handleTargetDetached = (
+  params: unknown,
+  state: CaptureState,
+): void => {
+  if (typeof params !== "object" || params === null) return;
+  const payload = params as Record<string, unknown>;
+  const sessionId = payload.sessionId;
+  if (typeof sessionId !== "string") return;
+  state.childSessions.delete(sessionId);
 };
 
 const captureAuthorizedPage = async (
@@ -179,6 +369,29 @@ const captureAuthorizedPage = async (
   // arrived while those reads were pending.
   state.events.settleUnexaminedResponseBodies();
   state.events.recordScriptMetadataBudgetExclusions();
+  // Surface how many additional scripts came from auto-attached child targets
+  // (OOPIF iframes, workers). An empty map on a successful auto-attach simply
+  // means the page has no such targets.
+  const childCounts = [...state.childScriptCounts.entries()];
+  if (childCounts.length > 0) {
+    childCounts.sort((left, right) => right[1] - left[1]);
+    const summary = childCounts
+      .map(([type, count]) => `${type}:${String(count)}`)
+      .join(", ");
+    state.limitations.push(
+      `Expanded script coverage via Target.setAutoAttach: ${summary}. These scripts live in the main scripts.items list and are identified by their origin and URL.`,
+    );
+  }
+  if (state.childAttachFailures.length > 0) {
+    const first = state.childAttachFailures.slice(0, 3).join("; ");
+    const extra =
+      state.childAttachFailures.length > 3
+        ? ` (+${String(state.childAttachFailures.length - 3)} further failure(s))`
+        : "";
+    state.limitations.push(
+      `Some auto-attach handshakes failed and their scripts are missing: ${first}${extra}.`,
+    );
+  }
   // Surface the top out-of-scope origins so callers can tell which hosts to
   // add to `allowed_origins` to recover the missing scripts. The aggregate
   // `scripts/disallowed_origin` count already lives in `completeness.excluded`;
@@ -280,6 +493,7 @@ const authorizeObservationWindow = async (
     throw new BrowserObservationError("inspect_web_page", "target_not_allowed");
   events.beginAuthorizedFrame(mainFrame.frame_id);
   await enableObservationDomains(connection, sessionId, signal);
+  await enableChildTargetAutoAttach(state);
   await report(context.progress, 2, "Observing page events");
   await delayWithCancellation(
     context.input.observation_ms,
@@ -413,6 +627,31 @@ const enableObservationDomains = async (
   await connection.send("Runtime.enable", {}, sessionId, signal);
   await connection.send("Debugger.enable", {}, sessionId, signal);
   await connection.send("Network.enable", {}, sessionId, signal);
+};
+
+/** Enable auto-attach on the main session so Chrome delivers
+ * `Target.attachedToTarget` events for every OOPIF iframe and worker that
+ * belongs to this page — present and future. A failure here is non-fatal: the
+ * main-frame capture still proceeds, but a `limitations` string names the
+ * expanded coverage we lost. */
+const enableChildTargetAutoAttach = async (
+  state: CaptureState,
+): Promise<void> => {
+  try {
+    await state.context.connection.send(
+      "Target.setAutoAttach",
+      { autoAttach: true, waitForDebuggerOnStart: false, flatten: true },
+      state.context.sessionId,
+      state.context.signal,
+    );
+    state.autoAttachEnabled = true;
+  } catch (cause: unknown) {
+    state.limitations.push(
+      `Script coverage is limited to the main page: Target.setAutoAttach failed (${
+        cause instanceof Error ? cause.message : String(cause)
+      }). Cross-origin iframes and workers were not inspected.`,
+    );
+  }
 };
 
 const accessibilityForFrames = async (
