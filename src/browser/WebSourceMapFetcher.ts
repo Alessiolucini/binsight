@@ -84,11 +84,19 @@ export const fetchWebSourceMaps = async (
 ): Promise<SourceMaps> => {
   throwIfAborted(signal);
   if (requests.length === 0)
+    // The caller invoked us (fetch_source_maps was true) but no
+    // in-scope `//# sourceMappingURL` references were observed - either the
+    // bundle shipped without source maps, or every declared map URL was on an
+    // origin outside `allowed_origins` and got dropped upstream. Report
+    // `unavailable` with a limitation so the caller can tell this apart from
+    // "the flag was never set".
     return webSourceMapsSchema.parse({
-      status: "not_requested",
+      status: "unavailable",
       requested: 0,
       processed: 0,
       items: [],
+      limitation:
+        "No in-scope sourceMappingURL references were observed; no source maps were fetched.",
     });
   const items: SourceMapItem[] = [];
   const operationController = new AbortController();

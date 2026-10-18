@@ -1,3 +1,5 @@
+import { writeFile } from "node:fs/promises";
+
 import type { ProgressReporter } from "../application/ProgressReporter.js";
 import type {
   CaptureWebScreenshotInput,
@@ -114,6 +116,28 @@ export const captureCdpScreenshot = async (
     message: "Screenshot capture complete",
     terminal: true,
   });
+  const outputPath = context.input.output_path;
+  if (outputPath !== undefined) {
+    // Absolute-path validation is enforced by the Zod schema upstream.
+    try {
+      await writeFile(outputPath, bytes);
+    } catch (cause: unknown) {
+      // Delivery-site IO failures surface as a TypeError the provider adapter
+      // wraps into a ProviderAdapterError, matching how the rest of this
+      // module reports non-protocol host failures.
+      throw new TypeError(
+        `capture_web_screenshot could not write PNG to ${outputPath}: ${
+          cause instanceof Error ? cause.message : String(cause)
+        }`,
+      );
+    }
+  }
+  const extraLimitation =
+    outputPath === undefined
+      ? []
+      : [
+          "PNG bytes were written to the caller-supplied output_path; data_base64 is omitted to keep the response compact.",
+        ];
   return {
     browser: context.discovery.version,
     target: {
@@ -123,11 +147,12 @@ export const captureCdpScreenshot = async (
     },
     captured_at: new Date().toISOString(),
     viewport: dimensions,
-    artifact: createWebScreenshotArtifact(bytes),
+    artifact: createWebScreenshotArtifact(bytes, outputPath),
     completeness: new CdpCaptureCompleteness().snapshot(),
     limitations: [
       "The screenshot contains the visible viewport, including on-screen content.",
       "BinSight does not scroll, evaluate JavaScript, or capture beyond the current viewport.",
+      ...extraLimitation,
     ],
   };
 };

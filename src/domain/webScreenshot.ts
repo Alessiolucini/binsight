@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { isAbsolute } from "node:path";
 
 import { z } from "zod";
 
@@ -9,16 +10,30 @@ import {
 } from "./browserObservation.js";
 import { browserVersionSchema } from "./browserObservationSchemas.js";
 
-/** Self-verifying inline PNG artifact for CLI/MCP parity. */
+/** Self-verifying PNG artifact. Carries either inline base64 (default) or a
+ * `saved_to_path` string naming the on-disk PNG file the caller requested via
+ * `output_path`. Exactly one of the two is present on any valid artifact. */
 export const webScreenshotArtifactSchema = z
   .object({
     sha256: z.string().regex(/^[a-f0-9]{64}$/u),
     bytes: z.number().int().min(1),
     media_type: z.literal("image/png"),
-    data_base64: z.string(),
+    data_base64: z.string().optional(),
+    saved_to_path: z.string().min(1).optional(),
   })
   .superRefine((artifact, context) => {
-    const bytes = decodeCanonicalBase64(artifact.data_base64);
+    const hasBase64 = artifact.data_base64 !== undefined;
+    const hasPath = artifact.saved_to_path !== undefined;
+    if (hasBase64 === hasPath) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "Screenshot artifact must carry exactly one of data_base64 or saved_to_path",
+      });
+      return;
+    }
+    if (!hasBase64) return;
+    const bytes = decodeCanonicalBase64(artifact.data_base64 as string);
     if (bytes === undefined) {
       context.addIssue({ code: "custom", message: "Invalid canonical base64" });
       return;
@@ -37,6 +52,17 @@ export const captureWebScreenshotInputSchema = z.strictObject({
   cdp_endpoint: browserObservationEndpointSchema,
   allowed_origins: browserAllowedOriginsSchema,
   target_id: z.string().trim().min(1),
+  output_path: z
+    .string()
+    .trim()
+    .min(1)
+    .refine((value) => isAbsolute(value), {
+      message: "output_path must be an absolute filesystem path.",
+    })
+    .optional()
+    .describe(
+      "Optional absolute filesystem path to write the PNG to. When set, the returned artifact carries saved_to_path instead of inline data_base64, so the MCP response stays small for large viewports.",
+    ),
 });
 export type CaptureWebScreenshotInput = z.infer<
   typeof captureWebScreenshotInputSchema
@@ -137,17 +163,27 @@ export const webScreenshotDiffSchema = z
   });
 export type WebScreenshotDiff = z.infer<typeof webScreenshotDiffSchema>;
 
-/** Create a content-addressed PNG artifact from captured bytes. */
+/** Create a content-addressed PNG artifact from captured bytes.
+ *
+ * By default the bytes are inlined as base64. Pass `savedToPath` when the
+ * caller requested on-disk delivery via `output_path`; the artifact then
+ * carries that absolute path instead of the base64 payload so the MCP
+ * response stays small for large viewports. */
 export const createWebScreenshotArtifact = (
   bytes: Buffer,
+  savedToPath?: string,
 ): WebScreenshotArtifact => {
   const sha256 = createHash("sha256").update(bytes).digest("hex");
-  return webScreenshotArtifactSchema.parse({
+  const base = {
     sha256,
     bytes: bytes.byteLength,
-    media_type: "image/png",
-    data_base64: bytes.toString("base64"),
-  });
+    media_type: "image/png" as const,
+  };
+  return webScreenshotArtifactSchema.parse(
+    savedToPath === undefined
+      ? { ...base, data_base64: bytes.toString("base64") }
+      : { ...base, saved_to_path: savedToPath },
+  );
 };
 
 /** Strict canonical base64 decoder used before digest validation. */

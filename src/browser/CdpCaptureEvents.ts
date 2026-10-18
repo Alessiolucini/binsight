@@ -21,6 +21,7 @@ export class CdpCaptureEvents implements CdpCaptureEventsState {
   readonly #responseBodyExaminedOccurrences = new Map<string, number>();
   readonly scripts = new Map<string, CapturedScript>();
   readonly scriptMetadataBudgetOmissionsById = new Map<string, true>();
+  readonly droppedScriptOrigins = new Map<string, number>();
   rejectedScriptMetadataBudgetCount = 0;
   rejectedSourceMapMetadataBudgetCount = 0;
   readonly scriptMetadataBytesById = new Map<string, number>();
@@ -63,6 +64,7 @@ export class CdpCaptureEvents implements CdpCaptureEventsState {
     this.committedDocument = undefined;
     this.scripts.clear();
     this.scriptMetadataBudgetOmissionsById.clear();
+    this.droppedScriptOrigins.clear();
     this.rejectedScriptMetadataBudgetCount = 0;
     this.rejectedSourceMapMetadataBudgetCount = 0;
     this.scriptMetadataBytesById.clear();

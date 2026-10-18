@@ -18,6 +18,10 @@ it("names the Wakaru configuration requirement when it is not configured", async
   if (!(refusal instanceof AnalysisCapabilityUnavailableError))
     throw new Error("Expected a capability refusal");
   expect(refusal.reason).toContain("REA_WAKARU_COMMAND");
+  // The requirement message names BOTH supported hosts so the user is not
+  // misled into thinking macOS is unsupported.
+  expect(refusal.reason).toContain("Linux x64");
+  expect(refusal.reason).toContain("macOS");
   expect(projectAnalysisError(refusal)).toMatchObject({
     code: "capability_unavailable",
     message: refusal.reason,

@@ -181,6 +181,12 @@ const inspectWebPageInputFacts = {
   include_websocket_shapes: z.boolean().default(false),
   include_storage_keys: z.boolean().default(false),
   include_storage_fingerprints: z.boolean().default(false),
+  /** When true, name the top out-of-scope origins whose scripts were filtered
+   * by `allowed_origins` in the `limitations` list so the caller can see
+   * which hosts to add. OFF by default because the limitation string would
+   * otherwise reveal URL fragments of pages the caller deliberately scoped
+   * out — a target-content leak the boundary tests guard against. */
+  include_disallowed_origin_hints: z.boolean().default(false),
 } as const;
 
 const inspectWebPageWithoutSourceSchema = z.strictObject({

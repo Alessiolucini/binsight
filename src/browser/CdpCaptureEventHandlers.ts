@@ -79,7 +79,20 @@ export const handleScriptParsed = (
     state.retainedScriptMetadataBytes -= replacedBytes;
   }
   if (sanitized === undefined) {
-    state.completeness.exclude("scripts", exclusionReasonForUrl(rawUrl));
+    const reason = exclusionReasonForUrl(rawUrl);
+    state.completeness.exclude("scripts", reason);
+    if (reason === "disallowed_origin") {
+      try {
+        const origin = new URL(rawUrl).origin;
+        state.droppedScriptOrigins.set(
+          origin,
+          (state.droppedScriptOrigins.get(origin) ?? 0) + 1,
+        );
+      } catch {
+        // URL parse failures already fall under exclusionReasonForUrl's
+        // other buckets; nothing extra to attribute here.
+      }
+    }
     return;
   }
   const executionContext = executionContextKey(params.executionContextId);

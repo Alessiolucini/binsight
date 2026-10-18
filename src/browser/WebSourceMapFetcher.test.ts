@@ -10,18 +10,23 @@ const input = analyzeWebBundleInputSchema.parse({
   fetch_source_maps: true,
 });
 
-it("reports an empty selected request set without starting fetch work", async () => {
+it("marks the result unavailable when the caller requested fetching but no in-scope sourceMappingURL was observed", async () => {
   const result = await fetchWebSourceMaps([], input, undefined, {
     fetch: async () => {
       throw new Error("No source-map request should be made");
     },
   });
 
+  // Prior to the fix this returned `status: "not_requested"` even when
+  // `fetch_source_maps: true`, which was indistinguishable from "the caller
+  // did not ask". The caller asked; we just had nothing to fetch.
   expect(result).toEqual({
-    status: "not_requested",
+    status: "unavailable",
     requested: 0,
     processed: 0,
     items: [],
+    limitation:
+      "No in-scope sourceMappingURL references were observed; no source maps were fetched.",
   });
 });
 
