@@ -38,7 +38,12 @@ it("runs the caller-selected npm entry through Node without rewriting its inputs
       marker: "caller-selected",
     });
   } finally {
-    await rm(root, { recursive: true, force: true });
+    await rm(root, {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 100,
+    });
   }
 });
 
@@ -84,7 +89,12 @@ windowsIt(
         cwd: root,
       });
     } finally {
-      await rm(root, { recursive: true, force: true });
+      await rm(root, {
+        recursive: true,
+        force: true,
+        maxRetries: 10,
+        retryDelay: 100,
+      });
     }
   },
 );
