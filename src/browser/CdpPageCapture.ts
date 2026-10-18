@@ -395,8 +395,13 @@ const captureAuthorizedPage = async (
   // Surface the top out-of-scope origins so callers can tell which hosts to
   // add to `allowed_origins` to recover the missing scripts. The aggregate
   // `scripts/disallowed_origin` count already lives in `completeness.excluded`;
-  // this limitation names the hosts.
-  const droppedOrigins = [...state.events.droppedScriptOrigins.entries()];
+  // this limitation names the hosts, but ONLY when the caller opted in via
+  // `include_disallowed_origin_hints`. Naming filtered origins by default
+  // would leak the exact URL fragments the caller deliberately scoped out
+  // and the boundary tests (correctly) reject that.
+  const droppedOrigins = state.context.input.include_disallowed_origin_hints
+    ? [...state.events.droppedScriptOrigins.entries()]
+    : [];
   if (droppedOrigins.length > 0) {
     droppedOrigins.sort((left, right) => right[1] - left[1]);
     const topEntries = droppedOrigins
