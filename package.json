@@ -1,7 +1,7 @@
 {
   "name": "binsight",
   "mcpName": "io.github.Alessiolucini/binsight",
-  "version": "6.6.0",
+  "version": "6.7.0",
   "description": "The AI X-ray for any file: what is it, what does it hide, what changed. Static reverse-engineering intelligence via CLI and MCP. Built on REA.",
   "license": "MIT",
   "repository": {

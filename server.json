@@ -8,13 +8,13 @@
     "url": "https://github.com/Alessiolucini/binsight",
     "source": "github"
   },
-  "version": "6.6.0",
+  "version": "6.7.0",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "binsight",
-      "version": "6.6.0",
+      "version": "6.7.0",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
