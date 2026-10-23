@@ -251,7 +251,7 @@ if (tier === "reused") {
   }
 }
 selected.runtime ||= selected.package;
-const linux = { os: "ubuntu-24.04", platform: "linux", architecture: "x64" };
+const linux = { os: "ubuntu-latest", platform: "linux", architecture: "x64" };
 // macOS x64 is the slowest package host. Fast qualification omits it.
 const intel =
   tier === "full"
