@@ -261,7 +261,7 @@ const matrix = {
   include: selected.package
     ? [
         linux,
-        { os: "ubuntu-24.04-arm", platform: "linux", architecture: "arm64" },
+        { os: "ubuntu-26.04-arm", platform: "linux", architecture: "arm64" },
         { os: "macos-15", platform: "darwin", architecture: "arm64" },
         ...intel,
       ]
