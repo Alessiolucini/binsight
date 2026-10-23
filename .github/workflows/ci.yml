@@ -113,7 +113,7 @@ jobs:
     name: Static checks
     needs: changes
     if: ${{ !cancelled() && needs.changes.outputs.tier != 'reused' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Require successful change classification
@@ -183,7 +183,7 @@ jobs:
     name: Source tests
     needs: changes
     if: needs.changes.outputs.code == 'true' && needs.changes.outputs.tier == 'fast'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -211,7 +211,7 @@ jobs:
     name: Test shard (${{ matrix.shard }})
     needs: [changes, build]
     if: needs.changes.outputs.code == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       # Failed PRs release the remaining matrix slots; qualification retains
@@ -259,7 +259,7 @@ jobs:
     name: Reverse tools quality
     needs: [changes, static]
     if: needs.changes.outputs.reverse_tools == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -303,7 +303,7 @@ jobs:
       needs.changes.outputs.web_network == 'true' ||
       needs.changes.outputs.web_runtime == 'true' ||
       needs.changes.outputs.web_source_map == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: read
@@ -376,7 +376,7 @@ jobs:
     name: Portable tests
     needs: [changes, test-source, test-shard]
     if: ${{ !cancelled() && needs.changes.outputs.tier != 'reused' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Require successful change classification
@@ -488,7 +488,7 @@ jobs:
     name: Source-built conformance fixtures
     needs: [changes, static]
     if: needs.changes.outputs.fixtures == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -499,7 +499,7 @@ jobs:
     name: Build bundled Windows x64 native controls
     needs: [changes, static]
     if: needs.changes.outputs.runtime == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -664,7 +664,7 @@ jobs:
     name: Reconstruction readiness
     needs: [changes, static]
     if: needs.changes.outputs.readiness == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -823,7 +823,7 @@ jobs:
     name: Docs Generation
     needs: changes
     if: needs.changes.outputs.docs == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0

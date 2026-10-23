@@ -378,9 +378,7 @@ it("keeps main pushes scoped when a successful ancestor baseline is available", 
     package: false,
     docs: true,
     matrix: {
-      include: [
-        { os: "ubuntu-latest", platform: "linux", architecture: "x64" },
-      ],
+      include: [{ os: "ubuntu-24.04", platform: "linux", architecture: "x64" }],
     },
   });
 });
@@ -566,7 +564,7 @@ it("retains native Inspector verification on every documented package host", asy
       .matrix,
   ).toEqual({
     include: [
-      { os: "ubuntu-latest", platform: "linux", architecture: "x64" },
+      { os: "ubuntu-24.04", platform: "linux", architecture: "x64" },
       { os: "ubuntu-24.04-arm", platform: "linux", architecture: "arm64" },
       { os: "macos-15", platform: "darwin", architecture: "arm64" },
       { os: "macos-15-intel", platform: "darwin", architecture: "x64" },
