@@ -287,7 +287,9 @@ it.runIf(process.platform === "linux").each([
     const alternateMode = mode === "alternate launcher";
     const pythonMode = pythonOptions !== null;
     if (alternateMode) {
-      await copyFile("/usr/bin/sleep", launcher);
+      // Copy Node, not sleep: multi-call coreutils (Ubuntu 26.04 ships uutils)
+      // refuse to run when argv[0] names a file other than the utility.
+      await copyFile(process.execPath, launcher);
       await chmod(launcher, 0o700);
       await symlink(launcher, alternate);
     }
@@ -310,7 +312,7 @@ it.runIf(process.platform === "linux").each([
         ? "/usr/bin/python3"
         : process.execPath;
     const arguments_ = alternateMode
-      ? ["30"]
+      ? ["-e", "setTimeout(() => {}, 30_000);"]
       : pythonMode
         ? [...pythonOptions, helper]
         : ["-e", childCode];

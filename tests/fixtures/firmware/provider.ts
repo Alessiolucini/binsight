@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { access, rm, writeFile } from "node:fs/promises";
+import { access, mkdir, rm, writeFile } from "node:fs/promises";
 import { expect, onTestFinished } from "vitest";
 import { createFirmwareAnalysisProvider } from "../../../src/composition/firmware.js";
 import { FirmwareAnalysisService } from "../../../src/application/firmware/FirmwareAnalysisService.js";
@@ -14,6 +14,18 @@ export const firmwareFixture = async (mode = "normal", banner?: string) => {
   const path = join(root, "input.bin");
   await writeFile(path, Buffer.from("fixture-input-data"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
+  // Give each engine its own configured file so the resolved command names
+  // the engine. Host utilities are not stable stand-ins: on Ubuntu 26.04
+  // /usr/bin/true resolves to /usr/bin/gnutrue. The launcher below runs
+  // producer.mjs instead, so these files are only resolved and hashed.
+  const tools = join(root, "tools");
+  await mkdir(tools);
+  const commands = {
+    binwalk: join(tools, "binwalk"),
+    unblob: join(tools, "unblob"),
+  };
+  for (const command of Object.values(commands))
+    await writeFile(command, "#!/bin/sh\nexit 127\n", { mode: 0o700 });
   const launches: {
     cwd: string | undefined;
     pid: number | undefined;
@@ -23,16 +35,23 @@ export const firmwareFixture = async (mode = "normal", banner?: string) => {
   const provider = createFirmwareAnalysisProvider(
     {
       ...process.env,
-      REA_BINWALK_COMMAND: "/usr/bin/true",
-      REA_UNBLOB_COMMAND: process.execPath,
+      REA_BINWALK_COMMAND: commands.binwalk,
+      REA_UNBLOB_COMMAND: commands.unblob,
     },
     async (options) => {
       const start = options.arguments.indexOf("--") + 2;
       const args = options.arguments.slice(start);
+      const command = options.arguments[start - 1];
       const engine =
-        options.arguments[start - 1]?.endsWith("/true") === true
+        command === commands.binwalk
           ? "binwalk"
-          : "unblob";
+          : command === commands.unblob
+            ? "unblob"
+            : undefined;
+      if (engine === undefined)
+        throw new Error(
+          `Unexpected firmware fixture command: ${String(command)}`,
+        );
       const spawned = await spawnOwnedProviderProcess({
         ...options,
         command: process.execPath,
