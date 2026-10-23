@@ -1,5 +1,20 @@
 # Changelog
 
+## [6.7.0](https://github.com/Alessiolucini/binsight/compare/binsight-6.6.0...binsight-6.7.0) (2026-10-23)
+
+
+### Tests
+
+* keep Linux fixtures independent of the coreutils build ([21f56c5](https://github.com/Alessiolucini/binsight/commit/21f56c570431c9f8971db39d913f39dccda92aac))
+* pass the suite on Ubuntu 26.04 and drop the 24.04 pin ([dd115db](https://github.com/Alessiolucini/binsight/commit/dd115db4754bafe2d187970e650782a515cd1536))
+
+
+### Continuous Integration
+
+* pin Linux test lanes to ubuntu-24.04 ([ab23631](https://github.com/Alessiolucini/binsight/commit/ab23631a45939d50004f813e860446db1080b0dc))
+* pin Linux test lanes to ubuntu-24.04 ([4631901](https://github.com/Alessiolucini/binsight/commit/4631901b44b6ce15f52ab58820a471374e03884b))
+* return Linux lanes to ubuntu-latest ([7028357](https://github.com/Alessiolucini/binsight/commit/70283570a34adda8bac516ee774b78be7507f2e3))
+
 ## [6.6.0](https://github.com/Alessiolucini/binsight/compare/binsight-6.5.1...binsight-6.6.0) (2026-10-18)
 
 
