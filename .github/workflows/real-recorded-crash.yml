@@ -22,7 +22,10 @@ env:
 
 jobs:
   real-recorded-crash:
-    runs-on: ubuntu-26.04
+    # Ubuntu 26.04 ships GDB 17, which loads the recorded executable while
+    # opening a core, so the core-only boundary check fails. Stay on 24.04
+    # (GDB 15) until the bridge prevents that discovery.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
