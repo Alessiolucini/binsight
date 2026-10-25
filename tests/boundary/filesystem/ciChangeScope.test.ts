@@ -567,7 +567,7 @@ it("retains native Inspector verification on every documented package host", asy
   ).toEqual({
     include: [
       { os: "ubuntu-latest", platform: "linux", architecture: "x64" },
-      { os: "ubuntu-24.04-arm", platform: "linux", architecture: "arm64" },
+      { os: "ubuntu-26.04-arm", platform: "linux", architecture: "arm64" },
       { os: "macos-15", platform: "darwin", architecture: "arm64" },
       { os: "macos-15-intel", platform: "darwin", architecture: "x64" },
     ],
